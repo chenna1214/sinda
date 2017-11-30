@@ -1,16 +1,21 @@
 <template>
-  <div class="topcolor">
+  <div class="pcTop">
    <!-- 最顶部 -->
-最顶部
-<pcTopLink></pcTopLink><!-- 最顶部链接 -->
+<p>欢迎来到信达！</p>
+<a href="#/userData/login">登录</a>
+<a href="#/userData/register">注册</a>
+<img src="" alt="">
+<p>购物车</p>
+<p>0</p>
+<p>件</p>
+<p>服务商入口</p>
    </div>
 </template>
 
 <script>
-import pcTopLink from './pcTopLink';
+
 export default {
   name: 'pcTop',
-  components:{pcTopLink},
   data () {
     return {
       
@@ -20,9 +25,10 @@ export default {
 </script>
 
 <style scoped lang='less'>
-.topcolor{
-  background: yellow;
-  width:1000px;
-  height:100px;
+
+.pcTop{
+  display: flex;
+  background: #f2f2f2;
+  height:35px;
 }
 </style>
