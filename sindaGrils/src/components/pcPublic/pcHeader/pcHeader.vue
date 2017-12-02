@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden-xs-only"><!-- 头部 -->
+  <div class="hidden-xs-only pcHeaderOutter"><!-- 头部 -->
     <el-row>
     <el-col><div class="pcHeader">
       <el-row>
@@ -28,7 +28,7 @@
   </div>
       </el-row>
       <el-row class="pcHeaderBottom" type="flex" justify="center"><!-- 头部下半部分 -->
-        <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink">全部产品</a></el-col>
+        <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink pcChoosedLink">全部产品</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService" class="pcHeaderBottomLink">财税服务</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/companyIndustry" class="pcHeaderBottomLink">公司工商</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
@@ -37,37 +37,61 @@
     </div></el-col>
     </el-row>
    </div>
+   
 </template>
 
 <script>
+import Vue from "vue";
 export default {
   name: "pcHeader",
+  mounted() {
+    var pcHeaderLink = document.querySelectorAll(".pcHeaderBottomLink");
+    var pcChoosedLink=document.querySelectorAll('.pcChoosedLink');
+    
+    if(window.location.href=='http://localhost:8080/#/merchandise/allProduct'){//问题
+      pcChoosedLink[0].style.color="#2693d4";
+      pcChoosedLink[0].style.borderBottom="3px solid #2693d4";
+      console.log('if',pcChoosedLink[0])
+      }
+    for (var i = 0; i < pcHeaderLink.length; i++) {//待优化
+      pcHeaderLink[i].onclick = function() {
+        for (var i = 0; i < pcHeaderLink.length; i++) {
+          pcHeaderLink[i].style.color = "#414141";
+          pcHeaderLink[i].style.borderBottom="none";
+        }
+        this.style.color = "#2693d4";
+        this.style.borderBottom="3px solid #2693d4";
+      };
+    }
+  },
   data() {
     return {};
   }
 };
-var pcHeaderLink =document.querySelectorAll('.pcHeaderBottomLink');
 </script>
 
 <style scoped lang='less'>
 // 如何引用公共less
+.pcHeaderOutter{
+  border-bottom: 1px solid #2693d4;
+}
 .pcHeader {
   max-width: 1200px;
   margin: 0 auto;
-  height: 148px;
+  height: 160px;
 }
-.pcHeaderTopContent{
-margin-top: 24px;
-display: flex;
-align-items: center;
+.pcHeaderTopContent {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
 }
 //头部的左边内容
 .pcHeaderLeft {
   display: flex;
   align-items: center;
 }
-.pcHeaderLeftsindaTextIcon{
-  width:41%;
+.pcHeaderLeftsindaTextIcon {
+  width: 41%;
   height: 19%;
 }
 .pcHeaderCityBox {
@@ -105,24 +129,25 @@ align-items: center;
 .pcHeaderMiddleSearchImg {
   margin-left: -6px;
   padding-top: 2px;
-
 }
 //头部的右边内容
 .pcHeaderRightBox {
   display: flex;
   justify-content: flex-end;
-  img{
-  width: 57%;
-  height: 15%;
+  img {
+    width: 57%;
+    height: 15%;
   }
 }
 //头部下半部分
-.pcHeaderBottom{
+.pcHeaderBottom {
   margin-top: 8px;
-  .pcHeaderBottomLink{
+  .pcHeaderBottomLink {
     font-size: 17px;
     text-decoration: none;
     color: #414141;
+    display: inline-block;
+    height: 28px;
   }
 }
 </style>
