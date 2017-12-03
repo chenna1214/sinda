@@ -2,6 +2,7 @@
   <div>
     <pcHeader>大头部</pcHeader><!-- 头部 -->
     <router-view/>
+    
     <pcfooter>大底部</pcfooter><!-- 底部 -->
    </div>
 </template>
@@ -17,5 +18,5 @@ export default {
 </script>
 
 <style>
-
+  
 </style>

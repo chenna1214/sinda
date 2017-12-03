@@ -1,7 +1,8 @@
 <template>
   <div>
    <!-- 店铺 -->
-店铺
+    店铺
+    <router-view/>
    </div>
 </template>
 
