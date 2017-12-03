@@ -15,6 +15,7 @@ export default {
   name: 'sinda',
   components:{pcHeader,pcfooter}
 }
+
 </script>
 
 <style>
