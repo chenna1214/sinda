@@ -7,7 +7,6 @@ import 'element-ui/lib/theme-chalk/display.css';
 import axios from 'axios'
 import Distpicker from 'v-distpicker'
 
-
 // 三级联动
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
