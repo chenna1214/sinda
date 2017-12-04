@@ -18,7 +18,7 @@
           <el-col :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
             <div class="pcAllProTil" v-show="isShow" @mouseover="pcNavOver($event)" @mouseleave="pcNavLeave($event)">  <!-- 财税服务 -->
                 <span v-for="(pcAllProTilNameSingle,index) in pcAllProTilName" v-if="index==5" :key="pcAllProTilNameSingle">{{pcAllProTilNameSingle+'>'}}</span>
-                <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="index<8" :key="pcCompanyRegister">{{'|'+pcCompanyRegister}}</span><br>
+                <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="index==40" :key="pcCompanyRegister">{{'0|'+pcCompanyRegister}}</span><br>
                 <span v-for="(pcAllProTilNameSingle,index) in pcAllProTilName" v-if="index==4" :key="pcAllProTilNameSingle">{{pcAllProTilNameSingle+'>'}}</span>
                 <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="8<=index" :key="pcCompanyRegister">{{'|'+pcCompanyRegister}}</span>
                  <span v-for="(pcAllProTilNameSingle,index) in pcAllProTilName" v-if="index==3" :key="pcAllProTilNameSingle">{{pcAllProTilNameSingle+'>'}}</span>
@@ -63,7 +63,7 @@
 <el-col :sm="20" :md="20" :lg="{span:20,offset:4}">
       <div class="pcAllProTil" v-show="isShow" v-on:mouseover="pcNavOver()" v-on:mouseleave="pcNavLeave()">
           <span v-for="(pcAllProTilNameSingle,index) in pcAllProTilName" v-if="index==6" :key="pcAllProTilNameSingle">{{pcAllProTilNameSingle+'>'}}</span>
-          <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="index<8" :key="pcCompanyRegister">{{'|'+pcCompanyRegister}}</span><br>
+          <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="index<8" :key="pcCompanyRegister">{{'|0'+pcCompanyRegister}}</span><br>
           <span v-for="(pcAllProTilNameSingle,index) in pcAllProTilName" v-if="index==7" :key="pcAllProTilNameSingle">{{pcAllProTilNameSingle+'>'}}</span>
           <span v-for="(pcCompanyRegister,index) in pcCompanyRegisterList" v-if="8<=index" :key="pcCompanyRegister">{{'|'+pcCompanyRegister}}</span>
         </div>
@@ -91,7 +91,7 @@
     </el-col>
   </el-row>
 
-<!-- 全部产品---轮播图片 -->
+<!-- 全部产-轮播图片 -->-
 <el-col :sm="20" :md="20" :lg="{span:20,offset:4}" class="pcAllProCarousel">
 
     <el-carousel trigger="click" height="400px">
@@ -115,18 +115,20 @@ export default {
       .then(function(data) {
         var rData = data.data.data;
 
-        function GetpcNavData(pcNavWhere,pcNavList){
-          console.log(999)
-          for (var key1 in rData[pcNavWhere].itemList) {//财税服务三级标题
+for(var key0 in rData){
+  // console.log('key0',key0)
+for (var key1 in rData[key0].itemList) {//公司工商三级标题
           var pcCompanyRegisterData =
-            rData[pcNavWhere].itemList[key1].itemList;
+            rData[key0].itemList[key1].itemList;
           for (var key2 in pcCompanyRegisterData) {
             var pcCompany = pcCompanyRegisterData[key2].name.replace('、','');
-          that.pcNavList.push(pcCompany);
+          that.pcCompanyRegisterList.push(pcCompany);
+          // console.log('pcCompany',pcCompany)
           }
         }
-        }
-      GetpcNavData("5af629246fa34f6f8d49758c6a7b25f1",pcCompanyRegisterList)
+}
+console.log('pcCompanyRegisterList',that.pcCompanyRegisterList)
+   
 
 
      
@@ -134,7 +136,7 @@ export default {
         for(var key00 in rData){//轮播图左边的所有二级标题
           for(var key01 in rData[key00].itemList){
             var pcAllProTil=rData[key00].itemList[key01].name;
-            console.log(pcAllProTil)
+            // console.log(pcAllProTil)
             that.pcAllProTilName.push(rData[key00].itemList[key01].name);
           }
         }
