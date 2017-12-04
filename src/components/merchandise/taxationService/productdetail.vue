@@ -1,0 +1,439 @@
+<template>
+  <!-- 商品详情页 -->
+  <div class="prodetail">
+    <!-- 商品详情页：首页/财税服务 -->
+    <div class="pro-top">
+      <p>首页 / 财税服务</p>
+    </div>
+    <!-- 商品详情 -->
+    <div class="pro-parciaular">
+      <!-- 左边 -->
+      <div class="par-img">
+        <img src="../pc_images/pc_login.png" alt="">
+      </div>
+      <!-- 中间 -->
+      <div class="par-infor">
+        123
+      </div>
+      <!-- 右边 -->
+      <div class="par-contact">
+        <h1>顶级服务商</h1>
+        <p>北京信达服务中心</p>
+        <div>
+          联系： <button>马上咨询</button>
+        </div>
+        <button>查看服务商</button>
+      </div>
+    </div>
+    <!-- 广告 -->
+    <div class="pro-adver">
+      <img src="../pc_images/pc_detail_adver.png" alt="">
+    </div>
+    <!-- 服务内容，商品评价 -->
+    <div class="pro-evaluate">
+      <!-- 头 -->
+      <div class="eva-top">
+        <div class="evatop-one" v-on:click="fuwu">服务内容<!-- <span></span> --></div>
+        <div class="evatop-two" v-on:click="shangpin">商品评价</div>
+      </div>
+      <!-- 身体 -->
+      <div class="eva-body">
+        <!-- 服务内容 -->
+        <div class="eva-serve">
+          <ul>
+            <li>服务内容：</li>
+            <li>1.整理原始票据</li>
+            <li>2.记账</li>
+            <li>3.装订凭证</li>
+            <li>4.出报表</li>
+            <li>5.月报、季度企业所得税、年度汇算清缴</li>
+            <li>6.打印总帐、明晰账本</li>
+          </ul>
+        </div>
+        <!-- 商品评价 -->
+        <div class="eva-app" style="display: none;">
+          <!-- 上 -->
+          <div class="app-percent">
+            <div class="per-left">
+              <div class="per-good">
+                <div>0%</div>
+                <p>好评</p>
+              </div>
+              <div class="per-three">
+                <div><p>好评（0%）</p><div></div></div>
+                <div><p>中评（0%）</p><div></div></div>
+                <div><p>差评（0%）</p><div></div></div>
+              </div>
+            </div>
+            <div class="per-right">
+              <div>客户印象</div>
+              <div>暂无已添加的印象标签</div>
+            </div>            
+          </div>
+          <!-- 中 -->
+          <div class="app-fourapp">
+            <div style="background-color: #2693d4;color: #fff;">全部评价（0）</div>
+            <div>好评（0）</div>
+            <div>中评（0）</div>
+            <div>差评（0）</div>
+          </div>
+          <!-- 下 -->
+          <div class="app-under">
+            <div class="und-top">
+              <div>评价</div>
+              <div>满意度</div>
+              <div>用户</div>
+            </div>
+            <div class="und-down">
+              <!-- 评价 -->
+              <div class="dow-estimate">
+                <div class="dowest-pay">
+                  价格包含养老、失业、医疗、工伤、生育、企业、个人缴纳费用1360元/月。
+                  服务费为50元/月。（北京市-朝阳区）  2017-04-02
+                </div>
+                <div class="dowest-app">
+                  服务很快
+                </div>
+              </div>
+              <!-- 满意度 -->
+              <div class="dow-satisfaction">
+                <div class="dowsat-star"></div>
+                <div class="dowsat-ye">
+                  <div class="satye-prev">上一页</div>
+                  <div class="satye-one">1</div>
+                  <div class="satye-next">下一页</div>
+                </div>
+              </div>
+              <!-- 用户 -->
+              <div class="dow-user"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "productdetail",
+    created() {
+      this.ajax
+        .post("http://115.182.107.203:8088/xinda/xinda-api/product/package/grid")
+        .then(function(data) {
+          var prodata = data.data.data;
+          console.log(prodata);
+        });
+    },
+    data() {
+      return {
+
+      };
+    },
+    methods: {
+      // 用的是dom操作，麻烦
+      fuwu: function() {
+        var evatopOne = document.querySelector('.evatop-one');
+        var evaServe = document.querySelector('.eva-serve');
+        var evaApp = document.querySelector('.eva-app');
+        var evatopTwo = document.querySelector('.evatop-two');
+        evaServe.style.display = 'block';
+        evatopOne.style.color = '#fff';
+        evatopOne.style.backgroundColor = '#2693d4';
+        evaApp.style.display = 'none';
+        evatopTwo.style.color = '#636363';
+        evatopTwo.style.backgroundColor = '#f7f7f7';
+      },
+      shangpin: function() {
+        var evatopTwo = document.querySelector('.evatop-two');
+        var evatopOne = document.querySelector('.evatop-one');
+        var evaServe = document.querySelector('.eva-serve');
+        var evaApp = document.querySelector('.eva-app');
+        evaApp.style.display = 'block';
+        evatopTwo.style.color = '#fff';
+        evatopTwo.style.backgroundColor = '#2693d4';
+        evaServe.style.display = 'none';
+        evatopOne.style.color = '#636363';
+        evatopOne.style.backgroundColor = '#f7f7f7';
+      }
+    }
+  };
+</script>
+
+<style scoped lang='less'>
+//  商品详情页：首页/财税服务的样式
+.prodetail {
+  width: 78%;
+  margin: 0 auto;
+}
+.pro-top {
+  font-size: 13px;
+  color: #696969;
+  line-height: 27px;
+}
+// 商品详情的样式
+.pro-parciaular {
+  width: 100%;
+  height: 20%;
+  margin-top: 2%;
+  display: flex;
+  .par-img {
+    width: 30%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .par-infor {
+    margin-left: 2%;
+  }
+  .par-contact {
+    width: 20%;
+    height: 50%;
+    margin-left: 4%;
+    border: 1px solid #2693d4;
+    h1 {
+      text-align: center;
+      line-height: 46px;
+    }
+    p {
+      color: #666;
+      text-align: center;
+      line-height: 35px;
+    }
+    div {
+      width: 73%;
+      margin-left: 20%;
+      button {
+        width: 50%;
+        height: 34px;
+        color: #75b2df;
+        border: 1px solid #2693d4;
+        background-color: #fff;
+        border-radius: 10px;
+        margin-left: 8%;
+      }
+    }
+    button {
+      width: 45%;
+      height: 41px;
+      background-color: #2693d4;
+      font-size: 17px;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      margin: 6% 0 6% 28%;
+    }
+  }
+}
+// 广告的样式
+.pro-adver {
+  width: 100%;
+  height: 5%;
+  margin-top: 4%;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+// 服务内容和商品评价的样式
+.pro-evaluate {
+  width: 100%;
+  height: 68%;
+  border: 1px solid #ccc;
+  margin-top: 1%;
+  .eva-top {
+    width: 100%;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    div {
+      width: 12%;
+      color: #636363;
+      text-align: center;
+      line-height: 44px;
+      cursor: pointer;
+    }
+    .evatop-one {
+      background-color: #2693d4;
+      color: #fff;
+      // span{
+      //   width: 0;
+      //   height: 0;
+      //   border-left: 6px solid transparent;
+      //   border-top: 6px solid #2693d4;
+      //   border-right: 6px solid transparent;
+      //   border-bottom: 6px solid transparent;
+      // }
+    }
+  }
+  // 服务内容
+  .eva-serve {
+    margin-bottom: 10%;
+    ul {
+      margin-left: 3%;
+      margin-top: 2%;
+      li {
+        list-style: none;
+        color: #686868;
+        line-height: 40px;
+      }
+    }
+  }
+  // 上
+  .app-percent{
+    width: 90%;
+    height: 20%;
+    padding: 2% 0 2% 2%;
+    display: flex;
+    >div{
+      display: flex;
+    }
+    .per-left{
+      width: 60%;
+      border-right: 1px solid #bbb;
+      .per-good{
+        display: flex;
+        color: #2693d4;
+        align-items: flex-end;
+        div{
+          font-size: 76px;
+          font-weight: bold;
+        }
+    }
+
+    }
+    .per-three{
+      width: 55%;
+      >div{
+        width: 83%;
+        height: 20px;
+        margin: 2% 0 4% 0;
+        padding: 0 0 0 10%;
+        >p{
+          width: 33%;
+        }
+        >div{
+          width: 63%;
+          height: 20px;
+          background-color: #ccc;
+          margin-left: 37%;
+          margin-top: -7%;
+        }
+      }
+    }
+    .per-right{
+      width: 22%;
+      height: 20%;
+      margin-top: 2%;
+      margin-left: 3%;
+      >div{
+        height: 25px;
+        &:nth-child(2){
+          margin-top: 18%;
+          margin-left: -26%;
+        }
+      }
+    }
+  }
+  // 中
+  .app-fourapp{
+    width: 100%;
+    height: 20%;
+    background-color: #f7f7f7;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    >div{
+      width: 15%;
+      line-height: 50px;
+      text-align: center;
+      &:hover{
+        background-color: #2693d4;
+        color: #fff;
+      }
+    }
+  }
+  // 下
+  .app-under{
+    width: 96%;
+    margin: 0 auto;
+    margin-top: 1%;
+    margin-bottom: 5%;
+    border-left: 1px solid #ccc;
+    .und-top{
+      width: 98%;
+      margin: 0 auto;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-around;
+      >div{
+        height: 30px;
+      }
+    }
+    .und-down{
+      width: 98%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      >div{
+        width: 30%;
+      }
+      .dow-estimate{
+        margin-top: 2%;
+        .dowest-pay{
+          line-height: 30px;
+          font-size: 13px;
+          color: #ccc;
+        }
+        .dowest-app{
+          line-height: 40px;
+        }
+      }
+      .dow-satisfaction{
+        .dowsat-star{
+          width: 19%;
+          height: 11px;
+          background: url(../pc_images/code.png) -559px -1130px;
+          margin-left: 18%;
+          margin-top: 14%;
+        }
+        .dowsat-ye{
+          display: flex;
+          width: 50%;
+          margin-top: 24%;
+          .satye-prev{
+            width: 42%;
+            height: 31px;
+            text-align: center;
+            line-height: 31px;
+            border: 1px solid #ccc;
+          }
+          .satye-one{
+            width: 21%;
+            border: 1px solid #2693d4;
+            color: #2693d4;
+            text-align: center;
+            line-height: 30px;
+            margin: 0 4% 0 4%;
+          }
+          .satye-next{
+            width: 42%;
+            height: 31px;
+            text-align: center;
+            line-height: 31px;
+            border: 1px solid #ccc;
+          }
+        }
+      }
+      .dow-user{
+        width: 16%;
+        height: 98px;
+        background: url(../pc_images/login_logo.png) no-repeat 0 -113px ;
+        margin-top: 4%;
+      }
+    }
+  }
+}
+</style>
