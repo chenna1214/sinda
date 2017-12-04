@@ -4,9 +4,11 @@ import Router from 'vue-router'
 import merchandise from '../components/merchandise/merchandise'
 import allProduct from '../components/merchandise/allProduct/allProduct.vue'
 import taxationService from '../components/merchandise/taxationService/taxationService.vue'
+import productdetail from '../components/merchandise/taxationService/productdetail.vue'
 import companyIndustry from '../components/merchandise/companyIndustry/companyIndustry.vue'
 import joinUs from '../components/merchandise/joinUs/joinUs.vue'
 import shop from '../components/merchandise/shop/shop.vue'
+import pc_shophp from '../components/merchandise/shop/pc_shophp.vue'
 //登录、注册、忘记密码网页
 import userData from '../components/userData/userData.vue'
 import login from '../components/userData/login.vue'
@@ -55,6 +57,11 @@ export default new Router({
                     component: taxationService
                   },
                   {
+                    path: 'productdetail',//商品详情
+                    name: 'productdetail',
+                    component: productdetail
+                  },
+                  {
                     path: 'companyIndustry',//公司工商
                     name: 'companyIndustry',
                     component: companyIndustry
@@ -68,6 +75,11 @@ export default new Router({
                     path: 'shop',//店铺
                     name: 'shop',
                     component: shop
+                  },
+                  {
+                    path: 'pc_shophp',//店铺首页
+                    name: 'pc_shophp',
+                    component: pc_shophp
                   }
             ]
           }
