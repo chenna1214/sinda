@@ -1,7 +1,6 @@
 <template>
-  <div><!-- 全部产品 --> 
+  <div>
     <div class="pcAllProduct">
-
         <el-row>
           <el-col :sm="4" :md="4" :lg="4">
               <div class="pcAllProductHeaderInner" @mouseover="pcNavOver($event)" @mouseleave="pcNavLeave($event)">
