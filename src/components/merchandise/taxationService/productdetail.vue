@@ -13,7 +13,35 @@
       </div>
       <!-- 中间 -->
       <div class="par-infor">
-        123
+        <div class="parinf-acting">代理记账（半年）</div>
+        <div class="parinf-serve">6个月小规模企业代理记账服务</div>
+        <div class="parinf-price">
+          <div>市场价： <del>￥2000.00</del></div>
+          <div class="parpri-price">价  格： <p>￥1200.00元</p></div>
+        </div>
+        <!-- 类型 -->
+        <div class="parinf-mold">
+          <div>类型：</div>
+          <div class="parinf-chose">
+            <div style="color: #2693d4;border-color: #2693d4;">代理记账（半年）</div>
+            <div>代理记账+取票+取银行回单（半年）</div>
+            <div>小规模记账（一年）</div>
+          </div>
+        </div>
+        <!-- 地址 -->
+        <div class="parinf-address">
+          <div>地区：</div>
+          <div class="parinf-detailed">北京-北京市-朝阳区</div>
+        </div>
+        <!-- 购买数量 -->
+        <div class="parinf-num">
+          购买数量：<input type="number" @change="addsubtract">
+        </div>
+        <!-- 立即购买，加入购物车 -->
+        <div class="parinf-btn">
+          <button style="color: #fff;border-color: #2693d4;background-color: #2693d4;">立即购买</button>
+          <button>加入购物车</button>
+        </div>
       </div>
       <!-- 右边 -->
       <div class="par-contact">
@@ -211,16 +239,12 @@
         evatopTwo.style.backgroundColor = '#f7f7f7';
       },
       shangpin: function() {
-        var evatopTwo = document.querySelector('.evatop-two');
-        var evatopOne = document.querySelector('.evatop-one');
-        var evaServe = document.querySelector('.eva-serve');
-        var evaApp = document.querySelector('.eva-app');
-        evaApp.style.display = 'block';
-        evatopTwo.style.color = '#fff';
-        evatopTwo.style.backgroundColor = '#2693d4';
-        evaServe.style.display = 'none';
-        evatopOne.style.color = '#636363';
-        evatopOne.style.backgroundColor = '#f7f7f7';
+        document.querySelector('.eva-app').style.display = 'block';
+        document.querySelector('.evatop-two').style.color = '#fff';
+        document.querySelector('.evatop-two').style.backgroundColor = '#2693d4';
+        document.querySelector('.eva-serve').style.display = 'none';
+        document.querySelector('.evatop-one').style.color = '#636363';
+        document.querySelector('.evatop-one').style.backgroundColor = '#f7f7f7';
       },
       close: function () {
         document.querySelector('.pro-consult').style.display = 'none';
@@ -233,6 +257,13 @@
       transfer: function () {
         document.querySelector('.conbod-one').style.display = 'none';
         document.querySelector('.conbod-two').style.display = 'block';
+      },
+      addsubtract: function () {
+        var parinfNum = document.querySelector('.parinf-num input').value;
+        if(parinfNum <= 0){//变为0太慢了
+          console.log(parinfNum=0)
+          document.querySelector('.parinf-num input').value = 0;
+        }
       }
     }
   };
@@ -266,8 +297,97 @@ button{
       height: 100%;
     }
   }
+  // 中间
   .par-infor {
+    width: 44%;
     margin-left: 2%;
+    .parinf-acting{
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .parinf-serve{
+      font-size: 14px;
+      line-height: 30px;
+      color: #555;
+    }
+    .parinf-price{
+      width: 100%;
+      height: 18%;
+      margin-top: 2%;
+      background-color: #eee;
+      >div{
+        width: 96%;
+        height: 50%;   
+        font-size: 18px;
+        color: #aaa; 
+        margin: 0 auto;      
+      }
+      .parpri-price{
+        display: flex;
+        >p{
+          color: #f00;
+          font-weight: bold;
+        }
+      }
+    }
+    // 类型
+    .parinf-mold{
+      width: 96%;
+      height: 34%;
+      font-size: 14px;
+      margin: 0 auto;
+      margin-top: 1.5%;
+      display: flex;
+      .parinf-chose{
+        margin-left: 7%;
+        >div{
+          line-height: 35px;
+          border: 1px solid #ccc;
+          text-align: center;
+          margin-bottom: 2%;
+          &:hover{
+            color: #2693d4;
+            border-color: #2693d4;
+          }
+        }
+      }
+    }
+    // 地址
+    .parinf-address{
+      width: 96%;
+      margin: 0 auto;
+      font-size: 14px;
+      display: flex;
+      >div{
+        line-height: 30px;
+      }
+      .parinf-detailed{
+        margin-left: 7%;
+      }
+    }
+    // 购买数量
+    .parinf-num{
+      width: 96%;
+      margin: 0 auto;
+      font-size: 14px;
+      >input{
+        height: 28px;
+        margin-left: 2%;
+      }
+    }
+    // 立即购买，加入购物车
+    .parinf-btn{
+      margin-top: 3%;
+      >button{
+        width: 25%;
+        line-height: 38px;
+        margin-left: 15%;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #fff;
+        cursor: pointer;
+      }
+    }
   }
   .par-contact {
     width: 20%;
