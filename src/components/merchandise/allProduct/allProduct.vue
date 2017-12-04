@@ -1,11 +1,5 @@
 <template>
-<<<<<<< HEAD
   <div>
-   <!-- 全部产品 -->
-    全部产品
-    <router-view/>
-=======
-  <div><!-- 全部产品 -->
 <div class="pcAllProduct">
 <el-row>
   <el-col :sm="4" :md="4" :lg="4"><div class="pcAllProductHeaderLeft">
@@ -51,7 +45,6 @@
   <el-col :sm="20" :md="20" :lg="20"><div class="pcAllProductHeaderCarousel"></div></el-col>
 </el-row>
 </div>
->>>>>>> 21188838ecd451e495b89887266d5e97e76ea4de
    </div>
 </template>
 
