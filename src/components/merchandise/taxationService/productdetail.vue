@@ -20,7 +20,7 @@
         <h1>顶级服务商</h1>
         <p>北京信达服务中心</p>
         <div>
-          联系： <button>马上咨询</button>
+          联系： <button class="parcon-btn" @click="refer">马上咨询</button>
         </div>
         <button>查看服务商</button>
       </div>
@@ -111,6 +111,72 @@
         </div>
       </div>
     </div>
+    <!-- 点击马上咨询出现 -->
+    <div class="pro-consult">
+      <!-- 头 -->
+      <div class="procon-top">
+        <div class="contop-free">免费电话咨询</div>
+        <div class="contop-x" @click="close">×</div>
+      </div>
+      <!-- 身体 -->
+      <div class="procon-body">
+        <!-- 点之前 -->
+        <div class="conbod-one">
+          <div class="bodone-line"></div>
+          <div class="bodone-pot">
+            <div style="color: #57d8c1;border-color: #57d8c1;">1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+          </div>
+          <div class="bodone-cha">
+            <div>输入手机号码</div>
+            <div>您接听来电</div>
+            <div>被叫方接听</div>
+            <div>咨询结束</div>
+          </div>
+          <!-- 输入框 -->
+          <div class="bodone-input">
+            <!-- 手机号码 -->
+            <div class="bodinp-tel">
+              <input type="text" placeholder="请输入手机号码">
+            </div>
+            <!-- 图形验证码 -->
+            <div class="bodinp-piccode">
+              <div class="bodinp-graphcode">
+                <input type="text" placeholder="请输入图形验证码">
+              </div>
+              <div class="bodinp-image">
+                <img src="../pc_images/u8382.png" alt="">
+              </div>
+            </div>
+            <!-- 验证码 -->
+            <div class="bodinp-code">
+              <div class="bodinp-chacode">
+                <input type="text" placeholder="请输入验证码">
+              </div>
+              <div class="bodinp-getcode">
+                <button>获取验证码</button>
+              </div>
+            </div>
+            <!-- 开始免费咨询 -->
+            <div class="bodinp-free">
+              <button @click="transfer">开始免费咨询</button>
+            </div>
+            <!-- 免费 -->
+            <div class="bodinp-down">
+              本次电话咨询完全免费，我们将对您的号码严格保密，请放心使用！
+            </div>
+          </div>
+        </div>
+        <!-- 点之后 -->
+        <div class="conbod-two">
+          <div style="color: #aaa">本次电话咨询完全免费，我们将对您的号码严格保密，请放心使用！</div>
+          <div style="color: #57d8c1;text-align: center;">正在为您接通电话</div>
+          <div style="color: #57d8c1;text-align: center;">请您注意接听来电</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -155,12 +221,27 @@
         evaServe.style.display = 'none';
         evatopOne.style.color = '#636363';
         evatopOne.style.backgroundColor = '#f7f7f7';
+      },
+      close: function () {
+        document.querySelector('.pro-consult').style.display = 'none';
+      },
+      refer: function () {
+        document.querySelector('.pro-consult').style.display = 'block';
+        document.querySelector('.conbod-one').style.display = 'block';
+        document.querySelector('.conbod-two').style.display = 'none';
+      },
+      transfer: function () {
+        document.querySelector('.conbod-one').style.display = 'none';
+        document.querySelector('.conbod-two').style.display = 'block';
       }
     }
   };
 </script>
 
 <style scoped lang='less'>
+button{
+  cursor: pointer;
+}
 //  商品详情页：首页/财税服务的样式
 .prodetail {
   width: 78%;
@@ -432,6 +513,172 @@
         height: 98px;
         background: url(../pc_images/login_logo.png) no-repeat 0 -113px ;
         margin-top: 4%;
+      }
+    }
+  }
+}
+// 点击马上咨询
+.pro-consult{
+  width: 48%;
+  height: 94%;
+  border-bottom: 1px solid #aaa;
+  box-shadow: 2px 1px 2px 1px #aaa;
+  background-color: #fff;
+  position: absolute;
+  margin-top: -63%;
+  margin-left: 25%;
+  display: none;
+  // 头
+  .procon-top{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    background-color: #eee;
+    justify-content: space-between;
+    .contop-free{
+      width: 20%;
+      height: 100%;
+      line-height: 40px;
+      text-align: center;
+    }
+    .contop-x{
+      width: 5%;
+      font-size: 24px;
+      text-align: center;
+      line-height: 40px;
+      background-color: #aaa;
+      cursor: pointer;
+    }
+  }
+  // 身体
+  .procon-body{
+    width: 100%;
+    height: 80%;
+    // 一
+    .conbod-one{
+      width: 100%;
+      .bodone-line{
+        width: 80%;
+        height: 5px;
+        margin: 0 auto;
+        margin-top: 5%;
+        background-color: #ddd;
+      }
+      .bodone-pot{
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        margin-top: -1.5%;
+        >div{
+          width: 3%;
+          font-size: 14px;
+          color: #777;
+          text-align: center;
+          border: 1px solid #777;
+          border-radius: 50%;
+          background-color: #fff;
+        }
+      }
+      .bodone-cha{
+        width: 87%;
+        display: flex;
+        justify-content: space-between;
+        margin-left: 5%;
+        margin-top: 1%;
+      }
+      .bodone-input{
+        width:70%;
+        margin: 0 auto;
+        margin-top: 3%;
+        margin-bottom: 5%;
+        >div{
+          width: 50%;
+          margin: 0 auto;
+          margin-top: 3%;
+        }
+        .bodinp-tel{
+          input{
+            width: 100%;
+            height: 34px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+          }
+        }
+        .bodinp-piccode{
+          display: flex;
+          justify-content: space-between;
+          .bodinp-graphcode{
+            width: 60%;
+            height: 34px;
+            input{
+              width: 100%;
+              height: 100%;
+              border: 1px solid #aaa;
+              border-radius: 4px;
+            }
+          }
+          .bodinp-image{
+            width: 34%;
+            height: 34px;
+            img{
+              width: 100%;
+              height: 100%;
+              border-radius: 4px;
+            }
+          }
+        }
+        .bodinp-code{
+          display: flex;
+          justify-content: space-between;
+          .bodinp-chacode{
+            width: 60%;
+            height: 34px;
+            input{
+              width: 100%;
+              height: 100%;
+              border: 1px solid #aaa;
+              border-radius: 4px;
+            }
+          }
+          .bodinp-getcode{
+            width: 34%;
+            height: 34px;
+            button{
+              width: 100%;
+              height: 100%;
+              border: none;
+              border-radius: 4px;
+            }
+          }
+        }
+        .bodinp-free{
+          button{
+            width: 100%;
+            height: 34px;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            background-color: #57d8c1;
+            border-radius: 4px;
+          }
+        }
+        .bodinp-down{
+          width: 80%;
+          font-size: 13px;
+          color: #888;
+          text-align: center;
+        }
+      }
+    }
+    // 二
+    .conbod-two{
+      width: 80%;
+      margin: 0 auto;
+      display: none;
+      >div{
+        font-size: 30px;
+        margin-top: 7%;
       }
     }
   }
