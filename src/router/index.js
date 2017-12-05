@@ -4,11 +4,16 @@ import Router from 'vue-router'
 import merchandise from '../components/merchandise/merchandise'
 import allProduct from '../components/merchandise/allProduct/allProduct.vue'
 import taxationService from '../components/merchandise/taxationService/taxationService.vue'
+import productdetail from '../components/merchandise/taxationService/productdetail.vue'
 import companyIndustry from '../components/merchandise/companyIndustry/companyIndustry.vue'
 import joinUs from '../components/merchandise/joinUs/joinUs.vue'
 import shop from '../components/merchandise/shop/shop.vue'
+<<<<<<< HEAD
 import failurePay from '../components/merchandise/order/failurePay.vue'//支付失败
 import paySuccess from '../components/merchandise/order/paySuccess.vue'//支付成功
+=======
+import pc_shophp from '../components/merchandise/shop/pc_shophp.vue'
+>>>>>>> 221fd60490e51e433265eaec3cc30ba0753036c3
 //登录、注册、忘记密码网页
 import userData from '../components/userData/userData.vue'
 import login from '../components/userData/login.vue'
@@ -58,6 +63,11 @@ export default new Router({
                     component: taxationService
                   },
                   {
+                    path: 'productdetail',//商品详情
+                    name: 'productdetail',
+                    component: productdetail
+                  },
+                  {
                     path: 'companyIndustry',//公司工商
                     name: 'companyIndustry',
                     component: companyIndustry
@@ -73,6 +83,7 @@ export default new Router({
                     component: shop
                   },
                   {
+<<<<<<< HEAD
                     path: 'failurePay',//支付失败
                     name: 'failurePay',
                     component: failurePay
@@ -81,6 +92,11 @@ export default new Router({
                     path: 'paySuccess',//支付成功
                     name: 'paySuccess',
                     component: paySuccess
+=======
+                    path: 'pc_shophp',//店铺首页
+                    name: 'pc_shophp',
+                    component: pc_shophp
+>>>>>>> 221fd60490e51e433265eaec3cc30ba0753036c3
                   }
                   
 
