@@ -50,7 +50,7 @@
         <div>
           联系： <button class="parcon-btn" @click="refer">马上咨询</button>
         </div>
-        <button>查看服务商</button>
+        <div class="parcon-a"><a href="#/merchandise/pc_shophp">查看服务商</a></div>
       </div>
     </div>
     <!-- 广告 -->
@@ -211,14 +211,14 @@
 <script>
   export default {
     name: "productdetail",
-    created() {
-      this.ajax
-        .post("http://115.182.107.203:8088/xinda/xinda-api/product/package/grid")
-        .then(function(data) {
-          var prodata = data.data.data;
-          console.log(prodata);
-        });
-    },
+    // created() {
+    //   this.ajax
+    //     .post("http://115.182.107.203:8088/xinda/xinda-api/product/package/grid")
+    //     .then(function(data) {
+    //       var prodata = data.data.data;
+    //       console.log(prodata);
+    //     });
+    // },
     data() {
       return {
 
@@ -227,16 +227,12 @@
     methods: {
       // 用的是dom操作，麻烦
       fuwu: function() {
-        var evatopOne = document.querySelector('.evatop-one');
-        var evaServe = document.querySelector('.eva-serve');
-        var evaApp = document.querySelector('.eva-app');
-        var evatopTwo = document.querySelector('.evatop-two');
-        evaServe.style.display = 'block';
-        evatopOne.style.color = '#fff';
-        evatopOne.style.backgroundColor = '#2693d4';
-        evaApp.style.display = 'none';
-        evatopTwo.style.color = '#636363';
-        evatopTwo.style.backgroundColor = '#f7f7f7';
+        document.querySelector('.eva-serve').style.display = 'block';
+        document.querySelector('.evatop-one').style.color = '#fff';
+        document.querySelector('.evatop-one').style.backgroundColor = '#2693d4';
+        document.querySelector('.eva-app').style.display = 'none';
+        document.querySelector('.evatop-two').style.color = '#636363';
+        document.querySelector('.evatop-two').style.backgroundColor = '#f7f7f7';
       },
       shangpin: function() {
         document.querySelector('.eva-app').style.display = 'block';
@@ -416,15 +412,20 @@ button{
         margin-left: 8%;
       }
     }
-    button {
-      width: 45%;
-      height: 41px;
+    .parcon-a{
+      width: 40%;
+      line-height: 40px;
       background-color: #2693d4;
-      font-size: 17px;
-      color: #fff;
-      border: none;
       border-radius: 13px;
       margin: 6% 0 6% 28%;
+      a {
+        width: 100%;
+        // height: 41px;
+        padding: 6%;
+        text-decoration: none;
+        font-size: 17px;
+        color: #fff;
+      }
     }
   }
 }
