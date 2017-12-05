@@ -12,7 +12,7 @@ import Distpicker from 'v-distpicker'
 // 三级联动
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 
