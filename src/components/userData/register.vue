@@ -1,8 +1,35 @@
 <template>
   <div>
-   <!-- 注册 -->
-注册
-   </div>
+  <!-- 注册 -->
+  <div class="register">
+    <div class="centent">
+      <div class="registerfirst">
+        <input class="box" type="text">
+          <div class="verify">
+            <input class="boxI" type="text" placeholder="请输入验证码">
+            <div class="verifyI"></div>
+          </div>
+          <div class="acquire">
+            <input class="boxI" type="text" placeholder="请输入验证码">
+            <button>点击获取</button>
+          </div>
+          <!-- <v-distpicker class="register-android-wheel" province="省" city="市" area="区"></v-distpicker> -->
+          <input class="boxII" type="text">
+          <button class="boxIII">立即注册</button>
+          <p>注册及同意遵守
+            <a class="agreement" href="">《服务协议》</a>
+          </p>
+        </div>
+        <p class="division"></p>
+        <!-- 中间分割线 -->
+        <div class="registersecond">
+          <span>已有账号？</span><br>
+          <a class="dl" href="javascript:void(0)">立即登录>></a>
+          <img src="../merchandise/pc_images/pc_login.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -17,5 +44,112 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.register {
+  margin-top: 20px;
+  width: 100%;
+  height: 654px;
+  background: #f5f5f5;
+  .centent{
+    width: 1200px;
+    height: 435px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+  }
+}
+
+.division {
+  width: 1px;
+  height: 260px;
+  background-color: #cbcbcb;
+  margin-top: 82px;
+}
+.registerfirst {
+  width: 283px;
+  height: 258px;
+  margin-top: 50px;
+  p {
+    margin-left: 20px;
+    font-size: 14px;
+    a {
+      font-size: 14px;
+      color: #2693d4;
+      text-decoration: none;
+    }
+  }
+}
+.verify {
+  display: flex;
+  justify-content: space-around;
+
+  .verifyI {
+    width: 85px;
+    height: 35px;
+    padding-left: 10px;
+    background-color: pink;
+  }
+}
+.acquire {
+  display: flex;
+  justify-content: space-around;
+  button {
+    width: 98px;
+    height: 35px;
+    border: 1px solid #2693d4;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #2693d4;
+  }
+}
+.registersecond {
+  width: 283px;
+  height: 258px;
+  margin-top: 40px;
+  span {
+    display: block;
+  }
+  a {
+    font-size: 16px;
+    color: #2693d4;
+    text-decoration: none;
+  }
+  img {
+    margin-left: -15px;
+  }
+}
+.box {
+  width: 280px;
+  height: 35px;
+  border: 1px solid #cbcbcb;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+.boxI {
+  width: 174px;
+  height: 35px;
+  border: 1px solid #cbcbcb;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+.boxII {
+  width: 280px;
+  height: 35px;
+  border: 1px solid #cbcbcb;
+  border-radius: 3px;
+}
+.boxIII {
+  width: 280px;
+  height: 35px;
+  margin-top: 27px;
+  border: 1px solid #2693d4;
+  color: #2693d4;
+  border-radius: 3px;
+  background-color: #fff;
+}
+.bottom {
+  padding-bottom: 150px;
+}
+
 
 </style>

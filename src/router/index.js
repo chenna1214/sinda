@@ -7,11 +7,14 @@ import taxationService from '../components/merchandise/taxationService/taxationS
 import companyIndustry from '../components/merchandise/companyIndustry/companyIndustry.vue'
 import joinUs from '../components/merchandise/joinUs/joinUs.vue'
 import shop from '../components/merchandise/shop/shop.vue'
+import failurePay from '../components/merchandise/order/failurePay.vue'//支付失败
+import paySuccess from '../components/merchandise/order/paySuccess.vue'//支付成功
 //登录、注册、忘记密码网页
 import userData from '../components/userData/userData.vue'
 import login from '../components/userData/login.vue'
 import register from '../components/userData/register.vue'
 import forgetPassword from '../components/userData/forgetPassword.vue'
+
 
 Vue.use(Router)
 
@@ -68,7 +71,22 @@ export default new Router({
                     path: 'shop',//店铺
                     name: 'shop',
                     component: shop
+                  },
+                  {
+                    path: 'failurePay',//支付失败
+                    name: 'failurePay',
+                    component: failurePay
+                  },
+                  {
+                    path: 'paySuccess',//支付成功
+                    name: 'paySuccess',
+                    component: paySuccess
                   }
+                  
+
+
+
+
             ]
           }
     ]
