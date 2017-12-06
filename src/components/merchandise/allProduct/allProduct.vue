@@ -105,8 +105,8 @@
   </el-row>
 <!-- 推荐服务商文章列表 -->
 <!-- v-for="pcRecommend in pcRecommends" -->
- <!-- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
-    <el-col :sm="6" :md="6" :lg="6" v-for="pcRecommend in pcRecommends">
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
+    <el-col :sm="6" :md="6" :lg="6" v-for="pcRecommend in pcRecommends" :key="pcRecommend">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
           <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend[0].providerImg">
@@ -121,7 +121,7 @@
         </div>
       </div>
     </el-col>
-  </el-row> -->
+  </el-row>
 
 
     </div>
@@ -176,6 +176,7 @@ export default {
             myArray.push(recommendR[i]);//将每隔4个对象的首位对象加入数组myArray中
           }
         }
+        that.pcRecommends=myArray;
         console.log("myArray==", myArray);
       });
   },
