@@ -1,7 +1,7 @@
 <template>
   <div>
    <!-- 登录、注册、忘记密码头部 -->
-   <div class="welcome">
+    <div class="welcome">
      <!-- 信达图标 -->
      <div class="logo"></div>
      <!-- 竖线 -->
@@ -49,3 +49,7 @@ export default {
     }
   }
 </style>
+
+
+
+

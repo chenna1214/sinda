@@ -2,25 +2,27 @@
   <div>
    <!-- 登录 -->
     <div class="login">
-        <div class="login-centent">
-            <div class="loginleft">
-                <input class="field" type="text" placeholder="请输入手机号码">
-                <input class="field" type="text" placeholder="请输入密码">
-                <div>
-                    <input class="import" type="text" placeholder="请输入验证码">
-                    <div class="verify"></div>
-                </div>
-                <a href="javascript:void(0)">忘记密码?</a><br>
-                <button class="logining">立即登录</button>
+      <div class="login-centent">
+        <div class="loginleft">
+          <input class="field" type="text" placeholder="请输入手机号码" v-model="aa" @blur="cc">
+          <input class="field" type="text" placeholder="请输入密码">
+          <div>
+            <input class="import" type="text" placeholder="请输入验证码">
+            <div class="verify">
+              <img src="http://115.182.107.203:8088/xinda/xinda-api/ajaxAuthcode" alt="">
             </div>
-            <p></p>
-            <!-- 中间分割线 -->
-            <div class="loginright">
-                <span>还没有账号？</span><br>
-                <a href="javascript:void(0)">立即注册>></a>
-                <img src="../merchandise/pc_images/pc_login.png" alt="">
-            </div>
+          </div>
+          <a href="#/userData/forgetPassword">忘记密码?</a><br>
+          <button class="logining">立即登录</button>
         </div>
+        <!-- 中间分割线 -->        
+        <p></p>
+        <div class="loginright">
+          <span>还没有账号？</span><br>
+          <a href="#/userData/register">立即注册>></a>
+          <img src="../merchandise/pc_images/pc_login.png" alt="">
+        </div>
+      </div>
     </div>
   
   </div>
@@ -31,7 +33,12 @@ export default {
   name: 'login',
   data () {
     return {
-      
+      aa:''
+    }
+  },
+  methods:{
+    cc:function(){
+      console.log(this.aa);
     }
   }
 }
@@ -77,14 +84,18 @@ export default {
         border: 1px solid #cbcbcb;
         margin-bottom: 24px;
         border-radius: 3px;
+        padding: 0 0 0 20px;
+        font-size: 15px;
       }
     }
     .field {
-      width: 280px;
+      width: 260px;
       height: 35px;
       border: 1px solid #cbcbcb;
       margin-bottom: 24px;
       border-radius: 3px;
+      padding: 0 0 0 20px;
+      font-size: 15px;
     }
     a {
       margin-left: 210px;
@@ -100,6 +111,7 @@ export default {
       color: #2693d4;
       border-radius: 3px;
       background-color: #fff;
+      font-size: 15px;      
     }
   }
   .loginright{
@@ -116,6 +128,7 @@ export default {
     }
     img{
       margin-left: -15px;
+      margin-top: 18px;
     }
   }
   
