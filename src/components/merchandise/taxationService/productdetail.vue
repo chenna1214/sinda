@@ -275,7 +275,7 @@ button{
   margin: 0 auto;
 }
 .pro-top {
-  font-size: 13px;
+  font-size: 14px;
   color: #696969;
   line-height: 27px;
 }
