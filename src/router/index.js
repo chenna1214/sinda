@@ -8,6 +8,8 @@ import productdetail from '../components/merchandise/taxationService/productdeta
 import companyIndustry from '../components/merchandise/companyIndustry/companyIndustry.vue'
 import joinUs from '../components/merchandise/joinUs/joinUs.vue'
 import shop from '../components/merchandise/shop/shop.vue'
+import failurePay from '../components/merchandise/order/failurePay.vue'//支付失败
+import paySuccess from '../components/merchandise/order/paySuccess.vue'//支付成功
 import pc_shophp from '../components/merchandise/shop/pc_shophp.vue'
 //登录、注册、忘记密码网页
 import userData from '../components/userData/userData.vue'
@@ -22,6 +24,7 @@ import member from '../components/merchandise/memberCenter/member.vue'
 import memaccount from '../components/merchandise/memberCenter/memaccount.vue'
 // import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
 import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
+
 
 Vue.use(Router)
 
