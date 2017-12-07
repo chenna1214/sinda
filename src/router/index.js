@@ -97,7 +97,14 @@ export default new Router({
                   {
                     path: 'member',//会员中心
                     name: 'member',
-                    component: member
+                    component: member,
+                    // children:[
+                    //   {
+                    //     path:'',//订单
+                    //     name:'',
+                    //     component:
+                    //   }
+                    // ]
                   },
                   {
                     path: 'userevalua',//用户评价
