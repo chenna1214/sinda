@@ -7,15 +7,23 @@
 </template>
 
 <script>
-import pcTop from './components/pcPublic/pcTop/pcTop';
-import pcBottom from './components/pcPublic/pcBottom/pcBottom';
-
+import pcTop from "./components/pcPublic/pcTop/pcTop";
+import pcBottom from "./components/pcPublic/pcBottom/pcBottom";
 
 export default {
-  name: 'sinda',
-  components:{pcTop,pcBottom}
-}
+  name: "sinda",
+  components: { pcTop, pcBottom }
+};
 </script>
 
-<style scoped lang='less'>
+<style lang='less'>
+//注册  三级联动样式
+.register-android-wheel {
+  select {
+    height: 35px;
+    width: 90px;
+    font-size: 0.9rem;
+    margin-bottom: 26px;
+  }
+}
 </style>
