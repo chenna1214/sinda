@@ -2,14 +2,10 @@
   <div>
     <div class="pcAllProduct">
       <!-- 全部产品--轮播左边的导航 -->
-        <el-row v-for="rDataObj in rDataObjs" :key="rDataObj.id">
+        <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
           <el-col :sm="4" :md="4" :lg="4">
-            <!-- v-bind:class="pcNavCla" -->
-            <!-- v-bind:class="{ 'pcNavEventAft' : isA, 'pcNavEventAft': !isA}" -->
-              <div class="pcAllProductHeaderInner" @mouseover="pcNavOver(rDataObj)" @mouseleave="pcNavLeave(rDataObj)" v-bind:class="pcNavCla">
-                <div class="pcAllProductHeader-taxImg"></div>
-                <!-- <div v-bind:class={"pcAllProductHeader-taxImg":rDataObj.name=='财税服务'}></div> -->
-                <!-- <img :src="pcNavImg" v-for="(pcNavImg,index) in pcNavImg" :key="pcNavImg"> -->
+              <div class="pcAllProductHeaderInner" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
+                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg">
                   <div class="pcAllProductHeader-taxText">
                     <span>{{rDataObj.name}}</span><br>
                     <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
@@ -17,10 +13,10 @@
               </div>
           </el-col>
           <el-col :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
-            <div class="pcAllProTil" v-show="isShow" @mouseleave="pcNavLeave()" @mouseover="pcNavOver()">  
+            <div class="pcAllProTil" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
                <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
-               <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
-            </div>
+                <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
+               </div>
             </div>
           </el-col>
       </el-row>
@@ -41,39 +37,19 @@
   </el-row>
 <!-- 明星产品推荐文章列表 -->
  <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
-    <el-col :sm="6" :md="6" :lg="6">
+    <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
       <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-
-        </div>
-      </div>
-    </el-col>
-
-     <el-col :sm="6" :md="6" :lg="6">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-
-        </div>
-      </div>
-    </el-col>
-
-     <el-col :sm="6" :md="6" :lg="6">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-
-        </div>
-      </div>
-    </el-col>
-
-     <el-col :sm="6" :md="6" :lg="6">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-
+        <div class="pcAllProStarIn starBox">
+          <img :src="'src/components/images/allProduct/'+star.img" class="starImg">
+          <p class="pcCreateServieceNameP">{{star.til}}</p>
+          <p class="starInfo" >{{star.info}}</p>
+          <span class="pcCreatemarketPrice">{{star.money}}</span>
+          <span class="pcCreateunit" >{{star.unit}}</span>
         </div>
       </div>
     </el-col>
   </el-row>
-<!-- 初创企业必备 -->
+<!-- 初创企业必备标题 -->
   <el-row>
     <el-col>
       <p class="pcAllProColumn">初创企业必备</p>
@@ -95,33 +71,76 @@
       </div>
     </el-col>
   </el-row>
+  <!-- 知识产权标题 -->
+  <el-row>
+    <el-col>
+      <p class="pcAllProColumn">知识产权</p>
+      <div class="pcAllProLine"></div>
+    </el-col>
+  </el-row>
+  <!-- 知识产权图片列表 -->
+  <el-row>
+    <el-col :sm="8" :md="8" :lg="8">
+      <img src="../../images/allProduct/k1.png" class="pcKnoImg">
+    </el-col>
+    <el-col :sm="16" :md="16" :lg="16">
+      <div class="pcKnoLeftBox">
+        <img src="../../images/allProduct/k2.png" alt="">
+        <img src="../../images/allProduct/k3.png" alt="">
+        <img src="../../images/allProduct/k4.png" alt="">
+      </div>
+    </el-col>
+  </el-row>
+  <!-- 通栏图片 -->
+  <img src="../../images/allProduct/u100.png" alt="" class="pcAd">
 
 <!-- 推荐服务商标题 -->
   <el-row>
-    <el-col>
-      <p class="pcAllProColumn">推荐服务商</p>
+    <el-col class="pcRecTilBox">
+       <span class="pcAllProColumn" :class="{pcRecCliAft:pcSerSty==index}" v-for='(pcSerCli,index) in pcSerCliList' :key='pcSerCli' @click='pcSerClick(index)'>{{pcSerCli}}</span>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
 <!-- 推荐服务商文章列表 -->
-<!-- v-for="pcRecommend in pcRecommends" -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
-    <el-col :sm="6" :md="6" :lg="6" v-for="pcRecommend in pcRecommends" :key="pcRecommend">
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer==index'>
+    <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.id">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
-          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend[0].providerImg">
-          <p class="pcCreateServieceNameP">{{pcRecommend[0].providerName}}</p>
+          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
+          <p class="pcCreateServieceNameP">{{pcRecommend.providerName}}</p>
           <p class="pcoCreateServiceInfoP">服务指数：8.9分</p>
           <p class="pcoCreateServiceInfoP">提供的服务</p>
-          <p>{{pcRecommend[0].serviceName}}</p>
-          <p>{{pcRecommend[1].serviceName}}</p>
-          <p>{{pcRecommend[2].serviceName}}</p>
-
-
+          <div class="pcRecoBox"><button v-for="(serNam) in pcRecommend.serviceName" :key="serNam" class="pcRecoBtn pcShowAll">{{serNam}}</button></div>
         </div>
       </div>
     </el-col>
   </el-row>
+
+<!-- 推荐服务文章列表 -->
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer!==index'>
+    <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
+      <div class="pcAllProStarOut">
+        <div class="pcAllProStarIn">
+          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+          <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
+          <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
+            <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
+            <span class="pcCreateunit" >{{product.unit}}</span>
+            <button class="pcCreateDetail">查看详情</button>
+        </div>
+      </div>
+    </el-col>
+  </el-row>
+
+
+  <!-- 合作伙伴必备标题 -->
+  <el-row>
+    <el-col>
+      <p class="pcAllProColumn">合作伙伴</p>
+      <div class="pcAllProLine"></div>
+    </el-col>
+  </el-row>
+  <img src="../../images/allProduct/u246.png" class="pcFri">
 
 
     </div>
@@ -141,14 +160,6 @@ export default {
         for (var Key in rData) {
           rDataObj[rData[Key].code] = rData[Key];
         }
-        // console.log("rDataObjs==", rDataObj);
-        // var types = [
-        //   {
-        //     name: "知识产权",
-        //     subType: ["专利申请", "商标注册"],
-        //     nodeType: ["审查意见答复", "外观专利减缓（共同申请）"]
-        //   }
-        // ];
         that.rDataObjs = rDataObj;
       });
     this.ajax //初创企业必备
@@ -166,23 +177,28 @@ export default {
         var recommendR = data.data.data;
         var preServer = [];
         var myArray = [];
-        for (var i in recommendR) {//循环recommendR的每个对象
+        for (var i in recommendR) {
+          //循环recommendR的每个对象
           // var newReco1Obj = newReco1[i].serviceName;
-          preServer.push(recommendR[i].serviceName);//将recommendR中的每个对象放入preServer数组中
-          var j = Number(i)+1;//为了整除好用，因此这样
-          if(j%4==0){//如果j被4整除进行如下操作
-            recommendR[i].serviceName = preServer;//每隔4个对象的首位对象的serviceName被重新赋值成preServer，此时preServer中已经有4个serviceName
-            preServer = [];//清空preServer
-            myArray.push(recommendR[i]);//将每隔4个对象的首位对象加入数组myArray中
+          preServer.push(recommendR[i].serviceName); //将recommendR中的每个对象放入preServer数组中
+          var j = Number(i) + 1; //为了整除好用，因此这样
+          if (j % 4 == 0) {
+            //如果j被4整除进行如下操作
+            recommendR[i].serviceName = preServer; //每隔4个对象的首位对象的serviceName被重新赋值成preServer，此时preServer中已经有4个serviceName
+            preServer = []; //清空preServer
+            myArray.push(recommendR[i]); //将每隔4个对象的首位对象加入数组myArray中
           }
         }
-        that.pcRecommends=myArray;
-        console.log("myArray==", myArray);
+        that.pcRecommends = myArray;
       });
   },
   mounted() {},
   data() {
     return {
+      index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
+      pcSer: -1, //推荐服务商的标题click的变量
+      pcSerCliList: ["推荐服务商", "推荐服务"],
+      pcSerSty: 0,
       rDataObjs: {},
       products: [], //初创企业必备
       pcRecommends: [], //推荐服务商
@@ -194,40 +210,61 @@ export default {
         { id: "src/components/images/allProduct/2.jpg" },
         { id: "src/components/images/allProduct/3.png" }
       ],
-      pcNavImg:[
-       "src/components/images/allProduct/icon1.png",
-       "src/components/images/allProduct/icon2.png",
-       "src/components/images/allProduct/icon3.png",
-       "src/components/images/allProduct/icon4.png",
+      pcNavImg: [
+        "src/components/images/allProduct/icon1.png",
+        "src/components/images/allProduct/icon2.png",
+        "src/components/images/allProduct/icon3.png",
+        "src/components/images/allProduct/icon4.png"
       ],
-      isShow: false,
-      // isA:flase,
-      pcNavCla:{
-        'pcNavEventPre':true,
-        'pcNavEventAft':false
-      }
+      starList: [//明星产品推荐文章列表
+        {
+          id:'1',
+          img: "star1.png",
+          til: "标准五险一金",
+          info: "定制化社保代理，定制化代缴服务",
+          money: '20',
+          unit: '元/人/月'
+        },
+        {
+          id:'2',
+          img: "star2.png",
+          til: "内资有限公司注册",
+          info: "一键完成注册，快速开办公司",
+          money: '600',
+          unit: '元/次'
+        },
+        {
+          id:'3',
+          img: "star3.png",
+          til: "小规模代理记账/年",
+          info: "专业会计报税，高效、便捷、贴心",
+          money: '3000',
+          unit: '元/年'
+        },
+        {
+          id:'4',
+          img: "star3.png",
+          til: "国内普通商标注册",
+          info: "次日提交商标申请，最快保护品牌价值",
+          money: '1000',
+          unit: '元/次'
+        }
+      ]
     };
   },
   methods: {
-    pcNavOver:function(rDataObj){
-      // var pcNav=document.getElementByClassName('.pcNav').children;
-      // event.currentTarget.onmouseover = function(){
-        // this.event.target.isShow=true;
-        this.isShow=true;
-        // rDataObj.isShow=true;
-        this.pcNavCla.pcNavEventPre=false;
-        this.pcNavCla.pcNavEventAft=true;
-        // this.isA = !this.isA;
+    pcNavOver: function(index) {
+      this.index = index;
     },
-    // pcNavLeave:function(){
-
-    //   console.log(2222)
-    // }
-    pcNavLeave:function(rDataObj){
-      this.isShow = false;
-      // rDataObj.isShow=false;
-      this.pcNavCla.pcNavEventAft=false;
-      this.pcNavCla.pcNavEventPre=true;
+    pcNavLeave: function() {
+      this.index = -1;
+    },
+    pcSerClick: function(index) {
+      this.pcSer = index;
+      this.pcSerSty = index;
+      if (index == 0) {
+        this.pcSer = -1;
+      }
     }
   }
 };
@@ -242,55 +279,21 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
-.pcNavEventPre{
-  background: #212121;
-}
-.pcNavEventAft{
-  background: #2693d4;
-}
-// .pcNavEventAft{
-//    padding-top: 10px;
-//     padding-bottom: 11px;
-//   cursor: pointer;
-//   display: flex;
-//   height: 79px;
-//   background: #2693d4;
-// }
 .pcAllProductHeaderInner {
-    padding-top: 10px;
-    padding-bottom: 11px;
+  padding-top: 10px;
+  padding-bottom: 11px;
   cursor: pointer;
-  // background: #212121;
+  background: #212121;
   display: flex;
   height: 79px;
 }
-
+.pcNavEventAft {
+  background: #2693d4;
+}
 .pcNavCompanyH {
   height: 47px;
 }
-.pcAllProductHeader-taxImg {
-  background: url(../../images/allProduct/header.png) 0 0 no-repeat;
-  width: 26px;
-  height: 26px;
-  margin-left: 10%;
-}
-.pcAllProductHeader-companyImg {
-  background: url(../../images/allProduct/header.png) 0 -57px no-repeat;
-  width: 26px;
-  height: 26px;
-}
-.pcAllProductHeader-kownlegdeImg {
-  background: url(../../images/allProduct/header.png) 0 -100px no-repeat;
-  width: 26px;
-  height: 26px;
-}
-.pcAllProductHeader-agentImg {
-  background: url(../../images/allProduct/header.png) 0 -164px no-repeat;
-  width: 26px;
-  height: 26px;
-}
 .pcAllProductHeader-taxText {
-  // margin-left: 5px;
   padding-left: 5px;
   span {
     color: white;
@@ -304,31 +307,38 @@ export default {
   }
 }
 //全部产品--轮播左边的导航
+.pcAllProductHeader-taxImg {
+  width: 26px;
+  height: 26px;
+  margin-left: 10%;
+  margin-top: 5px;
+}
 .pcAllProTil {
   margin-top: -100px;
   padding-top: 10px;
   padding-bottom: 6px;
-  height: 84px;
-  background-color: rgba(152, 171, 196, 0.5); 
+  min-height: 84px;
+  height: auto;
+  background-color: rgba(152, 171, 196, 0.5);
   z-index: 10;
   position: absolute;
   width: 83.33333%;
   margin-left: -1px;
 }
-.pcNavTidBox{
+.pcNavTidBox {
   margin-top: -17px;
-  margin-left: 70px
+  margin-left: 70px;
 }
-.pcNavSpan{
-   color: white;
-   font-size: 13px;
-   margin-bottom: 10px;
-   display: inline-block;
+.pcNavSpan {
+  color: white;
+  font-size: 13px;
+  margin-bottom: 10px;
+  display: inline-block;
 }
-.pcNavSec{
-   color: white;
-   font-size: 13px;
-   margin-left: 10px;
+.pcNavSec {
+  color: white;
+  font-size: 13px;
+  margin-left: 10px;
 }
 .pcAllProCarousel {
   margin-top: -400px;
@@ -341,9 +351,20 @@ export default {
 .pcAllProStarBox {
   margin-top: 48px;
 }
+.pcRecCliPre {
+  color: black;
+}
+.pcRecCliAft {
+  color: #2693d4;
+}
+// .pcRecCliSty{
+//   color: #2693d4;
+// }
 .pcAllProColumn {
   font-size: 15px;
   margin-top: 53px;
+  margin-right: 10px;
+  display: inline-block;
 }
 .pcAllProStarOut {
   height: 382px;
@@ -397,5 +418,95 @@ export default {
   width: 131px;
   height: 53px;
   margin-top: 30px;
+}
+//推荐服务
+.pcRecoBtn {
+  font-size: 13px;
+  width: 29.6%;
+  height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  background: #ffecb7;
+  border: 1px solid #ffecb7;
+}
+.pcShowAll:hover {
+  text-overflow: inherit;
+  overflow: visible;
+  white-space: normal;
+  width: 80px;
+  height: 60px;
+  background: #fcf3da;
+  font-size: 8px;
+}
+.pcRecoBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-right: 5%;
+  width: 116%;
+  height: 24%;
+}
+//中间通栏图片
+.pcAd {
+  width: 100.2%;
+  height: 12.75%;
+}
+//知识产权图片列表
+.pcKnoImg {
+  width: 81.75%;
+  height: 120.5%;
+  margin-top: 37px;
+  margin-bottom: 22px;
+}
+.pcKnoLeftBox {
+  margin-top: 37px;
+  margin-bottom: 22px;
+  img {
+    width: 51%;
+    height: 28.75%;
+  }
+  img:nth-child(1) {
+    margin-left: -44px;
+  }
+  img:nth-child(2) {
+    margin-left: 22px;
+  }
+  img:nth-child(3) {
+    width: 105.5%;
+    height: 28.75%;
+    margin-top: 22px;
+    margin-left: -44px;
+  }
+}
+//合作伙伴必备标题
+.pcFri {
+  width: 100%;
+  height: 12.25%;
+  margin-top: 42px;
+  margin-bottom: 100px;
+}
+//明星产品推荐文章列表
+.starImg {
+  // background: url(../../images/allProduct/star.png) 0 0 no-repeat;
+  width: 48.33%;
+  height: 32.33%;
+}
+.starInfo{
+  font-size: 14px;
+  color: #656565;
+}
+.starBox{
+  p{
+    width:90%;
+    padding-left: 8%;
+    padding-right:8%;
+  }
+  span{
+    text-align: center;
+  }
 }
 </style>
