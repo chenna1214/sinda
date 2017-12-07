@@ -5,28 +5,37 @@
       <a class="pctaxservices-title">首页/公司工商</a>
       <el-row>
         <el-col :span="19">
-          <el-row class="pcauto-wrap hidden-xs-only">
-            <el-col :span="3"><div class="pcau-serv-classify">服务分类</div></el-col>
-            <el-col :span="21"><ul class="pctax-servisenav clear">
-              <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司注册</a></li>
-              <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司变更</a></li>
-            </ul></el-col>
+          <div>
+            <el-row class="pcauto-wrap hidden-xs-only">
+              <el-col :span="3"><div class="pcau-serv-classify">服务分类</div></el-col>
+              <el-col :span="21">
+                <ul class="pctax-servisenav clear">
+                  <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司注册</a></li>
+                  <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司变更</a></li>
+                </ul>
+            </el-col>
           </el-row>
           <el-row class="pcauto-wrap hidden-xs-only">
-            <el-col :span="3"><div class="pcau-serv-classify pccpny-indutype">类型</div></el-col>
-            <el-col :span="21"><ul id="pccpny-indunav" class="pctax-servisenav clear">
-              <li :class='index>0?"active":""' class="pctax-svsnav-elem" @click="change(1)"><a href="javascript:void(0)">分公司注册</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">公司注册地址</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">合伙企业注册</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">外商独资公司注册</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">VIE架构</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">股份公司注册</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">有限责任公司注册</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">一般纳税注册地址</a></li>
-            </ul></el-col>
+            <el-col :span="3">
+              <div class="pcau-serv-classify pccpny-indutype">类型</div>
+            </el-col>
+            <el-col :span="21">
+              <ul id="pccpny-indunav" class="pctax-servisenav clear">
+                <li class="pctax-svsnav-elem pctax-svsnav-eleml" v-for="(ar,idx) in arr" :key="ar.item" :class='{"pxtax-clickst-1":idx==index}' @click="change(idx)"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{ar.item}}</a></li>
+              </ul>
+            </el-col>
           </el-row>
           <!-- 三级联动 -->
           <autourban></autourban>
+          </div>
+          <!-- 公司工商 商品列表 -->
+          <div class="pccny-gds">
+            <ul class="pccn-ghead clear">
+              <li>综合排序</li>
+              <li>价格<span class="pccn-ghico"></span></li>
+            </ul>
+          </div>
+
         </el-col>
         <el-col :span="5" class="hidden-xs-only">
           <div class="pccopny-r-wrap">
@@ -59,23 +68,40 @@
 
 <script>
 // 三级联动模块
-import autourban from '../taxationService/autourban';
+import autourban from "../taxationService/autourban";
 
 export default {
-  name: 'companyIndustry',
-  method:{
-    change: function(index){
-      this.index = 1;
+  name: "companyIndustry",
+  methods: {
+    change: function(index) {
+      this.index = index;
+    },
+    getCode: function() {
+      this.ajax.post("/xinda-api/product/style/list").then(data => {
+        var dataInner = data.data.data["5af629246fa34f6f8d49758c6a7b25f1"];
+        console.log(dataInner);
+      });
     }
   },
-  data () {
+  data() {
     return {
-      msg:'我试试',
-      index: 0
-    }
+      aaa: "",
+      msg: "我试试",
+      index: 0,
+      arr: [
+        { item: "分公司注册" },
+        { item: "公司注册地址" },
+        { item: "合伙企业注册" },
+        { item: "外商独资公司注册" },
+        { item: "VIE架构" },
+        { item: "股份公司注册" },
+        { item: "有限责任公司注册" },
+        { item: "一般纳税注册地址" }
+      ]
+    };
   },
-  components: {autourban}
-}
+  components: { autourban }
+};
 </script>
 
 <style scoped lang='less'>
@@ -91,12 +117,12 @@ export default {
     line-height: 27px;
   }
   // 服务分类内容
-  .pctax-servisenav{
+  .pctax-servisenav {
     background: #f7f7f7;
     padding-left: 7px;
     height: 44px;
-    li{
-      margin:9px 0 0 0;
+    li {
+      margin: 9px 0 0 0;
       float: left;
       height: 25px;
       line-height: 25px;
@@ -104,97 +130,118 @@ export default {
       border-radius: 2px;
     }
     // 点击样式
-    .pxtax-clickst-1{
+    li.pxtax-clickst-1 {
       background: #2693d4;
+      a {
+        color: #fff !important;
+      }
     }
   }
-  #pccpny-indunav{
+  #pccpny-indunav {
     height: 80px;
   }
   // 财税服务单行
-  .pcauto-wrap{
+  .pcauto-wrap {
     background: transparent;
     // 行名称
-    .pcau-serv-classify{
+    .pcau-serv-classify {
       background: #f7f7f7;
       text-align: center;
       height: 44px;
-      line-height: 44px;          
+      line-height: 44px;
       border: 1px solid #ccc;
       border-bottom: 0;
     }
-    .pccpny-indutype{
+    .pccpny-indutype {
       height: 80px;
       line-height: 80px;
     }
     // 行内容
-    .pctax-servisenav{
+    .pctax-servisenav {
       height: 44px;
       font-size: 13px;
       border: 1px solid #ccc;
       border-bottom: 0;
       border-left: 0;
-      li{
+      li {
         padding: 0 15px;
         height: 25px;
         border-radius: 2px;
-        a{
+        a {
           color: #626262;
         }
       }
-      li:hover{
+      .pxtax-clickst-1 {
         background: #2693d4;
-        a{
+      }
+      li:hover {
+        background: #2693d4;
+        a {
           color: #fff;
         }
       }
     }
   }
 }
-
-
+// 点击样式
+.pxtax-clickst-1 {
+  background: #2693d4;
+  .pxtax-clickst-1a {
+    color: #fff;
+  }
+}
 // 右侧图标条
-.pccopny-r-wrap{
+.pccopny-r-wrap {
   padding-left: 12px;
-  .pccopny-rintr{
+  .pccopny-rintr {
     max-width: 170px;
     padding: 0 37px 0 28px;
-    border:1px solid #ccc;
-    li{
+    border: 1px solid #ccc;
+    li {
       overflow: hidden;
       border-bottom: 1px solid #ccc;
       height: 148px;
-      div{
+      div {
         margin: 11px auto 13px;
-        width:98px;
+        width: 98px;
         height: 98px;
       }
-      p{
+      p {
         font-size: 17px;
         color: #000;
         line-height: 26px;
         text-align: center;
       }
     }
-    .pccopny-relim1{
+    .pccopny-relim1 {
       background: url(../../images/companyIdstry/cpnyIndus.png) -8px 0;
     }
-    .pccopny-relim2{
+    .pccopny-relim2 {
       background: url(../../images/companyIdstry/cpnyIndus.png) -8px -113px;
     }
-    .pccopny-relim3{
+    .pccopny-relim3 {
       background: url(../../images/companyIdstry/cpnyIndus.png) -8px -226px;
     }
-    .pccopny-relim4{
-      background: url(../../images/companyIdstry/cpnyIndus.png) -7px -341px;      
+    .pccopny-relim4 {
+      background: url(../../images/companyIdstry/cpnyIndus.png) -7px -341px;
     }
-    .pccopny-rel4{
+    .pccopny-rel4 {
       border: 0;
     }
   }
 }
-.active{
-  background: blue;
+
+
+// 商品列表
+
+.pccny-gds{
+  margin-top: 25px;
+  border: 1px solid #ccc;
+  .pccn-ghead{
+    li{
+      float: left;
+    }
+  }
 }
 </style>
  

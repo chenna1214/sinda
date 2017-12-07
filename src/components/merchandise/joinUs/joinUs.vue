@@ -21,6 +21,16 @@
       <p class="pcGetENTex">YOU WILL RECEIVE</p>
       <p class="pcGetCNTex">你将获得</p>
       <p class="pcWebAdr">www.xinda.com</p>
+      <el-row>
+        <el-col v-for='(getSin,index) in getList' :key="getSin">
+          <!-- <img src="../../images/joinUs/getIcon.png" :class="{goal:index==0}"> -->
+          <div :class="{goal:index==0}"></div>
+        </el-col>
+      </el-row>
+
+<!-- <div class="goal"></div> -->
+
+
 
     </div>
    </div>
@@ -30,7 +40,11 @@
 export default {
   name: "joinUs",
   data() {
-    return {};
+    return {
+      getList:[//你将获得
+        '精准的线上曝光机会','万亿市场份额','系统化的营销解决方案','各种补贴优惠'
+      ]
+    };
   }
 };
 </script>
@@ -79,6 +93,7 @@ export default {
   height: 531px;
   .pcSerPeoImg {
     margin-left: 24.3%;
+    width: 56%;
   }
   p {
     text-align: center;
@@ -91,7 +106,8 @@ export default {
 }
 //你将获得
 .pcGetBox {
-  border: 1px solid #000;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
   background: #edf0f3;
   height: 566px;
   p {
@@ -111,4 +127,10 @@ export default {
     margin-top: 5%;
   }
 }
+.goal{
+  background: url(../../images/joinUs/getIcon.png) 0 0 no-repeat;
+  height: 79px;
+  width: 79px;
+}
+
 </style>
