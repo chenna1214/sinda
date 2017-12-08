@@ -20,10 +20,8 @@ import forgetPassword from '../components/userData/forgetPassword.vue'
 // 会员中心网页
 import membercenter from '../components/merchandise/membercenter/membercenter.vue'
 import member from '../components/merchandise/memberCenter/member.vue'
-// import changepwd from '../components/merchandise/memberCenter/changepwd.vue'
-// import haveevalua from '../components/merchandise/memberCenter/haveevalua.vue'
-import memaccount from '../components/merchandise/memberCenter/memaccount.vue'
-// import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
+import accountpwd from '../components/merchandise/memberCenter/accountpwd.vue'
+import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
 import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
 
 
@@ -109,6 +107,17 @@ export default new Router({
               name: 'userevalua',
               component: userevalua
             },
+
+            {
+              path: 'userevalua/toevaluate',//去评价
+              name: 'toevaluate',
+              component: toevaluate,
+            },
+            {
+              path: 'accountpwd',//账户设置,修改密码
+              name: 'accountpwd',
+              component: accountpwd
+            },
             {
               path: 'memaccount',//账户设置
               name: 'memaccount',
@@ -125,3 +134,4 @@ export default new Router({
     },
   ]
 })
+            

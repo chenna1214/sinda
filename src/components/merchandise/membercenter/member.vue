@@ -36,7 +36,7 @@
         <!-- 订单 -->
         <div class="indent">
           <!-- 大订单 -->
-          <div>
+          <div :class="orderstyle">
             <!-- 订单号(头部) -->
             <div class="indent-top">
               <div>
@@ -88,9 +88,9 @@
               <!-- 右侧付款/删除 -->
               <div class="det-right">
                 <!-- 付款 -->
-                <div class="ind-pay">付款</div>
+                <router-link :to="{path:'/merchandise/goodsOrder'}" class="ind-pay">付款</router-link>
                 <!-- 删除订单 -->
-                <div class="ind-delete">删除订单</div>
+                <div class="ind-delete" @click="cancel">删除订单</div>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@
               <!-- 右侧付款/删除 -->
               <div class="det-right">
                 <!-- 付款 -->
-                <div class="ind-pay">付款</div>
+                <router-link :to="{path:'/merchandise/goodsOrder'}" class="ind-pay">付款</router-link>
                 <!-- 删除订单 -->
                 <div class="ind-delete">删除订单</div>
               </div>
@@ -159,8 +159,22 @@
     <!-- 右侧尾部 -->
     <div class="mai-tail">
       <div>上一页</div>
-      <div style="color: #2494d4;border-color: #2494d4;">1</div>
+      <div style="color: #2494d4;border-color: #2494d4;width: 3%;">1</div>
       <div>下一页</div>
+    </div>
+    <!-- 确定删除吗 -->
+    <div class="mai-sure" v-show="sure" :class="xstyle">
+      <div class="mai-mess">
+        <div>信息</div>
+        <div class="maimess-x" @click="mesx">×</div>
+      </div>
+      <div class="maimes-no">
+        <div>确定删除该订单吗</div>
+        <div>
+          <div class="mai-confirm" @click="maisure">确定</div>
+          <div class="mai-undo" @click="mesx">取消</div>
+        </div>
+      </div>
     </div>
    </div>
 </template>
@@ -170,13 +184,33 @@ export default {
   name: 'changepwd',
   data () {
     return {
-      
+      xstyle: 'trans',
+      orderstyle: 'transf',
+      sure: true,
+    }
+  },
+  methods: {
+    cancel: function () {
+      this.xstyle = 'transf';
+    },
+    mesx: function () {
+      this.xstyle = 'trans';
+    },
+    maisure: function () {
+      this.orderstyle = 'trans';
+      this.xstyle = 'trans';
     }
   }
 }
 </script>
 
 <style scoped lang='less'>
+  .trans{
+    display: none;
+  }
+  .trasf{
+    display: block;
+  }
   // 右侧头部
   .mai-head{
     width: 100%;
@@ -252,6 +286,7 @@ export default {
         >div{
           width: 13%;
           line-height: 40px;
+          font-weight: bold;
           text-align: center;
         }
         .gna-pro{
@@ -341,22 +376,27 @@ export default {
               display: flex;
               flex-wrap: wrap;
               align-content: center;
-              >div{
-              width: 67%;
-              height: 33px;
-              line-height: 33px;
-              text-align: center;
-              margin: 0 auto;
-              margin-top: 2%;
-              cursor: pointer;
-              }
               .ind-pay{
+                width: 67%;
+                height: 33px;
+                display: block;
+                text-align: center;
+                line-height: 33px;
                 color: #419bd7;
+                text-decoration: none;
+                margin: 0 auto;
                 border: 1px solid #2693d4;
                 border-radius: 6px;
               }
               .ind-delete{
+                width: 67%;
+                height: 33px;
+                line-height: 33px;
+                text-align: center;
+                margin: 0 auto;
+                margin-top: 2%;
                 color: #ff4649;
+                cursor: pointer;
               }
             }
           }
@@ -369,12 +409,71 @@ export default {
     width: 30%;
     margin: 0 auto;
     margin-top: 4%;
+    margin-bottom: 4%;
     display: flex;
     justify-content: space-around;
     >div{
+      width: 19%;
       border: 1px solid #ccc;
       padding: 3% 6% 3% 6%;
       color: #ccc;
+    }
+  }
+  // 确定删除吗
+  .mai-sure{
+    width: 28%;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    margin-top: -28%;
+    margin-left: 18%;
+    overflow: hidden;
+    position: absolute;
+    >div{
+      width:100%;
+    }
+    .mai-mess{
+      font-size: 20px;
+      line-height: 38px;
+      background-color: #bbb;
+      display: flex;
+      justify-content: space-between;
+      >div{
+        &:nth-child(1){
+          margin-left: 4%;
+        }
+      }
+      .maimess-x{
+        width: 10%;
+        font-size: 33px;
+        text-align: center;
+        background-color: #777;
+        cursor: pointer;
+      }
+    }
+    .maimes-no{
+      >div{
+        font-size: 18px;
+        margin-top: 11%;
+        margin-bottom: 4%;
+        display: flex;
+        justify-content: space-around;
+        >div{
+          width: 28%;
+          font-size: 16px;
+          line-height: 34px;
+          border-radius: 7px;
+          text-align: center;
+          cursor: pointer;
+        }
+        .mai-confirm{
+          color: #fff;
+          background-color: #2692d3;
+        }
+        .mai-undo{
+          color: #333;
+          border: 1px solid #333;
+        }
+      }
     }
   }
 </style>

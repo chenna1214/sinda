@@ -16,17 +16,17 @@
           <!-- 三个点击事件 -->
           <div class="mai-three">
             <!-- 我的订单 -->
-            <router-link :to="{path:'/merchandise/membercenter/member'}" class="pc-myorder" active-class="active">
+            <router-link tag="div" :to="{path:'/merchandise/membercenter/member'}" class="pc-myorder" active-class="active">
               <div class="ord-img"></div>
               <div class="ord-cha">我的订单</div>
             </router-link>
             <!-- 用户评价 -->
-            <router-link :to="{path: '/merchandise/membercenter/userevalua'}" class="pc-user" active-class="active">
+            <router-link tag="div" :to="{path: '/merchandise/membercenter/userevalua'}" class="pc-user" active-class="active">
               <div class="use-img"></div>
               <div class="use-cha">用户评价</div>
             </router-link>
             <!-- 账户设置 -->
-            <router-link :to="{path: '/merchandise/membercenter/memaccount'}" class="pc-accset" active-class="active">
+            <router-link tag="div" :to="{path: '/merchandise/membercenter/accountpwd'}" class="pc-accset" active-class="active">
               <div class="acc-img"></div>
               <div class="acc-cha">账户设置</div>
             </router-link>
@@ -98,7 +98,7 @@ export default {
           height: 400px;
           margin-top: 10%;
           background-color: #f7f7f7;
-          .pc-myorder{
+          >div{
             width: 100%;
             font-size: 24px;
             line-height: 48px;
@@ -106,6 +106,9 @@ export default {
             text-decoration: none;
             display: flex;
             cursor: pointer;
+            &:hover{
+              background-color: #e9e9e9;
+            }
             >div{
               margin: 2% 0 2% 4%;
             }
@@ -115,35 +118,11 @@ export default {
               height:48px;
               background: url(../pc_images/code.png)no-repeat -551px -377px;
             }
-          }
-          .pc-user{
-            width: 100%;
-            font-size: 24px;
-            line-height: 48px;
-            color: #000;
-            text-decoration: none;
-            display: flex;
-            cursor: pointer;
-            >div{
-              margin: 2% 0 2% 4%;
-            }
             // 用户评价
             .use-img{
               width: 48px;
               height:48px;
               background: url(../pc_images/code.png)no-repeat -548px -455px;
-            }
-          }
-          .pc-accset{
-            width: 100%;
-            font-size: 24px;
-            line-height: 48px;
-            color: #000;
-            text-decoration: none;
-            display: flex;
-            cursor: pointer;
-            >div{
-              margin: 2% 0 2% 4%;
             }
             // 账户设置
             .acc-img{
