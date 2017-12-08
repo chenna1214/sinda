@@ -118,11 +118,6 @@ export default new Router({
               name: 'accountpwd',
               component: accountpwd
             },
-            {
-              path: 'memaccount',//账户设置
-              name: 'memaccount',
-              component: memaccount
-            },
           ]
         },
         {
