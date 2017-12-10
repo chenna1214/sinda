@@ -22,7 +22,6 @@
                                     <span class="pcOrdListTil">元</span>
                                     <p class="pcOrdListDei">订单明细</p>
                                 </div>
-                        
                             </el-col>
                     </el-row>
 
@@ -47,37 +46,110 @@
                     </el-row>
                 </div>
                 <!-- 支付方式 -->
-                <p class="pcOrdCol">支付方式</p>
-                <div class="pcOrdLine"></div>
-                <p class="pcOrdPayTil">非网银支付</p>
-                <div class="pcPayImg">
-                    <input type="radio" class="pcPayBtn">
-                </div>
-                <p class="pcOrdPayTil">平台支付</p>
-                <div class="pcWechat">
-                    <input type="radio" class="pcPayBtn">
-                </div>
-                <div class="pcBabyPay">
-                    <input type="radio" class="pcPayBtn">
-                </div><br>
-                <span class="pcAutoPay">自助转账</span>
-                <span class="pcPayInfo">因限额不能支付时，建议使用自助转账</span>
-                <div class="pcAutoImg">
-                    <input type="radio" class="pcPayBtn">
-                </div>
-                <p class="pcTip">注：转账时请将订单编号备注在付款信息里：转账完成后，请通知客服。</p>
+                <el-radio-group v-model="radio">
+                  <p class="pcOrdCol">支付方式</p>
+                  <div class="pcOrdLine"></div>
+                  <p class="pcOrdPayTil">非网银支付</p>
+                  <div class="pcPayImg">     
+                      <el-radio :label="1" class="pcPayBtn">
+                        <span></span>
+                      </el-radio>
+                  </div>
+                  <p class="pcOrdPayTil">平台支付</p>
+                  <div class="pcWechat">
+                      <el-radio :label="2" class="pcPayBtn">
+                        <span></span>
+                      </el-radio>
+                  </div>
+                  <div class="pcBabyPay">
+                      <el-radio :label="3" class="pcPayBtn">
+                        <span></span>
+                      </el-radio>
+                  </div><br>
+                  <span class="pcAutoPay">自助转账</span>
+                  <span class="pcPayInfo">因限额不能支付时，建议使用自助转账</span>
+                  <div class="pcAutoImg">
+                      <el-radio :label="4" class="pcPayBtn">
+                        <span></span>
+                      </el-radio>
+                  </div>
+                  <p class="pcTip">注：转账时请将订单编号备注在付款信息里：转账完成后，请通知客服。</p>
+                 </el-radio-group>
+
+
+
                 <div class="pcAllPayBox">
-                    
                     <span class="pcAllPay">￥８００.00</span>
                     <span class="pcMoney">金额总计</span><br>
-                    <button class="pcAllPayBtn">去结算</button>
+                    <button class="pcAllPayBtn" @click='payWay()'>去结算</button>
                 </div>
+
+
+
+
+
+
 
        </div>
     </div>
 </template>
 
 <script>
+export default {
+  name: "goodsOrder",
+  created() {
+    var that = this; //this是指main.js中的new Vue
+    this.ajax.post('/xinda-api/business-order/detail',{businessNo:'S1704040001075133085'}).then(data=>{//订单数据
+     
+        
+      })
+  },
+  data() {
+    return {
+      payLink:'',
+      radio: 1
+    };
+  },
+  methods: {
+    payWay: function() {
+      if (this.radio == 1) {
+        //非网银支付，是银联支付
+        this.ajax
+          .post("/xinda-api/pay/china-pay", {
+            businessNo: "S1704040001075133085"
+          })
+          .then(data => {
+            // this.payLink='https://www.baidu.com/';
+            // window.open("http://115.182.107.203:8088/xinda/xinda-api/pay/china-pay");         
+          });
+
+      }
+      if (this.radio == 2) {//微信网页支付
+          this.ajax
+          .post("/xinda-api/pay/weixin-pay", {
+            businessNo: "S1704040001075133085"
+          })
+          .then(data => {
+
+          });
+      }
+      if (this.radio == 3) {//支付宝
+
+           this.ajax
+          .post("/xinda-api/pay/ali-pay", {
+            businessNo: "S1704040001075133085"
+          })
+          .then(data => {
+
+          });
+      }
+      if (this.radio == 4) {//未找到银行支付
+      
+
+      }
+    }
+  }
+};
 </script>
 
 <style scoped lang='less'>
@@ -184,30 +256,27 @@
 }
 .pcMoney {
   font-size: 13px;
-  float:right;
-      
+  float: right;
 }
-.pcAllPay{
-    font-size: 19px;
-    color: #2693d4;
-    float:right;
-    margin-top: -7px;
-    
-    
+.pcAllPay {
+  font-size: 19px;
+  color: #2693d4;
+  float: right;
+  margin-top: -7px;
 }
-.pcAllPayBtn{
-    font-size: 14px;
-    color: #2693d4;
-    border: 1px solid #2693d4;
-    border-radius: 3px;
-    background: white;
-    width: 101px;
-    height: 26px;
-    float:right;
-    margin-top: 3px;
+.pcAllPayBtn {
+  font-size: 14px;
+  color: #2693d4;
+  border: 1px solid #2693d4;
+  border-radius: 3px;
+  background: white;
+  width: 101px;
+  height: 26px;
+  float: right;
+  margin-top: 3px;
 }
-.pcAllPayBox{
-    margin-bottom: 161px;
-    margin-top: 85px;
+.pcAllPayBox {
+  margin-bottom: 161px;
+  margin-top: 85px;
 }
 </style>

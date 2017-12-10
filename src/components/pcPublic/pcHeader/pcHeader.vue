@@ -8,8 +8,20 @@
 <div class="pcHeaderLeft"><!-- 上半部分内容--左边 -->
 <img src="../../images/icon/sindaTextIcon.png" alt="信达" class="pcHeaderLeftsindaTextIcon">
 <div class="pcHeaderCityBox">
-  <p class="pcHeaderCityText">北京市</p>
-  <a href="" class="pcHeaderChangeCityText">[切换城市]</a>
+  <p class="pcHeaderCityText">{{pcChoosedCity}}</p><!-- 当前已选城市 -->
+  <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button><!-- 切换城市按钮 -->
+<el-dialog
+  title="选择城市"
+  :visible.sync="dialogVisible"
+  width="30%"
+>
+ <span v-for="eachCity in pcCityName" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="handleCan()">取 消</el-button>
+    <el-button @click="handleCon()">确 定</el-button>
+  </span>
+</el-dialog>
+
 </div>
   </div>
   </el-col>
@@ -23,7 +35,7 @@
   </div>
   </el-col>
 <el-col :md="5" :lg="6" class="pcHeaderRightBox hidden-sm-and-down"><!-- 上半部分内容--右边 -->
- <img src="../../images/icon/pcHeadertelIcon.png" alt="">
+ <img src="../../images/icon/pcHeadertelIcon.png">
   </el-col>
   </div>
       </el-row>
@@ -34,6 +46,7 @@
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
         <el-col :sm="7" :md="7" :lg="7"><a href="#/merchandise/shop" class="pcHeaderBottomLink">店铺</a></el-col>
       </el-row>
+
     </div></el-col>
     </el-row>
    </div>
@@ -46,33 +59,103 @@ export default {
   name: "pcHeader",
   mounted() {
     var pcHeaderLink = document.querySelectorAll(".pcHeaderBottomLink");
-    var pcChoosedLink=document.querySelectorAll('.pcChoosedLink');
-    
-    if(window.location.href=='http://localhost:8080/#/merchandise/allProduct'){//问题
-      pcChoosedLink[0].style.color="#2693d4";
-      pcChoosedLink[0].style.borderBottom="3px solid #2693d4";
-      console.log('if',pcChoosedLink[0])
-      }
-    for (var i = 0; i < pcHeaderLink.length; i++) {//待优化
+    var pcChoosedLink = document.querySelectorAll(".pcChoosedLink");
+
+    if (
+      window.location.href == "http://localhost:8080/#/merchandise/allProduct"
+    ) {
+      //问题
+      pcChoosedLink[0].style.color = "#2693d4";
+      pcChoosedLink[0].style.borderBottom = "3px solid #2693d4";
+    }
+    for (var i = 0; i < pcHeaderLink.length; i++) {
+      //待优化
       pcHeaderLink[i].onclick = function() {
         for (var i = 0; i < pcHeaderLink.length; i++) {
           pcHeaderLink[i].style.color = "#414141";
-          pcHeaderLink[i].style.borderBottom="none";
+          pcHeaderLink[i].style.borderBottom = "none";
         }
         this.style.color = "#2693d4";
-        this.style.borderBottom="3px solid #2693d4";
+        this.style.borderBottom = "3px solid #2693d4";
       };
     }
   },
   data() {
-    return {};
+    return {
+      pcChoosedCity: "", //当前已选城市
+      pcCityName: [], //已开通城市名称
+      dialogVisible: false,//控制“切换城市”弹出框的出现、消失
+      pcChoosedNum:0,//判断用户是否选择城市
+    };
+  },
+  created() {
+    var that = this;
+    this.ajax.post("/xinda-api/common/select-region").then(data => {
+      //当前已选城市
+      that.pcChoosedCity = data.data.data.name;
+    });
+    this.ajax.post("/xinda-api/common/open-region").then(data => {
+      //已开通城市？问题：确认是否正确
+      var pcCityExist = data.data.data;
+      for (var key in pcCityExist) {
+        var pcCityId = pcCityExist[key].id;
+        var pcCityName = pcCityExist[key].name;
+        that.pcCityName.push(pcCityName);
+        // this.ajax.post('/xinda-api/common/change-region',{regionId:pcCityId}).then(function(data){//问题：如何用切换城市接口
+        //   console.log('changeCity',data.data.msg);
+        //   console.log('pcCityId',pcCityId)
+        // })
+      }
+    });
+  },
+  methods: {
+    pcChoosed(){//判断用户是否选择城市
+      this.pcChoosedNum=1;
+    },
+    handleCan() {
+      this.dialogVisible = false;
+      
+   this.$message({
+        type: "info",
+        message: "已取消选择城市"
+      });
+      
+   
+    },
+    handleCon() {
+      this.dialogVisible = false;
+      if(this.pcChoosedNum==0){
+      this.$message({
+        type: "warning",
+        message: "您未选择城市!"
+      });
+      }
+      if(this.pcChoosedNum==1){
+        this.pcChoosedNum=0;
+      this.$message({
+        type: "success",
+        message: "城市选择成功!"
+      });
+      }
+    } 
   }
 };
 </script>
 
 <style scoped lang='less'>
+//切换城市
+.eachCity {
+  font-size: 13px;
+  position: absolute;
+  left: 420px;
+  top: 173px;
+  z-index: 2056;
+}
+.pcChoosedCity{
+  color: #2693d4;
+}
 // 如何引用公共less
-.pcHeaderOutter{
+.pcHeaderOutter {
   border-bottom: 1px solid #2693d4;
 }
 .pcHeader {
