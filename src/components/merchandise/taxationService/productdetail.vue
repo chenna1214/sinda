@@ -39,7 +39,7 @@
         </div>
         <!-- 立即购买，加入购物车 -->
         <div class="parinf-btn">
-          <button style="color: #fff;border-color: #2693d4;background-color: #2693d4;">立即购买</button>
+          <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" @clik="parbtn" class="paynow">立即购买</router-link>
           <button>加入购物车</button>
         </div>
       </div>
@@ -221,7 +221,9 @@
     // },
     data() {
       return {
-
+        actstyle: 'chose',
+        tastyle: 'choses',
+        smstyle: 'choses',
       };
     },
     methods: {
@@ -260,12 +262,16 @@
           console.log(parinfNum=0)
           document.querySelector('.parinf-num input').value = 0;
         }
-      }
+      },
     }
   };
 </script>
 
 <style scoped lang='less'>
+.chose{
+  color: #2693d4;
+  border-color: #2693d4;
+}
 button{
   cursor: pointer;
 }
@@ -381,7 +387,11 @@ button{
         border: 1px solid #ccc;
         border-radius: 6px;
         background-color: #fff;
-        cursor: pointer;
+      }
+      .paynow{
+        color: #fff;
+        border-color: #2693d4;
+        background-color: #2693d4;
       }
     }
   }
