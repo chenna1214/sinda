@@ -12,6 +12,7 @@ import failurePay from '../components/merchandise/order/failurePay.vue'//支付�
 import paySuccess from '../components/merchandise/order/paySuccess.vue'//支付成功
 import pc_shophp from '../components/merchandise/shop/pc_shophp.vue'
 import goodsOrder from '../components/merchandise/order/goodsOrder.vue'//订单详情
+import shoppingtrolley from '../components/merchandise/shoppingtrolley/shoppingtrolley.vue'//订单详情
 //登录、注册、忘记密码网页
 import userData from '../components/userData/userData.vue'
 import login from '../components/userData/login.vue'
@@ -92,6 +93,11 @@ export default new Router({
           component: pc_shophp
         },
         {
+          path: 'shoppingtrolley',//购物车
+          name: 'shoppingtrolley',
+          component: shoppingtrolley
+        },
+        {
           path: 'membercenter',//会员中心网页，公共
           name: 'membercenter',
           component: membercenter,
@@ -118,14 +124,6 @@ export default new Router({
               name: 'accountpwd',
               component: accountpwd
             },
-<<<<<<< HEAD
-            // {
-            //   path: 'memaccount',//账户设置
-            //   name: 'memaccount',
-            //   component: memaccount
-            // },
-=======
->>>>>>> cb7d27552323a3d603423e5e10ae44c1d3197b35
           ]
         },
         {
