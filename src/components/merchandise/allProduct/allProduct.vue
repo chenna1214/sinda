@@ -105,12 +105,16 @@
  <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer==index'>
     <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.id">
       <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
-          <p class="pcCreateServieceNameP">{{pcRecommend.providerName}}</p>
-          <p class="pcoCreateServiceInfoP">服务指数：8.9分</p>
-          <p class="pcoCreateServiceInfoP">提供的服务</p>
-          <div class="pcRecoBox"><button v-for="(serNam) in pcRecommend.serviceName" :key="serNam" class="pcRecoBtn pcShowAll">{{serNam}}</button></div>
+        <!-- <div class="pcAllProStarIn"> -->
+        <div class="pcSerBox">
+          <div class="pcSerIcon pcSerLoc">
+            <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
+          </div>
+          
+          <p class="pcCreateServieceNameP pcSerLoc">{{pcRecommend.providerName}}</p>
+          <p class="pcoCreateServiceInfoP pcSerLoc">服务指数：8.9分</p>
+          <p class="pcoCreateServiceInfoP pcSerLoc">提供的服务</p>
+          <div class="pcRecoBox pcSerLoc"><button v-for="(serNam) in pcRecommend.serviceName" :key="serNam" class="pcRecoBtn pcShowAll">{{serNam}}</button></div>
         </div>
       </div>
     </el-col>
@@ -121,7 +125,7 @@
     <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
-          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+          <img class="pcCreateImg pcSerLoc" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
           <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
           <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
             <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
@@ -378,6 +382,15 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
+.pcSerBox{
+  height: 382px;
+  background: #fafafa;
+  text-align: center;
+}
+.pcSerIcon{
+   display: flex;
+  justify-content: center;
+}
 //初创企业必备
 .pcCreateServieceNameP {
   //服务名
@@ -432,6 +445,10 @@ export default {
   margin-bottom: 5%;
   background: #ffecb7;
   border: 1px solid #ffecb7;
+ 
+}
+.pcSerLoc{
+  margin-bottom: 30px;
 }
 .pcShowAll:hover {
   text-overflow: inherit;
@@ -440,15 +457,15 @@ export default {
   width: 80px;
   height: 60px;
   background: #fcf3da;
-  font-size: 8px;
+  font-size: 6px;
 }
 .pcRecoBox {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-right: 5%;
-  width: 116%;
+  width: 16%;
   height: 24%;
+  position: absolute;
 }
 //中间通栏图片
 .pcAd {

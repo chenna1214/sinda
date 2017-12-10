@@ -5,6 +5,7 @@
       <div class="pcTop hidden-xs-only"><!-- 最顶部 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div>
+            <p class="pcUserName">{{pcUserName}}</p><!-- 显示登录后的用户姓名？问题：2.3.6.退出登录接口怎么用 -->
             <p class="pcTopBlackText pcWelcomeText">欢迎来到信达！</p>
             <a href="#/userData/login"  class="pcTopBlueText">登录</a>
             <a href="#/userData/register"  class="pcTopBlueText pcTopRegisterText">快速注册</a>
@@ -14,7 +15,7 @@
           <div class="pcTopRight">
             <img src="../../images/pcTop/shoppingcarIcon.png" alt="购物车" class="pcShoppingcarIcon">
             <p class="pcTopBlackText">购物车</p>
-            <p class="pcTopBlueText">0</p>
+            <p class="pcTopBlueText">{{carNum}}</p>
             <p class="pcTopBlackText">件</p>
             <p class="pcTopBlueText pcTopServiceEntryText">服务商入口</p>
           </div>
@@ -29,7 +30,20 @@
 export default {
   name: "pcTop",
   data() {
-    return {};
+    return {
+      carNum:'',//购物车件数
+      pcUserName:''//显示登录后的用户姓名
+    };
+  },
+  created(){
+    var that=this;
+    this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
+      that.carNum=data.data.data.cartNum; 
+    });
+    this.ajax.post('/xinda-api/sso/login-info').then(data=>{//显示登录后的用户姓名？问题：未登录时无法获得用户名
+      // that.pcUserName=data.data.data.name;
+      
+    });
   }
 };
 </script>
@@ -73,5 +87,8 @@ export default {
 .pcShoppingcarIcon {
   width: 21px;
   height: 17px;
+}
+.pcUserName{
+  color: #2794d5;
 }
 </style>

@@ -26,7 +26,7 @@ a{
 li{
     list-style: none;
 }
-.clear{
+.clear::after{
     display: block;
     clear: both;
     content: "";
