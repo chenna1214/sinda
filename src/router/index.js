@@ -20,7 +20,7 @@ import forgetPassword from '../components/userData/forgetPassword.vue'
 import membercenter from '../components/merchandise/membercenter/membercenter.vue'
 import member from '../components/merchandise/memberCenter/member.vue'
 // import changepwd from '../components/merchandise/memberCenter/changepwd.vue'
-// import haveevalua from '../components/merchandise/memberCenter/haveevalua.vue'
+// import haveevalua from '../components/merchandise/memberCenter/haveevalua.vue'[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 import memaccount from '../components/merchandise/memberCenter/memaccount.vue'
 // import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
 import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
@@ -36,20 +36,20 @@ export default new Router({
         component: userData,
         children:[
             {
-                path: 'login',//登录
-                name: 'login',
-                component: login
-              },
-              {
-                path: 'register',//注册
-                name: 'register',
-                component: register
-              },
-              {
-                path: 'forgetPassword',//忘记密码
-                name: 'forgetPassword',
-                component: forgetPassword
-              },
+              path: 'login',//登录
+              name: 'login',
+              component: login
+            },
+            {
+              path: 'register',//注册
+              name: 'register',
+              component: register
+            },
+            {
+              path: 'forgetPassword',//忘记密码
+              name: 'forgetPassword',
+              component: forgetPassword
+            },
         ]
       },
       {
@@ -88,6 +88,16 @@ export default new Router({
                 component: shop
               },
               {
+                path: 'failurePay',//支付失败
+                name: 'failurePay',
+                component: failurePay
+              },
+              {
+                path: 'paySuccess',//支付成功
+                name: 'paySuccess',
+                component: paySuccess
+              },
+              {
                 path: 'pc_shophp',//店铺首页
                 name: 'pc_shophp',
                 component: pc_shophp
@@ -114,6 +124,9 @@ export default new Router({
                   },
                 ]
               },
+              
+
+              
         ]
       },
     ]

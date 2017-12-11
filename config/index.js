@@ -11,10 +11,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/xinda-api/':{
-      //   target:"http://115.182.107.203:8088/xinda",
-      //   changeOrigin: true,
-      // }
+      '/xinda-api/':{
+        target:"http://115.182.107.203:8088/xinda",
+        changeOrigin: true,
+      }
     },
 
     // Various Dev Server settings
