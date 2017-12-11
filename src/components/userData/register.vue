@@ -7,7 +7,10 @@
           <input class="box" type="text" placeholder="请输入手机号码">
           <div class="verify">
             <input class="boxI" type="text" placeholder="请输入验证码">
-            <div class="verifyI"></div>
+            <div class="verifyI" @click="imgReflash()"><!-- 图片验证码 -->
+              <img :src="imgUrl">
+
+            </div>
           </div>
           <div class="acquire">
             <input class="boxI" type="text" placeholder="请输入短信验证码">
@@ -37,7 +40,13 @@ export default {
   name: 'register',
   data () {
     return {
+      imgUrl:'http://115.182.107.203:8088/xinda/xinda-api/ajaxAuthcode'
       
+    }
+  },
+  methods:{
+    imgReflash:function(){
+      this.imgUrl=this.imgUrl+'?t='+new Date().getTime;
     }
   }
 }
