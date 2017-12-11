@@ -88,6 +88,16 @@ export default new Router({
           component: shop
         },
         {
+          path: 'failurePay',//支付失败
+          name: 'failurePay',
+          component: failurePay
+        },
+        {
+          path: 'paySuccess',//支付成功
+          name: 'paySuccess',
+          component: paySuccess
+        },
+        {
           path: 'pc_shophp',//店铺首页
           name: 'pc_shophp',
           component: pc_shophp

@@ -29,7 +29,14 @@
   <div><!-- 上半部分内容--中间 -->
 <span class="pcHeaderChangeCityText pcHeaderMiddleProductText">产品|</span>
 <span class="pcHeaderCityText">服务商</span><br>
-<input type="text" name="" id="" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商">
+<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()'><!-- 模糊搜索 -->
+<!-- 搜索源 -->
+<div class="searchBox">
+  <p v-for="(eachDa,index) in serchMatch" :key="eachDa" class="searchSource">{{eachDa}}</p>
+</div>
+<!-- <div class="searchBox">
+  <p v-for="eachData in searchArr" :key="eachData" class="searchSource">{{eachData}}</p>
+</div> -->
 <img src="../../images/icon/serchIcon.png" alt="" class="pcHeaderMiddleSearchImg" align="absmiddle">
 <p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
   </div>
@@ -84,8 +91,11 @@ export default {
     return {
       pcChoosedCity: "", //当前已选城市
       pcCityName: [], //已开通城市名称
-      dialogVisible: false,//控制“切换城市”弹出框的出现、消失
-      pcChoosedNum:0,//判断用户是否选择城市
+      dialogVisible: false, //控制“切换城市”弹出框的出现、消失
+      pcChoosedNum: 0, //判断用户是否选择城市
+      searchArr: [], //搜索源
+      serchMatch: [], //与用户输入所匹配的内容
+      eachSerText: [] //每个单独的搜索字
     };
   },
   created() {
@@ -107,37 +117,58 @@ export default {
         // })
       }
     });
+    this.ajax.post("/xinda-api/provider/search-grid").then(data => {
+      var searchData = data.data.data;
+      for (var key in searchData) {
+        var eachArr = searchData[key].products.split(",");
+
+        for (var i = 0; i < eachArr.length; i++) {
+          that.searchArr.push(eachArr[i]);
+        }
+      }
+    });
   },
   methods: {
-    pcChoosed(){//判断用户是否选择城市
-      this.pcChoosedNum=1;
+    pcChoosed() {
+      //判断用户是否选择城市
+      this.pcChoosedNum = 1;
     },
     handleCan() {
       this.dialogVisible = false;
-      
-   this.$message({
+
+      this.$message({
         type: "info",
         message: "已取消选择城市"
       });
-      
-   
     },
     handleCon() {
       this.dialogVisible = false;
-      if(this.pcChoosedNum==0){
-      this.$message({
-        type: "warning",
-        message: "您未选择城市!"
-      });
+      if (this.pcChoosedNum == 0) {
+        this.$message({
+          type: "warning",
+          message: "您未选择城市!"
+        });
       }
-      if(this.pcChoosedNum==1){
-        this.pcChoosedNum=0;
-      this.$message({
-        type: "success",
-        message: "城市选择成功!"
-      });
+      if (this.pcChoosedNum == 1) {
+        this.pcChoosedNum = 0;
+        this.$message({
+          type: "success",
+          message: "城市选择成功!"
+        });
       }
-    } 
+    },
+    pcSearch() {
+      //模糊搜索
+      this.serchMatch = [];
+      var searchInt = document.querySelector(".pcHeaderSearchInput");
+      var serVal = searchInt.value;
+      for (var i = 0; i < this.searchArr.length; i++) {
+        if (this.searchArr[i].indexOf(serVal) !== -1) {
+          this.serchMatch.push(this.searchArr[i]);
+          console.log("this.serchMatch", this.serchMatch);
+        } 
+      }
+    }
   }
 };
 </script>
@@ -151,7 +182,18 @@ export default {
   top: 173px;
   z-index: 2056;
 }
-.pcChoosedCity{
+//搜索源
+.searchSource {
+  font-size: 16px;
+}
+.searchBox {
+  position: absolute;
+  z-index: 200;
+  height: 200px;
+  background: white;
+  overflow: hidden;
+}
+.pcChoosedCity {
   color: #2693d4;
 }
 // 如何引用公共less

@@ -1,21 +1,30 @@
 <template>
   <div>
-  <!-- 注册 -->
+    <!-- 注册 -->
     <div class="register">
       <div class="centent">
         <div class="left">
-          <input class="box" type="text" placeholder="请输入手机号码">
+          <!-- 提示错误信息的盒子 -->
+          <div class="anError" v-if=show>
+            <!-- 小红点 -->
+            <p>一</p>
+            <!-- 提示的错误信息 -->
+            <p class="wrongTip">{{error}}</p>
+          </div>
+          <input class="box" type="text" placeholder="请输入手机号码" v-model="phone" @blur="numbers">
           <div class="verify">
             <input class="boxI" type="text" placeholder="请输入验证码">
-            <div class="verifyI"></div>
+            <div class="verifyI" @click="imgReflash">
+              <img :src="imgUrl"> 
+            </div>
           </div>
           <div class="acquire">
             <input class="boxI" type="text" placeholder="请输入短信验证码">
-            <button>点击获取</button>
+            <button @click="gain">点击获取</button>
           </div>
           <v-distpicker class="register-android-wheel" province="省" city="市" area="区"></v-distpicker>
-          <input class="setPass" type="password" placeholder="请设置密码">
-          <button class="immediately">立即注册</button>
+          <input class="setPass" type="password" placeholder="请设置密码" v-model="pass" @blur="passwor">
+          <button class="immediately" @click="iregister">立即注册</button>
           <p>注册及同意遵守
             <a class="agreement" href="">《服务协议》</a>
           </p>
@@ -33,17 +42,101 @@
 </template>
 
 <script>
+var md5 = require('md5');
 export default {
   name: 'register',
   data () {
     return {
-      
+      phone:'',
+      show:false,
+      error:'',
+      pass:'',
+      imgUrl:'http://115.182.107.203:8088/xinda/xinda-api/ajaxAuthcode'
+
     }
-  }
+  },
+  methods:{
+      now:function(){
+
+      },
+      //验证码图片点击时更换
+      imgReflash: function() {
+        this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+      },
+      //检验手机号是否正确
+      numbers:function (){
+        if(this.phone){
+          if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){
+            this.error="请输入正确的手机号码";
+            this.show=true;
+            return;
+          }else{
+            this.show=false;           
+          }
+        }else{
+          //手机号不填写时隐藏
+          this.show=false;
+            return;            
+        }
+      },
+      //设置密码格式是否正确
+      passwor:function(){
+        if(this.pass){
+          if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
+            this.error="请设置8-20位密码";
+            this.show=true;
+            return;
+          }else{
+            this.show=false;     
+          }
+        }else{
+          //密码不填写时隐藏
+          this.show=false;
+          return;
+        }
+      },
+      //点击获取按钮
+      gain:function(){
+
+      },
+      //立即注册按钮
+      iregister(){
+        this.ajax.post('/xinda/xinda-api/register/register',
+        this.qs.stringify({
+          cellphone:this.phone,
+          smsType:1,
+          // validCode:
+        }))
+      }
+    }
 }
 </script>
 
 <style scoped lang='less'>
+  .anError{
+    width: 283px;
+    height: 25px;
+    border: 1px solid #fcaeae;
+    margin-bottom: 20px;
+    background: #fffef5;
+    display: flex;
+    p:nth-child(1){
+      background: #f33e3e;
+      color: #fff;
+      border: 1px solid #f33e3e;
+      border-radius: 50%;
+      height: 15px;
+      line-height: 16px;
+      margin: 4px 0 0 20px;
+      width: 15px;
+    }
+    .wrongTip{
+      color: #ea2b2b;
+      padding: 0 20px;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+  }
   .register{
     width: 100%;
     height: 654px;
@@ -83,12 +176,12 @@ export default {
   .verify {
     display: flex;
     justify-content: space-around;
-
     .verifyI {
-      width: 85px;
-      height: 35px;
-      padding-left: 10px;
-      background-color: pink;
+      img{
+        width: 87px;
+        height: 37px;
+        margin-left: 18px;
+      }
     }
   }
   .acquire {
