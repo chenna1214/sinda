@@ -44,12 +44,13 @@
         <!-- 所在地区 -->
         <div class="set-area">
           <div>所在地区：</div>
-          <div></div>
+          <el-row class="set-wrap hidden-xs-only">
+            <el-col :span="21"><v-distpicker class="set-dist-selec" province="省" city="市" area="区"></v-distpicker></el-col>
+          </el-row>
         </div>
         <!-- 保存 -->
         <div class="set-save">保存</div>
       </div>
-
 
       <!-- 修改密码 -->
       <div class="set-change" v-show="settwo">
@@ -79,6 +80,7 @@ export default {
       setone: true,
       settwo: false,
     }
+    components: {}
   },
   methods: {
     setacc: function () {
@@ -134,6 +136,13 @@ export default {
           &:nth-child(1){
             width: 10%;
           }
+        }
+      }
+      // 所在地区
+      .set-area{
+        width: 100%;
+        .set-wrap{
+          width: 70%;
         }
       }
       // 当前头像

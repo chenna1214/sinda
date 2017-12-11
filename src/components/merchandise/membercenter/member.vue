@@ -199,7 +199,7 @@ export default {
     maisure: function () {
       this.orderstyle = 'trans';
       this.xstyle = 'trans';
-    }
+    },
   }
 }
 </script>
