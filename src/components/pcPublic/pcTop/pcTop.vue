@@ -40,6 +40,9 @@ export default {
       pcUserName:''//显示登录后的用户姓名
     };
   },
+  methods:{
+    ...mapGetters(['getNum'])
+  },
   created(){
     var that=this;
     // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
