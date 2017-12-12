@@ -4,8 +4,8 @@
       <!-- 全部产品--轮播左边的导航 -->
         <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
           <el-col :sm="4" :md="4" :lg="4">
-              <div class="pcAllProductHeaderInner" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
-                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg">
+              <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
+                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg hidden-sm-and-down">
                   <div class="pcAllProductHeader-taxText">
                     <span>{{rDataObj.name}}</span><br>
                     <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
@@ -13,30 +13,40 @@
               </div>
           </el-col>
           <el-col :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
-            <div class="pcAllProTil" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
+            <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
                <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
                 <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
                </div>
             </div>
           </el-col>
       </el-row>
-<!-- 全部产品--轮播图片 -->
-<el-col :sm="20" :md="20" :lg="{span:20,offset:4}" class="pcAllProCarousel">
+<!-- 全部产品--xs以上--轮播图片 -->
+<el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" class="pcAllProCarousel hidden-xs-only">
     <el-carousel trigger="click" height="400px">
      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
       </el-carousel-item>
     </el-carousel>
   </el-col>
-<!-- 明星产品推荐标题 -->
+<!-- 全部产品--xs以下--轮播图片 -->
   <el-row>
+    <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
+      <el-carousel trigger="click" height="400px">
+      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
+        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+        </el-carousel-item>
+      </el-carousel>
+    </el-col>
+  </el-row>
+<!-- 明星产品推荐标题 -->
+  <el-row class="hidden-xs-only">
     <el-col>
       <p class="pcAllProColumn">明星产品推荐</p>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
 <!-- 明星产品推荐文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
     <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn starBox">
@@ -56,8 +66,8 @@
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
-<!-- 初创企业必备文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
+<!-- 初创企业必备文章列表--xs以上 -->
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
     <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
@@ -71,6 +81,13 @@
       </div>
     </el-col>
   </el-row>
+  <!-- 初创企业必备文章列表--xs以下 -->
+  <el-row>
+    <div class="telCreatBox">
+      <div></div>
+      <div></div>
+    </div>
+  </el-row>
   <!-- 知识产权标题 -->
   <el-row>
     <el-col>
@@ -81,7 +98,7 @@
   <!-- 知识产权图片列表 -->
   <el-row>
     <el-col :sm="8" :md="8" :lg="8">
-      <img src="../../images/allProduct/k1.png" class="pcKnoImg">
+      <img src="../../images/allProduct/k1.png" class="pcKnoImg hidden-xs-only">
     </el-col>
     <el-col :sm="16" :md="16" :lg="16">
       <div class="pcKnoLeftBox">
@@ -92,17 +109,17 @@
     </el-col>
   </el-row>
   <!-- 通栏图片 -->
-  <img src="../../images/allProduct/u100.png" alt="" class="pcAd">
+  <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
 
 <!-- 推荐服务商标题 -->
   <el-row>
-    <el-col class="pcRecTilBox">
+    <el-col class="pcRecTilBox hidden-xs-only">
        <span class="pcAllProColumn" :class="{pcRecCliAft:pcSerSty==index}" v-for='(pcSerCli,index) in pcSerCliList' :key='pcSerCli' @click='pcSerClick(index)'>{{pcSerCli}}</span>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
 <!-- 推荐服务商文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer==index'>
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer==index'>
     <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.id">
       <div class="pcAllProStarOut">
         <!-- <div class="pcAllProStarIn"> -->
@@ -121,7 +138,7 @@
   </el-row>
 
 <!-- 推荐服务文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer!==index'>
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer!==index'>
     <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
@@ -138,13 +155,13 @@
 
 
   <!-- 合作伙伴必备标题 -->
-  <el-row>
+  <el-row class="hidden-xs-only">
     <el-col>
       <p class="pcAllProColumn">合作伙伴</p>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
-  <img src="../../images/allProduct/u246.png" class="pcFri">
+  <img src="../../images/allProduct/u246.png" class="pcFri hidden-xs-only">
 
 
     </div>
@@ -275,6 +292,7 @@ export default {
 </script>
 
 <style scoped lang='less'>
+//pc端
 .pcCarouselImg {
   padding-bottom: 40%;
   width: 100%;
@@ -298,12 +316,16 @@ export default {
   height: 47px;
 }
 .pcAllProductHeader-taxText {
-  padding-left: 5px;
+  // padding-left: 5px;
+   padding-left: 3%;
   span {
     color: white;
     font-size: 12px;
-    width: 51px;
+    // width: 51px;
+        width: 50%;
     display: inline-block;
+
+    
   }
   span:nth-child(1) {
     font-size: 15px;
@@ -525,5 +547,14 @@ export default {
   span{
     text-align: center;
   }
+}
+//手机端
+.telCreatBox{
+  height: 170px;
+  padding-top:27px; 
+  padding-bottom:20px;
+  padding-left: 17px; 
+  padding-right: 40px;
+  border-bottom: 1px solid #cfcfcf;
 }
 </style>

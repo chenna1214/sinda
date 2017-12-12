@@ -46,13 +46,13 @@
                 <li v-for="product in products" :key="product.serviceInfo" class="pccn-tbelm clear">
                   <!-- 元素左侧 -->
                   <div class="pccn-tbell">
-                    <router-link class="pccn-teimg" tag="div" to="/merchandise/productdetail">
-                      <img  :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
-                    </router-link>
+                    <div class="pccn-teimg" @click="toDetail(product.id)">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
+                    </div>
                     <div class="pccn-tewor">
-                      <router-link class="pccn-tenm" to="/merchandise/productdetail">
+                      <p @click="toDetail(product.id)" class="pccn-tenm">
                       {{product.serviceName}}
-                      </router-link>
+                      </p>
                       <p class="pccn-epmit">{{product.serviceInfo}}</p>
                       <p class="pccn-earea">{{product.providerName}}</p>
                       <p class="pccn-earea">{{product.regionName}}</p>
@@ -61,12 +61,16 @@
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
                     <p class="pccn-elprc">￥ {{product.price}}</p>
-                    <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
+                    <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
                       立即购买
-                    </router-link>
-                    <router-link class="pccn-eadsp pccn-btn1s" to="">
+                    </router-link> -->
+                   <a class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)"  href="javascript:void(0)">立即购买</a>
+
+                    <!-- <router-link class="pccn-eadsp pccn-btn1s" to="">
                       加入购物车
-                    </router-link>
+                    </router-link> -->
+                    <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
+
                   </div>
                 </li>
               </ul>
@@ -95,7 +99,6 @@
               </li>
             </ul>
           </div>
-          <!-- {{trytry}} -->
         </el-col>
       </el-row>
      
@@ -107,12 +110,20 @@
 <script>
 // 三级联动模块
 import autourban from "../taxationService/autourban";
+<<<<<<< HEAD
+import { mapActions} from "vuex"; //显示数据
+=======
 // import store from '../datatax'//引入组件之间传参的文件夹
 import {mapGetters} from 'vuex'//显示数据
+>>>>>>> e5a2ce016d2f88f495e6e0e4d32117a3d144098b
 
 export default {
   name: "companyIndustry",
   methods: {
+    ...mapActions(["setNum"]),
+    toDetail(id){
+      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+    },
     change: function(index) {
       this.index = index;
     },
@@ -123,11 +134,17 @@ export default {
         return dataInner;
       });
     },
+    // 为结算页面传参
+    togoodsOrder(id){
+      this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
+    },
     // 升序
     ascendingOrder: function(sortindex) {
       this.sortindex = sortindex;
       var that = this;
-      this.ajax.post("/xinda-api/product/package/grid",
+      this.ajax
+        .post(
+          "/xinda-api/product/package/grid",
           this.qs.stringify({
             start: 0,
             limit: 8,
@@ -137,12 +154,24 @@ export default {
         )
         .then(function(data) {
           that.products = data.data.data;
-        console.log("that.products==",that.products);
-          
+          console.log("that.products==", that.products);
         });
       this.products = that.products;
       console.log("正常===", this.products);
     },
+    // 添加到购物车
+    addToCart: function(itsid) {
+      // 改变
+      this.setNum();
+      console.log("正常===", this.products);
+      console.log("itsid===", itsid);
+      // 添加到购物车
+      this.ajax
+        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid, num: 1 }))
+        .then(function(data) {
+          console.log(data);
+        });
+    }
   },
   created() {
     var that = this;
@@ -158,7 +187,7 @@ export default {
       )
       .then(function(data) {
         that.products = data.data.data;
-        console.log("that.products==",that.products);
+        console.log("that.products==", that.products);
       });
     this.products = that.products;
   },
