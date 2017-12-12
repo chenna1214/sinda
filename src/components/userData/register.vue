@@ -5,25 +5,37 @@
       <div class="centent">
         <div class="left">
           <!-- 提示错误信息的盒子 -->
-          <div class="anError" v-if=show>
+          <div class="anError" v-if="show">
             <!-- 小红点 -->
             <p>一</p>
             <!-- 提示的错误信息 -->
             <p class="wrongTip">{{error}}</p>
           </div>
-          <input class="box" type="text" placeholder="请输入手机号码" v-model="phone" @blur="numbers">
+          <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @blur="numbers">
           <div class="verify">
-            <input class="boxI" type="text" placeholder="请输入验证码">
+            <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode">
             <div class="verifyI" @click="imgReflash">
-              <img :src="imgUrl"> 
+              <img :src="imgUrl">
             </div>
           </div>
           <div class="acquire">
             <input class="boxI" type="text" placeholder="请输入短信验证码">
-            <button @click="gain">点击获取</button>
+            <button @click="getCode">点击获取</button>
           </div>
-          <v-distpicker class="register-android-wheel" province="省" city="市" area="区"></v-distpicker>
-          <input class="setPass" type="password" placeholder="请设置密码" v-model="pass" @blur="passwor">
+          <!-- <v-distpicker class="register-android-wheel" province="省" city="市" area="区"></v-distpicker> -->
+          <select name="" id="" @change="proChange" v-model="province">
+            <option value="0">省</option>
+            <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+          </select>
+          <select name="" id="" @change="cityChange" v-model="city">
+            <option value="0">市</option>
+            <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+          </select>
+          <select name="" id="" v-model="area">
+            <option value="">区</option>
+            <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
+          </select>
+          <input class="setPass" type="password" placeholder="请设置密码" v-model="setPass" @blur="passwor">
           <button class="immediately" @click="iregister">立即注册</button>
           <p>注册及同意遵守
             <a class="agreement" href="">《服务协议》</a>
@@ -42,6 +54,7 @@
 </template>
 
 <script>
+import dist from '../../districts/districts'
 var md5 = require('md5');
 export default {
   name: 'register',
@@ -50,65 +63,98 @@ export default {
       phone:'',
       show:false,
       error:'',
-      pass:'',
-      imgUrl:'http://115.182.107.203:8088/xinda/xinda-api/ajaxAuthcode'
-
+      setPass:'',
+      imgUrl:'/xinda-api/ajaxAuthcode',
+      imgCode:'',
+      provinces:dist[100000],
+      citys:[],
+      areas:[],
+      province:'0',
+      city:'0',
+      area:'',
     }
   },
   methods:{
-      now:function(){
+    //三级联动
+    proChange(){
+      this.citys = dist[this.province];
+    },
+    cityChange(){
+      this.areas = dist[this.city];
+    },
+    selected(data){
+      this.distCode = data.area.code;
+    },
 
-      },
-      //验证码图片点击时更换
-      imgReflash: function() {
-        this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
-      },
-      //检验手机号是否正确
-      numbers:function (){
-        if(this.phone){
-          if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){
-            this.error="请输入正确的手机号码";
-            this.show=true;
-            return;
-          }else{
-            this.show=false;           
-          }
-        }else{
-          //手机号不填写时隐藏
-          this.show=false;
-            return;            
-        }
-      },
-      //设置密码格式是否正确
-      passwor:function(){
-        if(this.pass){
-          if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
-            this.error="请设置8-20位密码";
-            this.show=true;
-            return;
-          }else{
-            this.show=false;     
-          }
-        }else{
-          //密码不填写时隐藏
-          this.show=false;
+    now:function(){
+
+    },
+    //验证码图片点击时更换
+    imgReflash: function() {
+      this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+    },
+    //检验手机号是否正确
+    numbers:function (){
+      if(this.phone){
+        if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){
+          this.error="请输入正确的手机号码";
+          this.show=true;
           return;
+        }else{
+          this.show=false;
         }
-      },
-      //点击获取按钮
-      gain:function(){
-
-      },
-      //立即注册按钮
-      iregister(){
-        this.ajax.post('/xinda/xinda-api/register/register',
-        this.qs.stringify({
-          cellphone:this.phone,
-          smsType:1,
-          // validCode:
-        }))
+      }else{
+        //手机号不填写时隐藏
+        this.show=false;
+          return;            
       }
+    },
+    //获取短信验证码
+    getCode:function(){
+      this.ajax.post('/xinda-api/register/sendsms',this.qs.stringify({
+        cellphone: this.phone,
+        smsType:1,
+        imgCode: this.imgCode,
+      })).then(data =>{
+        console.log(data)
+      })
+    },
+    //设置密码格式是否正确
+    passwor:function(){
+      if(this.pass){
+        if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
+          this.error="请设置8-20位密码";
+          this.show=true;
+          return;
+        }else{
+          this.show=false;     
+        }
+      }else{
+        //密码不填写时隐藏
+        this.show=false;
+        return;
+      }
+    },
+    //点击获取样式
+
+    
+    //立即注册按钮
+    iregister(){
+      // console.log(this.area),
+      this.ajax.post('/xinda-api/register/register',
+      this.qs.stringify({
+        cellphone: this.phone,
+        smsType:1,
+        validCode: 111111,
+        password:md5(this.setPass),
+        regionId:this.area,
+      }))
+      .then(data => {
+        console.log('注册提交',data.data.msg,data.data.status);
+      })
+      
     }
+  }
 }
 </script>
 
@@ -144,7 +190,7 @@ export default {
     border: 1px solid #f5f5f5;
     .centent{
       width: 1200px;
-      height: 435px;        
+      height: 500px;        
       margin: 52px auto 0;
       display: flex;
       justify-content: space-around;
@@ -247,6 +293,13 @@ export default {
   }
   .bottom {
     padding-bottom: 150px;
+  }
+  select{
+    width: 91px;
+    height: 35px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    border: 1px solid #cbcbcb;    
   }
 
 
