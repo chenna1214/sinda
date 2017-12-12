@@ -107,7 +107,7 @@
 <script>
 // 三级联动模块
 import autourban from "../taxationService/autourban";
-import store from '../datatax'//引入组件之间传参的文件夹
+// import store from '../datatax'//引入组件之间传参的文件夹
 import {mapGetters} from 'vuex'//显示数据
 
 export default {
