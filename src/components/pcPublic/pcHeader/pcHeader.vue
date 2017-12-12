@@ -151,9 +151,9 @@ export default {
   },
   methods: {
     ...mapActions(['setNum']),
-    // goodsNum(){
-    //   this.setNum();
-    // },
+    goodsNum(){
+      this.setNum();
+    },
     pcChoosed() {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;

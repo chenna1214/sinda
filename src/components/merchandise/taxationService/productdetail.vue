@@ -13,7 +13,7 @@
       </div>
       <!-- 中间 -->
       <div class="par-infor">
-        <div class="parinf-acting">{{goods.serviceName}}</div>
+        <div class="parinf-acting">小规模记账</div>
         <div class="parinf-serve">6个月小规模企业代理记账服务</div>
         <div class="parinf-price">
           <div>市场价： <del>￥2000.00</del></div>
@@ -234,12 +234,8 @@
           sId:this.$route.query.id,
           sort:2
         })).then(function (data) {
-          var goodata = goo.data.data;
+          var goodata = data.data.data;
           that.goods = goodata;
-          for(var i in goodata){
-            console.log(goodata[i].serviceName)
-
-          }
         });
 
 
