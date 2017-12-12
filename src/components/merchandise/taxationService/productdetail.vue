@@ -6,7 +6,7 @@
       <p>首页 / 财税服务</p>
     </div>
     <!-- 商品详情 -->
-    <div class="pro-parciaular" :key="goods.id">
+    <div class="pro-parciaular">
       <!-- 左边 -->
       <div class="par-img">
         <img src="../pc_images/pc_login.png" alt="">
@@ -224,6 +224,7 @@
         // console.log(eva.data)
       });
 
+<<<<<<< HEAD
       // 相对路径
       console.log('this.$router.query.id ==',this.$route.query.id );
       this.ajax.post('/xinda-api/product/package/detail',
@@ -237,6 +238,25 @@
           var goodata = data.data.data;
           that.goods = goodata;
         });
+=======
+      // // 相对路径
+      // console.log('this.$router.query.id ==',this.$route.query.id );
+      // this.ajax.post('/xinda-api/product/package/detail',
+      //   this.qs.stringify({
+      //     start:0,
+      //     limit:8,
+      //     productTypeCode: "1",
+      //     sId:this.$route.query.id,
+      //     sort:2
+      //   })).then(function (data) {
+      //     var goodata = goo.data.data;
+      //     that.goods = goodata;
+      //     for(var i in goodata){
+      //       console.log(goodata[i].serviceName)
+
+      //     }
+      //   });
+>>>>>>> e5a2ce016d2f88f495e6e0e4d32117a3d144098b
 
 
 
@@ -309,6 +329,7 @@ button{
 .prodetail {
   width: 78%;
   margin: 0 auto;
+  margin-bottom: 2%;
 }
 .pro-top {
   font-size: 14px;
