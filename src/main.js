@@ -8,7 +8,6 @@ import 'element-ui/lib/theme-chalk/display.css';
 import axios from 'axios'
 import qs from 'qs'
 import Distpicker from 'v-distpicker'
-import store from './store'
 
 // 三级联动
 // Vue.component('v-distpicker', Distpicker)
