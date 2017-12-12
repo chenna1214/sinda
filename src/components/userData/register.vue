@@ -5,7 +5,7 @@
       <div class="centent">
         <div class="left">
           <!-- 提示错误信息的盒子 -->
-          <div class="anError" v-if=show>
+          <div class="anError" v-if="show">
             <!-- 小红点 -->
             <p>一</p>
             <!-- 提示的错误信息 -->

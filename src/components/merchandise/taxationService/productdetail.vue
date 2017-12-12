@@ -6,14 +6,14 @@
       <p>首页 / 财税服务</p>
     </div>
     <!-- 商品详情 -->
-    <div class="pro-parciaular" :key="goods.id">
+    <div class="pro-parciaular">
       <!-- 左边 -->
       <div class="par-img">
         <img src="../pc_images/pc_login.png" alt="">
       </div>
       <!-- 中间 -->
       <div class="par-infor">
-        <div class="parinf-acting">{{goods.serviceName}}</div>
+        <div class="parinf-acting">小规模记账</div>
         <div class="parinf-serve">6个月小规模企业代理记账服务</div>
         <div class="parinf-price">
           <div>市场价： <del>￥2000.00</del></div>
@@ -224,23 +224,23 @@
         // console.log(eva.data)
       });
 
-      // 相对路径
-      console.log('this.$router.query.id ==',this.$route.query.id );
-      this.ajax.post('/xinda-api/product/package/detail',
-        this.qs.stringify({
-          start:0,
-          limit:8,
-          productTypeCode: "1",
-          sId:this.$route.query.id,
-          sort:2
-        })).then(function (data) {
-          var goodata = goo.data.data;
-          that.goods = goodata;
-          for(var i in goodata){
-            console.log(goodata[i].serviceName)
+      // // 相对路径
+      // console.log('this.$router.query.id ==',this.$route.query.id );
+      // this.ajax.post('/xinda-api/product/package/detail',
+      //   this.qs.stringify({
+      //     start:0,
+      //     limit:8,
+      //     productTypeCode: "1",
+      //     sId:this.$route.query.id,
+      //     sort:2
+      //   })).then(function (data) {
+      //     var goodata = goo.data.data;
+      //     that.goods = goodata;
+      //     for(var i in goodata){
+      //       console.log(goodata[i].serviceName)
 
-          }
-        });
+      //     }
+      //   });
 
 
 
@@ -313,6 +313,7 @@ button{
 .prodetail {
   width: 78%;
   margin: 0 auto;
+  margin-bottom: 2%;
 }
 .pro-top {
   font-size: 14px;
