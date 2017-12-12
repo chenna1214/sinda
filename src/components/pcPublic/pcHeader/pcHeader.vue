@@ -29,14 +29,10 @@
   <div><!-- 上半部分内容--中间 -->
 <span class="pcHeaderChangeCityText pcHeaderMiddleProductText">产品|</span>
 <span class="pcHeaderCityText">服务商</span><br>
-<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()'><!-- 模糊搜索 -->
-<!-- 搜索源 -->
-<div class="searchBox">
-  <p v-for="(eachDa,index) in serchMatch" :key="eachDa" class="searchSource">{{eachDa}}</p>
-</div>
-<!-- <div class="searchBox">
-  <p v-for="eachData in searchArr" :key="eachData" class="searchSource">{{eachData}}</p>
-</div> -->
+<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()' v-model="serVal"><!-- 模糊搜索 -->
+<!-- 匹配搜索内容 -->
+<p class="pcSerBox"  v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail()'>{{eachSer.providerName}}</p>
+
 <img src="../../images/icon/serchIcon.png" alt="" class="pcHeaderMiddleSearchImg" align="absmiddle">
 <p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
   </div>
@@ -56,12 +52,50 @@
 
     </div></el-col>
     </el-row>
+
+
+<!-- <el-row>
+   <el-col :sm="{span:19,offset:8}" :md="{span:14,offset:8}" :lg="{span:4,offset:8}">
+    <div v-for="(eachSer,index) in serchMatch" :key="eachSer.providerName" class="pcSerBox">
+      <p class="pcSerTil">{{eachSer.providerName}}</p> -->
+      <!-- <el-row>
+        <el-col  class="pcSerTil">{{eachSer.providerName}}</el-col>
+      </el-row> -->
+        <!-- <el-row>
+        <el-col  class="serContent">
+          <span class="pcSerTil">产品类型：</span>
+          <span>{{eachSer.productTypes}}</span>
+        </el-col>
+      </el-row> -->
+      <!-- <el-row>
+        <el-col class="serContent">
+          <span class="pcSerTil">产品：</span>
+          <span>{{eachSer.products}}</span>
+        </el-col>
+      </el-row> -->
+      <!-- <el-row>
+        <el-col  class="serContent">
+          <span class="pcSerTil">服务介绍：</span>
+          <span>{{eachSer.providerInfo}}</span>
+        </el-col>
+      </el-row> -->
+    <!-- </div>
+  </el-col>
+</el-row> -->
+
+
+
+<p @click="goodsNum()">购买</p>
+
+
+
    </div>
    
 </template>
 
 <script>
 import Vue from "vue";
+import{mapActions} from 'vuex'
 export default {
   name: "pcHeader",
   mounted() {
@@ -95,7 +129,8 @@ export default {
       pcChoosedNum: 0, //判断用户是否选择城市
       searchArr: [], //搜索源
       serchMatch: [], //与用户输入所匹配的内容
-      eachSerText: [] //每个单独的搜索字
+      serName: [], //服务商公司名称
+      serVal: "" //搜索input
     };
   },
   created() {
@@ -111,24 +146,14 @@ export default {
         var pcCityId = pcCityExist[key].id;
         var pcCityName = pcCityExist[key].name;
         that.pcCityName.push(pcCityName);
-        // this.ajax.post('/xinda-api/common/change-region',{regionId:pcCityId}).then(function(data){//问题：如何用切换城市接口
-        //   console.log('changeCity',data.data.msg);
-        //   console.log('pcCityId',pcCityId)
-        // })
-      }
-    });
-    this.ajax.post("/xinda-api/provider/search-grid").then(data => {
-      var searchData = data.data.data;
-      for (var key in searchData) {
-        var eachArr = searchData[key].products.split(",");
-
-        for (var i = 0; i < eachArr.length; i++) {
-          that.searchArr.push(eachArr[i]);
-        }
       }
     });
   },
   methods: {
+    ...mapActions(['setNum']),
+    // goodsNum(){
+    //   this.setNum();
+    // },
     pcChoosed() {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;
@@ -159,14 +184,50 @@ export default {
     },
     pcSearch() {
       //模糊搜索
+      var that = this;
       this.serchMatch = [];
-      var searchInt = document.querySelector(".pcHeaderSearchInput");
-      var serVal = searchInt.value;
-      for (var i = 0; i < this.searchArr.length; i++) {
-        if (this.searchArr[i].indexOf(serVal) !== -1) {
-          this.serchMatch.push(this.searchArr[i]);
-          console.log("this.serchMatch", this.serchMatch);
-        } 
+      this.ajax //待优化：如何在用户完全输入完后才向服务器发送请求
+        .post(
+          "/xinda-api/provider/search-grid",
+          this.qs.stringify({
+            searchName: this.serVal
+          })
+        )
+        .then(data => {
+          console.log("data", data);
+          var searchData = data.data.data;
+          for (var key in searchData) {
+            var eachArr = searchData[key];
+            that.searchArr.push(eachArr);
+            var serCompany = searchData[key].providerName;
+            that.serName.push(serCompany);
+          }
+          if (this.serVal !== "") {
+            for (var i = 0; i < this.serName.length; i++) {
+              if (this.serName[i].indexOf(this.serVal) !== -1) {
+                this.serchMatch.push(this.searchArr[i]);
+                // function pcDetail(){
+                //   if(this.searchArr[i].providerName=='大唐注册代理事务所'){
+                //     console.log('providerName')
+
+                //   }
+                // }
+              }
+            }
+          }
+        });
+    },
+    pcDetail(searchCon) {
+      //匹配搜索内容
+      for (var a = 0; a < this.serchMatch.length; a++) {
+        if (this.serchMatch[a].providerName == "大唐注册代理事务所") {
+          console.log("大唐注册代理事务所");
+        }
+        if(this.serchMatch[a].providerName == '云智慧咨询服务有限公司'){
+          console.log('云智慧咨询服务有限公司')
+          
+
+        }
       }
     }
   }
@@ -183,15 +244,26 @@ export default {
   z-index: 2056;
 }
 //搜索源
-.searchSource {
-  font-size: 16px;
-}
-.searchBox {
+// .pcSerTil {
+//   font-size: 15px;
+//   color: #2693d4;
+//   text-align: center;
+//   margin-top: 20px;
+// }
+// .serContent {
+//   font-size: 9px;
+//   margin-top: 10px;
+// }
+.pcSerBox {
   position: absolute;
-  z-index: 200;
-  height: 200px;
-  background: white;
-  overflow: hidden;
+  z-index: 2000;
+
+  margin-top: -1px;
+  background: #98f5ff;
+  width: 40%;
+  font-size: 15px;
+  color: #2693d4;
+  text-align: center;
 }
 .pcChoosedCity {
   color: #2693d4;
