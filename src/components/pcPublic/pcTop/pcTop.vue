@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'//显示数据
+
 export default {
   name: "pcTop",
   data() {
@@ -34,6 +36,9 @@ export default {
       carNum:'',//购物车件数
       pcUserName:''//显示登录后的用户姓名
     };
+  },
+  methods:{
+    ...mapGetters(['getNum'])
   },
   created(){
     var that=this;
