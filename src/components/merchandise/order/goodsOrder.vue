@@ -36,11 +36,11 @@
                             <span class="pcOrdListData">￥2000.00元</span>
                         </el-col>
                         <el-col :sm="6" :md="6" :lg="6">
-                            <span class="pcOrdListTil pcOrdListLoc">数量</span>
+                            <span class="pcOrdListTil pcOrdListLoc">数量：</span>
                             <span class="pcOrdListData">1</span>
                         </el-col>
                         <el-col :sm="6" :md="6" :lg="6">
-                            <span class="pcOrdListTil pcOrdListLoc">服务总额</span>
+                            <span class="pcOrdListTil pcOrdListLoc">服务总额：</span>
                             <span class="pcOrdListData">￥2000.00元</span>
                         </el-col>
                     </el-row>
@@ -84,12 +84,44 @@
                     <button class="pcAllPayBtn" @click='payWay()'>去结算</button>
                 </div>
 
+          
 
 
 
+                  <!-- 微信支付弹出框 -->
+                  <el-dialog
+                      title="微信支付"
+                      :visible.sync="dialogVisibleChat"
+                      width="30%"
+                      v-show="payBoxShow==radio+8"
+                      class="pcChatBox"
+                      custom-class="nopadding fontColor"
+                    >
+                      <div class="pcErCode">
+                        <img src="../../images/goodsOrder/ercode.png">
+                      </div>
+                      <p>扫码支付</p>
+                      <el-button @click="paySuccess()" class="pcOthPayBtn">已完成支付</el-button>
+                      <el-button @click="payFail()" class="pcOthPayBtn">支付遇到问题</el-button>
+                      <p @click="pcReselection()" class="pcReSelect">返回重新选择支付方式</p>
+                    </el-dialog>
 
 
-
+                    <!-- 其它方式支付弹出框  -->
+                    <el-dialog
+                      :visible.sync="dialogVisible"
+                      width="30%"
+                      v-show="payBoxShow==radio"
+                      custom-class="nopadding fontColor"
+                      class="pcChatBox"
+                    >
+                      <p slot="title" class="pcOthPayTil">支付反馈</p>
+                      <p class="pcOthPayTip">请您在新打开的页面上完成订单付款</p><br>
+                      <p>根据您的支付情况，选择下步操作</p><br>
+                          <el-button @click="paySuccess()" class="pcOthPayBtn">已完成支付</el-button>
+                          <el-button @click="payFail()" class="pcOthPayBtn">支付遇到问题</el-button>
+                          <p @click="pcReselection()" class="pcReSelect">返回重新选择支付方式</p>
+                    </el-dialog>
        </div>
     </div>
 </template>
@@ -99,60 +131,94 @@ export default {
   name: "goodsOrder",
   created() {
     var that = this; //this是指main.js中的new Vue
-    this.ajax.post('/xinda-api/business-order/detail',{businessNo:'S1704040001075133085'}).then(data=>{//订单数据
-     
-        
+    this.ajax
+      .post("/xinda-api/business-order/detail", {
+        businessNo: "S1704040001075133085"
       })
+      .then(data => {
+        //订单数据
+      });
   },
   data() {
     return {
-      payLink:'',
-      radio: 1
+      payLink: "",
+      radio: 1,
+      payBoxShow: "",
+      dialogVisible: false,
+      dialogVisibleChat: false
     };
   },
   methods: {
     payWay: function() {
       if (this.radio == 1) {
         //非网银支付，是银联支付
+        this.dialogVisible = true;
+        this.payBoxShow = 1;
         this.ajax
           .post("/xinda-api/pay/china-pay", {
             businessNo: "S1704040001075133085"
           })
           .then(data => {
             // this.payLink='https://www.baidu.com/';
-            // window.open("http://115.182.107.203:8088/xinda/xinda-api/pay/china-pay");         
+            window.open("/xinda-api/pay/china-pay");
+            console.log('data11==',data)
+            
           });
-
       }
-      if (this.radio == 2) {//微信网页支付
-          this.ajax
+      if (this.radio == 2) {
+        //微信网页支付
+        this.dialogVisibleChat = true;
+        this.payBoxShow = 10;
+        this.ajax
           .post("/xinda-api/pay/weixin-pay", {
             businessNo: "S1704040001075133085"
           })
-          .then(data => {
-
-          });
+          .then(data => {});
       }
-      if (this.radio == 3) {//支付宝
-
-           this.ajax
+      if (this.radio == 3) {
+        //支付宝
+        this.dialogVisible = true;
+        this.payBoxShow = 3;
+        this.ajax
           .post("/xinda-api/pay/ali-pay", {
             businessNo: "S1704040001075133085"
           })
-          .then(data => {
-
-          });
+          .then(data => {});
       }
-      if (this.radio == 4) {//未找到银行支付
-      
-
+      if (this.radio == 4) {
+        //未找到银行支付
+        this.dialogVisible = true;
+        this.payBoxShow = 4;
       }
+      this.payBoxShow = "";
+    },
+    paySuccess() {
+      //支付成功
+      this.dialogVisible = false;
+      window.open(
+        "http://localhost:8080/#/merchandise/paySuccess",
+        "_self"
+      );
+    },
+    payFail() {
+      //支付失败
+      this.dialogVisible = false;
+      window.open(
+        "http://localhost:8080/#/merchandise/failurePay",
+        "_self"
+      );
+    },
+    pcReselection() {
+      //返回重新选择支付方式
+      this.dialogVisible = false;
+      this.dialogVisibleChat = false;
     }
   }
 };
 </script>
 
 <style scoped lang='less'>
+
 .pcOrderIn {
   margin: 0 auto;
   max-width: 1200px;
@@ -278,5 +344,33 @@ export default {
 .pcAllPayBox {
   margin-bottom: 161px;
   margin-top: 85px;
+}
+// 其它方式支付弹出框
+.pcOthPayTip{
+  font-size: 18px;
+}
+.pcReSelect{
+  color: #2693d4;
+  margin-top: 20px;
+}
+.pcOthPayBtn{
+  color: #2693d4;
+  border: 1px solid #2693d4;
+}
+.pcOthPayTil{
+  height: 30px;
+  line-height: 30px;
+}
+//微信支付弹出框
+.pcChatBox{
+  text-align: center;
+}
+.pcErCode{
+  display: flex;
+  justify-content: center;
+  img{
+    width:150px;
+    height:150px;
+  }
 }
 </style>

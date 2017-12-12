@@ -6,14 +6,14 @@
       <p>首页 / 财税服务</p>
     </div>
     <!-- 商品详情 -->
-    <div class="pro-parciaular">
+    <div class="pro-parciaular" :key="goods.id">
       <!-- 左边 -->
       <div class="par-img">
         <img src="../pc_images/pc_login.png" alt="">
       </div>
       <!-- 中间 -->
       <div class="par-infor">
-        <div class="parinf-acting">代理记账（半年）</div>
+        <div class="parinf-acting">{{goods.serviceName}}</div>
         <div class="parinf-serve">6个月小规模企业代理记账服务</div>
         <div class="parinf-price">
           <div>市场价： <del>￥2000.00</del></div>
@@ -39,7 +39,7 @@
         </div>
         <!-- 立即购买，加入购物车 -->
         <div class="parinf-btn">
-          <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" @clik="parbtn" class="paynow">立即购买</router-link>
+          <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link>
           <button>加入购物车</button>
         </div>
       </div>
@@ -99,11 +99,11 @@
             </div>            
           </div>
           <!-- 中 -->
-          <div class="app-fourapp">
-            <div style="background-color: #2693d4;color: #fff;">全部评价（0）</div>
-            <div>好评（0）</div>
-            <div>中评（0）</div>
-            <div>差评（0）</div>
+          <div class="app-fourapp" :key="proevas.id">
+            <div style="background-color: #2693d4;color: #fff;">全部评价（{{proevas.goodNum+proevas.midNum+proevas.badNum}}）</div>
+            <div class="app-good">好评（{{proevas.goodNum}}）</div>
+            <div class="app-middle">中评（{{proevas.midNum}}）</div>
+            <div class="app-bad">差评（{{proevas.badNum}}）</div>
           </div>
           <!-- 下 -->
           <div class="app-under">
@@ -112,7 +112,7 @@
               <div>满意度</div>
               <div>用户</div>
             </div>
-            <div class="und-down">
+            <div class="und-down" :key="evaluates.id">
               <!-- 评价 -->
               <div class="dow-estimate">
                 <div class="dowest-pay">
@@ -211,16 +211,50 @@
 <script>
   export default {
     name: "productdetail",
-    // created() {
-    //   this.ajax
-    //     .post("http://115.182.107.203:8088/xinda/xinda-api/product/package/grid")
-    //     .then(function(data) {
-    //       var prodata = data.data.data;
-    //       console.log(prodata);
-    //     });
-    // },
+    created() {
+      var that = this;
+      // 商品详情页的评价
+      this.ajax.post("http://115.182.107.203:8088/xinda/xinda-api/product/judge/detail",
+        this.qs.stringify({serviceId:'efddc8a338944e998ff2a7142246362b'})).then(function (data) {
+          var prodata = data.data.data;
+          that.proevas = prodata;
+        });
+      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/judge/grid',
+        this.qs.stringify({start:0,limit:10,serviceId:'efddc8a338944e998ff2a7142246362b',type:1})).then(function (eva) {
+        // console.log(eva.data)
+      });
+
+      // 相对路径
+      console.log('this.$router.query.id ==',this.$route.query.id );
+      this.ajax.post('/xinda-api/product/package/detail',
+        this.qs.stringify({
+          start:0,
+          limit:8,
+          productTypeCode: "1",
+          sId:this.$route.query.id,
+          sort:2
+        })).then(function (data) {
+          var goodata = goo.data.data;
+          that.goods = goodata;
+          for(var i in goodata){
+            console.log(goodata[i].serviceName)
+
+          }
+        });
+
+
+
+      // this.ajax.post("/xinda-api/product/package/detail",this.qs.stringify({sId:this.$route.query.id }))
+      //   .then(function(data) {
+      //     var prodata = data.data.data;
+      //     console.log('prodata==',prodata);
+      //   });
+    },
     data() {
       return {
+        proevas: [],
+        evaluates: [],
+        goods: [],
         actstyle: 'chose',
         tastyle: 'choses',
         smstyle: 'choses',

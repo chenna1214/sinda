@@ -167,7 +167,7 @@ export default {
         that.rDataObjs = rDataObj;
       });
     this.ajax //初创企业必备
-      .post("http://115.182.107.203:8088/xinda/xinda-api/recommend/list")
+      .post("/xinda-api/recommend/list")
       .then(function(data) {
         var pcCreateData = data.data.data;
         that.products = pcCreateData.product;
@@ -175,7 +175,7 @@ export default {
 
     this.ajax //推荐服务商
       .post(
-        "http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid"
+        "/xinda-api/product/package/search-grid"
       )
       .then(function(data) {
         var recommendR = data.data.data;

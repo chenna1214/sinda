@@ -15,6 +15,7 @@
           <div class="pcTopRight">
             <img src="../../images/pcTop/shoppingcarIcon.png" alt="购物车" class="pcShoppingcarIcon">
             <p class="pcTopBlackText">购物车</p>
+            <!-- <p class="pcTopBlueText">{{carNum}}</p> -->
             <p class="pcTopBlueText">{{getNum}}</p>
             <p class="pcTopBlackText">件</p>
             <p class="pcTopBlueText pcTopServiceEntryText">服务商入口</p>
@@ -23,11 +24,14 @@
       </div>
     </el-col>
    </el-row>
+
+
+   
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import{mapGetters} from 'vuex'
 export default {
   name: "pcTop",
   data() {
@@ -36,8 +40,20 @@ export default {
       pcUserName:''//显示登录后的用户姓名
     };
   },
+  created(){
+    var that=this;
+    // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
+    //   that.carNum=data.data.data.cartNum; 
+    // });    // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
+    //   that.carNum=data.data.data.cartNum; 
+    // });
+    this.ajax.post('/xinda-api/sso/login-info').then(data=>{//显示登录后的用户姓名？问题：未登录时无法获得用户名
+      // that.pcUserName=data.data.data.name;
+      
+    });
+  },
   computed:{
-    ...mapGetters(['getNum'])//{getNum:function(){}}
+    ...mapGetters(['getNum'])
   }
   // created(){
   //   var that=this;

@@ -29,7 +29,10 @@
   <div><!-- 上半部分内容--中间 -->
 <span class="pcHeaderChangeCityText pcHeaderMiddleProductText">产品|</span>
 <span class="pcHeaderCityText">服务商</span><br>
-<input type="text" name="" id="" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商">
+<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()' v-model="serVal"><!-- 模糊搜索 -->
+<!-- 匹配搜索内容 -->
+<p class="pcSerBox"  v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail()'>{{eachSer.providerName}}</p>
+
 <img src="../../images/icon/serchIcon.png" alt="" class="pcHeaderMiddleSearchImg" align="absmiddle">
 <p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
   </div>
@@ -49,12 +52,50 @@
 
     </div></el-col>
     </el-row>
+
+
+<!-- <el-row>
+   <el-col :sm="{span:19,offset:8}" :md="{span:14,offset:8}" :lg="{span:4,offset:8}">
+    <div v-for="(eachSer,index) in serchMatch" :key="eachSer.providerName" class="pcSerBox">
+      <p class="pcSerTil">{{eachSer.providerName}}</p> -->
+      <!-- <el-row>
+        <el-col  class="pcSerTil">{{eachSer.providerName}}</el-col>
+      </el-row> -->
+        <!-- <el-row>
+        <el-col  class="serContent">
+          <span class="pcSerTil">产品类型：</span>
+          <span>{{eachSer.productTypes}}</span>
+        </el-col>
+      </el-row> -->
+      <!-- <el-row>
+        <el-col class="serContent">
+          <span class="pcSerTil">产品：</span>
+          <span>{{eachSer.products}}</span>
+        </el-col>
+      </el-row> -->
+      <!-- <el-row>
+        <el-col  class="serContent">
+          <span class="pcSerTil">服务介绍：</span>
+          <span>{{eachSer.providerInfo}}</span>
+        </el-col>
+      </el-row> -->
+    <!-- </div>
+  </el-col>
+</el-row> -->
+
+
+
+<p @click="goodsNum()">购买</p>
+
+
+
    </div>
    
 </template>
 
 <script>
 import Vue from "vue";
+import{mapActions} from 'vuex'
 export default {
   name: "pcHeader",
   mounted() {
@@ -84,8 +125,12 @@ export default {
     return {
       pcChoosedCity: "", //当前已选城市
       pcCityName: [], //已开通城市名称
-      dialogVisible: false,//控制“切换城市”弹出框的出现、消失
-      pcChoosedNum:0,//判断用户是否选择城市
+      dialogVisible: false, //控制“切换城市”弹出框的出现、消失
+      pcChoosedNum: 0, //判断用户是否选择城市
+      searchArr: [], //搜索源
+      serchMatch: [], //与用户输入所匹配的内容
+      serName: [], //服务商公司名称
+      serVal: "" //搜索input
     };
   },
   created() {
@@ -101,43 +146,90 @@ export default {
         var pcCityId = pcCityExist[key].id;
         var pcCityName = pcCityExist[key].name;
         that.pcCityName.push(pcCityName);
-        // this.ajax.post('/xinda-api/common/change-region',{regionId:pcCityId}).then(function(data){//问题：如何用切换城市接口
-        //   console.log('changeCity',data.data.msg);
-        //   console.log('pcCityId',pcCityId)
-        // })
       }
     });
   },
   methods: {
-    pcChoosed(){//判断用户是否选择城市
-      this.pcChoosedNum=1;
+    ...mapActions(['setNum']),
+    // goodsNum(){
+    //   this.setNum();
+    // },
+    pcChoosed() {
+      //判断用户是否选择城市
+      this.pcChoosedNum = 1;
     },
     handleCan() {
       this.dialogVisible = false;
-      
-   this.$message({
+
+      this.$message({
         type: "info",
         message: "已取消选择城市"
       });
-      
-   
     },
     handleCon() {
       this.dialogVisible = false;
-      if(this.pcChoosedNum==0){
-      this.$message({
-        type: "warning",
-        message: "您未选择城市!"
-      });
+      if (this.pcChoosedNum == 0) {
+        this.$message({
+          type: "warning",
+          message: "您未选择城市!"
+        });
       }
-      if(this.pcChoosedNum==1){
-        this.pcChoosedNum=0;
-      this.$message({
-        type: "success",
-        message: "城市选择成功!"
-      });
+      if (this.pcChoosedNum == 1) {
+        this.pcChoosedNum = 0;
+        this.$message({
+          type: "success",
+          message: "城市选择成功!"
+        });
       }
-    } 
+    },
+    pcSearch() {
+      //模糊搜索
+      var that = this;
+      this.serchMatch = [];
+      this.ajax //待优化：如何在用户完全输入完后才向服务器发送请求
+        .post(
+          "/xinda-api/provider/search-grid",
+          this.qs.stringify({
+            searchName: this.serVal
+          })
+        )
+        .then(data => {
+          console.log("data", data);
+          var searchData = data.data.data;
+          for (var key in searchData) {
+            var eachArr = searchData[key];
+            that.searchArr.push(eachArr);
+            var serCompany = searchData[key].providerName;
+            that.serName.push(serCompany);
+          }
+          if (this.serVal !== "") {
+            for (var i = 0; i < this.serName.length; i++) {
+              if (this.serName[i].indexOf(this.serVal) !== -1) {
+                this.serchMatch.push(this.searchArr[i]);
+                // function pcDetail(){
+                //   if(this.searchArr[i].providerName=='大唐注册代理事务所'){
+                //     console.log('providerName')
+
+                //   }
+                // }
+              }
+            }
+          }
+        });
+    },
+    pcDetail(searchCon) {
+      //匹配搜索内容
+      for (var a = 0; a < this.serchMatch.length; a++) {
+        if (this.serchMatch[a].providerName == "大唐注册代理事务所") {
+          console.log("大唐注册代理事务所");
+        }
+        if(this.serchMatch[a].providerName == '云智慧咨询服务有限公司'){
+          console.log('云智慧咨询服务有限公司')
+          
+
+        }
+      }
+    }
   }
 };
 </script>
@@ -151,7 +243,29 @@ export default {
   top: 173px;
   z-index: 2056;
 }
-.pcChoosedCity{
+//搜索源
+// .pcSerTil {
+//   font-size: 15px;
+//   color: #2693d4;
+//   text-align: center;
+//   margin-top: 20px;
+// }
+// .serContent {
+//   font-size: 9px;
+//   margin-top: 10px;
+// }
+.pcSerBox {
+  position: absolute;
+  z-index: 2000;
+
+  margin-top: -1px;
+  background: #98f5ff;
+  width: 40%;
+  font-size: 15px;
+  color: #2693d4;
+  text-align: center;
+}
+.pcChoosedCity {
   color: #2693d4;
 }
 // 如何引用公共less
