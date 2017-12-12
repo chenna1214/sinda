@@ -29,28 +29,28 @@
           <!-- 财税服务 商品列表 -->
           <div class="pccny-gds">
             <ul class="pccn-ghead clear">
-              <li @click="sortMothod(0)" :class='{"pxtax-clickst-1":sortindex==0}' class="pccn-ghcora">综合排序</li>
-              <li @click="sortMothod(1)" :class='{"pxtax-clickst-1":sortindex==1}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
+              <li @click="ascendingOrder(2)" :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghcora">综合排序</li>
+              <li @click="ascendingOrder(3)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
             </ul>
             <!-- 商品列表下方 -->
             <div class="pccny-g-wr">
               <ul class="pccn-tblti clear">
-                <li @click="descendingOrder" class="pccn-tbltg">商品</li>
-                <li @click="ascendingOrder" class="pccn-tbltm">价格</li>
+                <li class="pccn-tbltg">商品</li>
+                <li class="pccn-tbltm">价格</li>
               </ul>
               <!-- 商品列表 -->
               <ul class="pccn-tbody clear">
                 <!-- 单个元素 -->
-                <li v-for="product in products" class="pccn-tbelm clear">
+                <li v-for="(product,idx) in products" :key="product.serviceInfo" class="pccn-tbelm clear">
                   <!-- 元素左侧 -->
                   <div class="pccn-tbell">
-                    <router-link class="pccn-teimg" tag="div" to="/merchandise/productdetail">
+                    <div class="pccn-teimg" @click="toDetail(product.id)" >
                       <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
-                    </router-link>
+                    </div>
                     <div class="pccn-tewor">
-                      <router-link class="pccn-tenm" to="/merchandise/productdetail">
-                      {{product.serviceName}}
-                      </router-link>
+                      <p @click="toDetail(product.id)" class="pccn-tenm" >
+                        {{product.serviceName}}
+                      </p>
                       <p class="pccn-epmit">{{product.serviceInfo}}</p>
                       <p class="pccn-earea">{{product.providerName}}</p>
                       <p class="pccn-earea">{{product.regionName}}</p>
@@ -59,12 +59,14 @@
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
                     <p class="pccn-elprc">￥ {{product.price}}</p>
-                    <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
+                    <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
                       立即购买
-                    </router-link>
-                    <router-link class="pccn-eadsp pccn-btn1s" to="">
-                      加入购物车
-                    </router-link>
+                    </router-link> -->
+                    <a href="javascript:void(0)" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
+                    <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
+                      加入购物车 {{idx}}
+                    </router-link> -->
+                    <a href="javascript:void(0)"@click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
                   </div>
                 </li>
               </ul>
@@ -105,33 +107,42 @@
 <script>
 // 三级联动模块
 import autourban from './autourban';
+import {mapActions} from 'vuex'//改变数据
+
 
 export default {
   name: "taxationService",
   methods:{
-    sortMothod: function(sortindex){
-      this.sortindex = sortindex;
+    ...mapActions(['setNum']),
+    toDetail(id){
+      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
-    // 升序
-    ascendingOrder :function(){
+    togoodsOrder(id){
+      this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
+    },
+    // 商品排序方式
+    ascendingOrder :function(sortindex){
+      this.sortindex = sortindex;      
       var that = this;
       this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid',
-      this.qs.stringify({start:0,limit:8,searchName:'代理',sort:2})).then(
+      this.qs.stringify({start:0,limit:8,searchName:'代理',sort:this.sortindex})).then(
         function(data){
       that.products = data.data.data;
       })
       this.products = that.products;
-      
     },
-    // 降序
-    descendingOrder :function(){
-      var that = this;
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid',
-      this.qs.stringify({start:0,limit:8,searchName:'代理',sort:3})).then(
+    // 添加到购物车
+    addToCart: function(itsid){
+      // 改变
+      this.setNum();
+      console.log('正常===',this.products);
+      console.log('itsid===',itsid)
+      // 添加到购物车
+      this.ajax.post('/xinda-api/cart/add',
+      this.qs.stringify({id:itsid,num:1})).then(
         function(data){
-      that.products = data.data.data;
+        console.log(data);
       })
-      this.products = that.products;
     }
   },
   created(){
@@ -140,8 +151,6 @@ export default {
     this.qs.stringify({start:0,limit:8,searchName:'代理',sort:2})).then(
       function(data){
       that.products = data.data.data;
-      // console.log("that.products===",data.data);
-      // console.log("data==",data)
     })
       this.products = that.products;
   },
@@ -149,7 +158,8 @@ export default {
     return {
       hideArea:true,
       products: [],
-      sortindex: 0,
+      sortindex: 2,
+      idx:''
     };
   },
   components: {autourban}

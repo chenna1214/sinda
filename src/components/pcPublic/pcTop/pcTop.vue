@@ -40,6 +40,9 @@ export default {
       pcUserName:''//显示登录后的用户姓名
     };
   },
+  methods:{
+    // ...mapGetters(['getNum'])
+  },
   created(){
     var that=this;
     // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
@@ -55,6 +58,16 @@ export default {
   computed:{
     ...mapGetters(['getNum'])
   }
+  // created(){
+  //   var that=this;
+  //   this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
+  //     that.carNum=data.data.data.cartNum; 
+  //   });
+  //   this.ajax.post('/xinda-api/sso/login-info').then(data=>{//显示登录后的用户姓名？问题：未登录时无法获得用户名
+  //     // that.pcUserName=data.data.data.name;
+      
+  //   });
+  // }
 };
 </script>
 

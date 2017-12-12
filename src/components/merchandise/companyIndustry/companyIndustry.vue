@@ -31,28 +31,28 @@
           <!-- 公司工商 商品列表 -->
           <div class="pccny-gds">
             <ul class="pccn-ghead clear">
-              <li @click="sortMothod(0)" :class='{"pxtax-clickst-1":sortindex==0}' class="pccn-ghcora">综合排序</li>
-              <li @click="sortMothod(1)" :class='{"pxtax-clickst-1":sortindex==1}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
+              <li @click="ascendingOrder(2)"  :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghcora">综合排序</li>
+              <li @click="ascendingOrder(3)"  :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
             </ul>
             <!-- 商品列表下方 -->
             <div class="pccny-g-wr">
               <ul class="pccn-tblti clear">
-                <li @click="descendingOrder" class="pccn-tbltg">商品</li>
-                <li @click="ascendingOrder" class="pccn-tbltm">价格</li>
+                <li class="pccn-tbltg">商品</li>
+                <li class="pccn-tbltm">价格</li>
               </ul>
               <!-- 商品列表 -->
               <ul class="pccn-tbody clear">
                 <!-- 单个元素 -->
-                <li v-for="product in products" class="pccn-tbelm clear">
+                <li v-for="product in products" :key="product.serviceInfo" class="pccn-tbelm clear">
                   <!-- 元素左侧 -->
                   <div class="pccn-tbell">
-                    <router-link class="pccn-teimg" tag="div" to="/merchandise/productdetail">
-                      <img  :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
-                    </router-link>
+                    <div class="pccn-teimg" @click="toDetail(product.id)">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
+                    </div>
                     <div class="pccn-tewor">
-                      <router-link class="pccn-tenm" to="/merchandise/productdetail">
+                      <p @click="toDetail(product.id)" class="pccn-tenm">
                       {{product.serviceName}}
-                      </router-link>
+                      </p>
                       <p class="pccn-epmit">{{product.serviceInfo}}</p>
                       <p class="pccn-earea">{{product.providerName}}</p>
                       <p class="pccn-earea">{{product.regionName}}</p>
@@ -60,18 +60,21 @@
                   </div>
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
-                    <p class="pccn-elprc">￥ {{product.marketPrice}}</p>
-                    <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
+                    <p class="pccn-elprc">￥ {{product.price}}</p>
+                    <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
                       立即购买
-                    </router-link>
-                    <router-link class="pccn-eadsp pccn-btn1s" to="">
+                    </router-link> -->
+                   <a class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)"  href="javascript:void(0)">立即购买</a>
+
+                    <!-- <router-link class="pccn-eadsp pccn-btn1s" to="">
                       加入购物车
-                    </router-link>
+                    </router-link> -->
+                    <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
+
                   </div>
                 </li>
               </ul>
             </div>
-            
           </div>
 
         </el-col>
@@ -96,7 +99,6 @@
               </li>
             </ul>
           </div>
-          <!-- {{trytry}} -->
         </el-col>
       </el-row>
      
@@ -108,10 +110,20 @@
 <script>
 // 三级联动模块
 import autourban from "../taxationService/autourban";
+<<<<<<< HEAD
+import { mapActions} from "vuex"; //显示数据
+=======
+// import store from '../datatax'//引入组件之间传参的文件夹
+import {mapGetters} from 'vuex'//显示数据
+>>>>>>> e5a2ce016d2f88f495e6e0e4d32117a3d144098b
 
 export default {
   name: "companyIndustry",
   methods: {
+    ...mapActions(["setNum"]),
+    toDetail(id){
+      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+    },
     change: function(index) {
       this.index = index;
     },
@@ -122,74 +134,70 @@ export default {
         return dataInner;
       });
     },
-    // 排序方式
-    sortMothod: function(sortindex){
-      this.sortindex = sortindex;
+    // 为结算页面传参
+    togoodsOrder(id){
+      this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
     },
     // 升序
-    ascendingOrder :function(){
+    ascendingOrder: function(sortindex) {
+      this.sortindex = sortindex;
       var that = this;
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
-      this.qs.stringify({
-        start:0,
-        limit:20,
-        productTypeCode: "1",
-        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
-        sort:2
-      })).then(function(data){
-      that.products = data.data.data;
-      })
+      this.ajax
+        .post(
+          "/xinda-api/product/package/grid",
+          this.qs.stringify({
+            start: 0,
+            limit: 8,
+            searchName: "代理",
+            sort: this.sortindex
+          })
+        )
+        .then(function(data) {
+          that.products = data.data.data;
+          console.log("that.products==", that.products);
+        });
       this.products = that.products;
+      console.log("正常===", this.products);
     },
-    // 降序
-    descendingOrder :function(){
-      var that = this;
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
-      this.qs.stringify({
-        start:0,
-        limit:20,
-        productTypeCode: "1",
-        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
-        sort:3
-      })).then(
-        function(data){
-      that.products = data.data.data;
-      })
-      this.products = that.products;
+    // 添加到购物车
+    addToCart: function(itsid) {
+      // 改变
+      this.setNum();
+      console.log("正常===", this.products);
+      console.log("itsid===", itsid);
+      // 添加到购物车
+      this.ajax
+        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid, num: 1 }))
+        .then(function(data) {
+          console.log(data);
+        });
     }
   },
-  created(){
+  created() {
     var that = this;
-    this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
-    this.qs.stringify({
-        start:0,
-        limit:20,
-        productTypeCode: "1",
-        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
-        sort:2
-      })).then(
-      function(data){
-      that.products = data.data.data;
-      console.log("data==",data);
-    })
-      this.products = that.products;
+    this.ajax
+      .post(
+        "http://115.182.107.203:8088/xinda/xinda-api/product/package/grid",
+        this.qs.stringify({
+          start: 0,
+          limit: 8,
+          productTypeCode: "1",
+          sort: 2
+        })
+      )
+      .then(function(data) {
+        that.products = data.data.data;
+        console.log("that.products==", that.products);
+      });
+    this.products = that.products;
   },
-  // computed:{
-  //   trytry:function(){
-  //     var that = this;
-  //     this.ajax.post("/xinda-api/product/package/grid").then(data => {
-  //       that.dataInner = data.data.data;
-  //     });
-  //     return this.dataInner;
-  //   }
-  // },
   data() {
     return {
       aaa: "",
       msg: "我试试",
       index: 0,
-      sortindex: 0,
-      dataInner:'123',
+      sortindex: 2,
+      dataInner: "123",
       products: [],
       arr: [
         { item: "分公司注册" },
@@ -223,7 +231,7 @@ export default {
     background: #f7f7f7;
     padding-left: 7px;
     height: 44px;
-    &>li {
+    & > li {
       margin: 9px 0 0 0;
       float: left;
       height: 25px;
@@ -335,26 +343,25 @@ export default {
   }
 }
 
-
 // 商品列表
 
-.pccny-gds{
+.pccny-gds {
   margin-top: 25px;
   border: 1px solid #ccc;
 }
 // 排序方式选项
-.pccn-ghead{
+.pccn-ghead {
   height: 43px;
   background: #f7f7f7;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
-  li{
+  li {
     float: left;
     height: 43px;
     width: 107px;
     text-align: center;
     line-height: 43px;
-    .pccn-ghico{
+    .pccn-ghico {
       margin-left: 5px;
       display: inline-block;
       width: 12px;
@@ -363,69 +370,69 @@ export default {
     }
   }
 }
-.pccny-g-wr{
+.pccny-g-wr {
   padding: 0 8px;
-  .pccn-tblti{
-    li{
+  .pccn-tblti {
+    li {
       width: 89px;
       text-align: center;
       height: 50px;
       line-height: 50px;
     }
-    .pccn-tbltg{
+    .pccn-tbltg {
       float: left;
     }
-    .pccn-tbltm{
+    .pccn-tbltm {
       float: right;
     }
   }
 }
 
 // 商品列表
-.pccn-tbody{
-  .pccn-tbelm{
+.pccn-tbody {
+  .pccn-tbelm {
     padding: 11px 0 12px 0;
     border-top: 1px solid #eaeaea;
     // 商品图片
-    .pccn-teimg{
+    .pccn-teimg {
       float: left;
       margin-right: 12px;
       width: 98px;
       height: 98px;
       border: 1px solid #ccc;
-      img{
+      img {
         width: 100%;
       }
     }
     // 商品文字
-    .pccn-tewor{
+    .pccn-tewor {
       float: left;
-      .pccn-tenm{
+      .pccn-tenm {
         display: block;
         margin-bottom: 11px;
         line-height: 20px;
         color: #000;
         font-weight: 700;
       }
-      &>p{
+      & > p {
         color: #676767;
         font-size: 13px;
         line-height: 36px;
       }
-      .pccn-earea{
+      .pccn-earea {
         display: inline-block;
       }
     }
-    .pccn-tbell{
+    .pccn-tbell {
       float: left;
       max-width: 700px;
       overflow: hidden;
     }
-    .pccn-tbelr{
+    .pccn-tbelr {
       float: right;
       width: 192px;
       // 商品价格块
-      .pccn-elprc{
+      .pccn-elprc {
         margin-bottom: 22px;
         font-size: 25px;
         color: #fd0100;
@@ -433,7 +440,7 @@ export default {
         font-weight: 300;
         line-height: 50px;
       }
-      .pccn-btn1s{
+      .pccn-btn1s {
         display: inline-block;
         width: 89px;
         height: 29px;
@@ -443,12 +450,11 @@ export default {
         line-height: 29px;
         border-radius: 1px;
       }
-      .pccn-ebyim{
+      .pccn-ebyim {
         margin-right: 9px;
       }
     }
   }
 }
-
 </style>
  
