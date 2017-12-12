@@ -41,7 +41,7 @@ export default {
     };
   },
   methods:{
-    ...mapGetters(['getNum'])
+    // ...mapGetters(['getNum'])
   },
   created(){
     var that=this;

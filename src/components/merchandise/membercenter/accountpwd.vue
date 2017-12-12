@@ -44,9 +44,23 @@
         <!-- 所在地区 -->
         <div class="set-area">
           <div>所在地区：</div>
-          <el-row class="set-wrap hidden-xs-only">
+          <!-- <el-row class="set-wrap hidden-xs-only">
             <el-col :span="21"><v-distpicker class="set-dist-selec" province="省" city="市" area="区"></v-distpicker></el-col>
-          </el-row>
+          </el-row> -->
+          <div class="set-ssq">
+            <select name="" id="" @change="proChange" v-model="province">
+              <option value="0">省</option>
+              <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+            </select>
+            <select name="" id="" @change="cityChange" v-model="city">
+              <option value="0">市</option>
+              <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+            </select>
+            <select name="" id="" v-model="area">
+              <option value="">区</option>
+              <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
+            </select>
+          </div>
         </div>
         <!-- 保存 -->
         <div class="set-save">保存</div>
@@ -71,6 +85,7 @@
 </template>
 
 <script>
+import dist from '../../../districts/districts'
 export default {
   name: 'memaccount',
   data () {
@@ -79,10 +94,26 @@ export default {
       chastyle: 'sets',
       setone: true,
       settwo: false,
+      provinces:dist[100000],
+      citys:[],
+      areas:[],
+      province:'0',
+      city:'0',
+      area:'',
     }
     components: {}
   },
   methods: {
+    //三级联动
+    proChange(){
+      this.citys = dist[this.province];
+    },
+    cityChange(){
+      this.areas = dist[this.city];
+    },
+    selected(data){
+      this.distCode = data.area.code;
+    },
     setacc: function () {
       this.accstyle = 'set';
       this.chastyle = 'sets';
@@ -141,8 +172,12 @@ export default {
       // 所在地区
       .set-area{
         width: 100%;
-        .set-wrap{
-          width: 70%;
+        .set-ssq{
+          width: 50%;
+          select{
+            width: 30%;
+            height: 32px;
+          }
         }
       }
       // 当前头像
@@ -193,10 +228,6 @@ export default {
             height: 90%;
           }
         }
-      }
-      // 所在地区
-      .set-area{
-
       }
       // 保存
       .set-save{
