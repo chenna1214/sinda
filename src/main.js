@@ -13,7 +13,6 @@ import store from './store'
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
 Vue.prototype.qs = qs;
-Vue.prototype.qs = qs;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 

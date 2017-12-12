@@ -37,31 +37,30 @@
             <!-- 商品列表下方 -->
             <div class="pccny-g-wr">
               <ul class="pccn-tblti clear">
-                <li class="pccn-tbltg">商品</li>
-                <li class="pccn-tbltm">价格</li>
+                <li @click="descendingOrder" class="pccn-tbltg">商品</li>
+                <li @click="ascendingOrder" class="pccn-tbltm">价格</li>
               </ul>
               <!-- 商品列表 -->
               <ul class="pccn-tbody clear">
                 <!-- 单个元素 -->
-                <li class="pccn-tbelm clear">
+                <li v-for="product in products" class="pccn-tbelm clear">
                   <!-- 元素左侧 -->
                   <div class="pccn-tbell">
                     <router-link class="pccn-teimg" tag="div" to="/merchandise/productdetail">
-                      <img src="" alt="">
+                      <img  :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
                     </router-link>
                     <div class="pccn-tewor">
                       <router-link class="pccn-tenm" to="/merchandise/productdetail">
-                      注册分公司
-                      
+                      {{product.serviceName}}
                       </router-link>
-                      <p class="pccn-epmit">营业执照+5个章（公章、财务章</p>
-                      <p class="pccn-earea">信达北京服务中心</p>
-                      <p class="pccn-earea">北京-北京市-朝阳区</p>
+                      <p class="pccn-epmit">{{product.serviceInfo}}</p>
+                      <p class="pccn-earea">{{product.providerName}}</p>
+                      <p class="pccn-earea">{{product.regionName}}</p>
                     </div>
                   </div>
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
-                    <p class="pccn-elprc">￥ 800.00</p>
+                    <p class="pccn-elprc">￥ {{product.marketPrice}}</p>
                     <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
                       立即购买
                     </router-link>
@@ -97,7 +96,7 @@
               </li>
             </ul>
           </div>
-          {{trytry}}
+          <!-- {{trytry}} -->
         </el-col>
       </el-row>
      
@@ -126,17 +125,64 @@ export default {
     // 排序方式
     sortMothod: function(sortindex){
       this.sortindex = sortindex;
-    }
-  },
-  computed:{
-    trytry:function(){
+    },
+    // 升序
+    ascendingOrder :function(){
       var that = this;
-      this.ajax.post("/xinda-api/product/package/grid").then(data => {
-        that.dataInner = data.data.data;
-      });
-      return this.dataInner;
+      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
+      this.qs.stringify({
+        start:0,
+        limit:20,
+        productTypeCode: "1",
+        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
+        sort:2
+      })).then(function(data){
+      that.products = data.data.data;
+      })
+      this.products = that.products;
+    },
+    // 降序
+    descendingOrder :function(){
+      var that = this;
+      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
+      this.qs.stringify({
+        start:0,
+        limit:20,
+        productTypeCode: "1",
+        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
+        sort:3
+      })).then(
+        function(data){
+      that.products = data.data.data;
+      })
+      this.products = that.products;
     }
   },
+  created(){
+    var that = this;
+    this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/grid',
+    this.qs.stringify({
+        start:0,
+        limit:20,
+        productTypeCode: "1",
+        productId: "8a82f52b674543e298d2e5f685946e6e",//错误
+        sort:2
+      })).then(
+      function(data){
+      that.products = data.data.data;
+      console.log("data==",data);
+    })
+      this.products = that.products;
+  },
+  // computed:{
+  //   trytry:function(){
+  //     var that = this;
+  //     this.ajax.post("/xinda-api/product/package/grid").then(data => {
+  //       that.dataInner = data.data.data;
+  //     });
+  //     return this.dataInner;
+  //   }
+  // },
   data() {
     return {
       aaa: "",
@@ -144,6 +190,7 @@ export default {
       index: 0,
       sortindex: 0,
       dataInner:'123',
+      products: [],
       arr: [
         { item: "分公司注册" },
         { item: "公司注册地址" },
@@ -346,6 +393,9 @@ export default {
       width: 98px;
       height: 98px;
       border: 1px solid #ccc;
+      img{
+        width: 100%;
+      }
     }
     // 商品文字
     .pccn-tewor{
@@ -368,7 +418,7 @@ export default {
     }
     .pccn-tbell{
       float: left;
-      max-width: 376px;
+      max-width: 700px;
       overflow: hidden;
     }
     .pccn-tbelr{
