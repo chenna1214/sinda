@@ -53,10 +53,16 @@
         </div>
       </div>
     </div>
+
+
+
+
   </div>
 </template>
 
 <script>
+
+
 import dist from '../../districts/districts'
 var md5 = require('md5');
 export default {
@@ -81,7 +87,6 @@ export default {
       getNew:false,
       get:true,
       smsNumber:'',
-
     }
   },
   methods:{
@@ -131,7 +136,7 @@ export default {
                   this.get = true;
                   this.getNew = false;
                 }
-              },1000)
+              },1000)``
             }else{ //图片验证码输入错误
               // console.log('验证码输入错误');
               this.error="验证码输入错误";

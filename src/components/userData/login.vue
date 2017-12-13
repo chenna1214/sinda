@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'//改变数据
+
+
   var md5 = require('md5');
   export default {
     name: 'login',
@@ -55,6 +58,7 @@
       imgReflash: function() {
         this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
       },
+      ...mapActions(['setName']),//获得用户名
       //立即登录按钮动态
       now:function(){
         //检验手机号是否正确
@@ -103,6 +107,8 @@
               if(data.data.status=='1'){
                 location.href='#/merchandise/allProduct';
                 this.show=false;
+                this.setName(this.phone);//获得用户名
+
               }else{
                 this.error = data.data.msg;
                 this.show=true;

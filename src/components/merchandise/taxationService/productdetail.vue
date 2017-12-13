@@ -17,17 +17,13 @@
         <div class="parinf-serve">{{goods.info}}</div>
         <div class="parinf-price">
           <div>市场价： <del>￥{{goods.marketprice}}</del></div>
-          <div class="parpri-price">价  格： <p>￥{{goods.price}}元</p></div>
+          <div class="parpri-price">价  格： <p>￥{{goods.price*num}}元</p></div>
         </div>
         <!-- 类型 -->
         <div class="parinf-mold">
           <div>类型：</div>
           <div class="parinf-chose">
-            <div style="color: #2693d4;border-color: #2693d4;">代理记账（一年）</div>
-            <div>代理记账+取票+取银行回单（半年）</div>
-            <div>个人社保代理</div>
-            <div>代理个人公积金</div>
-            <div>个人代理公积金</div>
+            <div>{{goods.servicename}}</div>
           </div>
         </div>
         <!-- 地址 -->
@@ -37,12 +33,12 @@
         </div>
         <!-- 购买数量 -->
         <div class="parinf-num">
-          购买数量：<input type="number" @change="addsubtract">
+          购买数量：<input type="number" @change="addsubtract" v-model="num">
         </div>
         <!-- 立即购买，加入购物车 -->
         <div class="parinf-btn">
           <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link>
-          <button>加入购物车</button>
+          <button @click="join">加入购物车</button>
         </div>
       </div>
       <!-- 右边 -->
@@ -52,7 +48,7 @@
         <div>
           联系： <button class="parcon-btn" @click="refer">马上咨询</button>
         </div>
-        <div class="parcon-a"><a href="#/merchandise/pc_shophp">查看服务商</a></div>
+        <div class="parcon-div" @click="toShophp((goods.providerProduct).regionId)">查看服务商</div>
       </div>
     </div>
     <!-- 广告 -->
@@ -201,11 +197,13 @@
 </template>
 
 <script>
+  import { mapActions} from "vuex"; //显示数据
+
   export default {
     name: "productdetail",
       created() {
       var that = this;
-      console.log('this.$router.query.id ==',this.$route.query.id );
+      // console.log('this.$router.query.id ==',this.$route.query.id );
       // 商品详情页的评价
       this.ajax.post("/xinda-api/product/judge/detail",
         this.qs.stringify({
@@ -236,6 +234,7 @@
           that.goods.servicename = that.goods.providerProduct.serviceName;//名字
           that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
+          console.log(good)
         });
     },
 
@@ -247,10 +246,28 @@
         actstyle: 'chose',
         tastyle: 'choses',
         smstyle: 'choses',
+        num: 1,
       };
     },
     methods: {
-      // 用的是dom操作，麻烦
+      //加入购物车
+       ...mapActions(["setNum"]),
+       join () {
+        this.setNum();
+        this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: 1 }))
+        .then(function(data) {
+          console.log(data);
+        });
+       },
+
+      // 去店铺首页界面
+      toShophp (id) {
+        this.$router.push({
+          path: '/merchandise/pc_shophp',
+          query: {id: id}
+        });
+      },
+
       fuwu: function() {
         document.querySelector('.eva-serve').style.display = 'block';
         document.querySelector('.evatop-one').style.color = '#fff';
@@ -360,19 +377,16 @@ button{
       width: 96%;
       font-size: 14px;
       margin: 0 auto;
-      margin-top: 1.5%;
+      margin-top: 3%;
       display: flex;
       .parinf-chose{
         margin-left: 7%;
         >div{
+          color: #2693d4;
           line-height: 35px;
-          border: 1px solid #ccc;
+          border: 1px solid #2693d4;
           text-align: center;
           margin-bottom: 2%;
-          &:hover{
-            color: #2693d4;
-            border-color: #2693d4;
-          }
         }
       }
     }
@@ -444,20 +458,17 @@ button{
         margin-left: 8%;
       }
     }
-    .parcon-a{
+    .parcon-div{
       width: 40%;
       line-height: 40px;
+      text-align: center;
       background-color: #2693d4;
-      border-radius: 13px;
-      margin: 6% 0 6% 28%;
-      a {
-        width: 100%;
-        // height: 41px;
-        padding: 6%;
-        text-decoration: none;
-        font-size: 17px;
-        color: #fff;
-      }
+      color: #fff;
+      font-size: 17px;
+      border-radius: 3px;
+      margin: 0 auto;
+      margin-top: 8%;
+      margin-bottom: 8%;
     }
   }
 }
