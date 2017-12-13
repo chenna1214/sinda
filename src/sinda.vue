@@ -33,4 +33,7 @@ export default {
 .fontColor .el-dialog__body{
   color: black;
 }
+.pcChoosedCity {//网页头部---点击被选择城市后，字的颜色变蓝
+  color: #2693d4;
+}
 </style>

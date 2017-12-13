@@ -9,29 +9,31 @@
     <div class="pro-parciaular" :key="goods.id">
       <!-- 左边 -->
       <div class="par-img">
-        <img src="../pc_images/pc_login.png" alt="">
+        <img :src="'http://115.182.107.203:8088/xinda/pic'+goods.img" alt="">
       </div>
       <!-- 中间 -->
       <div class="par-infor">
-        <div class="parinf-acting">{{goods.serviceName}}</div>
-        <div class="parinf-serve">6个月小规模企业代理记账服务</div>
+        <div class="parinf-acting">{{goods.servicename}}</div>
+        <div class="parinf-serve">{{goods.info}}</div>
         <div class="parinf-price">
-          <div>市场价： <del>￥2000.00</del></div>
-          <div class="parpri-price">价  格： <p>￥1200.00元</p></div>
+          <div>市场价： <del>￥{{goods.marketprice}}</del></div>
+          <div class="parpri-price">价  格： <p>￥{{goods.price}}元</p></div>
         </div>
         <!-- 类型 -->
         <div class="parinf-mold">
           <div>类型：</div>
           <div class="parinf-chose">
-            <div style="color: #2693d4;border-color: #2693d4;">代理记账（半年）</div>
+            <div style="color: #2693d4;border-color: #2693d4;">代理记账（一年）</div>
             <div>代理记账+取票+取银行回单（半年）</div>
-            <div>小规模记账（一年）</div>
+            <div>个人社保代理</div>
+            <div>代理个人公积金</div>
+            <div>个人代理公积金</div>
           </div>
         </div>
         <!-- 地址 -->
         <div class="parinf-address">
           <div>地区：</div>
-          <div class="parinf-detailed">北京-北京市-朝阳区</div>
+          <div class="parinf-detailed">{{goods.regionText}}</div>
         </div>
         <!-- 购买数量 -->
         <div class="parinf-num">
@@ -67,17 +69,7 @@
       <!-- 身体 -->
       <div class="eva-body">
         <!-- 服务内容 -->
-        <div class="eva-serve">
-          <ul>
-            <li>服务内容：</li>
-            <li>1.整理原始票据</li>
-            <li>2.记账</li>
-            <li>3.装订凭证</li>
-            <li>4.出报表</li>
-            <li>5.月报、季度企业所得税、年度汇算清缴</li>
-            <li>6.打印总帐、明晰账本</li>
-          </ul>
-        </div>
+        <div class="eva-serve" v-html="goods.content"></div>
         <!-- 商品评价 -->
         <div class="eva-app" style="display: none;">
           <!-- 上 -->
@@ -213,42 +205,40 @@
     name: "productdetail",
     created() {
       var that = this;
+      console.log('this.$router.query.id ==',this.$route.query.id );
       // 商品详情页的评价
-      this.ajax.post("http://115.182.107.203:8088/xinda/xinda-api/product/judge/detail",
-        this.qs.stringify({serviceId:'efddc8a338944e998ff2a7142246362b'})).then(function (data) {
+      this.ajax.post("/xinda-api/product/judge/detail",
+        this.qs.stringify({
+          serviceId: this.$route.query.id,
+          })).then(function (data) {
           var prodata = data.data.data;
           that.proevas = prodata;
         });
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/judge/grid',
-        this.qs.stringify({start:0,limit:10,serviceId:'efddc8a338944e998ff2a7142246362b',type:1})).then(function (eva) {
-        // console.log(eva.data)
+      this.ajax.post('/xinda-api/product/judge/grid',
+        this.qs.stringify({
+          start:0,
+          limit:10,
+          serviceId: this.$route.query.id,
+          type:1,
+          })).then(function (eva) {
+            // console.log(eva.data)
       });
 
       // 相对路径
-      console.log('this.$router.query.id ==',this.$route.query.id );
       this.ajax.post('/xinda-api/product/package/detail',
         this.qs.stringify({
-          start:0,
-          limit:8,
-          productTypeCode: "1",
-          sId:this.$route.query.id,
-          sort:2
+          sId: this.$route.query.id,
         })).then(function (data) {
-          var goodata = goo.data.data;
-          that.goods = goodata;
-          for(var i in goodata){
-            console.log(goodata[i].serviceName)
-
-          }
+          var good = data.data.data
+          that.goods = good;
+          that.goods.marketprice = that.goods.product.marketPrice;//市场价
+          that.goods.img = that.goods.product.img;//图片
+          that.goods.price = that.goods.providerProduct.price;//价格
+          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
+          that.goods.info = that.goods.providerProduct.serviceInfo;//介绍
+          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
         });
 
-
-
-      // this.ajax.post("/xinda-api/product/package/detail",this.qs.stringify({sId:this.$route.query.id }))
-      //   .then(function(data) {
-      //     var prodata = data.data.data;
-      //     console.log('prodata==',prodata);
-      //   });
     },
     data() {
       return {
@@ -294,7 +284,7 @@
         var parinfNum = document.querySelector('.parinf-num input').value;
         if(parinfNum <= 0){//变为0太慢了
           console.log(parinfNum=0)
-          document.querySelector('.parinf-num input').value = 0;
+          document.querySelector('.parinf-num input').value = 1;
         }
       },
     }
@@ -313,6 +303,7 @@ button{
 .prodetail {
   width: 78%;
   margin: 0 auto;
+  margin-bottom: 2%;
 }
 .pro-top {
   font-size: 14px;
@@ -322,12 +313,11 @@ button{
 // 商品详情的样式
 .pro-parciaular {
   width: 100%;
-  height: 20%;
   margin-top: 2%;
+  margin-bottom: 7%;
   display: flex;
   .par-img {
     width: 30%;
-    height: 100%;
     img {
       width: 100%;
       height: 100%;
@@ -369,7 +359,6 @@ button{
     // 类型
     .parinf-mold{
       width: 96%;
-      height: 34%;
       font-size: 14px;
       margin: 0 auto;
       margin-top: 1.5%;
@@ -516,16 +505,13 @@ button{
   }
   // 服务内容
   .eva-serve {
+    width: 80%;
     margin-bottom: 10%;
-    ul {
-      margin-left: 3%;
-      margin-top: 2%;
-      li {
-        list-style: none;
-        color: #686868;
-        line-height: 40px;
-      }
-    }
+    margin-left: 3%;
+    margin-top: 2%;
+    text-indent: 2em;
+    color: #686868;
+    line-height: 40px;
   }
   // 上
   .app-percent{

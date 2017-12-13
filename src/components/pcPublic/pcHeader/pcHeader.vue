@@ -5,29 +5,37 @@
       <el-row>
         <div class="pcHeaderTopContent"><!-- 上半部分内容 -->
 <el-col :sm="5" :md="5" :lg="6">
-<div class="pcHeaderLeft"><!-- 上半部分内容--左边 -->
-<img src="../../images/icon/sindaTextIcon.png" alt="信达" class="pcHeaderLeftsindaTextIcon">
-<div class="pcHeaderCityBox">
-  <p class="pcHeaderCityText">{{pcChoosedCity}}</p><!-- 当前已选城市 -->
-  <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button><!-- 切换城市按钮 -->
-<el-dialog
-  title="选择城市"
-  :visible.sync="dialogVisible"
-  width="30%"
->
- <span v-for="eachCity in pcCityName" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="handleCan()">取 消</el-button>
-    <el-button @click="handleCon()">确 定</el-button>
-  </span>
-</el-dialog>
 
-</div>
+<div class="pcHeaderLeft"><!-- 上半部分内容--左边 -->
+<img src="../../images/icon/sindaTextIcon.png" class="pcHeaderLeftsindaTextIcon">
+
+
+
+  <div class="pcHeaderCityBox">
+    <p class="pcHeaderCityText">{{pcChoosedCity.name}}</p><!-- 当前已选城市 -->
+    <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button><!-- 切换城市按钮 -->
+  <el-dialog
+    title="选择城市"
+    :visible.sync="dialogVisible"
+    width="30%"
+  >
+  <span v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="handleCan()">取 消</el-button>
+      <el-button @click="handleCon()">确 定</el-button>
+    </span>
+  </el-dialog>
+  </div>
+
+
+
+
+
   </div>
   </el-col>
 <el-col :sm="19" :md="14" :lg="12">
   <div><!-- 上半部分内容--中间 -->
-<span class="pcHeaderChangeCityText pcHeaderMiddleProductText">产品|</span>
+<span class="pcHeaderChangeCityText pcHeaderMiddleProductText" >产品|</span>
 <span class="pcHeaderCityText">服务商</span><br>
 <input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()' v-model="serVal"><!-- 模糊搜索 -->
 <!-- 匹配搜索内容 -->
@@ -49,46 +57,8 @@
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
         <el-col :sm="7" :md="7" :lg="7"><a href="#/merchandise/shop" class="pcHeaderBottomLink">店铺</a></el-col>
       </el-row>
-
     </div></el-col>
     </el-row>
-
-
-<!-- <el-row>
-   <el-col :sm="{span:19,offset:8}" :md="{span:14,offset:8}" :lg="{span:4,offset:8}">
-    <div v-for="(eachSer,index) in serchMatch" :key="eachSer.providerName" class="pcSerBox">
-      <p class="pcSerTil">{{eachSer.providerName}}</p> -->
-      <!-- <el-row>
-        <el-col  class="pcSerTil">{{eachSer.providerName}}</el-col>
-      </el-row> -->
-        <!-- <el-row>
-        <el-col  class="serContent">
-          <span class="pcSerTil">产品类型：</span>
-          <span>{{eachSer.productTypes}}</span>
-        </el-col>
-      </el-row> -->
-      <!-- <el-row>
-        <el-col class="serContent">
-          <span class="pcSerTil">产品：</span>
-          <span>{{eachSer.products}}</span>
-        </el-col>
-      </el-row> -->
-      <!-- <el-row>
-        <el-col  class="serContent">
-          <span class="pcSerTil">服务介绍：</span>
-          <span>{{eachSer.providerInfo}}</span>
-        </el-col>
-      </el-row> -->
-    <!-- </div>
-  </el-col>
-</el-row> -->
-
-
-
-<p @click="goodsNum()">购买</p>
-
-
-
    </div>
    
 </template>
@@ -96,6 +66,9 @@
 <script>
 import Vue from "vue";
 import{mapActions} from 'vuex'
+import getCitys from './public'//向服务器请求城市数据
+
+
 export default {
   name: "pcHeader",
   mounted() {
@@ -123,8 +96,8 @@ export default {
   },
   data() {
     return {
-      pcChoosedCity: "", //当前已选城市
-      pcCityName: [], //已开通城市名称
+      pcChoosedCity: {name:''}, //当前已选城市
+      pcCityNameSuc: {city:''}, //已开通城市名称
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
       pcChoosedNum: 0, //判断用户是否选择城市
       searchArr: [], //搜索源
@@ -134,26 +107,13 @@ export default {
     };
   },
   created() {
-    var that = this;
-    this.ajax.post("/xinda-api/common/select-region").then(data => {
-      //当前已选城市
-      that.pcChoosedCity = data.data.data.name;
-    });
-    this.ajax.post("/xinda-api/common/open-region").then(data => {
-      //已开通城市？问题：确认是否正确
-      var pcCityExist = data.data.data;
-      for (var key in pcCityExist) {
-        var pcCityId = pcCityExist[key].id;
-        var pcCityName = pcCityExist[key].name;
-        that.pcCityName.push(pcCityName);
-      }
-    });
+    getCitys(this.pcChoosedCity,this.pcCityNameSuc);
   },
   methods: {
     ...mapActions(['setNum']),
-    // goodsNum(){
-    //   this.setNum();
-    // },
+    goodsNum(){
+      this.setNum();
+    },
     pcChoosed() {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;
@@ -265,9 +225,9 @@ export default {
   color: #2693d4;
   text-align: center;
 }
-.pcChoosedCity {
-  color: #2693d4;
-}
+// .pcChoosedCity {
+//   color: #2693d4;
+// }
 // 如何引用公共less
 .pcHeaderOutter {
   border-bottom: 1px solid #2693d4;

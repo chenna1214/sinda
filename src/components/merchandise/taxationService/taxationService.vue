@@ -48,8 +48,8 @@
                       <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
                     </div>
                     <div class="pccn-tewor">
-                      <p class="pccn-tenm" >
-                      {{product.serviceName}}
+                      <p @click="toDetail(product.id)" class="pccn-tenm" >
+                        {{product.serviceName}}
                       </p>
                       <p class="pccn-epmit">{{product.serviceInfo}}</p>
                       <p class="pccn-earea">{{product.providerName}}</p>
@@ -62,7 +62,7 @@
                     <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
                       立即购买
                     </router-link> -->
-                    <a class="pccn-ebyim pccn-btn1s" @click="addToCart(product.id)" href="/merchandise/productdetail">立即购买</a>
+                    <a href="javascript:void(0)" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
                     <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
                       加入购物车 {{idx}}
                     </router-link> -->
@@ -117,6 +117,9 @@ export default {
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
+    togoodsOrder(id){
+      this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
+    },
     // 商品排序方式
     ascendingOrder :function(sortindex){
       this.sortindex = sortindex;      
@@ -127,7 +130,6 @@ export default {
       that.products = data.data.data;
       })
       this.products = that.products;
-      // console.log('正常===',this.products)
     },
     // 添加到购物车
     addToCart: function(itsid){
@@ -139,12 +141,11 @@ export default {
       this.ajax.post('/xinda-api/cart/add',
       this.qs.stringify({id:itsid,num:1})).then(
         function(data){
-       console.log(data)
+        console.log(data);
       })
     }
   },
   created(){
-    
     var that = this;
     this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid',
     this.qs.stringify({start:0,limit:8,searchName:'代理',sort:2})).then(

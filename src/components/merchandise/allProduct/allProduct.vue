@@ -1,11 +1,40 @@
 <template>
   <div>
     <div class="pcAllProduct">
+      <div class="telCompanyIconBox hidden-sm-and-up">
+        <img src="../../images/icon/sindaTextIcon.png">
+      </div>
+      <!-- 手机端--选择城市 -->
+      <!-- <div class="pcHeaderCityBox hidden-sm-and-up"> -->
+        <div class="telHeaderBox" @click="telMenu()"><!-- 选择城市下拉框 -->
+          <span class="telArrow" :class="{telTranDeg:isShow==true}">></span>
+          <span class="telChoosedCity">{{pcChoosedCity.name}}</span><!-- 已经选择的城市 -->
+        </div>
+        <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
+        <!-- 手机端--头部导航栏 -->
+        <div class="telNav">
+          <div>
+            <img src="" >
+          </div>
+          <p></p>
+        </div>
+   
+
+
+
+
+
+
+
+
+
+
+
       <!-- 全部产品--轮播左边的导航 -->
         <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
           <el-col :sm="4" :md="4" :lg="4">
-              <div class="pcAllProductHeaderInner" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
-                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg">
+              <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
+                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg hidden-sm-and-down">
                   <div class="pcAllProductHeader-taxText">
                     <span>{{rDataObj.name}}</span><br>
                     <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
@@ -13,30 +42,40 @@
               </div>
           </el-col>
           <el-col :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
-            <div class="pcAllProTil" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
+            <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
                <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
                 <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
                </div>
             </div>
           </el-col>
       </el-row>
-<!-- 全部产品--轮播图片 -->
-<el-col :sm="20" :md="20" :lg="{span:20,offset:4}" class="pcAllProCarousel">
+<!-- 全部产品--xs以上--轮播图片 -->
+<el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" class="pcAllProCarousel hidden-xs-only">
     <el-carousel trigger="click" height="400px">
      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
       </el-carousel-item>
     </el-carousel>
   </el-col>
+<!-- 全部产品--xs以下--轮播图片 -->
+  <el-row class="hidden-sm-and-up">
+    <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" >
+      <el-carousel trigger="click" height="280px">
+      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
+        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+        </el-carousel-item>
+      </el-carousel>
+    </el-col>
+  </el-row>
 <!-- 明星产品推荐标题 -->
-  <el-row>
+  <el-row class="hidden-xs-only">
     <el-col>
       <p class="pcAllProColumn">明星产品推荐</p>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
 <!-- 明星产品推荐文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
     <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn starBox">
@@ -49,15 +88,15 @@
       </div>
     </el-col>
   </el-row>
-<!-- 初创企业必备标题 -->
-  <el-row>
+<!-- 初创企业必备标题--xs以上 -->
+  <el-row class="hidden-xs-only">
     <el-col>
       <p class="pcAllProColumn">初创企业必备</p>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
-<!-- 初创企业必备文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox">
+<!-- 初创企业必备文章列表--xs以上 -->
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
     <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
@@ -71,6 +110,7 @@
       </div>
     </el-col>
   </el-row>
+
   <!-- 知识产权标题 -->
   <el-row>
     <el-col>
@@ -81,7 +121,7 @@
   <!-- 知识产权图片列表 -->
   <el-row>
     <el-col :sm="8" :md="8" :lg="8">
-      <img src="../../images/allProduct/k1.png" class="pcKnoImg">
+      <img src="../../images/allProduct/k1.png" class="pcKnoImg hidden-xs-only">
     </el-col>
     <el-col :sm="16" :md="16" :lg="16">
       <div class="pcKnoLeftBox">
@@ -91,18 +131,37 @@
       </div>
     </el-col>
   </el-row>
+  <!-- 初创企业必备标题--xs以上 -->
+  <el-row class="hidden-sm-and-up">
+    <el-col>
+      <p class="pcAllProColumn">初创企业必备</p>
+      <div class="pcAllProLine"></div>
+    </el-col>
+  </el-row>
+    <!-- 初创企业必备文章列表--xs以下--手机端 -->
+  <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
+      <el-col :xs="5"><img :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
+      <el-col :xs="{span:18,offset:1}">
+        <div>
+          <p class="telCreatText">{{product.serviceName}}</p>
+          <p class="telCreatInfo" >{{product.serviceInfo}}</p>
+          <span class="telCreatemarketPrice">￥{{product.marketPrice}}</span>
+          <span class="telCreateunit" >{{product.unit}}</span>
+        </div>
+      </el-col>
+  </el-row>
   <!-- 通栏图片 -->
-  <img src="../../images/allProduct/u100.png" alt="" class="pcAd">
+  <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
 
 <!-- 推荐服务商标题 -->
   <el-row>
-    <el-col class="pcRecTilBox">
+    <el-col class="pcRecTilBox hidden-xs-only">
        <span class="pcAllProColumn" :class="{pcRecCliAft:pcSerSty==index}" v-for='(pcSerCli,index) in pcSerCliList' :key='pcSerCli' @click='pcSerClick(index)'>{{pcSerCli}}</span>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
 <!-- 推荐服务商文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer==index'>
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer==index'>
     <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.id">
       <div class="pcAllProStarOut">
         <!-- <div class="pcAllProStarIn"> -->
@@ -110,7 +169,6 @@
           <div class="pcSerIcon pcSerLoc">
             <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
           </div>
-          
           <p class="pcCreateServieceNameP pcSerLoc">{{pcRecommend.providerName}}</p>
           <p class="pcoCreateServiceInfoP pcSerLoc">服务指数：8.9分</p>
           <p class="pcoCreateServiceInfoP pcSerLoc">提供的服务</p>
@@ -121,7 +179,7 @@
   </el-row>
 
 <!-- 推荐服务文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox"  v-show='pcSer!==index'>
+ <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer!==index'>
     <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
       <div class="pcAllProStarOut">
         <div class="pcAllProStarIn">
@@ -138,23 +196,26 @@
 
 
   <!-- 合作伙伴必备标题 -->
-  <el-row>
+  <el-row class="hidden-xs-only">
     <el-col>
       <p class="pcAllProColumn">合作伙伴</p>
       <div class="pcAllProLine"></div>
     </el-col>
   </el-row>
-  <img src="../../images/allProduct/u246.png" class="pcFri">
+  <img src="../../images/allProduct/u246.png" class="pcFri hidden-xs-only">
 
 
     </div>
   </div>
+  
 </template>
 
 <script>
+import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
 export default {
   name: "allProduct",
   created() {
+    getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     var that = this; //this是指main.js中的new Vue
     this.ajax //获取全部产品的轮播左边的导航栏
       .post("http://115.182.107.203:8088/xinda/xinda-api/product/style/list")
@@ -174,9 +235,7 @@ export default {
       });
 
     this.ajax //推荐服务商
-      .post(
-        "/xinda-api/product/package/search-grid"
-      )
+      .post("/xinda-api/product/package/search-grid")
       .then(function(data) {
         var recommendR = data.data.data;
         var preServer = [];
@@ -199,6 +258,23 @@ export default {
   mounted() {},
   data() {
     return {
+      //手机端
+      isShow: false, //控制选择城市下拉框的出现与消失的初始值
+      pcChoosedNum: 0, //判断用户是否选择城市
+      pcChoosedCity: { name: "" }, //当前已选城市
+      pcCityNameSuc: { city: "" }, //已开通城市名称
+      telNavInfo: ['财税服务', '开公司', '公司变更', '个人社保', '公司社保', '知识产权', '全部服务'], //手机端--头部导航文字
+      telNavImg: [
+        //手机端--头部导航图片
+        "../../images/telIndex/m_homepage1.png",
+        "../../images/telIndex/m_homepage2.png",
+        "../../images/telIndex/m_homepage3.png",
+        "../../images/telIndex/m_homepage4.png",
+        "../../images/telIndex/m_homepage5.png",
+        "../../images/telIndex/m_homepage6.png",
+        "../../images/telIndex/m_homepage7.png"
+      ],
+      //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcSer: -1, //推荐服务商的标题click的变量
       pcSerCliList: ["推荐服务商", "推荐服务"],
@@ -220,38 +296,39 @@ export default {
         "src/components/images/allProduct/icon3.png",
         "src/components/images/allProduct/icon4.png"
       ],
-      starList: [//明星产品推荐文章列表
+      starList: [
+        //明星产品推荐文章列表
         {
-          id:'1',
+          id: "1",
           img: "star1.png",
           til: "标准五险一金",
           info: "定制化社保代理，定制化代缴服务",
-          money: '20',
-          unit: '元/人/月'
+          money: "20",
+          unit: "元/人/月"
         },
         {
-          id:'2',
+          id: "2",
           img: "star2.png",
           til: "内资有限公司注册",
           info: "一键完成注册，快速开办公司",
-          money: '600',
-          unit: '元/次'
+          money: "600",
+          unit: "元/次"
         },
         {
-          id:'3',
+          id: "3",
           img: "star3.png",
           til: "小规模代理记账/年",
           info: "专业会计报税，高效、便捷、贴心",
-          money: '3000',
-          unit: '元/年'
+          money: "3000",
+          unit: "元/年"
         },
         {
-          id:'4',
+          id: "4",
           img: "star3.png",
           til: "国内普通商标注册",
           info: "次日提交商标申请，最快保护品牌价值",
-          money: '1000',
-          unit: '元/次'
+          money: "1000",
+          unit: "元/次"
         }
       ]
     };
@@ -269,15 +346,26 @@ export default {
       if (index == 0) {
         this.pcSer = -1;
       }
+    },
+    telMenu() {
+      //选择城市下拉框
+      this.isShow = !this.isShow;
+      this.pcChoosedNum = 0;
+    },
+    pcChoosed() {
+      //判断用户是否选择城市
+      this.pcChoosedNum = 1;
     }
   }
 };
 </script>
 
 <style scoped lang='less'>
+//pc端
 .pcCarouselImg {
   padding-bottom: 40%;
   width: 100%;
+  height: 400px;
 }
 .pcAllProduct {
   max-width: 1200px;
@@ -298,11 +386,13 @@ export default {
   height: 47px;
 }
 .pcAllProductHeader-taxText {
-  padding-left: 5px;
+  // padding-left: 5px;
+  padding-left: 3%;
   span {
     color: white;
     font-size: 12px;
-    width: 51px;
+    // width: 51px;
+    width: 50%;
     display: inline-block;
   }
   span:nth-child(1) {
@@ -382,13 +472,13 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
-.pcSerBox{
+.pcSerBox {
   height: 382px;
   background: #fafafa;
   text-align: center;
 }
-.pcSerIcon{
-   display: flex;
+.pcSerIcon {
+  display: flex;
   justify-content: center;
 }
 //初创企业必备
@@ -445,9 +535,8 @@ export default {
   margin-bottom: 5%;
   background: #ffecb7;
   border: 1px solid #ffecb7;
- 
 }
-.pcSerLoc{
+.pcSerLoc {
   margin-bottom: 30px;
 }
 .pcShowAll:hover {
@@ -512,18 +601,88 @@ export default {
   width: 48.33%;
   height: 32.33%;
 }
-.starInfo{
+.starInfo {
   font-size: 14px;
   color: #656565;
 }
-.starBox{
-  p{
-    width:90%;
+.starBox {
+  p {
+    width: 90%;
     padding-left: 8%;
-    padding-right:8%;
+    padding-right: 8%;
   }
-  span{
+  span {
     text-align: center;
   }
+}
+//手机端
+//初创企业必备文章列表--xs以下--手机端
+.telCreatBox {
+  padding-top: 27px;
+  padding-bottom: 20px;
+  padding-left: 17px;
+  padding-right: 40px;
+  border-bottom: 1px solid #cfcfcf;
+}
+.telCreatText {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 19px;
+}
+.telCreatInfo {
+  font-size: 11px;
+  margin-bottom: 19px;
+}
+.telCreatImg {
+  width: 88%;
+  height: 88%;
+}
+.telCreateunit {
+  font-size: 14px;
+}
+.telCreatemarketPrice {
+  color: red;
+  font-size: 24px;
+}
+//手机端--头部
+.telCompanyIconBox {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.telChoosedCity {
+  font-size: 23px;
+}
+.telArrow {
+  transform: rotate(90deg);
+  display: inline-block;
+}
+.telHeaderBox {
+  position: absolute;
+  z-index: 600;
+  top: 20px;
+  left: 2%;
+}
+.telMenuBox {
+  // background: white;
+  background: rgba(255, 255, 255, 0.8);
+  width: 93px;
+  padding-top: 8px;
+  border: 1px solid;
+  border-top: none;
+  padding-bottom: 8px;
+  position: absolute;
+  z-index: 600;
+  top: 50px;
+  left: 2%;
+  p {
+    text-align: center;
+    font-size: 16px;
+  }
+}
+.telTranDeg {
+  transform: rotate(-90deg);
+  display: inline-block;
 }
 </style>
