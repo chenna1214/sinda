@@ -11,12 +11,12 @@
             <!-- 提示的错误信息 -->
             <p class="wrongTip">{{error}}</p>
           </div>
-          <input class="field" type="text" placeholder="请输入手机号码" v-model="phone" @blur="numbers">
-          <input class="field" type="password" placeholder="请输入密码" v-model="pass" @blur="passwor">
+          <input class="field" type="text" placeholder="请输入手机号码" v-model="phone">
+          <input class="field" type="password" placeholder="请输入密码" v-model="pass">
           <div>
-            <input class="import" type="text" placeholder="请输入验证码">
-            <div class="verify">
-              <img src="http://115.182.107.203:8088/xinda/xinda-api/ajaxAuthcode" alt="">
+            <input class="import" type="text" placeholder="请输入验证码" v-model="imgCode">
+            <div class="verify" @click="imgReflash">
+              <img :src="imgUrl">
             </div>
           </div>
           <a href="#/userData/forgetPassword">忘记密码?</a><br>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+  var md5 = require('md5');
   export default {
     name: 'login',
     data () {
@@ -43,61 +44,78 @@
         phone:'',
         error:'',
         show:false,
-        pass:'',
+        pass:'',//验证码
+        imgCode:'',
+        imgUrl:'/xinda-api/ajaxAuthcode',
 
       }
     },
     methods:{
+      //验证码图片点击切换
+      imgReflash: function() {
+        this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+      },
+      //立即登录按钮动态
       now:function(){
-
-      },
-      //检验手机号是否正确
-      numbers:function (){
+        //检验手机号是否正确
         if(this.phone){
-           if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){
-              this.error="请输入正确的手机号码";
-              this.show=true;
-              return;
-            }else{
-              this.show=false;           
-            }
-        }else{
-            //提示手机号不能为空
-            this.error="手机号码不能为空";
-            this.show=true;
-              return;            
-        }
-      },
-      //检验密码是否正确
-      passwor:function(){
-        if(this.pass){
-           if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
-              this.error="请输入正确的密码";
-              this.show=true;
-              return;              
-            }else{
-              this.show=false;     
-            }
-        }else{
-            //提示密码不能为空
-            this.error="密码不能为空";
+          if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){  //手机号输入错误
+            this.error="请输入正确的手机号码";
             this.show=true;
             return;
+          }else{   //手机号输入正确
+            this.show=false;
+          }
+        }else{  //手机号为空
+          this.error="手机号码不能为空";
+          this.show=true;
+          return;            
+        }
+        //检验密码是否正确
+        if(this.pass){
+           if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){ //密码错误时
+              this.error="请输入正确的密码";
+              this.show=true;
+              return;
+            }else{ //密码正确时
+              this.show=false;
+            }
+        }else{//密码为空时
+          this.error="密码不能为空";
+          this.show=true;
+          return;
+        }
+        //验证码本地检验
+        if(this.imgCode){
+          if(!/^[0-9A-Za-z]{4}$/.test(this.imgCode)){
+            this.error="验证码输入错误";
+            this.show=true;
+            return;
+          }else{
+            this.show=false;
+            //验证码接口检验
+            this.ajax.post('/xinda-api/sso/login',this.qs.stringify({
+              loginId: this.phone,
+              password: md5(this.pass), 
+              imgCode: this.imgCode,
+            })).then(data => {
+              console.log('验证码接口返回',data,data.data.status,data.data.msg);
+              if(data.data.status=='1'){
+                location.href='#/merchandise/allProduct';
+                this.show=false;
+              }else{
+                this.error = data.data.msg;
+                this.show=true;
+                return;
+              }
+            })
+          }
+        }else{
+          this.error="验证码不能为空";
+          this.show=true;
+          return;
         }
       },
-      // now:function(){
-      //     this.ajax.post('/xinda-api/sso/login',{
-      //       loginId: 12345678901,
-      //       password:'46f94c8de14fb36680850768ff1b7f2a', 
-      //       imgCode:'gb4n'
-      //     }).then(function(data){
-      //       if(data.status=='1'){
-      //           location.href=''
-      //       }else{
-
-      //       }
-      //     })
-      // }
     }
   }
 </script>

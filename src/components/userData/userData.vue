@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  var md5 = require('md5');
 export default {
   name: 'userData',
   data () {
