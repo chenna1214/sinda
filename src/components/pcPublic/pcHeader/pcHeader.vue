@@ -67,7 +67,6 @@
 import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
-// import {moreFn} from './public'
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
 
 export default {
