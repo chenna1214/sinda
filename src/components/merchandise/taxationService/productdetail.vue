@@ -223,7 +223,6 @@
           })).then(function (eva) {
             // console.log(eva.data)
       });
-<<<<<<< HEAD
       // 相对路径
       this.ajax.post('/xinda-api/product/package/detail',
         this.qs.stringify({
@@ -238,30 +237,6 @@
           that.goods.info = that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
         });
-=======
-
-      // 相对路径
-      console.log('this.$router.query.id ==',this.$route.query.id );
-      this.ajax.post('/xinda-api/product/package/detail',
-        this.qs.stringify({
-          start:0,
-          limit:8,
-          productTypeCode: "1",
-          sId:this.$route.query.id,
-          sort:2
-        })).then(function (data) {
-          var goodata = data.data.data;
-          that.goods = goodata;
-        });
-
-
-
-      // this.ajax.post("/xinda-api/product/package/detail",this.qs.stringify({sId:this.$route.query.id }))
-      //   .then(function(data) {
-      //     var prodata = data.data.data;
-      //     console.log('prodata==',prodata);
-      //   });
->>>>>>> b304bbc32664efce45237553e23ffb26dafb8d6e
     },
     data() {
       return {
