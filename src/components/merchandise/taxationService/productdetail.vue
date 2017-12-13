@@ -238,6 +238,7 @@
           that.goods.info = that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
         });
+
     },
     data() {
       return {
