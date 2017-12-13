@@ -211,61 +211,42 @@
 <script>
   export default {
     name: "productdetail",
-    created() {
+      created() {
       var that = this;
+      console.log('this.$router.query.id ==',this.$route.query.id);
       // 商品详情页的评价
-      this.ajax.post("http://115.182.107.203:8088/xinda/xinda-api/product/judge/detail",
-        this.qs.stringify({serviceId:'efddc8a338944e998ff2a7142246362b'})).then(function (data) {
+      this.ajax.post("/xinda-api/product/judge/detail",
+        this.qs.stringify({
+          serviceId: this.$route.query.id,
+          })).then(function (data) {
           var prodata = data.data.data;
           that.proevas = prodata;
         });
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/judge/grid',
-        this.qs.stringify({start:0,limit:10,serviceId:'efddc8a338944e998ff2a7142246362b',type:1})).then(function (eva) {
-        // console.log(eva.data)
-      });
-
-<<<<<<< HEAD
-      // 相对路径
-      console.log('this.$router.query.id ==',this.$route.query.id );
-      this.ajax.post('/xinda-api/product/package/detail',
+      this.ajax.post('/xinda-api/product/judge/grid',
         this.qs.stringify({
           start:0,
-          limit:8,
-          productTypeCode: "1",
-          sId:this.$route.query.id,
-          sort:2
+          limit:10,
+          serviceId: this.$route.query.id,
+          type:1,
+          })).then(function (eva) {
+            // console.log(eva.data)
+      });
+      // 相对路径
+      this.ajax.post('/xinda-api/product/package/detail',
+        this.qs.stringify({
+          sId: this.$route.query.id ,
         })).then(function (data) {
-          var goodata = data.data.data;
-          that.goods = goodata;
+          var good = data.data.data
+          that.goods = good;
+          that.goods.marketprice = that.goods.product.marketPrice;//市场价
+          that.goods.img = that.goods.product.img;//图片
+          that.goods.price = that.goods.providerProduct.price;//价格
+          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
+          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
+          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
         });
-=======
-      // // 相对路径
-      // console.log('this.$router.query.id ==',this.$route.query.id );
-      // this.ajax.post('/xinda-api/product/package/detail',
-      //   this.qs.stringify({
-      //     start:0,
-      //     limit:8,
-      //     productTypeCode: "1",
-      //     sId:this.$route.query.id,
-      //     sort:2
-      //   })).then(function (data) {
-      //     var goodata = goo.data.data;
-      //     that.goods = goodata;
-      //     for(var i in goodata){
-      //       console.log(goodata[i].serviceName)
-
-      //     }
-      //   });
->>>>>>> e5a2ce016d2f88f495e6e0e4d32117a3d144098b
-
-
-
-      // this.ajax.post("/xinda-api/product/package/detail",this.qs.stringify({sId:this.$route.query.id }))
-      //   .then(function(data) {
-      //     var prodata = data.data.data;
-      //     console.log('prodata==',prodata);
-      //   });
     },
+
     data() {
       return {
         proevas: [],
