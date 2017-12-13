@@ -132,11 +132,13 @@ export default {
   created() {
     var that = this; //this是指main.js中的new Vue
     this.ajax
-      .post("/xinda-api/business-order/detail", {
-        businessNo: "S1704040001075133085"
-      })
+      .post("/xinda-api/business-order/detail", this.qs.stringify({
+        businessNo: "this.$route.query.id"
+      }))
       .then(data => {
         //订单数据
+        console.log('data==',data)
+        
       });
   },
   data() {
