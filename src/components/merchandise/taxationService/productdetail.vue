@@ -223,7 +223,6 @@
           })).then(function (eva) {
             // console.log(eva.data)
       });
-
       // 相对路径
       this.ajax.post('/xinda-api/product/package/detail',
         this.qs.stringify({
