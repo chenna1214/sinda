@@ -1,25 +1,17 @@
 <template>
   <div>
    <!-- 店铺 -->
-    <!-- <div class="company" v-for="product in products" :key="product.id">
-      {{product.providerName}}
-      <div class="com_logo"></div>
-      <div class="com-character"></div>
-    </div> -->
-    <!-- <div class="introduction"></div> -->
-    <!-- <div class="serving"></div> -->
-    <!-- <router-view/> -->
-    <div class="company">
+    <div class="company" :key="products.id">
        <!-- 企业logo -->
       <div class="com-logo">
         <!-- 图 -->
         <div class="comlogo-image">
-          <img src="../pc_images/pc_logo.png" alt="">
+          <img :src="'http://115.182.107.203:8088/xinda/pic'+products.providerImg" alt="">
         </div>
         <!-- 字 -->
         <div class="comlogo-character">
-          <div class="comlogo-name">信达北京服务中心</div>
-          <div>服务地址：<div class="comlogo-address">北京市-朝阳区</div></div>
+          <div class="comlogo-name">{{products.providerName}}</div>
+          <div>服务地址：<div class="comlogo-address">{{products.regionName}}</div></div>
         </div>
       </div>
       <!-- 身体部位 公司介绍-->
@@ -29,9 +21,8 @@
           <!-- 上 -->
           <div class="comintleft-top">
             <div class="comlefttop-introduce">公司介绍</div>
-            <div class="comlefttop-definite">为给客户提供更加标准化的体验，信达北京服务中心采用自营模式，
-              打造一站式企业服务平台，帮助企业快速解决发展遇到的问题，提供工商注册，
-              财税服务，知识产权，人事外包，证件办理等全方位企业解决方案，为你的企业发展保驾护航。
+            <div class="comlefttop-definite">
+              {{products.providerInfo}}
             </div>
           </div>
           <!-- 下 -->
@@ -150,17 +141,31 @@
 <script>
 export default {
   name: 'pc_shophp',
-  // created () {
-  //   var that = this;
-  //   this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/provider/grid').then(function(data){
-  //     var rData = data.data.data;
-  //     that.products = rData;
-  //     console.log(rData);
-  //   });
-  // },
+  created () {
+    console.log('this.$router.query.id ==',this.$route.query.id);
+    var that = this;
+    this.ajax.post('/xinda-api/provider/search-grid',
+    this.qs.stringify({
+      start: 0,
+      limit: 8,
+      searchName: '',
+      sort: 1,
+      productTypeCode: 7,
+      regionId: this.$route.query.id,
+    })).then(function(data){
+      var rData = data.data.data;
+      that.products = rData[0];
+      // console.log(that.products);
+    });
+
+    // 服务产品
+    this.ajax.post('/xinda-api/recommend/list').then(function (data) {
+      console.log(data.data.data)
+    });
+  },
   data () {
     return {
-      // products: [],
+      products: [],
       rightserve: true,
       rightservice: false,
       rightcertificate: false,
@@ -223,7 +228,8 @@ export default {
         margin-bottom: 2%;
         img{
           width: 100%;
-          height: 100%;
+          height: 100%;    
+          border-radius: 50%;
         }
       }
       // 字

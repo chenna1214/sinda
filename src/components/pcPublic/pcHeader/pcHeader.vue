@@ -22,7 +22,7 @@
   <span v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</span>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleCan()">取 消</el-button>
-      <el-button @click="handleCon()">确 定</el-button>
+      <el-button @click="handleConfirm()">确 定</el-button>
     </span>
   </el-dialog>
   </div>
@@ -65,9 +65,10 @@
 
 <script>
 import Vue from "vue";
-import{mapActions} from 'vuex'
-import getCitys from './public'//向服务器请求城市数据
-
+import { mapActions } from "vuex";
+import getCitys from "./public"; //向服务器请求城市数据
+// import {moreFn} from './public'
+import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
 
 export default {
   name: "pcHeader",
@@ -96,8 +97,8 @@ export default {
   },
   data() {
     return {
-      pcChoosedCity: {name:''}, //当前已选城市
-      pcCityNameSuc: {city:''}, //已开通城市名称
+      pcChoosedCity: { name: "" }, //当前已选城市
+      pcCityNameSuc: { city: "" }, //已开通城市名称
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
       pcChoosedNum: 0, //判断用户是否选择城市
       searchArr: [], //搜索源
@@ -107,11 +108,11 @@ export default {
     };
   },
   created() {
-    getCitys(this.pcChoosedCity,this.pcCityNameSuc);
+    getCitys(this.pcChoosedCity, this.pcCityNameSuc);
   },
   methods: {
-    ...mapActions(['setNum']),
-    goodsNum(){
+    ...mapActions(["setNum"]),
+    goodsNum() {
       this.setNum();
     },
     pcChoosed() {
@@ -126,22 +127,25 @@ export default {
         message: "已取消选择城市"
       });
     },
-    handleCon() {
-      this.dialogVisible = false;
-      if (this.pcChoosedNum == 0) {
-        this.$message({
-          type: "warning",
-          message: "您未选择城市!"
-        });
-      }
-      if (this.pcChoosedNum == 1) {
-        this.pcChoosedNum = 0;
-        this.$message({
-          type: "success",
-          message: "城市选择成功!"
-        });
-      }
+    handleConfirm() {
+      handleCon(this.dialogVisible, this.pcChoosedNum, this);
     },
+    // handleCon() {
+    //   this.dialogVisible = false;
+    //   if (this.pcChoosedNum == 0) {
+    //     this.$message({
+    //       type: "warning",
+    //       message: "您未选择城市!"
+    //     });
+    //   }
+    //   if (this.pcChoosedNum == 1) {
+    //     this.pcChoosedNum = 0;
+    //     this.$message({
+    //       type: "success",
+    //       message: "城市选择成功!"
+    //     });
+    //   }
+    // },
     pcSearch() {
       //模糊搜索
       var that = this;
@@ -154,7 +158,6 @@ export default {
           })
         )
         .then(data => {
-          console.log("data", data);
           var searchData = data.data.data;
           for (var key in searchData) {
             var eachArr = searchData[key];
@@ -166,12 +169,6 @@ export default {
             for (var i = 0; i < this.serName.length; i++) {
               if (this.serName[i].indexOf(this.serVal) !== -1) {
                 this.serchMatch.push(this.searchArr[i]);
-                // function pcDetail(){
-                //   if(this.searchArr[i].providerName=='大唐注册代理事务所'){
-                //     console.log('providerName')
-
-                //   }
-                // }
               }
             }
           }
@@ -183,10 +180,8 @@ export default {
         if (this.serchMatch[a].providerName == "大唐注册代理事务所") {
           console.log("大唐注册代理事务所");
         }
-        if(this.serchMatch[a].providerName == '云智慧咨询服务有限公司'){
-          console.log('云智慧咨询服务有限公司')
-          
-
+        if (this.serchMatch[a].providerName == "云智慧咨询服务有限公司") {
+          console.log("云智慧咨询服务有限公司");
         }
       }
     }

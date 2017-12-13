@@ -44,7 +44,7 @@
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
                     </el-col>
                     <el-col :span="5" class="pcsh-cot-w">
-                      <el-input-number class="pcsh-count" v-model="Data.buyNum" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
+                      <el-input-number class="pcsh-count" v-model="shTrData.buyNum" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
                     </el-col>
                     <el-col :span="3">
                       <p class="pcsh-money pcsh-mnyin">￥800</p>
@@ -56,9 +56,31 @@
                 </div>
               </div>
             </div>
+            <!-- 金额总计 -->
+            <div class="pctl-pr-wp clear">
+              <p class="pctl-price">金额总计<span class="pctl-prcin">￥{{tlPrice}}</span></p>
+              <div class="pctl-prbtn">
+                <router-link tag="div" class="pcgo-shop" to="/merchandise/allProduct">继续购物</router-link>
+                <input @click="settleActs" class="pcsettle" type="button" value="去结算">
+              </div>
+            </div>
+            <div class="pcpop-serw">
+              <p class="pcpop-seti">热门服务</p>
+              <div class="pcpop-serb">
+                <el-row>
+                  <el-col :span="6">
+                    <div class="pcpop-selm">
+                      <p class="pcpp-senm">商标快速注册通道（5小时balaba）</p>
+                      <div class="pcpp-line"><span class="pcpp-lineh"></span><span class="pcpp-lineb"></span></div>
+                      <p class="pcpp-sinfo">工作日内5小时（5小时balaba）</p>
+                      <p class="pcpp-price">￥1400.00</p>
+                      <del class="pcpp-marpr">原价：￥2000.00</del> <p class="pcpp-more">查看详情>>></p>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
         </div>
-        <el-input-number :min="1" :max="10" label="描述文字"></el-input-number>
-        
     </div>
 </template>
 
@@ -67,7 +89,6 @@
 export default {
   name: "shoppingtrolley",
   methods: {
-    // ...mapActions(['setNum']),
     // toDetail(id){
     //   this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     // },
@@ -81,23 +102,46 @@ export default {
       //     console.log('购物车===',data.data.data);
       //     that.goodsnum = data.data.data.length;
       //   });
+    },
+    // 结算
+    settleActs: function() {
+      this.ajax.post("/xinda-api/cart/submit").then(function(data) {
+        console.log("提交结算",data)
+      });
     }
   },
   created() {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
-      console.log("购物车===", data.data.data);
+      // console.log("购物车===", data.data.data);
       that.shTrDatas = data.data.data;
+      // console.log("that.shTrDatas===", that.shTrDatas);
       // 商品数目
       that.goodsnum = that.shTrDatas.length;
+      for(var i=0;i<that.shTrDatas.length;i++){
+      that.tlPrice += parseInt(that.shTrDatas[i].totalPrice)*that.shTrDatas[i].buyNum;
+    }
     });
+    this.shTrDatas = that.shTrDatas;
+    // 推荐相关接口  热门服务 2.4.2
+    this.ajax
+      .post("/xinda-api/recommend/list")
+      .then(function(data) {});
+    // 总价
+    console.log('this.shTrDatas===',this.shTrDatas)
+    // for(var i=0;i<this.shTrDatas.length;i++){
+    //   console.log('总价');
+    //   this.tlPrice += parseInt(this.shTrDatas[i].totalPrice);
+    //   console.log(this.shTrDatas[i].totalPrice)
+    // }
   },
   data() {
     return {
       goodsnum: "",
       num1: 1,
-      shTrDatas: []
+      shTrDatas: [],
+      tlPrice: 0
     };
   },
   components: {}
@@ -172,9 +216,80 @@ export default {
     }
   }
 }
+
+// 金额总计
+
+.pctl-pr-wp {
+  padding: 11px 21px 0 0;
+  .pctl-price {
+    text-align: right;
+    font-size: 14px;
+    color: #676767;
+    line-height: 47px;
+    .pctl-prcin {
+      color: #2793d3;
+      font-size: 22px;
+    }
+  }
+  .pctl-prbtn {
+    float: right;
+    max-width: 215px;
+    .pcgo-shop{
+      display: inline-block;
+      text-align: center;
+      width: 99px;
+      height: 24px;
+      line-height: 24px;
+      color: #76b1dd;
+      border: 1px solid #2693d4;
+      border-radius: 3px;
+      background: #fff;
+    }
+    input {
+      width: 101px;
+      height: 26px;
+      color: #76b1dd;
+      border: 1px solid #2693d4;
+      border-radius: 3px;
+      background: #fff;
+    }
+  }
+}
+
+.pcpop-serw {
+  margin-top: 54px;
+  .pcpop-seti {
+    padding-left: 65px;
+    color: #76b1dd;
+    font-size: 13px;
+    line-height: 31px;
+    border-bottom: 1px solid #bdbdbd;
+  }
+  .pcpop-serb {
+    padding: 34px 10px 0 17px;
+    .pcpop-selm {
+      padding: 10px 19px 0 14px;
+      margin-right: 26px;
+      height: 189px;
+      .pcpp-senm {
+        overflow: hidden;
+        font-size: 17px;
+        color: #000;
+        height: 38px;
+        line-height: 38px;
+      }
+    }
+  }
+}
 </style>
 
 <style lang='less'>
+.clear::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 // 计数器
 .pcsh-count {
   margin: 0 auto;

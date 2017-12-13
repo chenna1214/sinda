@@ -6,18 +6,27 @@
       </div>
       <!-- 手机端--选择城市 -->
       <!-- <div class="pcHeaderCityBox hidden-sm-and-up"> -->
-        <div class="telHeaderBox" @click="telMenu()"><!-- 选择城市下拉框 -->
+        <div class="telHeaderBox hidden-sm-and-up" @click="telMenu()"><!-- 选择城市下拉框 -->
           <span class="telArrow" :class="{telTranDeg:isShow==true}">></span>
           <span class="telChoosedCity">{{pcChoosedCity.name}}</span><!-- 已经选择的城市 -->
         </div>
         <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
         <!-- 手机端--头部导航栏 -->
-        <div class="telNav">
-          <div>
-            <img src="" >
-          </div>
-          <p></p>
-        </div>
+        <el-row>
+          <!-- <div class="telNavBox"> -->
+          <el-col :xs="6">
+            
+              <div  v-for="telNav in telNavs" :key="telNav.telNavImg" class="telNavBoxIn">
+                <div>
+                  <img :src="telNav.telNavImg" >
+                </div>
+                <p class="telNavTexttelNavText">{{telNav.telNavInfo}}</p>
+              </div>
+            
+          </el-col>
+          <!-- </div> -->
+        </el-row>
+      
    
 
 
@@ -212,6 +221,7 @@
 
 <script>
 import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
+import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
 export default {
   name: "allProduct",
   created() {
@@ -263,16 +273,36 @@ export default {
       pcChoosedNum: 0, //判断用户是否选择城市
       pcChoosedCity: { name: "" }, //当前已选城市
       pcCityNameSuc: { city: "" }, //已开通城市名称
-      telNavInfo: ['财税服务', '开公司', '公司变更', '个人社保', '公司社保', '知识产权', '全部服务'], //手机端--头部导航文字
-      telNavImg: [
-        //手机端--头部导航图片
-        "../../images/telIndex/m_homepage1.png",
-        "../../images/telIndex/m_homepage2.png",
-        "../../images/telIndex/m_homepage3.png",
-        "../../images/telIndex/m_homepage4.png",
-        "../../images/telIndex/m_homepage5.png",
-        "../../images/telIndex/m_homepage6.png",
-        "../../images/telIndex/m_homepage7.png"
+      dialogVisible: false, //控制“切换城市”弹出框的出现、消失
+      telNavs: [
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage1.png", //手机端--头部导航图片
+          telNavInfo: "财税服务" //手机端--头部导航文字
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage2.png",
+          telNavInfo: "开公司"
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage3.png",
+          telNavInfo: "公司变更"
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage4.png",
+          telNavInfo: "个人社保"
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage5.png",
+          telNavInfo: "公司社保"
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage6.png",
+          telNavInfo: "知识产权"
+        },
+        {
+          telNavImg: "./src/components/images/telIndex/m_homepage7.png",
+          telNavInfo: "全部服务"
+        }
       ],
       //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
@@ -350,11 +380,14 @@ export default {
     telMenu() {
       //选择城市下拉框
       this.isShow = !this.isShow;
-      this.pcChoosedNum = 0;
+      if (this.isShow == false && this.pcChoosedNum == 0) {
+        handleCon(this.dialogVisible, this.pcChoosedNum, this);
+      }
     },
     pcChoosed() {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;
+      handleCon(this.dialogVisible, this.pcChoosedNum, this);
     }
   }
 };
@@ -665,7 +698,6 @@ export default {
   left: 2%;
 }
 .telMenuBox {
-  // background: white;
   background: rgba(255, 255, 255, 0.8);
   width: 93px;
   padding-top: 8px;
@@ -685,4 +717,23 @@ export default {
   transform: rotate(-90deg);
   display: inline-block;
 }
+//手机端---头部导航
+.telNavText {
+  font-size: 22px;
+}
+.telNavBoxIn{
+  // margin-right: 10.8%;
+}
+.telNavBox {
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  padding-left: 4%;
+  padding-right: 4%;
+  // div:nth-child(4){
+  //   margin-right: 0;
+  // }
+}
+
 </style>
