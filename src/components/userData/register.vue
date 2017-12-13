@@ -11,7 +11,8 @@
             <!-- 提示的错误信息 -->
             <p class="wrongTip">{{error}}</p>
           </div>
-          <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @blur="numbers">
+          <input class="box" type="number" placeholder="请输入手机号码" v-model="phone">
+           <!-- @blur="numbers" -->
           <div class="verify">
             <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode">
             <div class="verifyI" @click="imgReflash">
@@ -19,10 +20,12 @@
             </div>
           </div>
           <div class="acquire">
-            <input class="boxI" type="text" placeholder="请输入短信验证码">
-            <button @click="getCode">点击获取</button>
+            <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber">
+            <div @click="getCode">
+              <button v-show="get" class="getblue">点击获取</button>
+              <button v-show="getNew" class="getgray">重新获取{{count}}</button>
+            </div>
           </div>
-          <!-- <v-distpicker class="register-android-wheel" province="省" city="市" area="区"></v-distpicker> -->
           <select name="" id="" @change="proChange" v-model="province">
             <option value="0">省</option>
             <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
@@ -66,12 +69,19 @@ export default {
       setPass:'',
       imgUrl:'/xinda-api/ajaxAuthcode',
       imgCode:'',
+      //三级联动
       provinces:dist[100000],
       citys:[],
       areas:[],
       province:'0',
       city:'0',
       area:'',
+      //点击获取
+      count:'60',
+      getNew:false,
+      get:true,
+      smsNumber:'',
+
     }
   },
   methods:{
@@ -85,40 +95,80 @@ export default {
     selected(data){
       this.distCode = data.area.code;
     },
-
-    now:function(){
-
-    },
-    //验证码图片点击时更换
+    //验证码图片点击更换
     imgReflash: function() {
       this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
     },
-    //检验手机号是否正确
-    numbers:function (){
-      if(this.phone){
-        if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){
+    //点击获取短信验证码
+    getCode:function(){
+      if(this.phone){//手机号有输入时
+        if(!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)){//手机号匹配错误
           this.error="请输入正确的手机号码";
           this.show=true;
           return;
-        }else{
+        }else{ //手机号匹配正确
           this.show=false;
         }
-      }else{
-        //手机号不填写时隐藏
-        this.show=false;
-          return;            
+        
+        if(this.imgCode){//验证码有输入时
+          //图片验证码匹配
+          this.ajax.post('/xinda-api/register/sendsms',this.qs.stringify({
+            cellphone: this.phone,
+            smsType:1,
+            imgCode: this.imgCode,
+          })).then(data =>{
+            console.log(data,data.data.status);
+            if (data.data.status == 1) { //图片验证码输入正确
+              // console.log('图片验证码输入正确');
+              this.get = false;
+              this.getNew = true;
+              this.show=false;
+              var that = this;
+              var dic = setInterval(function() {
+                that.count--;
+                if (that.count == 1){
+                  clearInterval(dic);
+                  this.get = true;
+                  this.getNew = false;
+                }
+              },1000)
+            }else{ //图片验证码输入错误
+              // console.log('验证码输入错误');
+              this.error="验证码输入错误";
+              this.show=true;
+              return;
+            }
+          });
+          }else{//验证码为空时
+            console.log('验证码现在是空的');          
+            this.error="验证码不能为空";
+            this.show=true;
+            return;
+          }
+      }else{ //手机号为空时
+        this.show=true;
+        this.error="手机号码不能为空";        
+        return;
       }
     },
-    //获取短信验证码
-    getCode:function(){
-      this.ajax.post('/xinda-api/register/sendsms',this.qs.stringify({
+
+    //立即注册按钮
+    iregister(){  
+      // console.log(this.area),
+      this.ajax.post('/xinda-api/register/register',
+      this.qs.stringify({
         cellphone: this.phone,
         smsType:1,
-        imgCode: this.imgCode,
-      })).then(data =>{
-        console.log(data)
+        validCode: 111111,
+        password:md5(this.setPass),
+        regionId:this.area,
+      }))
+      .then(data => {
+        console.log('注册提交',data.data.msg,data.data.status);
       })
+      
     },
+
     //设置密码格式是否正确
     passwor:function(){
       if(this.pass){
@@ -135,27 +185,14 @@ export default {
         return;
       }
     },
-    //点击获取样式
 
-    
-    //立即注册按钮
-    iregister(){
-      // console.log(this.area),
-      this.ajax.post('/xinda-api/register/register',
-      this.qs.stringify({
-        cellphone: this.phone,
-        smsType:1,
-        validCode: 111111,
-        password:md5(this.setPass),
-        regionId:this.area,
-      }))
-      .then(data => {
-        console.log('注册提交',data.data.msg,data.data.status);
-      })
-      
-    }
+
+
   }
 }
+    //点击获取短信验证码可以多次点击，要修改
+    //省市区接口提交的地区编号
+    //17806253629
 </script>
 
 <style scoped lang='less'>
@@ -233,13 +270,21 @@ export default {
   .acquire {
     display: flex;
     justify-content: space-around;
-    button {
+    .getblue{
       width: 98px;
-      height: 35px;
+      height: 37px;
       border: 1px solid #2693d4;
       border-radius: 3px;
       background-color: #fff;
       color: #2693d4;
+    }
+    .getgray{
+      width: 98px;
+      height: 37px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      background-color: #aaa;
+      color: #fff;
     }
   }
   .registersecond {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ElementUI from 'element-ui'
 
 export default function getCitys(pcChoosedCity,pcCityNameSuc) {
     axios.post("/xinda-api/common/select-region").then(data => {
@@ -18,4 +19,20 @@ export default function getCitys(pcChoosedCity,pcCityNameSuc) {
     });
 }
 
-//问题：如何暴露多个函数
+
+export  function handleCon(dialogVisible,pcChoosedNum,vm) {//判断选择城市的状态出现不同的提示
+    dialogVisible = false;
+    if (pcChoosedNum == 0) {
+        vm.$message({
+        type: "warning",
+        message: "您未选择城市!"
+      });
+    }
+    if (pcChoosedNum == 1) {
+      pcChoosedNum = 0;
+      vm.$message({
+        type: "success",
+        message: "城市选择成功!"
+      });
+    }
+  }

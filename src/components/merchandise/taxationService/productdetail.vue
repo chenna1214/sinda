@@ -201,7 +201,7 @@
 
   export default {
     name: "productdetail",
-    created() {
+      created() {
       var that = this;
       // console.log('this.$router.query.id ==',this.$route.query.id );
       // 商品详情页的评价
@@ -221,7 +221,6 @@
           })).then(function (eva) {
             // console.log(eva.data)
       });
-
       // 相对路径
       this.ajax.post('/xinda-api/product/package/detail',
         this.qs.stringify({
@@ -233,11 +232,12 @@
           that.goods.img = that.goods.product.img;//图片
           that.goods.price = that.goods.providerProduct.price;//价格
           that.goods.servicename = that.goods.providerProduct.serviceName;//名字
-          that.goods.info = that.goods.providerProduct.serviceInfo;//介绍
+          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
           console.log(good)
         });
     },
+
     data() {
       return {
         proevas: [],
