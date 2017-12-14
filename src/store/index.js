@@ -26,7 +26,11 @@ export default new Vuex.Store({
     getters: {
         getNum: state => state.num,
         getName:function(state){
-            return state.name
+          
+                return state.name
+
+          
+            
         }
     }
 });

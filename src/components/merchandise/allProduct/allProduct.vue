@@ -36,21 +36,42 @@
           </el-col>
           </div>
         </el-row>
+
+
+
+
+        <!-- 全部产品--手机端--轮播左边的导航 -->
+        <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
+          <el-col :xs="4">
+              <div @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{telNavClickAft:idx==index}" class="telNavTextBox">
+               
+                    <span class="telNavText">{{rDataObj.name}}</span>
+                  
+              </div>
+          </el-col>
+          <el-col :xs="{span:20,offset:4}">
+            <div class="pcAllProTil" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
+               <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
+                <div class="pcNavTidBox"><p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">{{thirdTil.name}}</p></div>
+               </div>
+            </div>
+          </el-col>
+      </el-row>
+
+
+
+
+
+
+
+
+
+
       </div>
       
    
 
-
-
-
-
-
-
-
-
-
-
-      <!-- 全部产品--轮播左边的导航 -->
+      <!-- 全部产品--pc端--轮播左边的导航 -->
         <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
           <el-col :sm="4" :md="4" :lg="4">
               <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
@@ -69,6 +90,16 @@
             </div>
           </el-col>
       </el-row>
+
+
+
+
+
+
+
+
+
+
 <!-- 全部产品--xs以上--轮播图片 -->
 <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" class="pcAllProCarousel hidden-xs-only">
     <el-carousel trigger="click" height="400px">
@@ -314,7 +345,7 @@ export default {
           telNavInfo: "全部服务"
         }
       ],
-      
+
       //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcSer: -1, //推荐服务商的标题click的变量
@@ -742,13 +773,23 @@ export default {
 .telNavBoxIn {
   margin-bottom: 27px;
 }
-.telNavImg{
-  width:58.67%;
+.telNavImg {
+  width: 58.67%;
 }
-.telFooterP{
+.telFooterP {
   text-align: center;
   color: #8e8e8e;
   font-size: 22px;
   margin-bottom: 15px;
+}
+.telNavClickAft{
+  background: #f3f4f6;
+}
+//全部产品--手机端--轮播左边的导航
+.telNavText{
+  font-size: 25px;
+}
+.telNavTextBox{
+  height: 94px;
 }
 </style>
