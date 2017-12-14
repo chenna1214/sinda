@@ -44,13 +44,13 @@
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
                     </el-col>
                     <el-col :span="5" class="pcsh-cot-w">
-                      <el-input-number class="pcsh-count" v-model="shTrData.buyNum" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
+                      <el-input-number class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
                     </el-col>
                     <el-col :span="3">
                       <p class="pcsh-money pcsh-mnyin">￥{{shTrData.unitPrice*shTrData.buyNum}}</p>
                     </el-col>
                     <el-col :span="5">
-                      <p class="pcsh-act">删除</p>
+                      <p @click="removeGoods(shTrData.serviceId)" class="pcsh-act pointer">删除</p>
                     </el-col>
                   </el-row>
                 </div>
@@ -60,9 +60,9 @@
             <div class="pctl-pr-wp clear">
               <p class="pctl-price">金额总计<span class="pctl-prcin">￥{{tlPrice}}</span></p>
               <div class="pctl-prbtn">
-                <router-link tag="div" class="pctl-prbnst1 pcgo-shop" to="/merchandise/allProduct">继续购物</router-link>
+                <router-link tag="div" class="pctl-prbnst1 pcgo-shop pointer" to="/merchandise/allProduct">继续购物</router-link>
                 <!-- <router-link tag="div" @click="settleActs" class="pctl-prbnst1 pcsettle" to="/merchandise/goodsOrder">去结算</router-link> -->
-                <div @click="settleActs()" class="pctl-prbnst1 pcsettle">去结算</div>
+                <div @click="settleActs" class="pctl-prbnst1 pcsettle pointer">去结算</div>
               </div>
             </div>
             <div class="pcpop-serw">
@@ -98,12 +98,17 @@ export default {
         query: { id: id }
       });
     },
-    // togoodsOrder(){
-    //   this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
-    // },
-    handleChange(value) {
-      // console.log(value);
-      // console.log('that.goodsnum==',this.goodsnum)
+    removeGoods: function(id) {
+      var that = this;
+      this.ajax
+        .post("/xinda-api/cart/del", this.qs.stringify({ id: id }))
+        .then(function(data) {
+          // that.products = data.data.data;
+          console.log(data);
+        });
+      // this.ajax.post("/xinda-api/cart/list").then(function(data) {
+      //   that.shTrDatas = data.data.data;
+      // });
     },
     gouwuche: function() {
       var that = this;
@@ -111,12 +116,16 @@ export default {
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
-      // this.fullscreenLoading = true;
-      // setTimeout(() => {
-      //   this.fullscreenLoading = false;
-      // }, 2000);
+      const loading = this.$loading({
+        lock: true,
+        text: " （￣▽￣）马上就好（￣▽￣） ",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
       // --------------------------
-
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
         console.log("data=======", data);
@@ -175,6 +184,10 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.pointer {
+  cursor: pointer;
+}
+
 .pctaxservices-body {
   max-width: 1200px;
   margin: 0 auto;
