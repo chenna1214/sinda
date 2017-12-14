@@ -8,14 +8,16 @@
      <div class="virgule"></div>
      <!-- 欢迎登录 -->
      <span>欢迎</span>
-     <span>{{userTitle}}</span>
+     <span>{{getTitle}}</span>
    </div>
    <router-view/>
    </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 var md5 = require("md5");
+
 export default {
   name: "userData",
   data() {
@@ -24,18 +26,21 @@ export default {
     };
   },
   mounted() {
-    if (window.location.href == "http://localhost:8080/#/userData/register") {
-      this.userTitle = "注册";
-      console.log('注册',window.location.href)
-    }
-     if (window.location.href == "http://localhost:8080/#/userData/login") {
-      this.userTitle = "登录";
-      console.log('登录',window.location.href)
-    }
-     if (window.location.href == "http://localhost:8080/#/userData/forgetPassword") {
-      this.userTitle = "忘记密码";
-      console.log('忘记密码')
-    }
+    // if (window.location.href == "http://localhost:8080/#/userData/register") {
+    //   this.userTitle = "注册";
+    //   console.log('注册',window.location.href)
+    // }
+    //  if (window.location.href == "http://localhost:8080/#/userData/login") {
+    //   this.userTitle = "登录";
+    //   console.log('登录',window.location.href)
+    // }
+    //  if (window.location.href == "http://localhost:8080/#/userData/forgetPassword") {
+    //   this.userTitle = "忘记密码";
+    //   console.log('忘记密码')
+    // }
+  },
+  computed:{
+    ...mapGetters(['getTitle'])
   }
 };
 </script>

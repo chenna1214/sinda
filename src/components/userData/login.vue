@@ -42,6 +42,9 @@ import {mapActions} from 'vuex'//改变数据
   var md5 = require('md5');
   export default {
     name: 'login',
+    created(){
+      this.setTitle('登录')
+    },
     data () {
       return {
         phone:'',
@@ -58,7 +61,7 @@ import {mapActions} from 'vuex'//改变数据
       imgReflash: function() {
         this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
       },
-      ...mapActions(['setName']),//获得用户名
+      ...mapActions(['setName','setTitle']),//获得用户名
       //立即登录按钮动态
       now:function(){
         //检验手机号是否正确
@@ -73,7 +76,7 @@ import {mapActions} from 'vuex'//改变数据
         }else{  //手机号为空
           this.error="手机号码不能为空";
           this.show=true;
-          return;            
+          return;
         }
         //检验密码是否正确
         if(this.pass){
@@ -108,6 +111,7 @@ import {mapActions} from 'vuex'//改变数据
                 location.href='#/merchandise/allProduct';
                 this.show=false;
                 this.setName(this.phone);//获得用户名
+                sessionStorage.setItem('userName',this.phone)
 
               }else{
                 this.error = data.data.msg;
