@@ -155,13 +155,11 @@ export default {
     })).then(function(data){
       var rData = data.data.data;
       that.products = rData[0];
-      // console.log(that.products);
+      console.log(that.products);
     });
 
     // 服务产品
-    this.ajax.post('/xinda-api/recommend/list').then(function (data) {
-      console.log(data.data.data)
-    });
+
   },
   data () {
     return {
