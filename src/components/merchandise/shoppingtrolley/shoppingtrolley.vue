@@ -47,7 +47,7 @@
                       <el-input-number class="pcsh-count" v-model="shTrData.buyNum" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
                     </el-col>
                     <el-col :span="3">
-                      <p class="pcsh-money pcsh-mnyin">￥800</p>
+                      <p class="pcsh-money pcsh-mnyin">￥{{shTrData.unitPrice*shTrData.buyNum}}</p>
                     </el-col>
                     <el-col :span="5">
                       <p class="pcsh-act">删除</p>
@@ -69,12 +69,14 @@
               <div class="pcpop-serb">
                 <el-row>
                   <el-col :span="6">
-                    <div class="pcpop-selm">
+                    <div class="pcpop-selm clear">
                       <p class="pcpp-senm">商标快速注册通道（5小时balaba）</p>
                       <div class="pcpp-line"><span class="pcpp-lineh"></span><span class="pcpp-lineb"></span></div>
                       <p class="pcpp-sinfo">工作日内5小时（5小时balaba）</p>
+                      <p class="pcpp-sinfo">销量：</p>
                       <p class="pcpp-price">￥1400.00</p>
-                      <del class="pcpp-marpr">原价：￥2000.00</del> <p class="pcpp-more">查看详情>>></p>
+                      <del class="pcpp-marpr"><span class="pcpp-marpw">原价：￥2000.00</span></del> 
+                      <p class="pcpp-more">查看详情>>></p>
                     </div>
                   </el-col>
                 </el-row>
@@ -94,6 +96,7 @@ export default {
     // },
     handleChange(value) {
       console.log(value);
+      console.log('that.goodsnum==',this.goodsnum)
     },
     gouwuche: function() {
       var that = this;
@@ -114,31 +117,30 @@ export default {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
-      // console.log("购物车===", data.data.data);
       that.shTrDatas = data.data.data;
-      // console.log("that.shTrDatas===", that.shTrDatas);
-      // 商品数目
-      that.goodsnum = that.shTrDatas.length;
+      
       for(var i=0;i<that.shTrDatas.length;i++){
-      that.tlPrice += parseInt(that.shTrDatas[i].totalPrice)*that.shTrDatas[i].buyNum;
-    }
+        // 商品数量
+        console.log('that.shTrDatas[i]==',that.shTrDatas[i].price)
+        that.goodsnum += that.shTrDatas[i].buyNum;
+        // 总价
+        that.tlPrice += that.shTrDatas[i].unitPrice*that.shTrDatas[i].buyNum;
+      }
     });
+    this.goodsnum = that.goodsnum
     this.shTrDatas = that.shTrDatas;
     // 推荐相关接口  热门服务 2.4.2
     this.ajax
       .post("/xinda-api/recommend/list")
-      .then(function(data) {});
+      .then(function(data) {
+        console.log(data.data.data)
+      });
     // 总价
-    console.log('this.shTrDatas===',this.shTrDatas)
-    // for(var i=0;i<this.shTrDatas.length;i++){
-    //   console.log('总价');
-    //   this.tlPrice += parseInt(this.shTrDatas[i].totalPrice);
-    //   console.log(this.shTrDatas[i].totalPrice)
-    // }
+    // console.log('this.shTrDatas===',this.shTrDatas);
   },
   data() {
     return {
-      goodsnum: "",
+      goodsnum: 0,
       num1: 1,
       shTrDatas: [],
       tlPrice: 0
@@ -270,13 +272,60 @@ export default {
     .pcpop-selm {
       padding: 10px 19px 0 14px;
       margin-right: 26px;
-      height: 189px;
+      min-height: 189px;
+      border: 1px solid #b6b6b6;
       .pcpp-senm {
         overflow: hidden;
         font-size: 17px;
         color: #000;
         height: 38px;
         line-height: 38px;
+      }
+      .pcpp-line{
+        position: relative;
+        height: 10px;
+        .pcpp-lineh{
+          position: absolute;
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          background: #2693d4;
+          border-radius: 3px;
+        }
+        .pcpp-lineb{
+          position: absolute;          
+          top: 2px;
+          display: inline-block;
+          width: 160px;
+          height: 1px;
+          background:linear-gradient(left, #2693d4,#fff);
+        }
+      }
+      .pcpp-sinfo{
+        line-height: 25px;
+        color: #676767;
+        font-size: 13px;
+      }
+      .pcpp-price{
+        margin-top: 2.5px;
+        font-size: 35px;
+        color: #2693d4;
+        font-weight: 700;
+      }
+      .pcpp-marpr{
+        line-height: 38px;
+        display: inline-block;        
+        color: #6b433b;
+        .pcpp-marpw{
+          color: #686868;
+        }
+      }
+      .pcpp-more{
+        line-height: 38px;        
+        float: right;
+        display: inline-block;
+        color: #74b3df;
+        font-size: 13px;
       }
     }
   }

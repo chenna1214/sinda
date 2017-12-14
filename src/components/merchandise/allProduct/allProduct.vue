@@ -1,31 +1,42 @@
 <template>
   <div>
     <div class="pcAllProduct">
-      <div class="telCompanyIconBox hidden-sm-and-up">
-        <img src="../../images/icon/sindaTextIcon.png">
-      </div>
+    
       <!-- 手机端--选择城市 -->
-      <!-- <div class="pcHeaderCityBox hidden-sm-and-up"> -->
-        <div class="telHeaderBox hidden-sm-and-up" @click="telMenu()"><!-- 选择城市下拉框 -->
+      <div class="hidden-sm-and-up">
+        <div class="telCompanyIconBox">
+          <img src="../../images/icon/sindaTextIcon.png">
+        </div>
+        <div class="telHeaderBox" @click="telMenu()"><!-- 选择城市下拉框 -->
           <span class="telArrow" :class="{telTranDeg:isShow==true}">></span>
           <span class="telChoosedCity">{{pcChoosedCity.name}}</span><!-- 已经选择的城市 -->
         </div>
         <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
+        <!-- 全部产品--xs以下--轮播图片 -->
+        <el-row class="hidden-sm-and-up">
+          <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" >
+            <el-carousel trigger="click" height="280px">
+            <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
+              <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+              </el-carousel-item>
+            </el-carousel>
+          </el-col>
+        </el-row>
         <!-- 手机端--头部导航栏 -->
         <el-row>
-          <!-- <div class="telNavBox"> -->
-          <el-col :xs="6">
+          <div class="telNavBox">
+          <el-col :xs="6" v-for="telNav in telNavs" :key="telNav.telNavImg">
             
-              <div  v-for="telNav in telNavs" :key="telNav.telNavImg" class="telNavBoxIn">
+              <div  class="telNavBoxIn">
                 <div>
-                  <img :src="telNav.telNavImg" >
+                  <img :src="telNav.telNavImg" class="telNavImg">
                 </div>
                 <p class="telNavTexttelNavText">{{telNav.telNavInfo}}</p>
               </div>
-            
           </el-col>
-          <!-- </div> -->
+          </div>
         </el-row>
+      </div>
       
    
 
@@ -66,16 +77,7 @@
       </el-carousel-item>
     </el-carousel>
   </el-col>
-<!-- 全部产品--xs以下--轮播图片 -->
-  <el-row class="hidden-sm-and-up">
-    <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" >
-      <el-carousel trigger="click" height="280px">
-      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
-        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
-        </el-carousel-item>
-      </el-carousel>
-    </el-col>
-  </el-row>
+
 <!-- 明星产品推荐标题 -->
   <el-row class="hidden-xs-only">
     <el-col>
@@ -159,6 +161,14 @@
         </div>
       </el-col>
   </el-row>
+  <!-- 手机端--首页底部logo -->
+  <div class="hidden-sm-and-up">
+    <div class="telCompanyIconBox">
+      <img src="../../images/icon/sindaTextIcon.png">
+    </div>
+    <p class="telFooterP">一站式企业交易中心</p>
+  </div>
+
   <!-- 通栏图片 -->
   <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
 
@@ -304,6 +314,7 @@ export default {
           telNavInfo: "全部服务"
         }
       ],
+      
       //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcSer: -1, //推荐服务商的标题click的变量
@@ -721,19 +732,23 @@ export default {
 .telNavText {
   font-size: 22px;
 }
-.telNavBoxIn{
-  // margin-right: 10.8%;
-}
+
 .telNavBox {
-  display: flex;
   text-align: center;
-  flex-wrap: wrap;
-  // justify-content: space-between;
   padding-left: 4%;
   padding-right: 4%;
-  // div:nth-child(4){
-  //   margin-right: 0;
-  // }
+  margin-top: 36px;
 }
-
+.telNavBoxIn {
+  margin-bottom: 27px;
+}
+.telNavImg{
+  width:58.67%;
+}
+.telFooterP{
+  text-align: center;
+  color: #8e8e8e;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
 </style>

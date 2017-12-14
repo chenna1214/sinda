@@ -9,7 +9,7 @@
     <!-- 主体 -->
     <div class="set-body">
       <!-- 账户设置 -->
-      <div class="set-account" v-show="setone">
+      <div class="set-account" v-show="setone" :key="settings.id">
         <!-- 当前头像 -->
         <div class="set-current">
           <div>当前头像：</div>
@@ -44,9 +44,7 @@
         <!-- 所在地区 -->
         <div class="set-area">
           <div>所在地区：</div>
-          <!-- <el-row class="set-wrap hidden-xs-only">
-            <el-col :span="21"><v-distpicker class="set-dist-selec" province="省" city="市" area="区"></v-distpicker></el-col>
-          </el-row> -->
+          <!-- 三级联动 -->
           <div class="set-ssq">
             <select name="" id="" @change="proChange" v-model="province">
               <option value="0">省</option>
@@ -88,8 +86,14 @@
 import dist from '../../../districts/districts'
 export default {
   name: 'memaccount',
+  created () {
+    this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/member/info').then(function (data) {
+      console.log(data.data)
+    });
+  },
   data () {
     return {
+      settings: [],
       accstyle: 'set',
       chastyle: 'sets',
       setone: true,
