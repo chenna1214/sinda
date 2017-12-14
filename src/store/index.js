@@ -36,7 +36,7 @@ export default new Vuex.Store({
             if(state.name){
                 return state.name
             }else{
-                sessionStorage.getItem('userName')
+                return sessionStorage.getItem('userName');
             }
             
         },

@@ -42,14 +42,14 @@
 
         <!-- 全部产品--手机端--轮播左边的导航 -->
         <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
-          <el-col :xs="4">
+          <el-col :xs="5">
               <div @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{telNavClickAft:idx==index}" class="telNavTextBox">
-               
-                    <span class="telNavText">{{rDataObj.name}}</span>
-                  
+                <div class="telNavTextBoxIn">
+                  <p class="telNavText">{{rDataObj.name}}</p>
+                </div>
               </div>
           </el-col>
-          <el-col :xs="{span:20,offset:4}">
+          <el-col :xs="{span:14}">
             <div class="pcAllProTil" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
                <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
                 <div class="pcNavTidBox"><p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">{{thirdTil.name}}</p></div>
@@ -791,5 +791,11 @@ export default {
 }
 .telNavTextBox{
   height: 94px;
+  text-align: center;
+}
+.telNavTextBoxIn{
+  display: flex;
+  // justify-content: center;
+  align-items: center;
 }
 </style>

@@ -45,6 +45,7 @@ export default {
   methods: {
     ...mapActions(["setName"]),
     logOff() {
+      sessionStorage.removeItem('userName');
       this.setName(this.pcUserName)//问题:1.重新刷新后，数据没了
        this.$message({
         type: "success",
