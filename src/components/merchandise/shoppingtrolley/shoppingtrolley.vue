@@ -60,8 +60,9 @@
             <div class="pctl-pr-wp clear">
               <p class="pctl-price">金额总计<span class="pctl-prcin">￥{{tlPrice}}</span></p>
               <div class="pctl-prbtn">
-                <router-link tag="div" class="pcgo-shop" to="/merchandise/allProduct">继续购物</router-link>
-                <input @click="settleActs" class="pcsettle" type="button" value="去结算">
+                <router-link tag="div" class="pctl-prbnst1 pcgo-shop" to="/merchandise/allProduct">继续购物</router-link>
+                <router-link tag="div" @click="settleActs" class="pctl-prbnst1 pcsettle" to="/merchandise/goodsOrder">去结算</router-link>
+                <!-- <input @click="settleActs" class="pcsettle" type="button" value="去结算"> -->
               </div>
             </div>
             <div class="pcpop-serw">
@@ -100,16 +101,11 @@ export default {
     },
     gouwuche: function() {
       var that = this;
-      // this.ajax.post("/xinda-api/cart/list")
-      //   .then(function(data) {
-      //     console.log('购物车===',data.data.data);
-      //     that.goodsnum = data.data.data.length;
-      //   });
     },
     // 结算
     settleActs: function() {
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        console.log("提交结算",data)
+        // console.log("提交结算",data)
       });
     }
   },
@@ -118,7 +114,6 @@ export default {
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
-      
       for(var i=0;i<that.shTrDatas.length;i++){
         // 商品数量
         console.log('that.shTrDatas[i]==',that.shTrDatas[i].price)
@@ -236,20 +231,12 @@ export default {
   .pctl-prbtn {
     float: right;
     max-width: 215px;
-    .pcgo-shop{
+    .pctl-prbnst1{
       display: inline-block;
       text-align: center;
       width: 99px;
       height: 24px;
       line-height: 24px;
-      color: #76b1dd;
-      border: 1px solid #2693d4;
-      border-radius: 3px;
-      background: #fff;
-    }
-    input {
-      width: 101px;
-      height: 26px;
       color: #76b1dd;
       border: 1px solid #2693d4;
       border-radius: 3px;
@@ -270,6 +257,7 @@ export default {
   .pcpop-serb {
     padding: 34px 10px 0 17px;
     .pcpop-selm {
+      overflow: hidden;
       padding: 10px 19px 0 14px;
       margin-right: 26px;
       min-height: 189px;
