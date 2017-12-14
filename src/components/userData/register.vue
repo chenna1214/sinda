@@ -62,11 +62,14 @@
 
 <script>
 
-
+import {mapActions} from 'vuex'
 import dist from '../../districts/districts'
 var md5 = require('md5');
 export default {
   name: 'register',
+  created(){
+      this.setTitle('注册')
+    },
   data () {
     return {
       phone:'',
@@ -90,6 +93,7 @@ export default {
     }
   },
   methods:{
+    ...mapActions(['setTitle']),
     //三级联动
     proChange(){
       this.citys = dist[this.province];

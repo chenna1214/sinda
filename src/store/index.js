@@ -4,7 +4,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         num: 0,
-        name: ''
+        name: '',
+        title:''
     },
     mutations: {
         SET_NUM: function (state, num) {
@@ -12,6 +13,9 @@ export default new Vuex.Store({
         },
         SET_NAME: function (state,userName) {
             state.name = userName
+        },
+        SET_TITLE: function (state,title) {
+            state.title = title
         }
 
     },
@@ -21,16 +25,21 @@ export default new Vuex.Store({
         },
         setName({ commit }, name) {
             commit('SET_NAME', name)
+        },
+        setTitle({ commit }, title) {
+            commit('SET_TITLE', title)
         }
     },
     getters: {
         getNum: state => state.num,
         getName:function(state){
-          
+            if(state.name){
                 return state.name
-
-          
+            }else{
+                sessionStorage.getItem('userName')
+            }
             
-        }
+        },
+        getTitle:state=>state.title
     }
 });
