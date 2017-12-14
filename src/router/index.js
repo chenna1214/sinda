@@ -53,7 +53,7 @@ export default new Router({
       ]
     },
     {
-      path: '/merchandise',//非登录、注册、忘记密码网页
+      path: '/merchandise',  //非登录、注册、忘记密码网页
       name: 'merchandise',
       component: merchandise,
       children: [

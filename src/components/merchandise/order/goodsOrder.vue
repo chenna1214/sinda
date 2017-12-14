@@ -137,7 +137,7 @@ export default {
       }))
       .then(data => {
         //订单数据
-        console.log('data==',data)
+        console.log('订单data==',data)
         
       });
   },

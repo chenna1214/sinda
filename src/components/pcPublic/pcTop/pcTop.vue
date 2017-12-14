@@ -5,9 +5,10 @@
       <div class="pcTop hidden-xs-only"><!-- 最顶部 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div>
-            <p class="pcUserName">{{pcUserName}}</p><!-- 显示登录后的用户姓名？问题：2.3.6.退出登录接口怎么用 -->
-            <p class="pcTopBlackText pcWelcomeText">欢迎来到信达！</p>
-            <a href="#/userData/login"  class="pcTopBlueText">登录</a>
+            <!-- 显示登录后的用户姓名？问题：2.3.6.退出登录接口怎么用 -->
+            <p class="pcTopBlackText pcWelcomeText">欢迎<span class="pcUserName">{{getName}}</span>来到信达！</p>
+            <a href="#/userData/login"  class="pcTopBlueText" v-show="showLog">登录</a>
+            <span class="pcTopBlueText" v-show="showExit" @click="logOff()">退出登录</span>
             <a href="#/userData/register"  class="pcTopBlueText pcTopRegisterText">快速注册</a>
           </div>
         </el-col>
@@ -31,58 +32,56 @@
 </template>
 
 <script>
-import{mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
+
 export default {
   name: "pcTop",
   data() {
     return {
-      // carNum:'',//购物车件数
-      pcUserName:''//显示登录后的用户姓名
+      // pcUserName: "", //显示登录后的用户姓名
+      showExit: false, //控制退出登录文字出现或消失的初始值
+      showLog: true ////控制登录文字出现或消失的初始值
     };
   },
-  methods:{
-    // ...mapGetters(['getNum'])
-  },
-  created(){
-    var that=this;
-    // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
-    //   that.carNum=data.data.data.cartNum; 
-    // });    // this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
-    //   that.carNum=data.data.data.cartNum; 
-    // });
-    this.ajax.post('/xinda-api/sso/login-info').then(data=>{//显示登录后的用户姓名？问题：未登录时无法获得用户名
-      // that.pcUserName=data.data.data.name;
-      
+  created() {
+    var that = this;
+    this.ajax.post("/xinda-api/sso/login-info").then(data => {
+      //显示登录后的用户姓名？问题：未登录时无法获得用户名
+      // var loginR=data.data.data;
+      // that.pcUserName = loginR.loginId;
+      // // console.log("loginR.status==", data.data.status);
+      // if(data.data.status==1){
+      //   this.showExit=true;
+      //   this.showLog=false;
+      // }
     });
   },
-  computed:{
-    ...mapGetters(['getNum'])
+  methods: {
+    logOff() {
+      this.ajax.post("/xinda-api/sso/logout").then(data => {
+        console.log("logOff==", data);
+      });
+    }
+  },
+  computed: {
+    ...mapGetters(["getNum"]),
+    ...mapGetters(["getName"])
   }
-  // created(){
-  //   var that=this;
-  //   this.ajax.post('/xinda-api/cart/cart-num').then(data=>{//购物车件数
-  //     that.carNum=data.data.data.cartNum; 
-  //   });
-  //   this.ajax.post('/xinda-api/sso/login-info').then(data=>{//显示登录后的用户姓名？问题：未登录时无法获得用户名
-  //     // that.pcUserName=data.data.data.name;
-      
-  //   });
-  // }
 };
 </script>
 
 <style scoped lang='less'>
-.pcTopRegisterText{
+.pcTopRegisterText {
   margin-left: 24px;
 }
-.pcTopServiceEntryText{
+.pcTopServiceEntryText {
   margin-left: 10px;
 }
 .pcTopRight {
   display: flex;
   justify-content: flex-end;
   line-height: 35px;
-  img{
+  img {
     margin-top: 10px;
     margin-right: 2px;
   }
@@ -111,7 +110,8 @@ export default {
   width: 21px;
   height: 17px;
 }
-.pcUserName{
+.pcUserName {
   color: #2794d5;
+  font-size: 16px;
 }
 </style>
