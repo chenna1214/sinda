@@ -135,8 +135,8 @@ export default {
     addToCart: function(itsid){
       // 改变
       this.setNum();
-      console.log('正常===',this.products);
-      console.log('itsid===',itsid)
+      // console.log('正常===',this.products);
+      // console.log('itsid===',itsid)
       // 添加到购物车
       this.ajax.post('/xinda-api/cart/add',
       this.qs.stringify({id:itsid,num:1})).then(
