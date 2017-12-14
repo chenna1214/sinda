@@ -33,12 +33,12 @@
                   <p class="pcsh-conm">{{shTrData.providerName}}</p>
                   <el-row class="pcsh-ginfo">
                     <el-col :span="4">
-                      <div class="pcsh-gimg">
+                      <div class="pcsh-gimg" @click="toDetail(shTrData.serviceId)">
                         <img  :src="'http://115.182.107.203:8088/xinda/pic'+ shTrData.providerImg"  alt="">
                       </div>
                     </el-col>
                     <el-col :span="4">
-                      <p class="pcsh-sergd">{{shTrData.serviceName}}</p>
+                      <p @click="toDetail(shTrData.serviceId)" class="pcsh-sergd">{{shTrData.serviceName}}</p>
                     </el-col>
                     <el-col :span="3">
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
@@ -61,22 +61,22 @@
               <p class="pctl-price">金额总计<span class="pctl-prcin">￥{{tlPrice}}</span></p>
               <div class="pctl-prbtn">
                 <router-link tag="div" class="pctl-prbnst1 pcgo-shop" to="/merchandise/allProduct">继续购物</router-link>
-                <router-link tag="div" @click="settleActs" class="pctl-prbnst1 pcsettle" to="/merchandise/goodsOrder">去结算</router-link>
-                <!-- <input @click="settleActs" class="pcsettle" type="button" value="去结算"> -->
+                <!-- <router-link tag="div" @click="settleActs" class="pctl-prbnst1 pcsettle" to="/merchandise/goodsOrder">去结算</router-link> -->
+                <div @click="settleActs()" class="pctl-prbnst1 pcsettle">去结算</div>
               </div>
             </div>
             <div class="pcpop-serw">
               <p class="pcpop-seti">热门服务</p>
               <div class="pcpop-serb">
                 <el-row>
-                  <el-col :span="6">
-                    <div class="pcpop-selm clear">
-                      <p class="pcpp-senm">商标快速注册通道（5小时balaba）</p>
+                  <el-col :span="6" v-for="(popservise,idx) in popservises" :key="popservise.serviceName" >
+                    <div class="pcpop-selm clear" @click="toDetail(popservise.id)">
+                      <p class="pcpp-senm">{{popservise.serviceName}}</p>
                       <div class="pcpp-line"><span class="pcpp-lineh"></span><span class="pcpp-lineb"></span></div>
-                      <p class="pcpp-sinfo">工作日内5小时（5小时balaba）</p>
+                      <p class="pcpp-sinfo">{{popservise.serviceInfo}}</p>
                       <p class="pcpp-sinfo">销量：</p>
-                      <p class="pcpp-price">￥1400.00</p>
-                      <del class="pcpp-marpr"><span class="pcpp-marpw">原价：￥2000.00</span></del> 
+                      <p class="pcpp-price">￥{{popservise.price}}</p>
+                      <del class="pcpp-marpr"><span class="pcpp-marpw">原价：￥{{popservise.marketPrice}}</span></del> 
                       <p class="pcpp-more">查看详情>>></p>
                     </div>
                   </el-col>
@@ -92,53 +92,82 @@
 export default {
   name: "shoppingtrolley",
   methods: {
-    // toDetail(id){
+    toDetail(id) {
+      this.$router.push({
+        path: "/merchandise/productdetail",
+        query: { id: id }
+      });
+    },
+    // togoodsOrder(){
     //   this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     // },
     handleChange(value) {
-      console.log(value);
-      console.log('that.goodsnum==',this.goodsnum)
+      // console.log(value);
+      // console.log('that.goodsnum==',this.goodsnum)
     },
     gouwuche: function() {
       var that = this;
     },
     // 结算
     settleActs: function() {
+      //等待数据加载成功---------------
+      // this.fullscreenLoading = true;
+      // setTimeout(() => {
+      //   this.fullscreenLoading = false;
+      // }, 2000);
+      // --------------------------
+
+      var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        // console.log("提交结算",data)
+        console.log("data=======", data);
+        console.log("提交结算", data.data.data);
+        that.order = data.data.data;
+        that.$router.push({
+          path: "/merchandise/goodsOrder",
+          query: { data: that.order }
+        });
       });
     }
   },
+  // computed(){
+
+  // },
   created() {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
-      for(var i=0;i<that.shTrDatas.length;i++){
+      for (var i = 0; i < that.shTrDatas.length; i++) {
         // 商品数量
-        console.log('that.shTrDatas[i]==',that.shTrDatas[i].price)
+        // console.log('that.shTrDatas[i]==',that.shTrDatas[i])
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
-        that.tlPrice += that.shTrDatas[i].unitPrice*that.shTrDatas[i].buyNum;
+        that.tlPrice += that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;
       }
     });
-    this.goodsnum = that.goodsnum
+    this.goodsnum = that.goodsnum;
     this.shTrDatas = that.shTrDatas;
     // 推荐相关接口  热门服务 2.4.2
-    this.ajax
-      .post("/xinda-api/recommend/list")
-      .then(function(data) {
-        console.log(data.data.data)
-      });
-    // 总价
-    // console.log('this.shTrDatas===',this.shTrDatas);
+    this.ajax.post("/xinda-api/recommend/list").then(function(data) {
+      that.popservises = data.data.data.product;
+      // console.log('that.popservises===',that.popservises)
+    });
+    // this.ajax.post("/xinda-api/cart/submit").then(function(data) {
+    //     console.log('data=======',data)
+    //     console.log("提交结算",data.data.data)
+    //     that.order = data.data.data
+    //   });
   },
   data() {
     return {
+      // 加载
+      fullscreenLoading: false,
       goodsnum: 0,
       num1: 1,
       shTrDatas: [],
-      tlPrice: 0
+      tlPrice: 0,
+      popservises: [],
+      order: ""
     };
   },
   components: {}
@@ -231,7 +260,7 @@ export default {
   .pctl-prbtn {
     float: right;
     max-width: 215px;
-    .pctl-prbnst1{
+    .pctl-prbnst1 {
       display: inline-block;
       text-align: center;
       width: 99px;
@@ -246,7 +275,7 @@ export default {
 }
 
 .pcpop-serw {
-  margin-top: 54px;
+  margin: 54px 0 99px;
   .pcpop-seti {
     padding-left: 65px;
     color: #76b1dd;
@@ -269,10 +298,10 @@ export default {
         height: 38px;
         line-height: 38px;
       }
-      .pcpp-line{
+      .pcpp-line {
         position: relative;
         height: 10px;
-        .pcpp-lineh{
+        .pcpp-lineh {
           position: absolute;
           display: inline-block;
           width: 6px;
@@ -280,36 +309,38 @@ export default {
           background: #2693d4;
           border-radius: 3px;
         }
-        .pcpp-lineb{
-          position: absolute;          
+        .pcpp-lineb {
+          position: absolute;
           top: 2px;
           display: inline-block;
           width: 160px;
           height: 1px;
-          background:linear-gradient(left, #2693d4,#fff);
+          background: linear-gradient(left, #2693d4, #fff);
         }
       }
-      .pcpp-sinfo{
+      .pcpp-sinfo {
+        overflow: hidden;
+        height: 25px;
         line-height: 25px;
         color: #676767;
         font-size: 13px;
       }
-      .pcpp-price{
+      .pcpp-price {
         margin-top: 2.5px;
         font-size: 35px;
         color: #2693d4;
         font-weight: 700;
       }
-      .pcpp-marpr{
+      .pcpp-marpr {
         line-height: 38px;
-        display: inline-block;        
+        display: inline-block;
         color: #6b433b;
-        .pcpp-marpw{
+        .pcpp-marpw {
           color: #686868;
         }
       }
-      .pcpp-more{
-        line-height: 38px;        
+      .pcpp-more {
+        line-height: 38px;
         float: right;
         display: inline-block;
         color: #74b3df;

@@ -140,7 +140,7 @@ export default {
                   this.get = true;
                   this.getNew = false;
                 }
-              },1000)``
+              },1000)
             }else{ //图片验证码输入错误
               // console.log('验证码输入错误');
               this.error="验证码输入错误";
