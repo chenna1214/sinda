@@ -32,13 +32,22 @@ export default new Vuex.Store({
     },
     getters: {
         getNum: state => state.num,
-        getName:function(state){
+        // getNum: function(state){//显示购物车件数
+        //     if(state.num){
+        //         return state.num
+        //     }
+        //     else{
+        //         return sessionStorage.getItem('buyNum');
+        //     }
+
+        // },
+        getName:function(state){//登录后显示用户姓名
             if(state.name){
                 return state.name
             }else{
-                sessionStorage.getItem('userName')
+                return sessionStorage.getItem('userName');
             }
         },
-        getTitle:state=>state.title
+        getTitle:state=>state.title//切换注册、登录、忘记密码的网页头部内容
     }
 });

@@ -24,7 +24,10 @@ import member from '../components/merchandise/memberCenter/member.vue'
 import accountpwd from '../components/merchandise/memberCenter/accountpwd.vue'
 import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
 import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
-
+//银联支付
+import pay from '../components/merchandise/order/pay'
+//支付宝支付
+import Alipay from '../components/merchandise/order/Alipay'
 
 Vue.use(Router)
 
@@ -140,10 +143,20 @@ export default new Router({
         {
           path: 'goodsOrder',//订单
           name: 'goodsOrder',
-          component: goodsOrder
+          component: goodsOrder,
         }
       ]
     },
+    {
+      path:'/pay',//银联支付
+      name:'pay',
+      component:pay
+    },
+    {
+      path:'/Alipay',//支付宝支付
+      name:'Alipay',
+      component:Alipay
+    }
   ]
 })
             

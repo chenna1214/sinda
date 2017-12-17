@@ -25,32 +25,53 @@
         <!-- 手机端--头部导航栏 -->
         <el-row>
           <div class="telNavBox">
-          <el-col :xs="6" v-for="telNav in telNavs" :key="telNav.telNavImg">
-            
-              <div  class="telNavBoxIn">
-                <div>
-                  <img :src="telNav.telNavImg" class="telNavImg">
+            <el-col :xs="6" v-for="telNav in telNavs" :key="telNav.telNavImg">       
+                <div  class="telNavBoxIn">
+                  <div @click="telNavControlShow()">
+                    <img :src="telNav.telNavImg" class="telNavImg">
+                  </div>
+                  <p class="telNavTexttelNavText">{{telNav.telNavInfo}}</p>
                 </div>
-                <p class="telNavTexttelNavText">{{telNav.telNavInfo}}</p>
-              </div>
-          </el-col>
+            </el-col>
           </div>
         </el-row>
+
+
+
+
+        <!-- 手机端--全部产品--轮播左边的导航 -->
+        <div class="telNavToal" v-show="telNavShow">
+          <el-row v-for="(rDataObj,telIdx) in rDataObjs" :key="rDataObj.id" class="telNavBoxOut">
+            <el-col :xs="5">
+                <div @click="telNavClick(telIdx)" :class="{telNavClickAft:telIdx==telIndex}" class="telNavTextBox">
+                    <p class="telNavText">{{rDataObj.name}}</p>
+                </div>
+            </el-col>
+            <el-col :xs="{span:19,offset:5}" class="telNavClickOut">
+                <div  v-for="secondTil in rDataObj.itemList" :key="secondTil.id" class="telTilBox" v-show="telIdx==telIndex">
+                  <div class="telSecondTil">{{secondTil.name}}</div>  
+                  <div><p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id" class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span></p></div>
+                </div>
+            </el-col>
+        </el-row>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
       </div>
       
    
 
-
-
-
-
-
-
-
-
-
-
-      <!-- 全部产品--轮播左边的导航 -->
+      <!-- 全部产品--pc端--轮播左边的导航 -->
         <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
           <el-col :sm="4" :md="4" :lg="4">
               <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
@@ -69,6 +90,16 @@
             </div>
           </el-col>
       </el-row>
+
+
+
+
+
+
+
+
+
+
 <!-- 全部产品--xs以上--轮播图片 -->
 <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" class="pcAllProCarousel hidden-xs-only">
     <el-carousel trigger="click" height="400px">
@@ -280,6 +311,7 @@ export default {
     return {
       //手机端
       isShow: false, //控制选择城市下拉框的出现与消失的初始值
+      telNavShow:false,//点击财税服务后控制弹出框出现或消失的初始值
       pcChoosedNum: 0, //判断用户是否选择城市
       pcChoosedCity: { name: "" }, //当前已选城市
       pcCityNameSuc: { city: "" }, //已开通城市名称
@@ -314,7 +346,8 @@ export default {
           telNavInfo: "全部服务"
         }
       ],
-      
+      telIndex: 1,//点击财税服务后弹出框默认出现的初始值
+
       //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcSer: -1, //推荐服务商的标题click的变量
@@ -388,6 +421,10 @@ export default {
         this.pcSer = -1;
       }
     },
+    telNavClick(telIdx) {
+      this.telIndex = telIdx;
+      telIdx = !telIdx;
+    }, //手机端头部导航
     telMenu() {
       //选择城市下拉框
       this.isShow = !this.isShow;
@@ -399,6 +436,10 @@ export default {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;
       handleCon(this.dialogVisible, this.pcChoosedNum, this);
+    },
+    telNavControlShow(){
+      this.telNavShow=!this.telNavShow;
+      this.telIndex=1;
     }
   }
 };
@@ -732,23 +773,91 @@ export default {
 .telNavText {
   font-size: 22px;
 }
-
 .telNavBox {
   text-align: center;
   padding-left: 4%;
   padding-right: 4%;
   margin-top: 36px;
 }
+.telNavToal {
+  .telNavBoxOut:nth-child(1) {
+    margin-top: -30px;
+  }
+  .telNavBoxOut:nth-child(2) {
+    margin-top: 64px;
+  }
+  .telNavBoxOut:nth-child(3) {
+    margin-top: 158px;
+  }
+  .telNavBoxOut:nth-child(4) {
+    margin-top: 252px;
+  }
+}
 .telNavBoxIn {
   margin-bottom: 27px;
 }
-.telNavImg{
-  width:58.67%;
+.telNavImg {
+  width: 58.67%;
 }
-.telFooterP{
+.telFooterP {
   text-align: center;
   color: #8e8e8e;
   font-size: 22px;
   margin-bottom: 15px;
+}
+.telNavTextBox {
+  height: 94px;
+  line-height: 94px;
+  border-bottom: 1px solid #cbcbcd;
+  background: white;
+}
+.telNavClickAft {
+  background: #f3f4f6;
+}
+//全部产品--手机端--轮播左边的导航
+.telNavText {
+  font-size: 25px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+
+.telNavThrid {
+  color: #666465;
+  font-size: 18px;
+  margin-left: 60px;
+  padding-top: 28px;
+  padding-bottom: 23px;
+  border-bottom: 1px solid #cbcbcd;
+}
+.telCarsoulArrow {
+  float: right;
+  margin-right: 3%;
+}
+.telSecondTil {
+  color: #666465;
+  font-size: 22px;
+
+  border-bottom: 1px solid #cbcbcd;
+  padding-top: 23px;
+  padding-bottom: 23px;
+  background: #f3f4f6;
+}
+.telTilBox {
+  padding-top: 10px;
+  padding-bottom: 6px;
+  min-height: 84px;
+  height: auto;
+  background: #f3f4f6;
+  margin-top: -26px;
+}
+.telNavClickOut {
+  margin-top: -69px;
+}
+.telNavBoxOut {
+  position: absolute;
+  z-index: 9;
+  width: 100%;
 }
 </style>

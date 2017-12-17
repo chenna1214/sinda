@@ -16,15 +16,15 @@
                 </ul>
               </el-col>
             </el-row>
-          <el-row class="pcauto-wrap hidden-xs-only">
-            <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
-            <el-col :span="21"><ul class="pctax-servisenav clear">
-              <li class="pctax-svsnav-elem"><a href="javascript:void(0)">小规模记账</a></li>
-              <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">一般纳税人记账</a></li>
-            </ul></el-col>
-          </el-row>
-          <!-- 三级联动 -->
-          <autourban></autourban>
+            <el-row class="pcauto-wrap hidden-xs-only">
+              <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
+              <el-col :span="21"><ul class="pctax-servisenav clear">
+                <li class="pctax-svsnav-elem"><a href="javascript:void(0)">小规模记账</a></li>
+                <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">一般纳税人记账</a></li>
+              </ul></el-col>
+            </el-row>
+            <!-- 三级联动 -->
+            <autourban></autourban>
           </div>
           <!-- 财税服务 商品列表 -->
           <div class="pccny-gds">
@@ -124,7 +124,7 @@ export default {
     ascendingOrder :function(sortindex){
       this.sortindex = sortindex;      
       var that = this;
-      this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid',
+      this.ajax.post('/xinda-api/product/package/search-grid',
       this.qs.stringify({start:0,limit:8,searchName:'代理',sort:this.sortindex})).then(
         function(data){
       that.products = data.data.data;
@@ -135,8 +135,8 @@ export default {
     addToCart: function(itsid){
       // 改变
       this.setNum();
-      console.log('正常===',this.products);
-      console.log('itsid===',itsid)
+      // console.log('正常===',this.products);
+      // console.log('itsid===',itsid)
       // 添加到购物车
       this.ajax.post('/xinda-api/cart/add',
       this.qs.stringify({id:itsid,num:1})).then(
@@ -147,7 +147,7 @@ export default {
   },
   created(){
     var that = this;
-    this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/product/package/search-grid',
+    this.ajax.post('/xinda-api/product/package/search-grid',
     this.qs.stringify({start:0,limit:8,searchName:'代理',sort:2})).then(
       function(data){
       that.products = data.data.data;

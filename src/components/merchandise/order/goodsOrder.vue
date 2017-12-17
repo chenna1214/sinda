@@ -5,81 +5,82 @@
            <!-- 栏目标题 -->
             <p class="pcOrdCol">订单详情</p>
             <div class="pcOrdLine"></div>
-                <div class="pcOrdListOut">
-                    <el-row class="pcOrdListBox"><!-- 订单表的表头 -->
+            <p v-show="orderTip" class="pcOrdHead">您目前没有订单</p>
+                <div class="pcOrdListOut" v-for="(order,index) in orderList" :key="index">
+                    <el-row class="pcOrdListBox"><!-- 订单数据 -->
                         <el-col :sm="8" :md="8" :lg="8">
                             <span class="pcOrdListTil pcOrdListLoc">订单编号：</span>
-                            <span class="pcOrdListData">S6272827272727211</span>
+                            <span class="pcOrdListData">{{order.businessOrder.businessNo}}</span>
                             </el-col>
                             <el-col :sm="8" :md="8" :lg="8">
                             <span class="pcOrdListTil pcOrdListLoc">创建时间：</span>
-                            <span class="pcOrdListTil">2017-07-01 01：12：21</span>
+                            <span class="pcOrdListTil">{{order.businessOrder.createTime}}</span>
                             </el-col>
                             <el-col :sm="8" :md="8" :lg="8">
                                 <div class="pcOrdMenu">
                                     <span class="pcOrdListTil pcOrdListLoc">订单金额：</span>
-                                    <span class="pcOrdListData">￥2000.00</span>
+                                    <span class="pcOrdListData">{{order.businessOrder.totalPrice}}</span>
                                     <span class="pcOrdListTil">元</span>
-                                    <p class="pcOrdListDei">订单明细</p>
+                                    <p class="pcOrdListDei" @click="orderDetail()">订单明细</p>
                                 </div>
                             </el-col>
                     </el-row>
 
 
-                    <el-row class="pcOrdListBox"><!-- 订单表的详情 -->
+                    <el-row class="pcOrdListBox" v-for="(goodsList,index) in order.serviceOrderList" :key="index" v-show="isShow"><!-- 订单表的详情 -->
                         <el-col :sm="6" :md="6" :lg="6">
                             <span class="pcOrdListTil pcOrdListLoc">服务名称：</span>
-                            <span class="pcOrdListTil">注册分公司</span>
+                            <span class="pcOrdListTil">{{goodsList.serviceName}}</span>
                         </el-col>
                         <el-col :sm="6" :md="6" :lg="6">
                             <span class="pcOrdListTil pcOrdListLoc">单价：</span>
-                            <span class="pcOrdListData">￥2000.00元</span>
+                            <span class="pcOrdListData">{{goodsList.unitPrice}}</span>
                         </el-col>
                         <el-col :sm="6" :md="6" :lg="6">
                             <span class="pcOrdListTil pcOrdListLoc">数量：</span>
-                            <span class="pcOrdListData">1</span>
+                            <span class="pcOrdListData">{{goodsList.buyNum}}</span>
                         </el-col>
                         <el-col :sm="6" :md="6" :lg="6">
                             <span class="pcOrdListTil pcOrdListLoc">服务总额：</span>
-                            <span class="pcOrdListData">￥2000.00元</span>
+                            <span class="pcOrdListData">{{goodsList.totalPrice}}</span>
                         </el-col>
                     </el-row>
                 </div>
                 <!-- 支付方式 -->
-                <el-radio-group v-model="radio">
-                  <p class="pcOrdCol">支付方式</p>
-                  <div class="pcOrdLine"></div>
-                  <p class="pcOrdPayTil">非网银支付</p>
-                  <div class="pcPayImg">     
-                      <el-radio :label="1" class="pcPayBtn">
-                        <span></span>
-                      </el-radio>
-                  </div>
-                  <p class="pcOrdPayTil">平台支付</p>
-                  <div class="pcWechat">
-                      <el-radio :label="2" class="pcPayBtn">
-                        <span></span>
-                      </el-radio>
-                  </div>
-                  <div class="pcBabyPay">
-                      <el-radio :label="3" class="pcPayBtn">
-                        <span></span>
-                      </el-radio>
-                  </div><br>
-                  <span class="pcAutoPay">自助转账</span>
-                  <span class="pcPayInfo">因限额不能支付时，建议使用自助转账</span>
-                  <div class="pcAutoImg">
-                      <el-radio :label="4" class="pcPayBtn">
-                        <span></span>
-                      </el-radio>
-                  </div>
-                  <p class="pcTip">注：转账时请将订单编号备注在付款信息里：转账完成后，请通知客服。</p>
+                <p class="pcOrdCol">支付方式</p>
+                <div class="pcOrdLine"></div>
+                  <el-radio-group v-model="radio">
+                    <p class="pcOrdPayTil">非网银支付</p>
+                    <div class="pcPayImg">     
+                        <el-radio :label="1" class="pcPayBtn">
+                          <span></span>
+                        </el-radio>
+                    </div>
+                    <p class="pcOrdPayTil">平台支付</p>
+                    <div class="pcWechat">
+                        <el-radio :label="2" class="pcPayBtn">
+                          <span></span>
+                        </el-radio>
+                    </div>
+                    <div class="pcBabyPay">
+                        <el-radio :label="3" class="pcPayBtn">
+                          <span></span>
+                        </el-radio>
+                    </div><br>
+                    <span class="pcAutoPay">自助转账</span>
+                    <span class="pcPayInfo">因限额不能支付时，建议使用自助转账</span>
+                    <div class="pcAutoImg">
+                        <el-radio :label="4" class="pcPayBtn">
+                          <span></span>
+                        </el-radio>
+                    </div>
+                    <p class="pcTip">注：转账时请将订单编号备注在付款信息里：转账完成后，请通知客服。</p>
                  </el-radio-group>
 
 
 
                 <div class="pcAllPayBox">
-                    <span class="pcAllPay">￥８００.00</span>
+                    <span class="pcAllPay" v-for="(order,index) in orderList" :key="index">￥{{order.businessOrder.totalPrice}}</span>
                     <span class="pcMoney">金额总计</span><br>
                     <button class="pcAllPayBtn" @click='payWay()'>去结算</button>
                 </div>
@@ -130,24 +131,31 @@
 export default {
   name: "goodsOrder",
   created() {
+    if (this.$route.query.data == undefined) {
+      this.orderTip = true;
+    }
     var that = this; //this是指main.js中的new Vue
     this.ajax
-      .post("/xinda-api/business-order/detail", this.qs.stringify({
-        businessNo: "this.$route.query.id"
-      }))
+      .post(
+        "/xinda-api/business-order/detail",
+        this.qs.stringify({
+          businessNo: this.$route.query.data
+        })
+      )
       .then(data => {
         //订单数据
-        console.log('订单data==',data)
-        
+        that.orderList.push(data.data.data);
       });
   },
   data() {
     return {
-      payLink: "",
       radio: 1,
       payBoxShow: "",
       dialogVisible: false,
-      dialogVisibleChat: false
+      dialogVisibleChat: false,
+      orderList: [], //订单明细
+      isShow: false, //控制订单明细下拉框的出现或消失的初始值
+      orderTip: false //系统提示用户是否有订单的初始值
     };
   },
   methods: {
@@ -157,14 +165,15 @@ export default {
         this.dialogVisible = true;
         this.payBoxShow = 1;
         this.ajax
-          .post("/xinda-api/pay/china-pay", {
-            businessNo: "S1704040001075133085"
-          })
+          .post(
+            "/xinda-api/pay/china-pay",
+            this.qs.stringify({
+              businessNo: this.$route.query.data
+            })
+          )
           .then(data => {
-            // this.payLink='https://www.baidu.com/';
-            window.open("/xinda-api/pay/china-pay");
-            console.log('data11==',data)
-            
+            sessionStorage.setItem("Unionpay", data.data);
+            window.open("/#/pay");
           });
       }
       if (this.radio == 2) {
@@ -172,9 +181,12 @@ export default {
         this.dialogVisibleChat = true;
         this.payBoxShow = 10;
         this.ajax
-          .post("/xinda-api/pay/weixin-pay", {
-            businessNo: "S1704040001075133085"
-          })
+          .post(
+            "/xinda-api/pay/weixin-pay",
+            this.qs.stringify({
+              businessNo: this.$route.query.data
+            })
+          )
           .then(data => {});
       }
       if (this.radio == 3) {
@@ -182,10 +194,16 @@ export default {
         this.dialogVisible = true;
         this.payBoxShow = 3;
         this.ajax
-          .post("/xinda-api/pay/ali-pay", {
-            businessNo: "S1704040001075133085"
-          })
-          .then(data => {});
+          .post(
+            "/xinda-api/pay/ali-pay",
+            this.qs.stringify({
+              businessNo: this.$route.query.data
+            })
+          )
+          .then(data => {
+            sessionStorage.setItem("Alipay", data.data);
+            window.open("/#/Alipay");
+          });
       }
       if (this.radio == 4) {
         //未找到银行支付
@@ -197,30 +215,27 @@ export default {
     paySuccess() {
       //支付成功
       this.dialogVisible = false;
-      window.open(
-        "http://localhost:8080/#/merchandise/paySuccess",
-        "_self"
-      );
+      window.open("http://localhost:8080/#/merchandise/paySuccess", "_self");
     },
     payFail() {
       //支付失败
       this.dialogVisible = false;
-      window.open(
-        "http://localhost:8080/#/merchandise/failurePay",
-        "_self"
-      );
+      window.open("http://localhost:8080/#/merchandise/failurePay", "_self");
     },
     pcReselection() {
       //返回重新选择支付方式
       this.dialogVisible = false;
       this.dialogVisibleChat = false;
+    },
+    orderDetail() {
+      //点击控制订单明细下拉框的出现或消失
+      this.isShow = !this.isShow;
     }
   }
 };
 </script>
 
 <style scoped lang='less'>
-
 .pcOrderIn {
   margin: 0 auto;
   max-width: 1200px;
@@ -348,31 +363,31 @@ export default {
   margin-top: 85px;
 }
 // 其它方式支付弹出框
-.pcOthPayTip{
+.pcOthPayTip {
   font-size: 18px;
 }
-.pcReSelect{
+.pcReSelect {
   color: #2693d4;
   margin-top: 20px;
 }
-.pcOthPayBtn{
+.pcOthPayBtn {
   color: #2693d4;
   border: 1px solid #2693d4;
 }
-.pcOthPayTil{
+.pcOthPayTil {
   height: 30px;
   line-height: 30px;
 }
 //微信支付弹出框
-.pcChatBox{
+.pcChatBox {
   text-align: center;
 }
-.pcErCode{
+.pcErCode {
   display: flex;
   justify-content: center;
-  img{
-    width:150px;
-    height:150px;
+  img {
+    width: 150px;
+    height: 150px;
   }
 }
 </style>

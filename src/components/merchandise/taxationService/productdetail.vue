@@ -256,7 +256,7 @@
         this.setNum();
         this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: 1 }))
         .then(function(data) {
-          console.log(data);
+          // console.log(data);
         });
        },
 
