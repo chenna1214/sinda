@@ -35,13 +35,20 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
   name: 'forgetPassword',
   data () {
     return {
       
     }
-  }
+  },
+   created(){
+      this.setTitle('忘记密码')
+    },
+     methods:{
+    ...mapActions(['setTitle']),
+    }
 }
 </script>
 

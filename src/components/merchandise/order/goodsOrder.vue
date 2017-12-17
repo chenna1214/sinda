@@ -133,11 +133,12 @@ export default {
     var that = this; //this是指main.js中的new Vue
     this.ajax
       .post("/xinda-api/business-order/detail", this.qs.stringify({
-        businessNo: "this.$route.query.id"
+        businessNo: this.$route.query.data
       }))
       .then(data => {
         //订单数据
-        console.log('订单data==',data)
+        console.log('11订单data==',data);
+        console.log('接收',this.$route.query.data);
         
       });
   },
@@ -152,6 +153,7 @@ export default {
   },
   methods: {
     payWay: function() {
+      
       if (this.radio == 1) {
         //非网银支付，是银联支付
         this.dialogVisible = true;
@@ -163,7 +165,7 @@ export default {
           .then(data => {
             // this.payLink='https://www.baidu.com/';
             window.open("/xinda-api/pay/china-pay");
-            console.log('data11==',data)
+           
             
           });
       }
