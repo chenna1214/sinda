@@ -19,26 +19,36 @@
         <div class="set-name">
           <div>姓名：</div>
           <div class="name-input">
-            <input type="text" placeholder="请输入姓名">
+            <input type="text" placeholder="请输入姓名" v-model="items.test" ref="test" v-on:blur="namblur">
+          </div>
+          <!-- 出错时出现 -->
+          <div class="nam-error" v-show="namer" >
+            <div class="set-error">×</div>
+            <div>请输入您的姓名</div>
           </div>
         </div>
         <!-- 性别 -->
         <div class="set-sex">
           <div>性别：</div>
           <div class="sex-input">
-            <div>
-              <input type="radio" value="男">男
-            </div>
-            <div>
-              <input type="radio" value="女">女
-            </div>
+            <el-radio v-model="radio" label="1" class="male" checked>男</el-radio>
+            <el-radio v-model="radio" label="2" class="female">女</el-radio>
           </div>
         </div>
         <!-- 邮箱 -->
         <div class="set-email">
           <div>邮箱：</div>
           <div class="email-input">
-            <input type="email" name="" id="" placeholder="请输入邮箱地址">
+            <input type="email" placeholder="请输入邮箱地址" v-model="set.email" ref="email" v-on:blur="emablur">
+          </div>
+          <!-- 出错时出现 -->
+          <div class="ema-error" v-show="emaer">
+            <div class="set-error">×</div>
+            <div>请填写邮箱地址</div>
+          </div>
+          <div class="emat-error" v-show="emaert">
+            <div class="set-error">×</div>
+            <div>请填写正确的邮箱地址</div>
           </div>
         </div>
         <!-- 所在地区 -->
@@ -59,9 +69,14 @@
               <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
             </select>
           </div>
+          <!-- 出错时出现 -->
+          <div class="are-error" v-show="areer">
+            <div class="set-error">×</div>
+            <div>请选择所在地区</div>
+          </div>
         </div>
         <!-- 保存 -->
-        <div class="set-save">保存</div>
+        <div class="set-save" @click="save">保存</div>
       </div>
 
       <!-- 修改密码 -->
@@ -86,11 +101,6 @@
 import dist from '../../../districts/districts'
 export default {
   name: 'memaccount',
-  created () {
-    this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/member/info').then(function (data) {
-      console.log(data.data)
-    });
-  },
   data () {
     return {
       settings: [],
@@ -98,15 +108,50 @@ export default {
       chastyle: 'sets',
       setone: true,
       settwo: false,
+      // 三级联动
       provinces:dist[100000],
       citys:[],
       areas:[],
       province:'0',
       city:'0',
       area:'',
+      // 姓名
+      items: {
+        test: '',
+      },
+      namer: false,
+      // 性别
+      radio: '1',
+      // 邮箱
+      set: {
+        email: '',
+      },
+      emaer: false,
+      emaert: false,
+      // 地区
+      areer: false,
     }
     components: {}
   },
+
+  watch:{
+    // 姓名 
+    items: {
+      handler: function (val,oldval) {
+        console.log(this.$refs.test.value);
+      },
+      deep: true,
+    },
+    // 邮箱
+    set:{
+      handler: function (email,oldemail) {
+        console.log(this.$refs.email.value)
+      },
+      deep: true,
+    },
+  },
+
+
   methods: {
     //三级联动
     proChange(){
@@ -118,6 +163,7 @@ export default {
     selected(data){
       this.distCode = data.area.code;
     },
+
     setacc: function () {
       this.accstyle = 'set';
       this.chastyle = 'sets';
@@ -129,7 +175,53 @@ export default {
       this.chastyle = 'set';
       this.setone = false;
       this.settwo = true;
+    },
+
+    // 账户设置输入框的验证
+      // 姓名
+    namblur () {
+      if (!this.$refs.test.value) {
+        this.namer = true;
+      }else {
+        this.namer = false;
+      }
+    },
+      // 邮箱
+    emablur () {
+      if (!this.$refs.email.value) {//未填入
+        this.emaer = true;
+        this.emaert = false;
+      }else {//不为空
+        var ema = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+        // var ema = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
+        if(ema.test(this.$refs.email.value)){//符和
+          this.emaer = false;
+          this.emaert = false;
+        }else {//不符合
+          this.emaert = true;
+          this.emaer = false;
+        }
+      }
+    },
+
+    // 保存
+    save (){
+      // console.log('email ==',this.$refs.email.value)
+      // console.log('gender ==',this.radio)
+      // console.log('name ==',this.$refs.test.value); 
+      // console.log('area ==',this.area)
+      this.ajax.post('/xinda-api/member/update-info',
+      this.qs.stringify({
+        name: this.$refs.test.value,
+        gender: this.radio,
+        email: this.$refs.email.value,
+        regionId: 1,
+      })).then(function (data) {
+        console.log(data.data)
+      });
     }
+
+    
   }
 }
 </script>
@@ -168,8 +260,23 @@ export default {
         margin-top: 3%;
         display: flex;
         >div{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           &:nth-child(1){
             width: 10%;
+          }
+          >div{
+            color: #f00
+          }
+          .set-error{
+            width: 12px;
+            height: 12px;
+            text-align: center;
+            line-height: 12px;
+            color: #fff;
+            border-radius: 50%;
+            background-color: #f00;
           }
         }
       }
@@ -178,10 +285,16 @@ export default {
         width: 100%;
         .set-ssq{
           width: 50%;
+          justify-content: space-between;
           select{
             width: 30%;
             height: 32px;
           }
+        }
+        .are-error{
+          width: 14%;
+          height: 35px;
+          margin-left: 3%;
         }
       }
       // 当前头像
@@ -206,6 +319,11 @@ export default {
             height: 90%;
           }
         }
+        .nam-error{
+          width: 14%;
+          height: 35px;
+          margin-left: 3%;
+        }
       }
       // 性别
       .set-sex{
@@ -214,7 +332,6 @@ export default {
         .sex-input{
           width: 10%;
           display: flex;
-          justify-content: space-around;
           >div{
             width: 40%;
           }
@@ -231,6 +348,16 @@ export default {
             width: 98%;
             height: 90%;
           }
+        }
+        .ema-error{
+          width: 14%;
+          height: 35px;
+          margin-left: 3%;
+        }
+        .emat-error{
+          width: 20%;
+          height: 35px;
+          margin-left: 3%;
         }
       }
       // 保存

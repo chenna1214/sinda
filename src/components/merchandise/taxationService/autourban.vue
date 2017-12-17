@@ -3,18 +3,20 @@
    <!-- pc端三级联动 -->
       <el-row class="pcauto-wrap hidden-xs-only">
         <el-col :span="3"><div class="pcau-serv-area">服务区域</div></el-col>
-        <el-col :span="21"><v-distpicker class="pcv-dist-selec" province="省" city="市" area="区"></v-distpicker></el-col>
+        <el-col :span="21"><sanji class="pcv-dist-selec"></sanji></el-col>
       </el-row>
     </div>
 </template>
 <script>
+import sanji from './sanjiliandong'
+
 export default {
   name: "autourban",
   data() {
     return {
     };
   },
-  components: {}
+  components: {sanji}
 };
 </script>
 
@@ -49,7 +51,8 @@ li{
         border: 1px solid #ccc;
         border-left: 0;
         select{
-            max-width: 86px;
+            min-width: 86px;
+            max-width: 120px;
             margin-left: 9px;
             padding: 0;
             color:#636363;
