@@ -9,9 +9,9 @@
         <!-- 左 -->
         <div class="main-left">
           <!-- 头像 -->
-          <div class="mai-avatar">
+          <div class="mai-avatar" :key="phones.id">
             <div class="ava-img"></div>
-            <div class="ava-phone">13100000000</div>
+            <div class="ava-phone">{{phones.loginId}}</div>
           </div>
           <!-- 三个点击事件 -->
           <div class="mai-three">
@@ -47,7 +47,16 @@ export default {
   data () {
     return {
       active: true,
+      phones: [],
     }
+  },
+  created () {
+    var that = this;
+    this.ajax.post('/xinda-api/sso/login-info').then(function (data) {
+      // console.log(data.data.data.loginId)
+      var avaPhone = data.data.data;
+      that.phones = avaPhone;
+    });
   },
 }
 </script>
