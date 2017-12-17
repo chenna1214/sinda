@@ -155,7 +155,7 @@ export default {
     })).then(function(data){
       var rData = data.data.data;
       that.products = rData[0];
-      console.log(that.products);
+      console.log('rData ==',that.products);
     });
 
     // 服务产品
