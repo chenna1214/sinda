@@ -16,7 +16,7 @@
           <div class="pcTopRight">
             <img src="../../images/pcTop/shoppingcarIcon.png" alt="购物车" class="pcShoppingcarIcon">
             <p class="pcTopBlackText">购物车</p>
-            <p class="pcTopBlueText">{{getNum}}</p>
+            <p class="pcTopBlueText saveBuyNum">{{getNum}}</p>
             <p class="pcTopBlackText">件</p>
             <p class="pcTopBlueText pcTopServiceEntryText">服务商入口</p>
           </div>
@@ -39,24 +39,44 @@ export default {
   data() {
     return {
       pcUserName: "", //退出登录后清空用户姓名
+
     };
   },
- 
+
   methods: {
     ...mapActions(["setName"]),
     logOff() {
-      sessionStorage.removeItem('userName');
-      this.setName(this.pcUserName)//问题:1.重新刷新后，数据没了
-       this.$message({
-        type: "success",
-        message: "您已成功退出登录!"
-      });
-    
+      sessionStorage.removeItem("userName");
+      this.setName(this.pcUserName); //有时失效
+      setTimeout(
+        this.$message({
+          type: "success",
+          message: "您已成功退出登录!"
+        }),
+        100
+      );
     }
   },
   computed: {
-    ...mapGetters(["getNum"]),
-    ...mapGetters(["getName"]),
+    ...mapGetters(["getNum","getName"]),
+    // ...mapGetters(["getName"])
+  },
+  created(){
+    //  var saveBuyNum=document.getElementsByClassName('saveBuyNum')[0];
+    
+    // // buyNumData=saveBuyNum.innerHTML;
+    //  console.log('buyNumData',saveBuyNum.innerHTML)
+    // sessionStorage.setItem('buyNum')
+   
+  },
+  mounted(){
+    //  var saveBuyNum=document.getElementsByClassName('saveBuyNum')[0];
+    // buyNumData=saveBuyNum.innerHTML;
+    //  console.log('buyNumData',buyNumData)
+    
+
+     
+    
   }
 };
 </script>
