@@ -6,7 +6,7 @@
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div>
             
-            <p class="pcTopBlackText pcWelcomeText">欢迎<span class="pcUserName">{{getName}}</span>来到信达！</p>
+            <p class="pcTopBlackText pcWelcomeText">欢迎<a href="#/merchandise/membercenter"class="pcUserName">{{getName}}</a>来到信达！</p>
             <a href="#/userData/login"  class="pcTopBlueText" v-show="!getName">登录</a>
             <span class="pcTopBlueText" v-show="getName" @click="logOff()">退出登录</span>
             <a href="#/userData/register"  class="pcTopBlueText pcTopRegisterText">快速注册</a>
@@ -15,7 +15,7 @@
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div class="pcTopRight">
             <img src="../../images/pcTop/shoppingcarIcon.png" alt="购物车" class="pcShoppingcarIcon">
-            <p class="pcTopBlackText">购物车</p>
+            <a href="#/merchandise/shoppingtrolley" class="pcTopBlackText">购物车</a>
             <p class="pcTopBlueText saveBuyNum">{{getNum}}</p>
             <p class="pcTopBlackText">件</p>
             <p class="pcTopBlueText pcTopServiceEntryText">服务商入口</p>
@@ -31,20 +31,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "pcTop",
   data() {
     return {
-      pcUserName: "", //退出登录后清空用户姓名
-
+      pcUserName: "" //退出登录后清空用户姓名
     };
   },
-
   methods: {
-    ...mapActions(["setName"]),
+    ...mapActions(["setName", "gainNum"]),
     logOff() {
       sessionStorage.removeItem("userName");
       this.setName(this.pcUserName); //有时失效
@@ -58,25 +55,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getNum","getName"]),
-    // ...mapGetters(["getName"])
+    ...mapGetters(["getNum", "getName"])
   },
-  created(){
-    //  var saveBuyNum=document.getElementsByClassName('saveBuyNum')[0];
-    
-    // // buyNumData=saveBuyNum.innerHTML;
-    //  console.log('buyNumData',saveBuyNum.innerHTML)
-    // sessionStorage.setItem('buyNum')
-   
-  },
-  mounted(){
-    //  var saveBuyNum=document.getElementsByClassName('saveBuyNum')[0];
-    // buyNumData=saveBuyNum.innerHTML;
-    //  console.log('buyNumData',buyNumData)
-    
-
-     
-    
+  created() {
+    if (!this.getNum) {
+      this.gainNum();
+    }
   }
 };
 </script>
@@ -110,6 +94,8 @@ export default {
 .pcTopBlackText {
   font-size: 12px;
   display: inline-block;
+  text-decoration: none;
+  color: black;
 }
 .pcTopBlueText {
   display: inline-block;
@@ -124,5 +110,6 @@ export default {
 .pcUserName {
   color: #2794d5;
   font-size: 16px;
+  text-decoration: none;
 }
 </style>
