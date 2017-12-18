@@ -52,10 +52,18 @@
         </div>
       </div>
     </div>
-
-
-
-
+    <div class="tanchu">
+      <el-dialog title="" :visible.sync="centerDialogVisible" width="40%">
+        <div class="ping">
+          <img src="../merchandise/pc_images/chenggong.jpg" alt="">
+          <h3>恭喜您，注册成功！</h3>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false"><a href="#/userData/login">立即登录</a></el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -71,6 +79,7 @@ export default {
   },
   data () {
     return {
+      centerDialogVisible: false,
       phone:'',
       show:false,
       error:'',
@@ -196,8 +205,8 @@ export default {
                       return;
                     }else if(data.data.status == 1){//全部正确之后
                       this.show = false;
-                      location.href='#/userData/login';//登录界面
-
+                      // location.href='#/userData/login';//登录界面
+                      this.centerDialogVisible = true
                     }
                   })
                 }else{
@@ -226,29 +235,37 @@ export default {
         console.log('没有进来')
       }
     }
-
-    //设置密码格式是否正确
-    // passwor:function(){
-    //   if(this.pass){
-    //     if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
-    //       this.error="请设置8-20位密码";
-    //       this.show=true;
-    //       return;
-    //     }else{
-    //       this.show=false;
-    //     }
-    //   }else{
-    //     //密码不填写时隐藏
-    //     this.show=false;
-    //     return;
-    //   }
-    // },
-
   }
 }
 </script>
 
 <style scoped lang='less'>
+  .tanchu{
+    title{
+      font-size: 12px;
+
+    }
+    button{
+      width: 118px;
+      margin-left: 30px;
+    }
+    h3{
+      margin: 15px 0 0 37px;
+      font-size: 19px;
+    }
+    .ping{
+      display: flex;
+    }
+    a{
+      color: #fff;
+      text-decoration: none;
+    }
+    img{
+      width: 76px;
+      height: 62px;
+      margin-left: 40px;
+    }
+  }
   .anError{
     width: 283px;
     height: 25px;

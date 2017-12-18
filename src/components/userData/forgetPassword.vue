@@ -26,7 +26,7 @@
               <button v-show="getNew" class="getgray">重新获取{{count}}</button>
             </div>
           </div>
-          <input class="security" type="text" placeholder="请输入新密码" v-model="newPass">
+          <input class="security" type="text" placeholder="请输入新密码(8-20位数字或字母)" v-model="newPass">
           <input class="security" type="text" placeholder="请再次确认密码" v-model="confirmPass">
           <button class="affirm" @click="Cchange">确认修改</button>
         </div>
@@ -38,21 +38,33 @@
           <img src="../merchandise/pc_images/pc_login.png" alt="">
         </div>
       </div>
+      <!-- 注册成功弹出框 -->
+      <div class="tanchu">
+        <el-dialog title="" :visible.sync="centerDialogVisible" width="40%">
+          <!-- <p>返回结果</p> -->
+          <div class="ping">
+            <img src="../merchandise/pc_images/chenggong.jpg" alt="">
+            <h3>恭喜您，修改成功！</h3>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="centerDialogVisible = false"><a href="#/userData/login">立即登录</a></el-button>
+          </span>
+        </el-dialog>
+      </div>
     </div>
-
-
-
-
-
    </div>
+
 </template>
 
 <script>
 import {mapActions} from 'vuex'
+var md5 = require('md5');
 export default {
   name: 'forgetPassword',
   data () {
     return {
+      centerDialogVisible: false,
       show:false,
       error:'',
       imgUrl:'/xinda-api/ajaxAuthcode',
@@ -88,6 +100,7 @@ export default {
           this.error="请输入正确的手机号码";
           this.show=true;
           return;
+          
         }else{ //手机号匹配正确
           this.show=false;
         }
@@ -137,41 +150,45 @@ export default {
     Cchange: function(){
       if(this.ceshi == true){
         if(this.smsNumber){
-          if(/^\d{6}$/.test(this.smsNumber)){
+          if(/^\d{6}$/.test(this.smsNumber)){//短信验证码
             this.show=false;
-            // newPass
-            //   // 判断密码
-            //   if(this.setPass){
-            //     if(/^\d{8,20}$/.test(this.setPass)){
-            //       this.show=false;
-            //       this.ajax.post('/xinda-api/register/register',this.qs.stringify({
-            //         cellphone: this.phone,					
-            //         smsType:1,
-            //         validCode:111111,
-            //         password:this.setPass, 
-            //         regionId:this.area,
-            //       })).then(data =>{
-            //         console.log(data,data.data.status);
-            //         if(data.data.status == -2 | data.data.status == -3){
-            //           this.show = true;
-            //           this.error = data.data.msg;
-            //           this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
-            //           return;
-            //         }else if(data.data.status == 1){//全部正确之后
-            //           this.show = false;
-            //           location.href='#/userData/login';//登录界面
-
-            //         }
-            //       })
-            //     }else{
-            //       this.show=true;
-            //       this.error="请设置8-20位任意数字/字母";
-            //     }
-            //   }else{
-            //     this.show=true;
-            //     this.error="请您的密码";
-            //   }
-            // 
+            // 判断密码
+            if(this.newPass){
+              if(/^\d{8,20}$/.test(this.newPass)){
+                this.show=false;
+                if(this.newPass != this.confirmPass){
+                  this.show=true;
+                  this.error = "两次输入密码不一致";
+                  return;
+                }else{
+                  this.show=false;
+                  this.ajax.post('/xinda-api/register/findpas',this.qs.stringify({
+                    cellphone: this.phone,					
+                    smsType:2,
+                    validCode:111111,
+                    password:md5(this.newPass),
+                  })).then(data =>{
+                    console.log(data,data.data.status);
+                    if(data.data.status != 1){
+                      this.show = true;
+                      this.error = data.data.msg;
+                      this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+                      return;
+                    }else{//全部正确之后
+                      this.show = false;
+                      // location.href='#/userData/login';//登录界面
+                      this.centerDialogVisible = true;                      
+                    }
+                  })
+                }
+              }else{
+                this.show=true;
+                this.error="请设置8-20位任意数字/字母";
+              }
+            }else{
+              this.show=true;
+              this.error="请您的密码";
+            }
           }else{
             this.show=true;
             this.error="短信验证码错误";        
@@ -191,6 +208,32 @@ export default {
 </script>
 
 <style scoped lang='less'>
+  .tanchu{
+    title{
+      font-size: 12px;
+
+    }
+    button{
+      width: 118px;
+      margin-left: 30px;
+    }
+    h3{
+      margin: 15px 0 0 37px;
+      font-size: 19px;
+    }
+    .ping{
+      display: flex;
+    }
+    a{
+      color: #fff;
+      text-decoration: none;
+    }
+    img{
+      width: 76px;
+      height: 62px;
+      margin-left: 40px;
+    }
+  }
   .anError{
     width: 283px;
     height: 25px;
