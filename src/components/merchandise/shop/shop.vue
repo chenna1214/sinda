@@ -4,21 +4,12 @@
     <div class="pctaxservices-body">
       <a class="pctaxservices-title">首页/店铺</a>
       <!-- 三级联动 -->
-      <autourban class="pcshop-auto" style="width:100% ;background: #f7f7f7;"></autourban>
+      <autourban @selected="selected" class="pcshop-auto" style="width:100% ;background: #f7f7f7;"></autourban>
       <el-row class="pcauto-wrap hidden-xs-only">
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
           <li class="pctax-svsnav-elem"><a href="javascript:void(0)">所有</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">专利申请</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">版权保护</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">商标注册</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">代理记账</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司注册</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">企业社保</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">公司变更</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">税务代办</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">个人社保</a></li>
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">审计报告</a></li>
+          <li @click="goodFiltrate(idx+1)" v-for="(producTy,idx) in producType":key="producTy.name" class="pctax-svsnav-elem"><a href="javascript:void(0)">{{producTy.name}}</a></li>
         </ul></el-col>
       </el-row>
     </div>
@@ -32,26 +23,29 @@
           </ul>
           <div class="pcsp-shops">
             <el-row>
-              <el-col :span="12"  class="pcsp-shewp">
+              <el-col :span="12" v-for="product in products":key="product.providerName"  class="pcsp-shewp">
                 <div class="pcsp-shelm clear">
                   <div class="pcsp-shell">
                     <div class="pcsp-imgwp">
+                      <img  :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
                     </div>
                     <p class="pcsp-gdser"><span class="pcsp-gsico"></span><span class="pcsp-gswd">金牌服务商</span></p>
                   </div>
 
                   <div class="pcsp-shelr">
-                    <p class="pcsp-shenm">信达北京服务中心</p>
-                    <p class="pcsp-elrpt">信誉
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
+                    <p class="pcsp-shenm">{{product.providerName}}</p>
+                    <p class="pcsp-elrpt">
+                      <span class="pcsh-repu">信誉</span>
+                      <span :class='{"pcs-redje":product.goodJudge>=1}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>=2}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>=3}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>=4}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>=5}' class="pcsh-jewel pcs-blkje"></span>
                     </p>
-                    <p class="pcsp-eladr">北京-北京市-朝阳区</p>
-                    <p class="pcsp-elcnt">累计服务客户次数： 8270</p>
+                    <p class="pcsp-eladr">{{product.regionName}}</p>
+                    <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
                     <p class="pcsp-servs"><span class="pcsp-serv">税务代办</span></p>
+                    <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                   </div>
                 </div>
               </el-col>
@@ -69,6 +63,17 @@ import autourban from "../taxationService/autourban";
 export default {
   name: "shop",
   methods: {
+    selected(code) {
+      this.distCode = code;
+      // console.log("code===", code);
+    },
+    toDetail(id){
+      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+    },
+    // 商品筛选
+    goodFiltrate(thePrTyCo){
+      this.thePrTyCode = thePrTyCo;
+    },
     // 商品排序方式
     ascendingOrder: function(sortindex) {
       this.sortindex = sortindex;
@@ -79,20 +84,65 @@ export default {
           this.qs.stringify({
             start: 0,
             limit: 6,
-            productTypeCode: 10,
-            regionId: 110102,
-            sort: 1
+            productTypeCode: this.thePrTyCode,
+            regionId: this.distCode,
+            sort: this.sortindex
           })
         )
         .then(function(data) {
           that.products = data.data.data;
+          // console.log('data打印',data);
+          // console.log('productTypeCodes==',typeof that.products[0].productTypeCodes)
         });
       this.products = that.products;
     }
   },
+  created() {
+    var that = this;
+    // 获取店铺列表信息
+    this.ajax
+      .post(
+        "/xinda-api/provider/grid",
+        this.qs.stringify({
+          start: 0,
+          limit: 6,
+          productTypeCode: this.thePrTyCode,
+          // regionId: 110102,
+          sort: 1
+        })
+      )
+      .then(function(data) {
+        // console.log('data=======',data);
+        that.products = data.data.data;
+      });
+    this.products = that.products;
+    // 获取产品类型列表信息
+    this.ajax
+      .post("/xinda-api/product/style/list")
+      .then(function(data) {
+        // console.log('data=======标题',data.data.data);
+        var items = data.data.data;
+        for(var i in items){
+          // console.log(i,items[i].itemList)
+          for(var j in items[i].itemList){
+            // console.log(j,items[i].itemList[j].name)
+            // items[i].itemList[j].name
+            that.producType.push(items[i].itemList[j])
+          }
+            // that.producType.push(items[i].itemList)          
+        }
+        // console.log('this.producType===',that.producType)
+        // that.products = data.data.data;
+      });
+      
+  },
   data() {
     return {
-      sortindex: 1
+      producType: [],
+      products: [],
+      sortindex: 1,
+      distCode: "",
+      thePrTyCode: [1,2,3,4,5,6,7,8,9,10]
     };
   },
   components: { autourban }
@@ -214,24 +264,25 @@ export default {
         // 单个元素左侧
         .pcsp-shell {
           width: 35.1%;
-          float: left;          
+          float: left;
           .pcsp-imgwp {
-            margin: 132px 43px 28px 35px;
+            margin: 92px 48px 68px 35px;
             width: 124px;
             height: 30px;
           }
-          .pcsp-gdser{
+          .pcsp-gdser {
             position: relative;
             font-size: 13px;
             color: #676767;
-            .pcsp-gsico{
+            .pcsp-gsico {
               display: inline-block;
               margin-left: 47px;
               width: 28px;
               height: 32px;
-              background: transparent url('../../images/companyIdstry/m_xbt.png') -66px -75px;
+              background: transparent
+                url("../../images/companyIdstry/m_xbt.png") -66px -75px;
             }
-            .pcsp-gswd{
+            .pcsp-gswd {
               position: absolute;
               top: 6px;
               left: 83px;
@@ -239,29 +290,68 @@ export default {
           }
         }
         // 单个元素右侧
-        .pcsp-shelr{
+        .pcsp-shelr {
           padding-top: 13.5px;
           float: left;
           font-size: 13px;
           color: #676767;
-          .pcsp-shenm{
+          .pcsp-shenm {
             line-height: 38px;
           }
-          .pcsp-elrpt{
+          // 信誉评价
+          .pcsp-elrpt {
+            overflow: hidden;
+            line-height: 21px;
+            // 小钻石
+            span {
+              float: left;
+              display: inline-block;
+            }
+            .pcsh-repu {
+              margin-right: 11px;
+            }
+            .pcsh-jewel {
+              margin-right: 7px;
+              width: 16px;
+              height: 15px;
+              background: lightcoral;
+            }
+            // 红钻石
+            .pcs-redje {
+              background: url("../../images/companyIdstry/m_xbt.png");
+            }
+            // 黑钻石
+            .pcs-blkje {
+              background: url("../../images/companyIdstry/m_xbt.png") -20px 0;
+            }
+          }
+          .pcsp-eladr {
             line-height: 21px;
           }
-          .pcsp-eladr{
-            line-height: 21px;            
-          }
-          .pcsp-elcnt{
+          .pcsp-elcnt {
             line-height: 37px;
           }
-          .pcsp-servs{
-            .pcsp-serv{
+          .pcsp-servs {
+            .pcsp-serv {
+              display: inline-block;
               width: 71px;
-              background: #2693d4;
+              height: 22px;
+              line-height: 22px;
               color: #fff;
+              text-align: center;
+              background: #2693d4;
+              border-radius: 3px;
             }
+          }
+          .pcsp-enter {
+            margin-top: 43px;
+            width: 102px;
+            height: 33px;
+            color: #ffdcd6;
+            text-align: center;
+            line-height: 33px;
+            background: #ff591b;
+            border-radius: 3px;
           }
         }
       }

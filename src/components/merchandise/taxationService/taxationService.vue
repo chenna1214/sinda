@@ -24,7 +24,7 @@
               </ul></el-col>
             </el-row>
             <!-- 三级联动 -->
-            <autourban></autourban>
+            <autourban @selected="selected"></autourban>
           </div>
           <!-- 财税服务 商品列表 -->
           <div class="pccny-gds">
@@ -113,12 +113,34 @@ import {mapActions} from 'vuex'//改变数据
 export default {
   name: "taxationService",
   methods:{
+    selected(code) {
+      this.distCode = code;
+      console.log('code===',code)
+    },
     ...mapActions(['setNum']),
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
     togoodsOrder(id){
-      this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
+
+      
+
+      // this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
+    
+    // --------------------------
+      var that = this;
+      this.ajax.post("/xinda-api/cart/submit").then(function(data) {
+        console.log("提交成功",data);
+        // console.log("提交结算", data.data.data);
+        // that.order = data.data.data;
+        // that.$router.push({
+        //   path: "/merchandise/goodsOrder",
+        //   query: { data: that.order }
+        // });
+      });
+      
+
+
     },
     // 商品排序方式
     ascendingOrder :function(sortindex){
@@ -159,7 +181,8 @@ export default {
       hideArea:true,
       products: [],
       sortindex: 2,
-      idx:''
+      idx:'',
+      distCode: ''
     };
   },
   components: {autourban}
