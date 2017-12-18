@@ -113,7 +113,7 @@ import {mapActions} from 'vuex'//改变数据
 export default {
   name: "taxationService",
   methods:{
-    ...mapActions(['setNum']),
+    ...mapActions(['gainNum']),
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
@@ -134,14 +134,16 @@ export default {
     // 添加到购物车
     addToCart: function(itsid){
       // 改变
-      this.setNum();
+      // this.setNum();
       // console.log('正常===',this.products);
       // console.log('itsid===',itsid)
+      var that = this;
       // 添加到购物车
       this.ajax.post('/xinda-api/cart/add',
       this.qs.stringify({id:itsid,num:1})).then(
         function(data){
-        console.log(data);
+          //查询一下购物车数量
+        that.gainNum();
       })
     }
   },

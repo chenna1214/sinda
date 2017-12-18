@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
@@ -16,6 +17,9 @@ export default new Vuex.Store({
         },
         SET_TITLE: function (state,title) {
             state.title = title
+        },
+        GAIN_NUM(state,num){
+            state.num = num;
         }
 
     },
@@ -28,26 +32,21 @@ export default new Vuex.Store({
         },
         setTitle({ commit }, title) {
             commit('SET_TITLE', title)
+        },
+        gainNum({commit}){
+            axios.post('/xinda-api/cart/cart-num').then(data=>{
+                commit('GAIN_NUM',data.data.data.cartNum);
+            });
         }
     },
     getters: {
         getNum: state => state.num,
-        // getNum: function(state){//显示购物车件数
-        //     if(state.num){
-        //         return state.num
-        //     }
-        //     else{
-        //         return sessionStorage.getItem('buyNum');
-        //     }
-
-        // },
         getName:function(state){//登录后显示用户姓名
             if(state.name){
                 return state.name
             }else{
                 return sessionStorage.getItem('userName');
             }
-            
         },
         getTitle:state=>state.title//切换注册、登录、忘记密码的网页头部内容
     }
