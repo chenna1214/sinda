@@ -7,10 +7,9 @@
      <!-- 竖线 -->
      <div class="virgule"></div>
      <!-- 欢迎登录 -->
-     <span>欢迎</span>
-     <span>{{getTitle}}</span>
+     <p>{{getTitle}}</p>
    </div>
-   <router-view/>
+   <router-view/> 
    </div>
 </template>
 
