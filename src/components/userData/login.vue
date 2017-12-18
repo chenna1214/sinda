@@ -43,7 +43,7 @@ import {mapActions} from 'vuex'//改变数据
   export default {
     name: 'login',
     created(){
-      this.setTitle('登录')
+      this.setTitle('欢迎登录')
     },
     data () {
       return {
@@ -106,16 +106,17 @@ import {mapActions} from 'vuex'//改变数据
               password: md5(this.pass), 
               imgCode: this.imgCode,
             })).then(data => {
+              console.log('MD5密码输出',md5(this.pass))
               console.log('验证码接口返回',data,data.data.status,data.data.msg);
               if(data.data.status=='1'){
                 location.href='#/merchandise/allProduct';
                 this.show=false;
                 this.setName(this.phone);//获得用户名
                 sessionStorage.setItem('userName',this.phone)
-
               }else{
                 this.error = data.data.msg;
                 this.show=true;
+                this.imgUrl = this.imgUrl + '?t' + new Date().getTime();                
                 return;
               }
             })

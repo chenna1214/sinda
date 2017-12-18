@@ -12,7 +12,6 @@
             <p class="wrongTip">{{error}}</p>
           </div>
           <input class="box" type="number" placeholder="请输入手机号码" v-model="phone">
-           <!-- @blur="numbers" -->
           <div class="verify">
             <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode">
             <div class="verifyI" @click="imgReflash">
@@ -23,7 +22,7 @@
             <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber">
             <div @click="getCode">
               <button v-show="get" class="getblue">点击获取</button>
-              <button v-show="getNew" class="getgray">重新获取{{count}}</button>
+              <button v-show="getNew" class="getgray" disabled>重新获取{{count}}</button>
             </div>
           </div>
           <select name="" id="" @change="proChange" v-model="province">
@@ -34,11 +33,11 @@
             <option value="0">市</option>
             <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
           </select>
-          <select name="" id="" v-model="area">
+          <select name="" id="" v-model="area" @change="quhao">
             <option value="">区</option>
             <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
           </select>
-          <input class="setPass" type="password" placeholder="请设置密码" v-model="setPass" @blur="passwor">
+          <input class="setPass" type="password" placeholder="请设置密码（8-20位）" v-model="setPass">
           <button class="immediately" @click="iregister">立即注册</button>
           <p>注册及同意遵守
             <a class="agreement" href="">《服务协议》</a>
@@ -53,10 +52,18 @@
         </div>
       </div>
     </div>
-
-
-
-
+    <div class="tanchu">
+      <el-dialog title="" :visible.sync="centerDialogVisible" width="40%">
+        <div class="ping">
+          <img src="../merchandise/pc_images/chenggong.jpg" alt="">
+          <h3>恭喜您，注册成功！</h3>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false"><a href="#/userData/login">立即登录</a></el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -68,10 +75,11 @@ var md5 = require('md5');
 export default {
   name: 'register',
   created(){
-      this.setTitle('注册')
-    },
+    this.setTitle('欢迎注册')
+  },
   data () {
     return {
+      centerDialogVisible: false,
       phone:'',
       show:false,
       error:'',
@@ -85,14 +93,21 @@ export default {
       province:'0',
       city:'0',
       area:'',
+
       //点击获取
       count:'60',
       getNew:false,
       get:true,
       smsNumber:'',
+
+      ceshi: false,
+
     }
   },
   methods:{
+    quhao:function(){
+      console.log(this.area)
+    },
     ...mapActions(['setTitle']),
     //三级联动
     proChange(){
@@ -132,24 +147,27 @@ export default {
               this.get = false;
               this.getNew = true;
               this.show=false;
+              this.ceshi = true;
               var that = this;
               var dic = setInterval(function() {
                 that.count--;
                 if (that.count == 1){
                   clearInterval(dic);
-                  this.get = true;
-                  this.getNew = false;
+                  that.get = true;
+                  that.getNew = false;
                 }
               },1000)
             }else{ //图片验证码输入错误
               // console.log('验证码输入错误');
-              this.error="验证码输入错误";
+              console.log( data.data.msg);
+              this.error= data.data.msg;
               this.show=true;
+              this.imgUrl = this.imgUrl + '?t' + new Date().getTime();
               return;
             }
           });
           }else{//验证码为空时
-            console.log('验证码现在是空的');          
+            console.log('验证码现在是空的');
             this.error="验证码不能为空";
             this.show=true;
             return;
@@ -160,51 +178,94 @@ export default {
         return;
       }
     },
-
     //立即注册按钮
-    iregister(){  
-      // console.log(this.area),
-      this.ajax.post('/xinda-api/register/register',
-      this.qs.stringify({
-        cellphone: this.phone,
-        smsType:1,
-        validCode: 111111,
-        password:md5(this.setPass),
-        regionId:this.area,
-      }))
-      .then(data => {
-        console.log('注册提交',data.data.msg,data.data.status);
-      })
-      
-    },
-
-    //设置密码格式是否正确
-    passwor:function(){
-      if(this.pass){
-        if(!/^[0-9A-Za-z]{8,20}$/.test(this.pass)){
-          this.error="请设置8-20位密码";
-          this.show=true;
-          return;
+    iregister: function(){
+      if(this.ceshi == true){
+        if(this.smsNumber){
+          if(/^\d{6}$/.test(this.smsNumber)){
+            this.show=false;
+            //判断省市区
+            if(this.area){
+              // 判断密码
+              if(this.setPass){
+                if(/^\d{8,20}$/.test(this.setPass)){
+                  this.show=false;
+                  this.ajax.post('/xinda-api/register/register',this.qs.stringify({
+                    cellphone: this.phone,					
+                    smsType:1,
+                    validCode:111111,
+                    password:md5(this.setPass), 
+                    regionId:this.area,
+                  })).then(data =>{
+                    console.log(data,data.data.status);
+                    if(data.data.status == -2 | data.data.status == -3){
+                      this.show = true;
+                      this.error = data.data.msg;
+                      this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+                      return;
+                    }else if(data.data.status == 1){//全部正确之后
+                      this.show = false;
+                      // location.href='#/userData/login';//登录界面
+                      this.centerDialogVisible = true
+                    }
+                  })
+                }else{
+                  this.show=true;
+                  this.error="请设置8-20位任意数字/字母";
+                }
+              }else{
+                this.show=true;
+                this.error="请您的密码";
+              }
+            }else{
+              this.show=true;
+              this.error="请选择您所在区域"; 
+            }
+          }else{
+            this.show=true;
+            this.error="短信验证码错误";        
+            return;
+          }
         }else{
-          this.show=false;     
+          this.show=true;
+          this.error="请填写短信验证码";        
+          return;
         }
       }else{
-        //密码不填写时隐藏
-        this.show=false;
-        return;
+        console.log('没有进来')
       }
-    },
-
-
-
+    }
   }
 }
-    //点击获取短信验证码可以多次点击，要修改
-    //省市区接口提交的地区编号
-    //17806253629
 </script>
 
 <style scoped lang='less'>
+  .tanchu{
+    title{
+      font-size: 12px;
+
+    }
+    button{
+      width: 118px;
+      margin-left: 30px;
+    }
+    h3{
+      margin: 15px 0 0 37px;
+      font-size: 19px;
+    }
+    .ping{
+      display: flex;
+    }
+    a{
+      color: #fff;
+      text-decoration: none;
+    }
+    img{
+      width: 76px;
+      height: 62px;
+      margin-left: 40px;
+    }
+  }
   .anError{
     width: 283px;
     height: 25px;
