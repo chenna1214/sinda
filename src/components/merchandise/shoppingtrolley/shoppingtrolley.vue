@@ -148,7 +148,7 @@ export default {
       that.shTrDatas = data.data.data;
       for (var i = 0; i < that.shTrDatas.length; i++) {
         // 商品数量
-        // console.log('that.shTrDatas[i]==',that.shTrDatas[i])
+        console.log('that.shTrDatas[i]==',that.shTrDatas[i])
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
         that.tlPrice += that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;

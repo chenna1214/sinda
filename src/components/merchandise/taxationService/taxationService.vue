@@ -113,15 +113,11 @@ import {mapActions} from 'vuex'//改变数据
 export default {
   name: "taxationService",
   methods:{
-<<<<<<< HEAD
     selected(code) {
       this.distCode = code;
       console.log('code===',code)
     },
     ...mapActions(['setNum']),
-=======
-    ...mapActions(['gainNum']),
->>>>>>> dd375219bd7c4a7bb4581e5531607c437a3c258f
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
@@ -156,6 +152,7 @@ export default {
       that.products = data.data.data;
       })
       this.products = that.products;
+      console.log(this.products)
     },
     // 添加到购物车
     addToCart: function(itsid){

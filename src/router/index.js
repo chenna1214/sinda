@@ -112,7 +112,7 @@ export default new Router({
         },
         {
           path: 'membercenter',//会员中心网页，公共
-          redirect:'membercenter/member',
+          redirect: 'membercenter/member',
           name: 'membercenter',
           component: membercenter,
           children: [

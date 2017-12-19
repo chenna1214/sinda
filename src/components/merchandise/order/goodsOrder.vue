@@ -147,7 +147,8 @@ export default {
         that.orderList.push(data.data.data);
         console.log('order==',data.data.data)
         // 订单号传到我的订单
-        this.$router.push({path: '/merchandise/membercenter',query: {id: data.data.data.businessOrder.businessNo}});
+        console.log('a==',this.$route.query.data)
+        localStorage.setItem('id',this.$route.query.data);
       });
   },
   data() {
