@@ -26,7 +26,7 @@
             </el-col>
           </el-row>
           <!-- 三级联动 -->
-          <autourban></autourban>
+          <autourban @selected="selected"></autourban>
           </div>
           <!-- 公司工商 商品列表 -->
           <div class="pccny-gds">
@@ -115,6 +115,10 @@ import { mapActions} from "vuex"; //显示数据
 export default {
   name: "companyIndustry",
   methods: {
+    selected(code) {
+      this.distCode = code;
+      console.log('code===',code)
+    },
     ...mapActions(["setNum"]),
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
@@ -203,7 +207,8 @@ export default {
         { item: "股份公司注册" },
         { item: "有限责任公司注册" },
         { item: "一般纳税注册地址" }
-      ]
+      ],
+      distCode: ''
     };
   },
   components: { autourban }

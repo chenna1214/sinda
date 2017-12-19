@@ -145,6 +145,9 @@ export default {
       .then(data => {
         //订单数据
         that.orderList.push(data.data.data);
+        console.log('order==',data.data.data)
+        // 订单号传到我的订单
+        this.$router.push({path: '/merchandise/membercenter',query: {id: data.data.data.businessOrder.businessNo}});
       });
   },
   data() {

@@ -104,7 +104,7 @@ export default {
         .post("/xinda-api/cart/del", this.qs.stringify({ id: id }))
         .then(function(data) {
           // that.products = data.data.data;
-          console.log(data);
+          // console.log(data);
         });
       // this.ajax.post("/xinda-api/cart/list").then(function(data) {
       //   that.shTrDatas = data.data.data;
@@ -128,12 +128,12 @@ export default {
       // --------------------------
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        console.log("data=======", data);
-        console.log("提交结算", data.data.data);
+        // console.log("data=======", data);
+        // console.log("提交结算", data.data.data);
         that.order = data.data.data;
         that.$router.push({
           path: "/merchandise/goodsOrder",
-          query: { data: that.order }
+          query: { data: that.order }                                                                                                                                                                                                                                                                                                                                                                                                                                                                
         });
       });
     }

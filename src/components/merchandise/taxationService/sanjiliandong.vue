@@ -8,7 +8,7 @@
             <option value="0">市</option>
             <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
         </select>
-        <select name="" id="" v-model="area">
+        <select name="" id="" v-model="area" @change="areaChange">
             <option value="">区</option>
             <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
         </select>
@@ -41,5 +41,11 @@ export default {
     selected(data){
       this.distCode = data.area.code;
     },
+    // shijian(){
+    //     console.log(this.area);
+    // },
+     areaChange() {
+      this.$emit("selected", this.area);
+    }
 }}
 </script>

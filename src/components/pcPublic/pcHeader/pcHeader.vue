@@ -35,13 +35,14 @@
   </el-col>
 <el-col :sm="19" :md="14" :lg="12">
   <div><!-- 上半部分内容--中间 -->
-<span class="pcHeaderChangeCityText pcHeaderMiddleProductText" >产品|</span>
-<span class="pcHeaderCityText">服务商</span><br>
-<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @keyup='pcSearch()' v-model="serVal"><!-- 模糊搜索 -->
+<span class="pcHeaderChangeCityText pcHeaderMiddleProductText" :class="{pcChangeColor:bgBlue}" @click="choseType(1)">产品|</span>
+<span class="pcHeaderCityText" :class="{pcChangeColor:!bgBlue}" @click="choseType()">服务商</span><br>
+<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' @blur="serShow=false" v-model="serVal"><!-- 模糊搜索 -->
 <!-- 匹配搜索内容 -->
-<p class="pcSerBox"  v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail()'>{{eachSer.providerName}}</p>
-
-<img src="../../images/icon/serchIcon.png" alt="" class="pcHeaderMiddleSearchImg" align="absmiddle">
+<div class="pcSerBox" v-show='serShow'>
+  <p v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail(eachSer)'>{{eachSer.serviceName||eachSer.providerName}}</p>
+</div>
+<img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle">
 <p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
   </div>
   </el-col>
@@ -68,7 +69,7 @@ import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
-
+let searchVal = "";
 export default {
   name: "pcHeader",
   mounted() {
@@ -103,14 +104,38 @@ export default {
       searchArr: [], //搜索源
       serchMatch: [], //与用户输入所匹配的内容
       serName: [], //服务商公司名称
-      serVal: "" //搜索input
+      serVal: "", //搜索input
+      proServiceName: [], //产品搜索---产品名称
+      proAllData: [], //全部产品数据
+      bgBlue: true,
+      serShow: true,
+      getSearch: null
     };
   },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
+    this.getSearch = this.debounce(this.getSearchList, 600);
   },
   methods: {
     ...mapActions(["setNum"]),
+    getSearchList() {
+      var that = this;
+      var url = "";
+      if (this.bgBlue) {
+        url = "/xinda-api/product/package/search-grid"; //产品搜索
+      } else {
+        url = "/xinda-api/provider/search-grid"; //服务商接口
+      }
+      this.ajax
+        .post(url, this.qs.stringify({ searchName: this.serVal }))
+        .then(data => {
+          this.serchMatch = [];
+          this.serchMatch = data.data.data;
+          if (data.data.data.length == 0) {
+            this.serchMatch = [{ serviceName: "没有相关搜索内容" }];
+          }
+        });
+    },
     goodsNum() {
       this.setNum();
     },
@@ -129,60 +154,38 @@ export default {
     handleConfirm() {
       handleCon(this.dialogVisible, this.pcChoosedNum, this);
     },
-    // handleCon() {
-    //   this.dialogVisible = false;
-    //   if (this.pcChoosedNum == 0) {
-    //     this.$message({
-    //       type: "warning",
-    //       message: "您未选择城市!"
-    //     });
-    //   }
-    //   if (this.pcChoosedNum == 1) {
-    //     this.pcChoosedNum = 0;
-    //     this.$message({
-    //       type: "success",
-    //       message: "城市选择成功!"
-    //     });
-    //   }
-    // },
+    choseType(param) {
+      if (param) {
+        this.bgBlue = true;
+      } else {
+        this.bgBlue = false;
+      }
+      this.serchMatch = [];
+      this.serVal = "";
+    },
     pcSearch() {
       //模糊搜索
-      var that = this;
-      this.serchMatch = [];
-      this.ajax //待优化：如何在用户完全输入完后才向服务器发送请求
-        .post(
-          "/xinda-api/provider/search-grid",
-          this.qs.stringify({
-            searchName: this.serVal
-          })
-        )
-        .then(data => {
-          var searchData = data.data.data;
-          for (var key in searchData) {
-            var eachArr = searchData[key];
-            that.searchArr.push(eachArr);
-            var serCompany = searchData[key].providerName;
-            that.serName.push(serCompany);
-          }
-          if (this.serVal !== "") {
-            for (var i = 0; i < this.serName.length; i++) {
-              if (this.serName[i].indexOf(this.serVal) !== -1) {
-                this.serchMatch.push(this.searchArr[i]);
-              }
-            }
-          }
-        });
-    },
-    pcDetail(searchCon) {
-      //匹配搜索内容
-      for (var a = 0; a < this.serchMatch.length; a++) {
-        if (this.serchMatch[a].providerName == "大唐注册代理事务所") {
-          console.log("大唐注册代理事务所");
-        }
-        if (this.serchMatch[a].providerName == "云智慧咨询服务有限公司") {
-          console.log("云智慧咨询服务有限公司");
-        }
+
+      if (!this.serVal) {
+        //当input事件首次触发后，用中文输入法输入字母，但没有拼成文字前，input框内的value是空的，就返回。有的中文输入法时打汉字时，虽然有汉语拼音，但input框内的value值是空的，却触发input事件
+        return;
       }
+      if (searchVal == this.serVal) {
+        //当全局定义的空字符串等于input框内的value时，就返回，不执行以下代码
+        return;
+      } else {
+        searchVal = this.serVal; //全局定义的空字符串不等于input框内的value时，就将当前输入的input框的value值赋值给全局字符串
+      }
+      this.getSearch();
+    },
+    pcDetail: function(eachSer) {//待优化
+      document.location.reload(
+        this.$router.push({
+          //匹配搜索内容---产品
+          path: "/merchandise/productdetail",
+          query: { id: eachSer.id }
+        }) //问题
+      );
     }
   }
 };
@@ -197,21 +200,9 @@ export default {
   top: 173px;
   z-index: 2056;
 }
-//搜索源
-// .pcSerTil {
-//   font-size: 15px;
-//   color: #2693d4;
-//   text-align: center;
-//   margin-top: 20px;
-// }
-// .serContent {
-//   font-size: 9px;
-//   margin-top: 10px;
-// }
 .pcSerBox {
   position: absolute;
   z-index: 2000;
-
   margin-top: -1px;
   background: #98f5ff;
   width: 40%;
@@ -219,9 +210,17 @@ export default {
   color: #2693d4;
   text-align: center;
 }
-// .pcChoosedCity {
-//   color: #2693d4;
-// }
+.proBox {
+  position: absolute;
+  z-index: 2000;
+  margin-top: -1px;
+  background: #98f5ff;
+  width: 40%;
+  font-size: 15px;
+  color: #2693d4;
+  text-align: center;
+  height: 200px;
+}
 // 如何引用公共less
 .pcHeaderOutter {
   border-bottom: 1px solid #2693d4;
@@ -230,6 +229,7 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   height: 160px;
+  margin-bottom: 3px;
 }
 .pcHeaderTopContent {
   margin-top: 24px;
@@ -258,9 +258,11 @@ export default {
 }
 .pcHeaderChangeCityText {
   display: inline-block;
-  color: #2794d5;
   font-size: 12px;
   text-decoration: none;
+}
+.pcChangeColor {
+  color: #2794d5;
 }
 //头部的中间内容
 .pcHeaderSearchInput {
