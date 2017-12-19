@@ -36,6 +36,7 @@ export default new Vuex.Store({
         gainNum({commit}){
             axios.post('/xinda-api/cart/cart-num').then(data=>{
                 commit('GAIN_NUM',data.data.data.cartNum);
+                
             });
         }
     },
@@ -50,4 +51,4 @@ export default new Vuex.Store({
         },
         getTitle:state=>state.title//切换注册、登录、忘记密码的网页头部内容
     }
-});
+});  
