@@ -6,7 +6,7 @@ export default new Vuex.Store({
     state: {
         num: 0,
         // name: '',
-        title:''
+        title:'',
     },
     mutations: {
         SET_NUM: function (state, num) {

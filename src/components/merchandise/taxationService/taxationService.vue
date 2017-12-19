@@ -65,7 +65,7 @@
                     <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
                       加入购物车 {{idx}}
                     </router-link> -->
-                    <a href="javascript:void(0)"@click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
+                    <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
                   </div>
                 </li>
               </ul>
