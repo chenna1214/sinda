@@ -69,7 +69,7 @@
               <p class="pcpop-seti">热门服务</p>
               <div class="pcpop-serb">
                 <el-row>
-                  <el-col :span="6" v-for="(popservise,idx) in popservises" :key="popservise.serviceName" >
+                  <el-col :span="6" v-for="(popservise,idx) in popservises" :key="popservise.serviceName">
                     <div class="pcpop-selm clear" @click="toDetail(popservise.id)">
                       <p class="pcpp-senm">{{popservise.serviceName}}</p>
                       <div class="pcpp-line"><span class="pcpp-lineh"></span><span class="pcpp-lineb"></span></div>

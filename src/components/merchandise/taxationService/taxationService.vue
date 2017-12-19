@@ -113,22 +113,16 @@ import {mapActions} from 'vuex'//改变数据
 export default {
   name: "taxationService",
   methods:{
-<<<<<<< HEAD
+
     selected(code) {
       this.distCode = code;
       console.log('code===',code)
     },
-    ...mapActions(['setNum']),
-=======
     ...mapActions(['gainNum']),
->>>>>>> dd375219bd7c4a7bb4581e5531607c437a3c258f
     toDetail(id){
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
     togoodsOrder(id){
-
-      
-
       // this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
     
     // --------------------------
