@@ -10,7 +10,7 @@
         </div>
         <!-- 字 -->
         <div class="comlogo-character">
-          <div class="comlogo-name">{{products.providerName}}</div>
+          <div class="comlogo-name">{{products.name}}</div>
           <div>服务地址：<div class="comlogo-address">{{products.regionName}}</div></div>
         </div>
       </div>
@@ -73,33 +73,28 @@
               <div class="comright-serveproduct" v-show="rightserve">
                 <div>
                   <!-- 外层盒子 -->
-                  <div>
+                  <div v-for="service in services" :key="service.id">
                     <!-- 内层盒子 -->
                     <div>
-                      <div class="comrightser-top">企业公积金销户</div>
+                      <div class="comrightser-top">{{service.serviceName}}</div>
                       <!-- 线 -->
                       <div class="comrightser-line">
                         <div class="comrightline-dot"></div>
                         <div class="comrightline-line"></div>
                       </div>
                       <!-- 质量认证 -->
-                      <div class="comrightser-quality">质量认证</div>
+                      <div class="comrightser-quality">{{service.serviceInfo}}</div>
                       <!-- 销量 -->
                       <div class="comrightser-sales">销量</div>
                       <!-- 现价 -->
-                      <div class="comrightser-present">￥ 1200.00</div>
+                      <div class="comrightser-present">￥ {{service.price}}.00</div>
                       <!-- 原价 -->
                       <div class="comrightser-original">原价：
-                        <del>￥ 1800.00</del>
-                        <a href="#/merchandise/productdetail">查看详情>></a>
+                        <del>￥ {{service.marketPrice}}.00</del>
+                        <a href="javascript:void(0)" @click="proDetail(service.id)">查看详情>></a>
                       </div>
                     </div>
                   </div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
                 </div>
                 <!-- 尾 -->
                 <div class="comintright-down">
@@ -118,12 +113,15 @@
               </div>
                 <!-- 客服 -->
               <div class="comright-service" v-show="rightservice">
-                <div>工作时间：周一到周五</div>
+                <div>工作时间：{{products.workTime}}</div>
                 <div>
-                  <div>QQ咨询：</div>
-                  <div>
-                    <img src="../pc_images/u4644.png" alt="">
-                  </div>
+                  <div>QQ咨询：{{products.qq}}</div>
+                </div>
+                <div>
+                  <div>微信咨询：{{products.weixin}}</div>
+                </div>
+                <div>
+                  <div>邮箱：{{products.email}}</div>
                 </div>
               </div>
               <!-- 资质证书 -->
@@ -142,27 +140,36 @@
 export default {
   name: 'pc_shophp',
   created () {
-    console.log('this.$router.query.id ==',this.$route.query.id);
+    // console.log('this.$route.query.id ==',this.$route.query.id);
     var that = this;
-    this.ajax.post('/xinda-api/provider/search-grid',
-    this.qs.stringify({
-      start: 0,
-      limit: 8,
-      searchName: '',
-      sort: 1,
-      productTypeCode: 7,
-      regionId: this.$route.query.id,
-    })).then(function(data){
+    // 公司介绍
+    that.ajax.post('/xinda-api/provider/detail',
+    that.qs.stringify({
+      id: this.$route.query.id
+    })).then(function (data) {
       var rData = data.data.data;
-      that.products = rData[0];
-      console.log('rData ==',that.products);
+      that.products = rData;
+      // console.log('rData==',rData)
     });
-
+   
     // 服务产品
-    
+    this.ajax.post('xinda-api/recommend/list',
+    this.qs.stringify({
+      // start: 0,
+      // limit: 8,
+      // productTypeCode: "1",
+      // // productId: '3e2987b535946edd2e5f686e42b67454',
+      // // providerId: "8a82f52b674543e298d2e5f685946e6e",
+      // sort: 2,
+    })).then(function (data) {
+      var sData = data.data.data;
+      that.services = sData.product;
+      // console.log('fuwu==',that.services);
+    });
   },
   data () {
     return {
+      services: [],
       products: [],
       rightserve: true,
       rightservice: false,
@@ -173,6 +180,13 @@ export default {
     }
   },
   methods: {
+    // 点查看详情去商品详情页
+    proDetail (id) {
+      this.$router.push({
+        path: '/merchandise/productdetail',
+        query: {id: id}
+      });
+    },
     serve: function () {
       this.rightserve = true;
       this.rightservice = false;
@@ -322,9 +336,9 @@ export default {
           // 下
           .comright-under{
             width: 100%;
-            border: 1px solid #e9e9e9;
             border-top: none;
             overflow: hidden;
+            border: 1px solid #e9e9e9; 
             // 服务产品
             .comright-serveproduct{
               width: 100%;
@@ -332,20 +346,25 @@ export default {
                 width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-around;
+                border: 1px solid #e9e9e9; 
+                // justify-content: space-around;
                 // 外层盒子
                 >div{
                   width: 30%;
                   border: 1px solid #e9e9e9;
                   margin-top: 3%;
                   margin-bottom: 2%;
+                  margin-left: 2%;
                   // 内层盒子
                   >div{
                     width: 92%;
                     margin: 0 auto;
                     .comrightser-top{
                       font-size: 17px;
-                    line-height: 40px;
+                      line-height: 40px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
                     }
                     // 线
                     .comrightser-line{
@@ -369,6 +388,9 @@ export default {
                       font-size: 14px;
                       color: #666;
                       line-height: 25px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
                     }
                     // 销量
                     .comrightser-sales{
@@ -394,7 +416,7 @@ export default {
                         font-size: 18px;
                         line-height: 30px;
                         color: #2693d4;
-                        margin-left: 13%;
+                        margin-left: 5%;
                       }
                     }
                   }
@@ -404,10 +426,13 @@ export default {
               .comintright-down{
                 width: 80%;
                 margin: 0 auto;
+                border: none;
+                justify-content: space-between;
                 >div{
                   width: 8%;
                   line-height: 32px;
                   text-align: center;
+                  margin-left: 0;
                   cursor: pointer;
                 }
               }

@@ -9,19 +9,18 @@
             <el-row class="pcauto-wrap hidden-xs-only">
               <el-col :span="3"><div class="pcau-serv-classify">服务分类</div></el-col>
               <el-col :span="21">
-                <ul class="pctax-servisenav clear">
-                  <li class="pctax-svsnav-elem"><a href="javascript:void(0)">代理记账</a></li>
-                  <li class="pctax-svsnav-elem"><a href="javascript:void(0)">税务代办</a></li>
-                  <li class="pctax-svsnav-elem"><a href="javascript:void(0)">审计报告</a></li>
+                <ul class="pctax-servisenav clear pcSecBox"><!-- 二级标题 -->
+                  <a class="pcSecTil" v-for="(eachSec,index) in secBox" :key="eachSec.name" @click="thirdTilShow(index)" :class="{changeColr:change==index}">{{eachSec.name}}</a>
                 </ul>
               </el-col>
             </el-row>
             <el-row class="pcauto-wrap hidden-xs-only">
               <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
-              <el-col :span="21"><ul class="pctax-servisenav clear">
-                <li class="pctax-svsnav-elem"><a href="javascript:void(0)">小规模记账</a></li>
-                <li class="pctax-svsnav-elem pctax-svsnav-eleml"><a href="javascript:void(0)">一般纳税人记账</a></li>
-              </ul></el-col>
+              <el-col :span="21"><!-- 三级标题 -->
+                  <div v-for="(eachThird,thirdIndex) in thirdTitle" :key="thirdIndex" v-show="thirdIndex==index" class="pctax-servisenav clear pcSecBox">
+                    <a v-for="thirdName in eachThird" :key="thirdName.name"  class="pcSecTil">{{thirdName.name}}</a>
+                  </div>
+              </el-col>
             </el-row>
             <!-- 三级联动 -->
             <autourban @selected="selected"></autourban>
@@ -66,12 +65,19 @@
                     <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
                       加入购物车 {{idx}}
                     </router-link> -->
-                    <a href="javascript:void(0)"@click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
+                    <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
                   </div>
                 </li>
               </ul>
             </div>
+
             
+            
+          </div>
+          <div class="pageBox"><!-- 页码 -->
+            <button @click="upPage()">上一页</button>
+            <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
+            <button @click="downPage()">下一页</button>
           </div>
         </el-col>
         <el-col :span="5" class="hidden-xs-only">
@@ -97,38 +103,86 @@
           </div>
         </el-col>
       </el-row>
+     
     </div>
-    <div>
-      
-    </div>
+   
    </div>
 </template>
 
 <script>
 // 三级联动模块
-import autourban from './autourban';
-import {mapActions} from 'vuex'//改变数据
-
+import autourban from "./autourban";
+import { mapActions } from "vuex"; //改变数据
 
 export default {
   name: "taxationService",
-  methods:{
+  methods: {
+    upPage() {
+      //点击向上一页翻页
+      if (this.eachContent - 1 >= 0) {
+        this.eachContent = this.eachContent - 1;
+        this.ajaxProData(this.index, this.eachContent);
+        this.textColor = this.eachContent;
+      }
+    },
+    downPage() {
+      //点击向下一页翻页
+      if (Number(this.eachContent) + 1 < this.page) {
+        this.eachContent = Number(this.eachContent) + 1;
+        this.ajaxProData(this.index, this.eachContent);
+        this.textColor = this.eachContent;
+      }
+      console.log("downPage--this.eachContent", this.eachContent);
+    },
+    pageClick(idxPage) {
+      //点击某个页码进行翻页
+      this.eachContent = idxPage;
+      this.ajaxProData(this.index, this.eachContent);
+      this.textColor = idxPage;
+    },
+    ajaxProData(code, eachContent) {
+      //产品列表
+      var that = this;
+      this.ajax
+        .post(
+          "/xinda-api/product/package/grid",
+          this.qs.stringify({
+            productTypeCode: code + 1,
+            limit: 3,
+            start: this.eachContent * 3
+          })
+        )
+        .then(function(data) {
+          that.products = data.data.data;
+          var page = Math.ceil(data.data.totalCount / 3);
+          var pageCount = {};
+          for (var i = 0; i < page; i++) {
+            pageCount[i] = i + 1;
+          }
+          that.pageNum = pageCount;
+          that.page = page;
+        });
+    },
 
     selected(code) {
       this.distCode = code;
-      console.log('code===',code)
+      console.log("code===", code);
     },
-    ...mapActions(['gainNum']),
-    toDetail(id){
-      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+    ...mapActions(["setNum"]),
+    ...mapActions(["gainNum"]),
+    toDetail(id) {
+      this.$router.push({
+        path: "/merchandise/productdetail",
+        query: { id: id }
+      });
     },
-    togoodsOrder(id){
+    togoodsOrder(id) {
       // this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
-    
-    // --------------------------
+
+      // --------------------------
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        console.log("提交成功",data);
+        console.log("提交成功", data);
         // console.log("提交结算", data.data.data);
         // that.order = data.data.data;
         // that.$router.push({
@@ -136,56 +190,95 @@ export default {
         //   query: { data: that.order }
         // });
       });
-      
-
-
+    },
+    thirdTilShow(index) {
+      this.change = index;
+      this.index = index;
+      this.ajaxProData(index, this.eachContent);
     },
     // 商品排序方式
-    ascendingOrder :function(sortindex){
-      this.sortindex = sortindex;      
+    ascendingOrder: function(sortindex) {
+      this.sortindex = sortindex;
       var that = this;
-      this.ajax.post('/xinda-api/product/package/search-grid',
-      this.qs.stringify({start:0,limit:8,searchName:'代理',sort:this.sortindex})).then(
-        function(data){
-      that.products = data.data.data;
-      })
+      this.ajax
+        .post(
+          "/xinda-api/product/package/grid",
+          this.qs.stringify({
+            start: 0,
+            sort: this.sortindex,
+            productTypeCode: 1
+          })
+        )
+        .then(function(data) {
+          that.products = data.data.data;
+        });
       this.products = that.products;
     },
     // 添加到购物车
-    addToCart: function(itsid){
+    addToCart: function(itsid) {
       // 改变
       // this.setNum();
       // console.log('正常===',this.products);
       // console.log('itsid===',itsid)
       var that = this;
       // 添加到购物车
-      this.ajax.post('/xinda-api/cart/add',
-      this.qs.stringify({id:itsid,num:1})).then(
-        function(data){
+      this.ajax
+        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid, num: 1 }))
+        .then(function(data) {
           //查询一下购物车数量
-        that.gainNum();
-      })
+          that.gainNum();
+        });
     }
   },
-  created(){
+  created() {
+    //0---全部
+    // productTypeCode: 1---代理记账
+    //3---审计报告
+    //2---税务代办
+    this.ajaxProData(0); //调用默认显示的产品列表
     var that = this;
-    this.ajax.post('/xinda-api/product/package/search-grid',
-    this.qs.stringify({start:0,limit:8,searchName:'代理',sort:2})).then(
-      function(data){
-      that.products = data.data.data;
-    })
-      this.products = that.products;
+    this.ajax //获取头部导航
+      .post("/xinda-api/product/style/list")
+      .then(function(data) {
+        var rData = data.data.data;
+        console.log("typedata===", rData);
+        var rDataObj = {};
+        for (var Key in rData) {
+          rDataObj[rData[Key].code] = rData[Key];
+        }
+        for (var secKey in rDataObj) {
+          var secName = rDataObj[secKey].itemList;
+          that.sencodTitle.push(secName);
+          var onlySecTil = that.sencodTitle[0];
+        }
+        for (var SecKey in onlySecTil) {
+          that.thirdTitle.push(onlySecTil[SecKey].itemList); //三级标题
+          that.secBox.push(onlySecTil[SecKey]); //二级标题
+        }
+        that.secBox = that.secBox.reverse();
+        that.thirdTitle = that.thirdTitle.reverse();
+      });
   },
   data() {
     return {
-      hideArea:true,
+      hideArea: true,
       products: [],
       sortindex: 2,
-      idx:'',
-      distCode: ''
+      idx: "",
+      distCode: "",
+      sencodTitle: [],
+      thirdTitle: [], //三级标题
+      ThirdShow: "",
+      index: "",
+      secBox: [], //二级标题
+      change: 0,
+      pageNum: {}, //页数
+      eachContent: 0, //每页内容
+      page: "", //每类数据分的总页数
+      textColor: 0 //控制页码被选中后的动态样式的初始值
     };
   },
-  components: {autourban}
+  components: { autourban }
 };
 </script>
 
@@ -237,27 +330,53 @@ export default {
       border: 1px solid #ccc;
       border-bottom: 0;
       border-left: 0;
-      li {
-        width: 80;
-        height: 25px;
-        border-radius: 2px;
-        a {
-          color: #626262;
-        }
-      }
-      .pctax-svsnav-eleml {
-        width: 106px;
-      }
-      li:hover {
-        background: #2693d4;
-        a {
-          color: #fff;
-        }
-      }
+      // li {
+      //   width: 80;
+      //   height: 25px;
+      //   border-radius: 2px;
+      //   a {
+      //     color: #626262;
+      //   }
+      // }
+      // .pctax-svsnav-eleml {
+      //   width: 106px;
+      // }
+      // li:hover {
+      //   background: #2693d4;
+      //   a {
+      //     color: #fff;
+      //   }
+      // }
     }
   }
 }
-
+.pcSecTil {
+  color: #626262;
+  margin-left: 3%;
+}
+.pcSecBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.changeColr {
+  color: #2693d4;
+}
+.pcPage {
+  width: 36px;
+  display: inline-block;
+  text-align: center;
+}
+.pageColor {
+  //页码被选中后的样式
+  color: #2693d4;
+  font-size: 28px;
+}
+.pageBox {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 // 右侧图标条
 .pccopny-r-wrap {
   padding-left: 12px;
@@ -368,7 +487,7 @@ export default {
       width: 98px;
       height: 98px;
       border: 1px solid #ccc;
-      img{
+      img {
         width: 100%;
       }
     }

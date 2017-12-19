@@ -36,16 +36,16 @@
         <!-- 订单 -->
         <div class="indent">
           <!-- 大订单 -->
-          <div :class="orderstyle">
+          <div :key="ordernums.id" :class="orderstyle">
             <!-- 订单号(头部) -->
             <div class="indent-top">
               <div>
                 <div>订单号：</div>
-                <div>S1703310010024456097</div>
+                <div>{{ordernums.businessNo}}</div>
               </div>
               <div>
                 <div>下单时间：</div>
-                <div>2017-03-31 14:44:56</div>
+                <div>{{ordernums.date}}</div>
               </div>
             </div>
             <!-- 具体信息 -->
@@ -53,7 +53,7 @@
               <!-- 左侧 -->
               <div class="det-left">
                 <!-- 商品 -->
-                <div>
+                <div :key="orderMess.id">
                   <div class="comname">
                     <div class="indname-img">
                       <img src="../pc_images/pc_logo.png" alt="">
@@ -63,25 +63,9 @@
                       <div class="indcha-two">注册分公司</div>
                     </div>
                   </div>
-                  <div class="ind-unit">￥800.00</div>
-                  <div class="ind-quant">1</div>
-                  <div class="ind-total">￥800.00</div>
-                  <div class="ind-status">等待买家付款</div>
-                </div>
-
-                <div>
-                  <div class="comname">
-                    <div class="indname-img">
-                      <img src="../pc_images/pc_logo.png" alt="">
-                    </div>
-                    <div class="indname-cha">
-                      <div class="indcha-one">信达北京服务中心</div>
-                      <div class="indcha-two">注册分公司</div>
-                    </div>
-                  </div>
-                  <div class="ind-unit">￥800.00</div>
-                  <div class="ind-quant">1</div>
-                  <div class="ind-total">￥800.00</div>
+                  <div class="ind-unit">￥{{orderMess.unitPrice}}.00</div>
+                  <div class="ind-quant">{{orderMess.buyNum}}</div>
+                  <div class="ind-total">￥{{orderMess.totalPrice}}.00</div>
                   <div class="ind-status">等待买家付款</div>
                 </div>
               </div>
@@ -91,65 +75,6 @@
                 <router-link :to="{path:'/merchandise/goodsOrder'}" class="ind-pay">付款</router-link>
                 <!-- 删除订单 -->
                 <div class="ind-delete" @click="cancel">删除订单</div>
-              </div>
-            </div>
-          </div>
-          <!-- 大订单 -->
-          <div>
-            <!-- 订单号(头部) -->
-            <div class="indent-top">
-              <div>
-                <div>订单号：</div>
-                <div>S1703310010024456097</div>
-              </div>
-              <div>
-                <div>下单时间：</div>
-                <div>2017-03-31 14:44:56</div>
-              </div>
-            </div>
-            <!-- 具体信息 -->
-            <div class="ind-detail">
-              <!-- 左侧 -->
-              <div class="det-left">
-                <!-- 商品 -->
-                <div>
-                  <div class="comname">
-                    <div class="indname-img">
-                      <img src="../pc_images/pc_logo.png" alt="">
-                    </div>
-                    <div class="indname-cha">
-                      <div class="indcha-one">信达北京服务中心</div>
-                      <div class="indcha-two">注册分公司</div>
-                    </div>
-                  </div>
-                  <div class="ind-unit">￥800.00</div>
-                  <div class="ind-quant">1</div>
-                  <div class="ind-total">￥800.00</div>
-                  <div class="ind-status">等待买家付款</div>
-                </div>
-
-                <div>
-                  <div class="comname">
-                    <div class="indname-img">
-                      <img src="../pc_images/pc_logo.png" alt="">
-                    </div>
-                    <div class="indname-cha">
-                      <div class="indcha-one">信达北京服务中心</div>
-                      <div class="indcha-two">注册分公司</div>
-                    </div>
-                  </div>
-                  <div class="ind-unit">￥800.00</div>
-                  <div class="ind-quant">1</div>
-                  <div class="ind-total">￥800.00</div>
-                  <div class="ind-status">等待买家付款</div>
-                </div>
-              </div>
-              <!-- 右侧付款/删除 -->
-              <div class="det-right">
-                <!-- 付款 -->
-                <router-link :to="{path:'/merchandise/goodsOrder'}" class="ind-pay">付款</router-link>
-                <!-- 删除订单 -->
-                <div class="ind-delete">删除订单</div>
               </div>
             </div>
           </div>
@@ -182,11 +107,44 @@
 <script>
 export default {
   name: 'changepwd',
+  created () {
+    // console.log('this.$route.query.id ==',this.$route.query.id);
+    var that = this;
+    this.ajax.post('/xinda-api/business-order/detail',
+    this.qs.stringify({
+      businessNo: this.$route.query.id,
+    })).then(function (data) {
+      // 订单号以及时间
+      var ordernum = data.data.data.businessOrder;
+      that.ordernums = ordernum;
+      // 时间戳转化为时间函数
+      var orderDate = new Date(that.ordernums.createTime);
+      var year = orderDate.getFullYear();
+      var month = orderDate.getMonth() + 1;
+      var date = orderDate.getDate();
+      var hour = orderDate.getHours();
+      var minute = orderDate.getMinutes();
+      var second = orderDate.getSeconds();
+      var NowDate = [year, month, date].join('-') + ' ' + hour + ':' + minute + ':' + second;
+      that.ordernums.date = NowDate;
+      // console.log(orderDate)//object
+      console.log('ordernums==',that.ordernums);
+
+      // 商品具体信息
+      var orderMes = data.data.data.serviceOrderList[0];
+      that.orderMess = orderMes;
+      console.log('that.orderMess==',that.orderMess)
+    });
+  },
   data () {
     return {
       xstyle: 'trans',
       orderstyle: 'transf',
       sure: true,
+      // 订单号
+      ordernums: [],
+      // 商品具体信息
+      orderMess: [],
     }
   },
   methods: {

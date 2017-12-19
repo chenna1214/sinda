@@ -17,7 +17,7 @@
         <div class="parinf-serve">{{goods.info}}</div>
         <div class="parinf-price">
           <div>市场价： <del>￥{{goods.marketprice}}</del></div>
-          <div class="parpri-price">价  格： <p>￥{{goods.price*num}}元</p></div>
+          <div class="parpri-price">价  格： <p>￥{{goods.price*buynum}}元</p></div>
         </div>
         <!-- 类型 -->
         <div class="parinf-mold">
@@ -33,7 +33,7 @@
         </div>
         <!-- 购买数量 -->
         <div class="parinf-num">
-          购买数量：<input type="number" @change="addsubtract" v-model="num">
+          购买数量：<input type="number" @change="addsubtract" v-model="buynum">
         </div>
         <!-- 立即购买，加入购物车 -->
         <div class="parinf-btn">
@@ -48,7 +48,7 @@
         <div>
           联系： <button class="parcon-btn" @click="refer">马上咨询</button>
         </div>
-        <div class="parcon-div" @click="toShophp((goods.providerProduct).regionId)">查看服务商</div>
+        <div class="parcon-div" @click="toShophp((goods.provider).id)">查看服务商</div>
       </div>
     </div>
     <!-- 广告 -->
@@ -234,7 +234,7 @@
           that.goods.servicename = that.goods.providerProduct.serviceName;//名字
           that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
-          console.log(good)
+          // console.log('good ==',good)
         });
     },
 
@@ -246,15 +246,16 @@
         actstyle: 'chose',
         tastyle: 'choses',
         smstyle: 'choses',
-        num: 1,
+        buynum: 1,
       };
     },
     methods: {
       //加入购物车
        ...mapActions(["setNum"]),
        join () {
+        // console.log(this.buynum);//购买数量
         this.setNum();
-        this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: 1 }))
+        this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: this.buynum }))
         .then(function(data) {
           // console.log(data);
         });
@@ -469,6 +470,7 @@ button{
       margin: 0 auto;
       margin-top: 8%;
       margin-bottom: 8%;
+      cursor: pointer;
     }
   }
 }
