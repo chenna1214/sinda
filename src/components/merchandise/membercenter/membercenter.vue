@@ -109,7 +109,7 @@ export default {
           background-color: #f7f7f7;
           >div{
             width: 100%;
-            font-size: 24px;
+            font-size: 22px;
             line-height: 48px;
             color: #000;
             text-decoration: none;
@@ -145,6 +145,7 @@ export default {
       // 右
       .main-right{
         width: 74%;
+        font-size: 14px;
         margin-left: 1%;
       }
     }

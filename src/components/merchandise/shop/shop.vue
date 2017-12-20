@@ -9,7 +9,7 @@
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
           <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
-          <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
+          <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
         </ul></el-col>
       </el-row>
     </div>
@@ -23,7 +23,7 @@
           </ul>
           <div class="pcsp-shops">
             <el-row>
-              <el-col :span="12" v-for="product in products":key="product.providerName"  class="pcsp-shewp">
+              <el-col :span="12" v-for="product in products" :key="product.providerName"  class="pcsp-shewp">
                 <div class="pcsp-shelm clear">
                   <div class="pcsp-shell">
                     <div class="pcsp-imgwp">
