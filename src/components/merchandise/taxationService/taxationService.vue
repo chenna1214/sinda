@@ -116,6 +116,9 @@ import { mapActions } from "vuex"; //改变数据
 
 export default {
   name: "taxationService",
+<<<<<<< HEAD
+  methods:{
+=======
   methods: {
     upPage() {
       //点击向上一页翻页
@@ -205,9 +208,15 @@ export default {
         });
     },
 
+>>>>>>> 4274bd6021649d91d7e5ff783fe8834f1f8cf4ce
     selected(code) {
       this.distCode = code;
     },
+<<<<<<< HEAD
+    ...mapActions(['setNum']),
+    toDetail(id){
+      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+=======
     ...mapActions(["setNum"]),
     ...mapActions(["gainNum"]),
     toDetail(id) {
@@ -215,6 +224,7 @@ export default {
         path: "/merchandise/productdetail",
         query: { id: id }
       });
+>>>>>>> 4274bd6021649d91d7e5ff783fe8834f1f8cf4ce
     },
     togoodsOrder(id) {
       var that = this;
@@ -246,6 +256,7 @@ export default {
           that.products = data.data.data;
         });
       this.products = that.products;
+      console.log(this.products)
     },
     // 添加到购物车
     addToCart: function(itsid) {

@@ -203,7 +203,7 @@
     name: "productdetail",
       created() {
       var that = this;
-      // console.log('this.$router.query.id ==',this.$route.query.id );
+      console.log('this.$router.query.id ==',this.$route.query.id );
       // 商品详情页的评价
       this.ajax.post("/xinda-api/product/judge/detail",
         this.qs.stringify({
@@ -234,7 +234,7 @@
           that.goods.servicename = that.goods.providerProduct.serviceName;//名字
           that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
           that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
-          // console.log('good ==',good)
+          console.log('good ==',good)
         });
     },
 
