@@ -133,14 +133,12 @@ export default {
         that.order = data.data.data;
         that.$router.push({
           path: "/merchandise/goodsOrder",
-          query: { data: that.order }                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+          query: { data: that.order }
         });
       });
     }
   },
-  // computed(){
-
-  // },
+  computed() {},
   created() {
     var that = this;
     // 获取购物城商品数目

@@ -9,7 +9,7 @@
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
           <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
-          <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
+          <li @click="goodFiltrate(idx,producTy.name)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
         </ul></el-col>
       </el-row>
     </div>
@@ -44,7 +44,7 @@
                     </p>
                     <p class="pcsp-eladr">{{product.regionName}}</p>
                     <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
-                    <!-- <p class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp,index) in turnTobj(product.productTypes)">{{ productTyp[index] }}</span></p> -->
+                    <p class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
                     <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                   </div>
                 </div>
@@ -79,7 +79,8 @@ export default {
       this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
     },
     // 商品筛选
-    goodFiltrate(thePrTyCo) {
+    goodFiltrate(thePrTyCo,producTyName) {
+      this.producTyname = producTyName;
       // 商品
       this.thePrTyCode = thePrTyCo;
       // console.log(" this.thePrTyCode==", this.thePrTyCode);
@@ -145,6 +146,7 @@ export default {
   },
   data() {
     return {
+      producTyname: '',
       producType: [],
       products: [],
       sortindex: 1,
