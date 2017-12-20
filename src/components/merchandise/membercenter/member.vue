@@ -19,7 +19,7 @@
       <div class="creatime">
         <div class="createdate">创建时间 ：</div>
         <div class="schedule">
-          <input type="date"> 至 <input type="date">
+          <input type="date" v-model="time"> 至 <input type="date" v-model="time">
         </div>
       </div>
       <!-- 商品名称 -->
@@ -36,47 +36,51 @@
         <!-- 订单 -->
         <div class="indent">
           <!-- 大订单 -->
-          <div :key="ordernums.id" :class="orderstyle">
+          <div v-for="gData in gDatas" :key="gData.id" :class="orderstyle">
             <!-- 订单号(头部) -->
             <div class="indent-top">
               <div>
                 <div>订单号：</div>
-                <div>{{ordernums.businessNo}}</div>
+                <div>{{gData.businessNo}}</div>
               </div>
               <div>
                 <div>下单时间：</div>
-                <div>{{ordernums.date}}</div>
+                <div>{{gDatas.gdate}}</div>
               </div>
             </div>
             <!-- 具体信息 -->
             <div class="ind-detail">
               <!-- 左侧 -->
-              <div class="det-left">
+              <div class="det-left" v-for="pData in pDatas" :key="pData.id">
                 <!-- 商品 -->
                 <div :key="orderMess.id">
                   <div class="comname">
                     <div class="indname-img">
-                      <img src="../pc_images/pc_logo.png" alt="">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'+pData.propic" alt="">
                     </div>
                     <div class="indname-cha">
-                      <div class="indcha-one">信达北京服务中心</div>
-                      <div class="indcha-two">注册分公司</div>
+                      <div class="indcha-one">{{pData.providerName}}</div>
+                      <div class="indcha-two">{{pData.serviceName}}</div>
                     </div>
                   </div>
-                  <div class="ind-unit">￥{{orderMess.unitPrice}}.00</div>
-                  <div class="ind-quant">{{orderMess.buyNum}}</div>
-                  <div class="ind-total">￥{{orderMess.totalPrice}}.00</div>
+                  <div class="ind-unit">￥{{pData.unitPrice}}.00</div>
+                  <div class="ind-quant">{{pData.buyNum}}</div>
+                  <div class="ind-total">￥{{pData.totalPrice}}.00</div>
                   <div class="ind-status">等待买家付款</div>
                 </div>
               </div>
-              <!-- 右侧付款/删除 -->
-              <div class="det-right">
-                <!-- 付款 -->
-                <router-link :to="{path:'/merchandise/goodsOrder'}" class="ind-pay">付款</router-link>
-                <!-- 删除订单 -->
-                <div class="ind-delete" @click="cancel">删除订单</div>
-              </div>
             </div>
+            <!-- 右侧付款/删除 -->
+            <div class="det-right">
+              <!-- 付款 -->
+              <router-link :to="{path:'/merchandise/goodsOrder',query:{data:gData.businessNo}}" class="ind-pay">付款</router-link>
+              <!-- 删除订单 -->
+              <div class="ind-delete" @click="cancel">删除订单</div>
+            </div>
+            <!-- 支付完成：已付款 -->
+
+
+            
           </div>
         </div>
       </div>
@@ -108,11 +112,23 @@
 export default {
   name: 'changepwd',
   created () {
-    // console.log('this.$route.query.id ==',this.$route.query.id);
     var that = this;
+    var readId = localStorage.getItem('id');//订单号
+    // console.log('readId==',readId)    
+
+    // 从购物车获得的信息（购物车里的内容）
+    this.ajax.post('/xinda-api/cart/list').then(function (data) {
+      var pData = data.data.data;
+      that.pDatas = pData;
+      for (var i = 0; i < that.pDatas.length; i++) {
+        that.pDatas[i].propic = that.pDatas[i].providerImg;
+        console.log('mingc==',that.pDatas[i]);
+      }
+    });
+
     this.ajax.post('/xinda-api/business-order/detail',
     this.qs.stringify({
-      businessNo: this.$route.query.id,
+      businessNo: readId,
     })).then(function (data) {
       // 订单号以及时间
       var ordernum = data.data.data.businessOrder;
@@ -128,13 +144,45 @@ export default {
       var NowDate = [year, month, date].join('-') + ' ' + hour + ':' + minute + ':' + second;
       that.ordernums.date = NowDate;
       // console.log(orderDate)//object
-      console.log('ordernums==',that.ordernums);
+      // console.log('ordernums==',that.ordernums);
 
-      // 商品具体信息
-      var orderMes = data.data.data.serviceOrderList[0];
-      that.orderMess = orderMes;
-      console.log('that.orderMess==',that.orderMess)
+      // 时间
+      var creatime = [year, month, date].join('-');
+      localStorage.setItem('time',creatime);
     });
+
+    // // input框的时间
+    // var time = creTime;
+    // console.log('time==',time)
+
+    // 不同的订单号
+    var creTime = localStorage.getItem('time');
+    this.ajax.post('/xinda-api/business-order/grid',
+    this.qs.stringify({
+      businessNo: readId,
+      startTime: creTime,
+      endTime: creTime,
+      start: 0,
+    })).then(function (data) {
+      var gData = data.data.data;
+      that.gDatas = gData;
+      for (var i = 0; i < that.gDatas.length; i++) {
+        console.log('data====',that.gDatas[i].id)
+        // 时间戳转化为时间函数
+        var gDate = new Date(that.gDatas[i].createTime);
+        var gyear = gDate.getFullYear();
+        var gmonth = gDate.getMonth() + 1;
+        var gdate = gDate.getDate();
+        var ghour = gDate.getHours();
+        var gminute = gDate.getMinutes();
+        var gsecond = gDate.getSeconds();
+        var gNowDate = [gyear, gmonth, gdate].join('-') + ' ' + ghour + ':' + gminute + ':' + gsecond;
+        that.gDatas.gdate = gNowDate;
+        // console.log(gyear,gDate)
+        localStorage.setItem('gId',that.gDatas[i].id)
+      }
+    });
+
   },
   data () {
     return {
@@ -145,18 +193,34 @@ export default {
       ordernums: [],
       // 商品具体信息
       orderMess: [],
+      pDatas: [],//放入图片等
+      gDatas:[],
+
+      // input框里的时间
+      time: '',
     }
   },
   methods: {
+    // 删除按钮
     cancel: function () {
       this.xstyle = 'transf';
     },
+    // 取消按钮
     mesx: function () {
       this.xstyle = 'trans';
     },
+    // 确定按钮
     maisure: function () {
       this.orderstyle = 'trans';
       this.xstyle = 'trans';
+      var delId = localStorage.getItem('gId');
+      console.log('delId==',delId)
+      this.ajax.post('/xinda-api/ business-order/del',
+      this.qs.stringify({
+        id: delId,
+      })).then (function (data) {
+        console.log(data)
+      });
     },
   }
 }
@@ -258,6 +322,9 @@ export default {
           width: 100%;
           margin-top: 2%;
           border: 1px solid #e8e8e8;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
           // 订单号(头部) 
           .indent-top{
             width: 100%;
@@ -275,16 +342,17 @@ export default {
           }
           // 具体信息
           .ind-detail{
-            width: 100%;
+            width: 85%;
             display: flex;
-            justify-content: space-around;
+            flex-wrap: wrap;
             // 左侧
             .det-left{
-              width: 85%;
+              width: 100%;
+              border-bottom: 1px solid #e8e8e8;
               // 商品
               >div{
                 display: flex;
-                border-bottom: 1px solid #e8e8e8;
+                
                 >div{
                   width: 17%;
                   text-align: center;
@@ -297,6 +365,7 @@ export default {
                     width: 22%;
                     height: 59px;
                     margin: 3% 6% 3% 4%;
+                    border: 1px solid #e9e9e9;
                     img{
                       width: 100%;
                       height: 100%;
@@ -307,7 +376,10 @@ export default {
                     color: #828282;
                     line-height: 25px;
                     >div{
-                      margin-top: 8%;
+                      margin-top: 5%;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
                     }
                   }
                 }
@@ -328,34 +400,36 @@ export default {
                 }
               }
             }
-            // 右侧付款/删除
-            .det-right{
-              width: 13%;
-              display: flex;
-              flex-wrap: wrap;
-              align-content: center;
-              .ind-pay{
-                width: 67%;
-                height: 33px;
-                display: block;
-                text-align: center;
-                line-height: 33px;
-                color: #419bd7;
-                text-decoration: none;
-                margin: 0 auto;
-                border: 1px solid #2693d4;
-                border-radius: 6px;
-              }
-              .ind-delete{
-                width: 67%;
-                height: 33px;
-                line-height: 33px;
-                text-align: center;
-                margin: 0 auto;
-                margin-top: 2%;
-                color: #ff4649;
-                cursor: pointer;
-              }
+
+          }
+          // 右侧付款/删除
+          .det-right{
+            width: 13%;
+            display: flex;
+            flex-wrap: wrap;
+            // align-content: center;
+            .ind-pay{
+              width: 67%;
+              height: 33px;
+              display: block;
+              text-align: center;
+              line-height: 33px;
+              color: #419bd7;
+              text-decoration: none;
+              margin: 0 auto;
+              border: 1px solid #2693d4;
+              border-radius: 6px;
+              cursor: pointer;
+            }
+            .ind-delete{
+              width: 67%;
+              height: 33px;
+              line-height: 33px;
+              text-align: center;
+              margin: 0 auto;
+              margin-top: 5%;
+              color: #ff4649;
+              cursor: pointer;
             }
           }
         }

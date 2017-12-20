@@ -10,14 +10,14 @@
               <el-col :span="3"><div class="pcau-serv-classify">服务分类</div></el-col>
               <el-col :span="21">
                 <ul class="pctax-servisenav clear pcSecBox"><!-- 二级标题 -->
-                  <a class="pcSecTil" v-for="(eachSec,index) in secBox" :key="eachSec.name" @click="thirdTilShow(index)" :class="{changeColr:change==index}">{{eachSec.name}}</a>
+                  <a class="pcSecTil" v-for="(eachSec,index) in secBox" :key="eachSec.name" @click="thirdTilShow(index,eachSec.code)" :class="{changeColr:change==index}">{{eachSec.name}}</a>
                 </ul>
               </el-col>
             </el-row>
             <el-row class="pcauto-wrap hidden-xs-only">
               <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
               <el-col :span="21"><!-- 三级标题 -->
-                  <div v-for="(eachThird,thirdIndex) in thirdTitle" :key="thirdIndex" v-show="thirdIndex==index" class="pctax-servisenav clear pcSecBox">
+                  <div v-for="(eachThird,thirdIndex) in thirdTitle" :key="thirdIndex" v-show="thirdIndex==showIndex" class="pctax-servisenav clear pcSecBox">
                     <a v-for="thirdName in eachThird" :key="thirdName.name"  class="pcSecTil">{{thirdName.name}}</a>
                   </div>
               </el-col>
@@ -121,7 +121,11 @@ export default {
       //点击向上一页翻页
       if (this.eachContent - 1 >= 0) {
         this.eachContent = this.eachContent - 1;
-        this.ajaxProData(this.index, this.eachContent);
+        if (!this.code) {
+          this.ajaxProData(this.$route.query.code, this.eachContent);
+        } else {
+          this.ajaxProData(this.code, this.eachContent);
+        }
         this.textColor = this.eachContent;
       }
     },
@@ -129,25 +133,35 @@ export default {
       //点击向下一页翻页
       if (Number(this.eachContent) + 1 < this.page) {
         this.eachContent = Number(this.eachContent) + 1;
-        this.ajaxProData(this.index, this.eachContent);
+        if (!this.code) {
+          this.ajaxProData(this.$route.query.code, this.eachContent);
+        } else {
+          this.ajaxProData(this.code, this.eachContent);
+        }
         this.textColor = this.eachContent;
       }
-      console.log("downPage--this.eachContent", this.eachContent);
     },
     pageClick(idxPage) {
       //点击某个页码进行翻页
       this.eachContent = idxPage;
-      this.ajaxProData(this.index, this.eachContent);
+      if (!this.code) {
+        this.ajaxProData(this.$route.query.code, this.eachContent);
+      } else {
+        this.ajaxProData(this.code, this.eachContent);
+        console.log("点击某个页码--this.code", this.code);
+      }
+
       this.textColor = idxPage;
     },
     ajaxProData(code, eachContent) {
       //产品列表
       var that = this;
+
       this.ajax
         .post(
           "/xinda-api/product/package/grid",
           this.qs.stringify({
-            productTypeCode: code + 1,
+            productTypeCode: code,
             limit: 3,
             start: this.eachContent * 3
           })
@@ -163,10 +177,36 @@ export default {
           that.page = page;
         });
     },
+    getTitle(proType) {
+      var that = this;
+      that.secBox = [];
+      that.thirdTitle = [];
+      this.ajax //获取头部导航
+        .post("/xinda-api/product/style/list")
+        .then(function(data) {
+          var rData = data.data.data;
+
+          var rDataObj = {};
+          for (var Key in rData) {
+            rDataObj[rData[Key].code] = rData[Key];
+          }
+          for (var secKey in rDataObj) {
+            var secName = rDataObj[secKey].itemList;
+            that.sencodTitle.push(secName);
+            var onlySecTil = that.sencodTitle[proType];
+          }
+          for (var SecKey in onlySecTil) {
+            that.thirdTitle.push(onlySecTil[SecKey].itemList); //三级标题
+            that.secBox.push(onlySecTil[SecKey]); //二级标题
+            that.codeArr.push(onlySecTil[SecKey].code);
+          }
+          that.firstShowCode.first = that.codeArr[0];
+          console.log("二级标题", that.secBox[1]);
+        });
+    },
 
     selected(code) {
       this.distCode = code;
-      console.log("code===", code);
     },
     ...mapActions(["setNum"]),
     ...mapActions(["gainNum"]),
@@ -177,24 +217,17 @@ export default {
       });
     },
     togoodsOrder(id) {
-      // this.$router.push({path:'/merchandise/goodsOrder',query:{id:id}});
-
-      // --------------------------
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
         console.log("提交成功", data);
-        // console.log("提交结算", data.data.data);
-        // that.order = data.data.data;
-        // that.$router.push({
-        //   path: "/merchandise/goodsOrder",
-        //   query: { data: that.order }
-        // });
       });
     },
-    thirdTilShow(index) {
+    thirdTilShow(index, code) {
+      this.showIndex = index;
       this.change = index;
-      this.index = index;
-      this.ajaxProData(index, this.eachContent);
+      this.index = this.codeArr[index];
+      this.code = code;
+      this.ajaxProData(this.code, this.eachContent);
     },
     // 商品排序方式
     ascendingOrder: function(sortindex) {
@@ -213,13 +246,10 @@ export default {
           that.products = data.data.data;
         });
       this.products = that.products;
+      console.log(this.products)
     },
     // 添加到购物车
     addToCart: function(itsid) {
-      // 改变
-      // this.setNum();
-      // console.log('正常===',this.products);
-      // console.log('itsid===',itsid)
       var that = this;
       // 添加到购物车
       this.ajax
@@ -230,34 +260,14 @@ export default {
         });
     }
   },
+  watch: {
+    $route: function() {
+      this.getTitle(this.$route.query.product);
+    }
+  },
   created() {
-    //0---全部
-    // productTypeCode: 1---代理记账
-    //3---审计报告
-    //2---税务代办
-    this.ajaxProData(0); //调用默认显示的产品列表
-    var that = this;
-    this.ajax //获取头部导航
-      .post("/xinda-api/product/style/list")
-      .then(function(data) {
-        var rData = data.data.data;
-        console.log("typedata===", rData);
-        var rDataObj = {};
-        for (var Key in rData) {
-          rDataObj[rData[Key].code] = rData[Key];
-        }
-        for (var secKey in rDataObj) {
-          var secName = rDataObj[secKey].itemList;
-          that.sencodTitle.push(secName);
-          var onlySecTil = that.sencodTitle[0];
-        }
-        for (var SecKey in onlySecTil) {
-          that.thirdTitle.push(onlySecTil[SecKey].itemList); //三级标题
-          that.secBox.push(onlySecTil[SecKey]); //二级标题
-        }
-        that.secBox = that.secBox.reverse();
-        that.thirdTitle = that.thirdTitle.reverse();
-      });
+    this.getTitle(this.$route.query.product);
+    this.ajaxProData(this.$route.query.code, 0);
   },
   data() {
     return {
@@ -275,7 +285,11 @@ export default {
       pageNum: {}, //页数
       eachContent: 0, //每页内容
       page: "", //每类数据分的总页数
-      textColor: 0 //控制页码被选中后的动态样式的初始值
+      textColor: 0, //控制页码被选中后的动态样式的初始值
+      codeArr: [], //存产品类型请求参数
+      firstShowCode: { first: 1 },
+      showIndex: "",
+      code: ""
     };
   },
   components: { autourban }

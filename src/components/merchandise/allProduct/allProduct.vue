@@ -14,7 +14,7 @@
         <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
         <!-- 全部产品--xs以下--轮播图片 -->
         <el-row class="hidden-sm-and-up">
-          <el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" >
+          <el-col :xs="{span:24}" >
             <el-carousel trigger="click" height="280px">
             <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
               <img v-bind:src="carouselImg.id" class="pcCarouselImg">
@@ -58,41 +58,7 @@
         </div>
 
 
-
-
-
-
-
-
-
-
-
       </div>
-      
-   
-
-      <!-- 全部产品--pc端--轮播左边的导航 -->
-        <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
-          <el-col :sm="4" :md="4" :lg="4">
-              <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
-                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg hidden-sm-and-down">
-                  <div class="pcAllProductHeader-taxText">
-                    <span>{{rDataObj.name}}</span><br>
-                    <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
-                  </div>
-              </div>
-          </el-col>
-          <el-col :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}">
-            <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">  
-               <div class="pcNavSec" v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}>
-                <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
-               </div>
-            </div>
-          </el-col>
-      </el-row>
-
-
-
 
 
 
@@ -101,7 +67,7 @@
 
 
 <!-- 全部产品--xs以上--轮播图片 -->
-<el-col :xs="{span:24}" :sm="{span:20,offset:4}" :md="{span:20,offset:4}" :lg="{span:20,offset:4}" class="pcAllProCarousel hidden-xs-only">
+<el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
     <el-carousel trigger="click" height="400px">
      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
@@ -364,12 +330,7 @@ export default {
         { id: "src/components/images/allProduct/2.jpg" },
         { id: "src/components/images/allProduct/3.png" }
       ],
-      pcNavImg: [
-        "src/components/images/allProduct/icon1.png",
-        "src/components/images/allProduct/icon2.png",
-        "src/components/images/allProduct/icon3.png",
-        "src/components/images/allProduct/icon4.png"
-      ],
+
       starList: [
         //明星产品推荐文章列表
         {
@@ -408,12 +369,8 @@ export default {
     };
   },
   methods: {
-    pcNavOver: function(index) {
-      this.index = index;
-    },
-    pcNavLeave: function() {
-      this.index = -1;
-    },
+
+
     pcSerClick: function(index) {
       this.pcSer = index;
       this.pcSerSty = index;
@@ -456,72 +413,18 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
-.pcAllProductHeaderInner {
-  padding-top: 10px;
-  padding-bottom: 11px;
-  cursor: pointer;
-  background: #212121;
-  display: flex;
-  height: 79px;
-}
-.pcNavEventAft {
-  background: #2693d4;
-}
+
+
 .pcNavCompanyH {
   height: 47px;
 }
-.pcAllProductHeader-taxText {
-  // padding-left: 5px;
-  padding-left: 3%;
-  span {
-    color: white;
-    font-size: 12px;
-    // width: 51px;
-    width: 50%;
-    display: inline-block;
-  }
-  span:nth-child(1) {
-    font-size: 15px;
-    width: 60px;
-  }
-}
+
 //全部产品--轮播左边的导航
-.pcAllProductHeader-taxImg {
-  width: 26px;
-  height: 26px;
-  margin-left: 10%;
-  margin-top: 5px;
-}
-.pcAllProTil {
-  margin-top: -100px;
-  padding-top: 10px;
-  padding-bottom: 6px;
-  min-height: 84px;
-  height: auto;
-  background-color: rgba(152, 171, 196, 0.5);
-  z-index: 10;
-  position: absolute;
-  width: 83.33333%;
-  margin-left: -1px;
-}
-.pcNavTidBox {
-  margin-top: -17px;
-  margin-left: 70px;
-}
-.pcNavSpan {
-  color: white;
-  font-size: 13px;
-  margin-bottom: 10px;
-  display: inline-block;
-}
-.pcNavSec {
-  color: white;
-  font-size: 13px;
-  margin-left: 10px;
-}
-.pcAllProCarousel {
-  margin-top: -400px;
-}
+
+
+
+
+
 .pcAllProLine {
   height: 2px;
   background: #2693d4;
@@ -860,4 +763,5 @@ export default {
   z-index: 9;
   width: 100%;
 }
+
 </style>
