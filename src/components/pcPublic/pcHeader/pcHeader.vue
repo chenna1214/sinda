@@ -37,12 +37,16 @@
   <div><!-- 上半部分内容--中间 -->
 <span class="pcHeaderChangeCityText pcHeaderMiddleProductText" :class="{pcChangeColor:bgBlue}" @click="choseType(1)">产品|</span>
 <span class="pcHeaderCityText" :class="{pcChangeColor:!bgBlue}" @click="choseType()">服务商</span><br>
-<input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' @blur="serShow=false" v-model="serVal"><!-- 模糊搜索 -->
+
+<div class="pcSearchBox">
+  <input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' @blur="serShow=false" v-model="serVal"><!-- 模糊搜索 -->
+  <img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle">
+</div>
 <!-- 匹配搜索内容 -->
 <div class="pcSerBox" v-show='serShow'>
   <p v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail(eachSer)'>{{eachSer.serviceName||eachSer.providerName}}</p>
 </div>
-<img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle">
+
 <p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
   </div>
   </el-col>
@@ -52,14 +56,48 @@
   </div>
       </el-row>
       <el-row class="pcHeaderBottom" type="flex" justify="center"><!-- 头部下半部分 -->
-        <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink pcChoosedLink">全部产品</a></el-col>
+        <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink pcChoosedLink" @mouseover="navDis=true" @mouseleave="navDisLeave()">全部产品</a></el-col><!-- @mouseleave="navDisLeave()" -->
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService" class="pcHeaderBottomLink">财税服务</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/companyIndustry" class="pcHeaderBottomLink">公司工商</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
         <el-col :sm="7" :md="7" :lg="7"><a href="#/merchandise/shop" class="pcHeaderBottomLink">店铺</a></el-col>
       </el-row>
+
+
+
+            <!-- 全部产品--pc端--轮播左边的导航 -->
+      <div class="pcNavBoxOut" v-show="navDis">
+        <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
+          <el-col :sm="23" :md="23" :lg="23" >
+            <div @mouseover="navDisOver()" @mouseleave="navDis=false">
+               <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
+                <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg hidden-sm-and-down">
+                  <div class="pcAllProductHeader-taxText">
+                    <span>{{rDataObj.name}}</span><br>
+                    <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
+                  </div>
+              </div>
+            </div>
+             
+          </el-col>
+          <el-col :sm="{span:24,offset:23}" :md="{span:24,offset:23}" :lg="{span:24,offset:23}" >
+            <div @mouseover="navDisOver()" @mouseleave="navDis=false">
+              <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { product:idx-1,code:secondTil.code }}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
+                  <div class="pcNavSec"  >{{secondTil.name}}>
+                    <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
+                  </div>
+               </router-link>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+
     </div></el-col>
     </el-row>
+
+
    </div>
    
 </template>
@@ -109,14 +147,55 @@ export default {
       proAllData: [], //全部产品数据
       bgBlue: true,
       serShow: true,
-      getSearch: null
+      getSearch: null,
+      //全部产品导航
+      rDataObjs: {},
+      index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
+      pcNavImg: [
+        "src/components/images/allProduct/icon1.png",
+        "src/components/images/allProduct/icon2.png",
+        "src/components/images/allProduct/icon3.png",
+        "src/components/images/allProduct/icon4.png"
+      ],
+      navDis: false,
+      navGone: function() {},
     };
   },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     this.getSearch = this.debounce(this.getSearchList, 600);
+    var that = this;
+    this.ajax //获取全部产品的轮播左边的导航栏
+      .post("http://115.182.107.203:8088/xinda/xinda-api/product/style/list")
+      .then(function(data) {
+        var rData = data.data.data;
+        var rDataObj = {};
+        for (var Key in rData) {
+          rDataObj[rData[Key].code] = rData[Key];
+        }
+        that.rDataObjs = rDataObj;
+      });
+      
+      
   },
   methods: {
+    // 全部产品导航
+    pcNavOver: function(index) {
+      this.index = index;
+    },
+    pcNavLeave: function() {
+      this.index = -1;
+    },
+    navDisLeave() {
+      var that = this;
+      this.navGone = setTimeout(function() {
+        that.navDis = false;
+      }, 300);
+    },
+    navDisOver() {
+      clearTimeout(this.navGone);
+      this.navDis = true;
+    },
     ...mapActions(["setNum"]),
     getSearchList() {
       var that = this;
@@ -178,7 +257,8 @@ export default {
       }
       this.getSearch();
     },
-    pcDetail: function(eachSer) {//待优化
+    pcDetail: function(eachSer) {
+      //待优化
       document.location.reload(
         this.$router.push({
           //匹配搜索内容---产品
@@ -192,6 +272,73 @@ export default {
 </script>
 
 <style scoped lang='less'>
+// 全部产品导航
+.pcAllProductHeaderInner {
+  padding-top: 10px;
+  padding-bottom: 11px;
+  cursor: pointer;
+  background: #212121;
+  display: flex;
+  height: 79px;
+}
+.pcNavEventAft {
+  background: #2693d4;
+}
+.pcAllProductHeader-taxImg {
+  width: 26px;
+  height: 26px;
+  margin-left: 10%;
+  margin-top: 5px;
+}
+.pcAllProductHeader-taxText {
+  padding-left: 3%;
+  span {
+    color: white;
+    font-size: 12px;
+    width: 50%;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  span:nth-child(1) {
+    font-size: 15px;
+    width: 60px;
+  }
+}
+.pcAllProTil {
+  margin-top: -100px;
+  padding-top: 10px;
+  padding-bottom: 6px;
+  min-height: 84px;
+  height: auto;
+  background-color: rgba(152, 171, 196, 0.5);
+  z-index: 100;
+  position: absolute;
+  width: 550%;
+  margin-left: -1px;
+}
+.pcNavSec {
+  color: white;
+  font-size: 13px;
+  margin-left: 10px;
+}
+.pcNavTidBox {
+  margin-top: -17px;
+  margin-left: 70px;
+}
+.pcNavSpan {
+  color: white;
+  font-size: 13px;
+  margin-bottom: 10px;
+  display: inline-block;
+  margin-left: 0.5%;
+  white-space: normal;
+}
+.pcNavBoxOut {
+  position: absolute;
+  z-index: 100;
+  margin-top: -2px;
+  padding-top: -30px;
+}
 //切换城市
 .eachCity {
   font-size: 13px;
@@ -229,7 +376,7 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   height: 160px;
-  margin-bottom: 3px;
+  margin-bottom: -6px;
 }
 .pcHeaderTopContent {
   margin-top: 24px;
@@ -281,7 +428,7 @@ export default {
 }
 .pcHeaderMiddleSearchImg {
   margin-left: -6px;
-  padding-top: 2px;
+  // padding-top: 2px;
 }
 //头部的右边内容
 .pcHeaderRightBox {
@@ -302,5 +449,9 @@ export default {
     display: inline-block;
     height: 28px;
   }
+}
+.pcSearchBox {
+  display: flex;
+  align-items: center;
 }
 </style>
