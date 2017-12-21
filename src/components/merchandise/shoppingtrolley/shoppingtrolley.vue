@@ -44,7 +44,7 @@
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
                     </el-col>
                     <el-col :span="5" class="pcsh-cot-w">
-                      <el-input-number class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
+                      <el-input-number @change="handleChange" class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
                     </el-col>
                     <el-col :span="3">
                       <p class="pcsh-money pcsh-mnyin">￥{{shTrData.unitPrice*shTrData.buyNum}}</p>
@@ -88,16 +88,49 @@
 </template>
 
 <script>
-// import {mapActions} from 'vuex'//改变数据
+import { mapActions } from "vuex"; //显示数据
 export default {
   name: "shoppingtrolley",
   methods: {
+    ...mapActions(["setNum"]),
     toDetail(id) {
       this.$router.push({
         path: "/merchandise/productdetail",
         query: { id: id }
       });
     },
+    // 获取购物车商品
+    getGoods() {
+      var that = this;
+      // 获取购物城商品数目
+      this.ajax.post("/xinda-api/cart/list").then(function(data) {
+        that.shTrDatas = data.data.data;
+        // console.log("data.data.data==", data.data.data);
+        for (var i = 0; i < that.shTrDatas.length; i++) {
+          // 商品数量
+          // console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
+          that.goodsnum += that.shTrDatas[i].buyNum;
+          // 总价
+          that.tlPrice +=
+            that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;
+        }
+      });
+    },
+    // 计数器变化
+    handleChange(value) {
+      console.log(value);
+      // console.log(itsid);
+      // 添加到购物车
+      // this.ajax.post("/xinda-api/cart/add",
+      //     this.qs.stringify({ id: itsid, num: value-this.oldvalue  })
+      //   )
+      //   .then(function(data) {
+      //     console.log(data);
+      //   });
+      // this.oldvalue = value;
+    },
+    // -------------------
+    //删除商品
     removeGoods: function(id) {
       var that = this;
       this.ajax
@@ -105,14 +138,16 @@ export default {
         .then(function(data) {
           // that.products = data.data.data;
           // console.log(data);
+          // 重新获取数据
+          that.getGoods() 
         });
       // this.ajax.post("/xinda-api/cart/list").then(function(data) {
       //   that.shTrDatas = data.data.data;
       // });
     },
-    gouwuche: function() {
-      var that = this;
-    },
+    // gouwuche: function() {
+    //   var that = this;
+    // },
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
@@ -138,15 +173,18 @@ export default {
       });
     }
   },
-  computed() {},
+  // watch:{
+
+  // },
   created() {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
+      console.log("data.data.data==", data.data.data);
       for (var i = 0; i < that.shTrDatas.length; i++) {
         // 商品数量
-        console.log('that.shTrDatas[i]==',that.shTrDatas[i])
+        console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
         that.tlPrice += that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;
@@ -174,7 +212,9 @@ export default {
       shTrDatas: [],
       tlPrice: 0,
       popservises: [],
-      order: ""
+      order: "",
+      oldvalue: 1
+      // value: ''
     };
   },
   components: {}
