@@ -8,8 +8,12 @@
       <el-row class="pcauto-wrap hidden-xs-only">
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
-          <li class="pctax-svsnav-elem"><a href="javascript:void(0)">所有</a></li>
-          <li @click="goodFiltrate(idx+1)" v-for="(producTy,idx) in producType":key="producTy.name" class="pctax-svsnav-elem"><a href="javascript:void(0)">{{producTy.name}}</a></li>
+          <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
+<<<<<<< HEAD
+          <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
+=======
+          <li @click="goodFiltrate(idx,producTy.name)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
+>>>>>>> b8130e64840d28b4af6def8809f6e490b9c023bb
         </ul></el-col>
       </el-row>
     </div>
@@ -23,11 +27,11 @@
           </ul>
           <div class="pcsp-shops">
             <el-row>
-              <el-col :span="12" v-for="product in products":key="product.providerName"  class="pcsp-shewp">
+              <el-col :span="12" v-for="product in products" :key="product.providerName"  class="pcsp-shewp">
                 <div class="pcsp-shelm clear">
                   <div class="pcsp-shell">
                     <div class="pcsp-imgwp">
-                      <img  :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
                     </div>
                     <p class="pcsp-gdser"><span class="pcsp-gsico"></span><span class="pcsp-gswd">金牌服务商</span></p>
                   </div>
@@ -36,15 +40,16 @@
                     <p class="pcsp-shenm">{{product.providerName}}</p>
                     <p class="pcsp-elrpt">
                       <span class="pcsh-repu">信誉</span>
-                      <span :class='{"pcs-redje":product.goodJudge>=1}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>=2}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>=3}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>=4}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>=5}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>0}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>1}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>2}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>3}' class="pcsh-jewel pcs-blkje"></span>
+                      <span :class='{"pcs-redje":product.goodJudge>4}' class="pcsh-jewel pcs-blkje"></span>
                     </p>
                     <p class="pcsp-eladr">{{product.regionName}}</p>
                     <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
-                    <p class="pcsp-servs"><span class="pcsp-serv">税务代办</span></p>
+                    <p class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
+                    <div class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)">{{ productTyp}}</span></div>
                     <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                   </div>
                 </div>
@@ -65,19 +70,42 @@ export default {
   methods: {
     selected(code) {
       this.distCode = code;
-      // console.log("code===", code);
+      console.log("code===", code);
     },
-    toDetail(id){
-      this.$router.push({path:'/merchandise/productdetail',query:{id:id}});
+    turnTobj(str) {
+      var arr = str.split(",");
+      var newObj = {};
+      for (var i in arr) {
+        newObj[i] = arr[i];
+      }
+      // console.log('newObj==',newObj)
+      return newObj;
+    },
+    toDetail(id) {
+      this.$router.push({
+        path: "/merchandise/productdetail",
+        query: { id: id }
+      });
     },
     // 商品筛选
-    goodFiltrate(thePrTyCo){
+    goodFiltrate(thePrTyCo, producTyName) {
+      this.producTyname = producTyName;
+      // 商品
       this.thePrTyCode = thePrTyCo;
+      this.getShops();
+      // console.log(" this.thePrTyCode==", this.thePrTyCode);
     },
     // 商品排序方式
     ascendingOrder: function(sortindex) {
       this.sortindex = sortindex;
+      this.getShops();
+      // console.log("this.sortindex", this.sortindex);
+    },
+    // 获取商品
+    getShops() {
+      // console.log(' this.thePrTyCode==', this.thePrTyCode);
       var that = this;
+      // 获取店铺列表信息
       this.ajax
         .post(
           "/xinda-api/provider/grid",
@@ -90,14 +118,36 @@ export default {
           })
         )
         .then(function(data) {
+          // console.log('data.data.data=======',data.data.data);
           that.products = data.data.data;
-          // console.log('data打印',data);
-          // console.log('productTypeCodes==',typeof that.products[0].productTypeCodes)
         });
       this.products = that.products;
     }
   },
+
+  // updated() {
+  //   // console.log(' this.thePrTyCode==', this.thePrTyCode);
+  //   var that = this;
+  //   // 获取店铺列表信息
+  //   this.ajax
+  //     .post(
+  //       "/xinda-api/provider/grid",
+  //       this.qs.stringify({
+  //         start: 0,
+  //         limit: 6,
+  //         productTypeCode: this.thePrTyCode,
+  //         regionId: this.distCode,
+  //         sort: this.sortindex
+  //       })
+  //     )
+  //     .then(function(data) {
+  //       // console.log('data.data.data=======',data.data.data);
+  //       that.products = data.data.data;
+  //     });
+  //   this.products = that.products;
+  // },
   created() {
+    // console.log(' this.thePrTyCode==', this.thePrTyCode);
     var that = this;
     // 获取店铺列表信息
     this.ajax
@@ -107,42 +157,48 @@ export default {
           start: 0,
           limit: 6,
           productTypeCode: this.thePrTyCode,
-          // regionId: 110102,
-          sort: 1
+          regionId: this.distCode,
+          sort: this.sortindex
         })
       )
       .then(function(data) {
-        // console.log('data=======',data);
+        console.log("data=======", data);
         that.products = data.data.data;
+        console.log("that.product.productTypes===", that.product.productTypes);
       });
     this.products = that.products;
     // 获取产品类型列表信息
-    this.ajax
-      .post("/xinda-api/product/style/list")
-      .then(function(data) {
-        // console.log('data=======标题',data.data.data);
-        var items = data.data.data;
-        for(var i in items){
-          // console.log(i,items[i].itemList)
-          for(var j in items[i].itemList){
-            // console.log(j,items[i].itemList[j].name)
-            // items[i].itemList[j].name
-            that.producType.push(items[i].itemList[j])
-          }
-            // that.producType.push(items[i].itemList)          
+    this.ajax.post("/xinda-api/product/style/list").then(function(data) {
+      console.log("data=======标题", data.data.data);
+      var items = data.data.data;
+      for (var i in items) {
+        for (var j in items[i].itemList) {
+          that.producType.push(items[i].itemList[j]);
         }
-        // console.log('this.producType===',that.producType)
-        // that.products = data.data.data;
-      });
-      
+      }
+      that.producType.unshift({ name: "所有", showOrder: 0 });
+      console.log("that.producType==", that.producType);
+      var arr = [];
+      for (var k = 0; k < that.producType.length; k++) {
+        arr[that.producType.showOrder] = that.producType.name;
+      }
+      for(var a=0; a < arr.length; a++){
+          producType[a] = arr[a];
+      };
+      console.log('producType === ',producType)
+    });
   },
   data() {
     return {
+      producTyname: [],
+      // producTyname: '',
+      // 商品类型列表信息
       producType: [],
+      producTypeobj: {},
       products: [],
       sortindex: 1,
       distCode: "",
-      thePrTyCode: [1,2,3,4,5,6,7,8,9,10]
+      thePrTyCode: 0
     };
   },
   components: { autourban }
@@ -156,8 +212,11 @@ export default {
 .pxtax-clickst-1 {
   background: #2693d4;
   color: #fff;
-  .pxtax-clickst-1a {
+  a {
     color: #fff;
+  }
+  .pxtax-clickst-1a {
+    color: #fff !important;
   }
 }
 .pctaxservices-body {
@@ -318,7 +377,7 @@ export default {
             }
             // 红钻石
             .pcs-redje {
-              background: url("../../images/companyIdstry/m_xbt.png");
+              background: url("../../images/companyIdstry/m_xbt.png") !important;
             }
             // 黑钻石
             .pcs-blkje {
@@ -332,7 +391,10 @@ export default {
             line-height: 37px;
           }
           .pcsp-servs {
+            max-width: 320px;
+            height: 65px;
             .pcsp-serv {
+              margin: 0 5px 5px 0;
               display: inline-block;
               width: 71px;
               height: 22px;
@@ -344,7 +406,6 @@ export default {
             }
           }
           .pcsp-enter {
-            margin-top: 43px;
             width: 102px;
             height: 33px;
             color: #ffdcd6;
