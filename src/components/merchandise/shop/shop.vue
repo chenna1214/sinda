@@ -9,11 +9,7 @@
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
           <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
-<<<<<<< HEAD
           <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
-=======
-          <li @click="goodFiltrate(idx,producTy.name)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
->>>>>>> b8130e64840d28b4af6def8809f6e490b9c023bb
         </ul></el-col>
       </el-row>
     </div>
