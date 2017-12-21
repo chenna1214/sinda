@@ -214,9 +214,6 @@ export default {
     //       }
     //       that.firstShowCode.first = that.codeArr[0];
     //       that.reallyThird = that.thirdTitle[showThree];
-
-
- 
     //     });
     // },
 

@@ -9,11 +9,11 @@
         <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
         <el-col :span="22"><ul class="pctax-servisenav clear">
           <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
-<<<<<<< HEAD
-          <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
-=======
-          <li @click="goodFiltrate(idx,producTy.name)" v-for="(producTy,idx) in producType":key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li>
->>>>>>> b8130e64840d28b4af6def8809f6e490b9c023bb
+
+          <!-- <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li> -->
+
+          <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj":key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
+
         </ul></el-col>
       </el-row>
     </div>
@@ -48,12 +48,16 @@
                     </p>
                     <p class="pcsp-eladr">{{product.regionName}}</p>
                     <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
-                    <p class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
-                    <div class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)">{{ productTyp}}</span></div>
+                    <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
+                    <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
                     <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                   </div>
                 </div>
+                <!--  -->
+                
+                <!--  -->
               </el-col>
+              
             </el-row>
           </div>
         </div>
@@ -68,10 +72,78 @@ import autourban from "../taxationService/autourban";
 export default {
   name: "shop",
   methods: {
+    // upPage() {
+    //   //点击向上一页翻页
+    //   if (this.eachContent - 1 >= 0) {
+    //     this.eachContent = this.eachContent - 1;
+    //     if (!this.code) {
+    //       this.ajaxProData(this.$route.query.code, this.eachContent);
+    //     } else {
+    //       this.ajaxProData(this.code, this.eachContent);
+    //     }
+    //     this.textColor = this.eachContent;
+    //   }
+    // },
+    // downPage() {
+    //   //点击向下一页翻页
+    //   if (Number(this.eachContent) + 1 < this.page) {
+    //     this.eachContent = Number(this.eachContent) + 1;
+    //     if (!this.code) {
+    //       this.ajaxProData(this.$route.query.code, this.eachContent);
+    //     } else {
+    //       this.ajaxProData(this.code, this.eachContent);
+    //     }
+    //     this.textColor = this.eachContent;
+    //   }
+    // },
+    // pageClick(idxPage) {
+    //   //点击某个页码进行翻页
+    //   this.eachContent = idxPage;
+    //   if (!this.code) {
+    //     this.ajaxProData(this.$route.query.code, this.eachContent);
+    //   } else {
+    //     this.ajaxProData(this.code, this.eachContent);
+    //   }
+    //   this.textColor = idxPage;
+    // },
+    // ajaxProData(code, eachContent, thirdId,proSort) {
+    //   //产品列表
+    //   var that = this;
+    //   this.ajax
+    //     .post(
+    //       "/xinda-api/product/package/grid",
+    //       this.qs.stringify({
+    //         productTypeCode: code,
+    //         limit: 3,
+    //         start: this.eachContent * 3,
+    //         productId: thirdId,
+    //         sort:proSort
+    //       })
+    //     )
+    //     .then(function(data) {
+    //       that.products = data.data.data;
+    //       var page = Math.ceil(data.data.totalCount /3 );
+    //       var pageCount = {};
+    //       for (var i = 0; i < page; i++) {
+    //         pageCount[i] = i + 1;
+    //       }
+    //       that.pageNum = pageCount;
+    //       that.page = page;
+    //       that.thirdBoxShow = thirdId;
+    //     });
+    // },
+
+
+
+
+
+
+
     selected(code) {
       this.distCode = code;
       console.log("code===", code);
     },
+    // 将字符串转化为可以用于v-for的对象
     turnTobj(str) {
       var arr = str.split(",");
       var newObj = {};
@@ -81,17 +153,23 @@ export default {
       // console.log('newObj==',newObj)
       return newObj;
     },
+    // 向商品详情页面传数据
     toDetail(id) {
       this.$router.push({
         path: "/merchandise/productdetail",
         query: { id: id }
       });
     },
-    // 商品筛选
+    // 商品筛选（产品类型）
     goodFiltrate(thePrTyCo, producTyName) {
       this.producTyname = producTyName;
       // 商品
       this.thePrTyCode = thePrTyCo;
+      if (this.thePrTyCode == 0) {
+        this.showHideCode = 0;
+      } else {
+        this.showHideCode = 1;
+      }
       this.getShops();
       // console.log(" this.thePrTyCode==", this.thePrTyCode);
     },
@@ -122,34 +200,24 @@ export default {
           that.products = data.data.data;
         });
       this.products = that.products;
-    }
+    },
   },
-
-  // updated() {
-  //   // console.log(' this.thePrTyCode==', this.thePrTyCode);
-  //   var that = this;
-  //   // 获取店铺列表信息
-  //   this.ajax
-  //     .post(
-  //       "/xinda-api/provider/grid",
-  //       this.qs.stringify({
-  //         start: 0,
-  //         limit: 6,
-  //         productTypeCode: this.thePrTyCode,
-  //         regionId: this.distCode,
-  //         sort: this.sortindex
-  //       })
-  //     )
-  //     .then(function(data) {
-  //       // console.log('data.data.data=======',data.data.data);
-  //       that.products = data.data.data;
-  //     });
-  //   this.products = that.products;
+  // watch:{
+  //   producTyname: function(){
+  //   this.producTyname = producTyName;
+  //     // // 商品
+  //     this.thePrTyCode = thePrTyCo;
+  //     if(this.thePrTyCode==0){
+  //       this.showHideCode = 0;
+  //     }else{
+  //       this.showHideCode = 1;
+  //     }
+  //   }
   // },
   created() {
     // console.log(' this.thePrTyCode==', this.thePrTyCode);
     var that = this;
-    // 获取店铺列表信息
+    // 获取 店铺列表信息
     this.ajax
       .post(
         "/xinda-api/provider/grid",
@@ -164,11 +232,12 @@ export default {
       .then(function(data) {
         console.log("data=======", data);
         that.products = data.data.data;
-        console.log("that.product.productTypes===", that.product.productTypes);
+        console.log("that.products= ===", that.products);
       });
     this.products = that.products;
-    // 获取产品类型列表信息
+    // 获取 产品类型列表信息
     this.ajax.post("/xinda-api/product/style/list").then(function(data) {
+      // 整理 产品类型数据
       console.log("data=======标题", data.data.data);
       var items = data.data.data;
       for (var i in items) {
@@ -176,16 +245,16 @@ export default {
           that.producType.push(items[i].itemList[j]);
         }
       }
-      that.producType.unshift({ name: "所有", showOrder: 0 });
+      that.producType.unshift({ name: "所有", code: 0 });
       console.log("that.producType==", that.producType);
       var arr = [];
       for (var k = 0; k < that.producType.length; k++) {
-        arr[that.producType.showOrder] = that.producType.name;
+        arr[that.producType[k].code] = that.producType[k].name;
       }
-      for(var a=0; a < arr.length; a++){
-          producType[a] = arr[a];
-      };
-      console.log('producType === ',producType)
+      for (var a = 0; a < arr.length; a++) {
+        that.producTypeobj[a] = arr[a];
+      }
+      console.log("that.producTypeobj === ", that.producTypeobj);
     });
   },
   data() {
@@ -198,7 +267,9 @@ export default {
       products: [],
       sortindex: 1,
       distCode: "",
-      thePrTyCode: 0
+      thePrTyCode: 0,
+      //
+      showHideCode: 0
     };
   },
   components: { autourban }

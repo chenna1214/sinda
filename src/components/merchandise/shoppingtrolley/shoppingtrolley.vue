@@ -145,9 +145,9 @@ export default {
       //   that.shTrDatas = data.data.data;
       // });
     },
-    gouwuche: function() {
-      var that = this;
-    },
+    // gouwuche: function() {
+    //   var that = this;
+    // },
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
@@ -176,7 +176,6 @@ export default {
   // watch:{
 
   // },
-  computed() {},
   created() {
     var that = this;
     // 获取购物城商品数目
