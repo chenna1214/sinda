@@ -19,7 +19,7 @@
       <div class="creatime">
         <div class="createdate">创建时间 ：</div>
         <div class="schedule">
-          <input type="date" v-model="time"> 至 <input type="date" v-model="time">
+          <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
         </div>
       </div>
       <!-- 商品名称 -->
@@ -34,53 +34,62 @@
           <div>订单操作</div>
         </div>
         <!-- 订单 -->
-        <div class="indent">
+        <div class="indent" :class="orderstyle">
           <!-- 大订单 -->
-          <div v-for="gData in gDatas" :key="gData.id" :class="orderstyle">
+          <div v-for="product in products" :key="product.id">
             <!-- 订单号(头部) -->
             <div class="indent-top">
               <div>
-                <div>订单号：</div>
-                <div>{{gData.businessNo}}</div>
+                <div>订单号:</div>
+                <div>{{product.businessNo}}</div>
               </div>
               <div>
-                <div>下单时间：</div>
-                <div>{{gDatas.gdate}}</div>
+                <div>下单时间:</div>
+                <div>{{product.gdate}}</div>
               </div>
             </div>
             <!-- 具体信息 -->
-            <div class="ind-detail">
+            <div class="ind-detail" v-for="subitem in (product.subItem)" :key="subitem.id">
               <!-- 左侧 -->
-              <div class="det-left" v-for="pData in pDatas" :key="pData.id">
+              <div class="det-left">
                 <!-- 商品 -->
-                <div :key="orderMess.id">
+                <div>
                   <div class="comname">
                     <div class="indname-img">
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'+pData.propic" alt="">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'" alt="">
                     </div>
                     <div class="indname-cha">
-                      <div class="indcha-one">{{pData.providerName}}</div>
-                      <div class="indcha-two">{{pData.serviceName}}</div>
+                      <div class="indcha-one">{{subitem.providerName}}</div>
+                      <div class="indcha-two">{{subitem.serviceName}}</div>
                     </div>
                   </div>
-                  <div class="ind-unit">￥{{pData.unitPrice}}.00</div>
-                  <div class="ind-quant">{{pData.buyNum}}</div>
-                  <div class="ind-total">￥{{pData.totalPrice}}.00</div>
+                  <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
+                  <div class="ind-quant">{{subitem.buyNum}}</div>
+                  <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
                   <div class="ind-status">等待买家付款</div>
                 </div>
               </div>
+
+              <!-- 右侧付款/删除 -->
+              <div class="det-right">
+                <!-- 付款 -->
+                <router-link :to="{path:'/merchandise/goodsOrder',query:{data:subitem.businessNo}}" class="ind-pay">付款</router-link>
+                <!-- 删除订单 -->
+                <div class="ind-delete" @click="cancel">删除订单</div>
+              </div>
+              <!-- 支付完成：已付款 -->
+
+
+
             </div>
             <!-- 右侧付款/删除 -->
-            <div class="det-right">
+            <!-- <div class="det-right"> -->
               <!-- 付款 -->
-              <router-link :to="{path:'/merchandise/goodsOrder',query:{data:gData.businessNo}}" class="ind-pay">付款</router-link>
+              <!-- <router-link :to="{path:'/merchandise/goodsOrder',query:{data:gData.businessNo}}" class="ind-pay">付款</router-link> -->
               <!-- 删除订单 -->
-              <div class="ind-delete" @click="cancel">删除订单</div>
-            </div>
+              <!-- <div class="ind-delete" @click="cancel">删除订单</div> -->
+            <!-- </div> -->
             <!-- 支付完成：已付款 -->
-
-
-            
           </div>
         </div>
       </div>
@@ -98,7 +107,7 @@
         <div class="maimess-x" @click="mesx">×</div>
       </div>
       <div class="maimes-no">
-        <div>确定删除该订单吗</div>
+        <div>确定要删除该订单吗</div>
         <div>
           <div class="mai-confirm" @click="maisure">确定</div>
           <div class="mai-undo" @click="mesx">取消</div>
@@ -112,64 +121,28 @@
 export default {
   name: 'changepwd',
   created () {
-    var that = this;
-    var readId = localStorage.getItem('id');//订单号
-    // console.log('readId==',readId)    
+    var that = this;  
+    // 订单号及其之下的信息
+    // var creTime = localStorage.getItem('time');
+    this.ajax.post('/xinda-api/service-order/grid').then(function (data) {
+      var Data = data.data.data;
+      // that.gDatas = Data;
+      var business = {};//定义空对象
+      for (var i in Data) {
+        // 不同订单号下的商品
+        var businessNo = Data[i].businessNo;//让gData里的订单号等于businessNo
+        if (!business[businessNo]) {//business里没有businessNo
+          business[businessNo] = Data[i];//让business[businessNo]等于gData[i]
+          // console.log(business[businessNo])
+          business[businessNo].subItem = [];//给对象business[businessNo]里定义一个新的属性
+        }
+        business[businessNo].subItem.push(Data[i]);//将gData[i]放入新属性里
+        that.products = business;
+        // console.log('b===',that.products[businessNo].subItem);
+        // console.log('c===',that.products[businessNo].subItem.length);
 
-    // 从购物车获得的信息（购物车里的内容）
-    this.ajax.post('/xinda-api/cart/list').then(function (data) {
-      var pData = data.data.data;
-      that.pDatas = pData;
-      for (var i = 0; i < that.pDatas.length; i++) {
-        that.pDatas[i].propic = that.pDatas[i].providerImg;
-        console.log('mingc==',that.pDatas[i]);
-      }
-    });
-
-    this.ajax.post('/xinda-api/business-order/detail',
-    this.qs.stringify({
-      businessNo: readId,
-    })).then(function (data) {
-      // 订单号以及时间
-      var ordernum = data.data.data.businessOrder;
-      that.ordernums = ordernum;
-      // 时间戳转化为时间函数
-      var orderDate = new Date(that.ordernums.createTime);
-      var year = orderDate.getFullYear();
-      var month = orderDate.getMonth() + 1;
-      var date = orderDate.getDate();
-      var hour = orderDate.getHours();
-      var minute = orderDate.getMinutes();
-      var second = orderDate.getSeconds();
-      var NowDate = [year, month, date].join('-') + ' ' + hour + ':' + minute + ':' + second;
-      that.ordernums.date = NowDate;
-      // console.log(orderDate)//object
-      // console.log('ordernums==',that.ordernums);
-
-      // 时间
-      var creatime = [year, month, date].join('-');
-      localStorage.setItem('time',creatime);
-    });
-
-    // // input框的时间
-    // var time = creTime;
-    // console.log('time==',time)
-
-    // 不同的订单号
-    var creTime = localStorage.getItem('time');
-    this.ajax.post('/xinda-api/business-order/grid',
-    this.qs.stringify({
-      businessNo: readId,
-      startTime: creTime,
-      endTime: creTime,
-      start: 0,
-    })).then(function (data) {
-      var gData = data.data.data;
-      that.gDatas = gData;
-      for (var i = 0; i < that.gDatas.length; i++) {
-        console.log('data====',that.gDatas[i].id)
         // 时间戳转化为时间函数
-        var gDate = new Date(that.gDatas[i].createTime);
+        var gDate = new Date(that.products[businessNo].createTime);
         var gyear = gDate.getFullYear();
         var gmonth = gDate.getMonth() + 1;
         var gdate = gDate.getDate();
@@ -177,10 +150,14 @@ export default {
         var gminute = gDate.getMinutes();
         var gsecond = gDate.getSeconds();
         var gNowDate = [gyear, gmonth, gdate].join('-') + ' ' + ghour + ':' + gminute + ':' + gsecond;
-        that.gDatas.gdate = gNowDate;
-        // console.log(gyear,gDate)
-        localStorage.setItem('gId',that.gDatas[i].id)
+        that.products[businessNo].gdate = gNowDate;
       }
+    });
+
+
+    // 业务订单接口---删除按钮id 
+    this.ajax.post('/xinda-api/business-order/grid').then(function (data) {
+      console.log(data.data.data)
     });
 
   },
@@ -189,21 +166,21 @@ export default {
       xstyle: 'trans',
       orderstyle: 'transf',
       sure: true,
-      // 订单号
-      ordernums: [],
-      // 商品具体信息
-      orderMess: [],
-      pDatas: [],//放入图片等
-      gDatas:[],
+      // 订单
+      // gDatas:[],
+      products:[],
 
       // input框里的时间
-      time: '',
+      stime: '',
+      etime: '',
     }
   },
   methods: {
     // 删除按钮
     cancel: function () {
       this.xstyle = 'transf';
+      var delId = localStorage.getItem('gId');
+      console.log('delId==',delId,localStorage.getItem('gId'))
     },
     // 取消按钮
     mesx: function () {
@@ -211,16 +188,36 @@ export default {
     },
     // 确定按钮
     maisure: function () {
-      this.orderstyle = 'trans';
-      this.xstyle = 'trans';
-      var delId = localStorage.getItem('gId');
-      console.log('delId==',delId)
-      this.ajax.post('/xinda-api/ business-order/del',
+      // var delId = localStorage.getItem('gId');
+      // console.log('delId==',this.delId,localStorage.getItem('gId'))
+      var that = this;
+      this.ajax.post('/xinda-api/business-order/del',
       this.qs.stringify({
         id: delId,
       })).then (function (data) {
-        console.log(data)
+        if(data.data.status == 1){
+          that.orderstyle = 'trans';
+          that.xstyle = 'trans';
+        }else{
+          that.orderstyle = 'transf';
+          that.xstyle = 'trans';
+        }
+        console.log(data.data)
       });
+    },
+
+    // input框的开始结束时间
+    start: function () {
+      // console.log('stime==',this.stime)
+      localStorage.setItem('st',this.stime)
+    },
+    end: function () {
+      // console.log('etime==',this.etime)
+      localStorage.setItem('et',this.etime)
+      // // input框的时间
+      // var sTime = localStorage.getItem('st')
+      // var eTime = localStorage.getItem('et')
+      // console.log(sTime)
     },
   }
 }
@@ -253,12 +250,14 @@ export default {
     width: 100%;
     // 订单号
     .ordernum{
-      width: 58%;
+      width: 62%;
       height: 40px;
-      font-size: 16px;
+      font-size: 14px;
       margin-top: 2%;
       display: flex;
-      justify-content: space-between;
+      >div{
+        margin-left: 1%;
+      }
       .transcode{
         width: 16%;
         line-height: 40px;
@@ -268,11 +267,11 @@ export default {
         input{
           width: 96%;
           height: 91%;
-          font-size: 16px;
+          font-size: 14px;
         }
       }
       .seek{
-        width: 19%;
+        width: 11%;
         text-align: center;
         line-height: 40px;
         color: #51a4d8;
@@ -283,7 +282,8 @@ export default {
     }
     // 创建时间
     .creatime{
-      width: 60%;
+      width: 75%;
+      font-size: 14px;
       margin-top: 3%;
       display: flex;
       .createdate{
@@ -342,13 +342,14 @@ export default {
           }
           // 具体信息
           .ind-detail{
-            width: 85%;
+            width: 100%;
+            border-bottom: 1px solid #e8e8e8;
             display: flex;
-            flex-wrap: wrap;
+            // width: 85%;
+            // flex-wrap: wrap;
             // 左侧
             .det-left{
               width: 100%;
-              border-bottom: 1px solid #e8e8e8;
               // 商品
               >div{
                 display: flex;
@@ -372,9 +373,13 @@ export default {
                     }
                   }
                   .indname-cha{
+                    width: 65%;
                     font-size: 12px;
                     color: #828282;
                     line-height: 25px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
                     >div{
                       margin-top: 5%;
                       white-space: nowrap;
@@ -400,38 +405,66 @@ export default {
                 }
               }
             }
-
-          }
-          // 右侧付款/删除
-          .det-right{
-            width: 13%;
-            display: flex;
-            flex-wrap: wrap;
-            // align-content: center;
-            .ind-pay{
-              width: 67%;
-              height: 33px;
-              display: block;
-              text-align: center;
-              line-height: 33px;
-              color: #419bd7;
-              text-decoration: none;
-              margin: 0 auto;
-              border: 1px solid #2693d4;
-              border-radius: 6px;
-              cursor: pointer;
-            }
-            .ind-delete{
-              width: 67%;
-              height: 33px;
-              line-height: 33px;
-              text-align: center;
-              margin: 0 auto;
-              margin-top: 5%;
-              color: #ff4649;
-              cursor: pointer;
+            // 右侧付款/删除
+            .det-right{
+              width: 13%;
+              display: flex;
+              flex-wrap: wrap;
+              align-content: space-around;
+              .ind-pay{
+                width: 67%;
+                height: 27px;
+                display: block;
+                text-align: center;
+                line-height: 27px;
+                color: #419bd7;
+                text-decoration: none;
+                margin: 0 auto;
+                border: 1px solid #2693d4;
+                border-radius: 6px;
+                cursor: pointer;
+              }
+              .ind-delete{
+                width: 67%;
+                height: 27px;
+                line-height: 27px;
+                text-align: center;
+                margin: 0 auto;
+                color: #ff4649;
+                cursor: pointer;
+              }
             }
           }
+          // // 右侧付款/删除
+          // .det-right{
+          //   width: 13%;
+          //   display: flex;
+          //   flex-wrap: wrap;
+          //   // align-content: center;
+          //   .ind-pay{
+          //     width: 67%;
+          //     height: 33px;
+          //     display: block;
+          //     text-align: center;
+          //     line-height: 33px;
+          //     color: #419bd7;
+          //     text-decoration: none;
+          //     margin: 0 auto;
+          //     border: 1px solid #2693d4;
+          //     border-radius: 6px;
+          //     cursor: pointer;
+          //   }
+          //   .ind-delete{
+          //     width: 67%;
+          //     height: 33px;
+          //     line-height: 33px;
+          //     text-align: center;
+          //     margin: 0 auto;
+          //     margin-top: 5%;
+          //     color: #ff4649;
+          //     cursor: pointer;
+          //   }
+          // }
         }
       }
     }
@@ -456,10 +489,11 @@ export default {
     width: 28%;
     border: 1px solid #bbb;
     background-color: #fff;
-    margin-top: -28%;
-    margin-left: 18%;
+    left: 50%;
+    top: 50%;
+    z-index: 25;
     overflow: hidden;
-    position: absolute;
+    position: fixed;
     >div{
       width:100%;
     }

@@ -178,6 +178,8 @@ export default {
           .then(data => {
             sessionStorage.setItem("Unionpay", data.data);
             window.open("/#/pay");
+   
+            
           });
       }
       if (this.radio == 2) {

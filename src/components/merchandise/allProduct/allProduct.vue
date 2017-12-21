@@ -48,14 +48,32 @@
                 </div>
             </el-col>
             <el-col :xs="{span:19,offset:5}" class="telNavClickOut">
-                <div  v-for="secondTil in rDataObj.itemList" :key="secondTil.id" class="telTilBox" v-show="telIdx==telIndex">
-                  <div class="telSecondTil">{{secondTil.name}}</div>  
-                  <div><p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id" class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span></p></div>
-                </div>
+                <router-link :to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}"v-for="secondTil in rDataObj.itemList" :key="secondTil.id">
+                  <div   class="telTilBox" v-show="telIdx==telIndex">
+                    <div class="telSecondTil">{{secondTil.name}}</div>  
+                    <div>
+                      <router-link :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
+                        <p  class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
+                        </p>
+                      </router-link>
+                    </div>
+                  </div>
+                </router-link>
             </el-col>
         </el-row>
 
         </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
       </div>
