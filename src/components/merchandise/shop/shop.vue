@@ -53,14 +53,17 @@
                     <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                   </div>
                 </div>
-                <!--  -->
-                
-                <!--  -->
               </el-col>
-              
             </el-row>
           </div>
         </div>
+        <!--  -->
+        <div class="pcsh-pgnm clear">
+          <input class="pcsh-prpg" @click="prPage()" type="button" value="上一页">
+          <span @click="choosePage(idx)" :class='{"pcsh-psty":code=idx}' v-for="(pageN,idx) in pageNum" :key="pageN">{{pageN}}</span>
+          <input type="button" value="下一页">
+        </div>
+        <!--  -->
     </div>
     <router-view/>
    </div>
@@ -72,73 +75,6 @@ import autourban from "../taxationService/autourban";
 export default {
   name: "shop",
   methods: {
-    // upPage() {
-    //   //点击向上一页翻页
-    //   if (this.eachContent - 1 >= 0) {
-    //     this.eachContent = this.eachContent - 1;
-    //     if (!this.code) {
-    //       this.ajaxProData(this.$route.query.code, this.eachContent);
-    //     } else {
-    //       this.ajaxProData(this.code, this.eachContent);
-    //     }
-    //     this.textColor = this.eachContent;
-    //   }
-    // },
-    // downPage() {
-    //   //点击向下一页翻页
-    //   if (Number(this.eachContent) + 1 < this.page) {
-    //     this.eachContent = Number(this.eachContent) + 1;
-    //     if (!this.code) {
-    //       this.ajaxProData(this.$route.query.code, this.eachContent);
-    //     } else {
-    //       this.ajaxProData(this.code, this.eachContent);
-    //     }
-    //     this.textColor = this.eachContent;
-    //   }
-    // },
-    // pageClick(idxPage) {
-    //   //点击某个页码进行翻页
-    //   this.eachContent = idxPage;
-    //   if (!this.code) {
-    //     this.ajaxProData(this.$route.query.code, this.eachContent);
-    //   } else {
-    //     this.ajaxProData(this.code, this.eachContent);
-    //   }
-    //   this.textColor = idxPage;
-    // },
-    // ajaxProData(code, eachContent, thirdId,proSort) {
-    //   //产品列表
-    //   var that = this;
-    //   this.ajax
-    //     .post(
-    //       "/xinda-api/product/package/grid",
-    //       this.qs.stringify({
-    //         productTypeCode: code,
-    //         limit: 3,
-    //         start: this.eachContent * 3,
-    //         productId: thirdId,
-    //         sort:proSort
-    //       })
-    //     )
-    //     .then(function(data) {
-    //       that.products = data.data.data;
-    //       var page = Math.ceil(data.data.totalCount /3 );
-    //       var pageCount = {};
-    //       for (var i = 0; i < page; i++) {
-    //         pageCount[i] = i + 1;
-    //       }
-    //       that.pageNum = pageCount;
-    //       that.page = page;
-    //       that.thirdBoxShow = thirdId;
-    //     });
-    // },
-
-
-
-
-
-
-
     selected(code) {
       this.distCode = code;
       console.log("code===", code);
@@ -189,7 +125,7 @@ export default {
           "/xinda-api/provider/grid",
           this.qs.stringify({
             start: 0,
-            limit: 6,
+            limit: 2,
             productTypeCode: this.thePrTyCode,
             regionId: this.distCode,
             sort: this.sortindex
@@ -201,6 +137,24 @@ export default {
         });
       this.products = that.products;
     },
+    // 上一页
+    prPage() {
+      if (this.startIdx > 0) {
+        this.startIdx = this.startIdx + 2;
+        this.code--;
+      }
+    },
+    // 下一页
+    nextPage() {
+      if (this.startIdx < 2 * (this.page - 1)) {
+        this.startIdx = this.startIdx - 2;
+        this.code++;
+      }
+    },
+    // 点击选择页面
+    choosePage(pageIndex) {
+      this.code = pageIndex;
+    }
   },
   // watch:{
   //   producTyname: function(){
@@ -222,7 +176,7 @@ export default {
       .post(
         "/xinda-api/provider/grid",
         this.qs.stringify({
-          start: 0,
+          start: this.startIdx,
           limit: 6,
           productTypeCode: this.thePrTyCode,
           regionId: this.distCode,
@@ -230,15 +184,22 @@ export default {
         })
       )
       .then(function(data) {
-        console.log("data=======", data);
+        console.log("data===", data);
         that.products = data.data.data;
         console.log("that.products= ===", that.products);
+        // 总页数
+        that.page = Math.ceil(data.data.totalCount / 2);
+        console.log("data.data.totalCount==", data.data.totalCount);
+        var pageObj = {};
+        for (var i = 1; i <= that.page; i++) {
+          pageObj[i] = i;
+        }
+        that.pageNum = pageObj;
       });
     this.products = that.products;
     // 获取 产品类型列表信息
     this.ajax.post("/xinda-api/product/style/list").then(function(data) {
       // 整理 产品类型数据
-      console.log("data=======标题", data.data.data);
       var items = data.data.data;
       for (var i in items) {
         for (var j in items[i].itemList) {
@@ -269,7 +230,14 @@ export default {
       distCode: "",
       thePrTyCode: 0,
       //
-      showHideCode: 0
+      showHideCode: 0,
+      startIdx: 0,
+      pageNum: {}, //页数
+      // eachContent: 0, //每页内容
+      page: 1, //每类数据分的总页数
+      // textColor: 0, //控制页码被选中后的动态样式的初始值
+      code: 0
+      // thirdBoxShow: ""
     };
   },
   components: { autourban }
@@ -488,6 +456,44 @@ export default {
         }
       }
     }
+  }
+}
+
+.pcsh-pgnm {
+  // display: flex;
+  // overflow: hidden;
+  margin: 62px auto;
+  max-width: 190px;
+  // height: 36px;
+  // justify-content: space-between;
+  color: #ccc;
+  font-size: 14px;
+  input {
+    float: left;
+    width: 68px;
+    height: 36px;
+    color: #ccc;
+    background: #fff;
+    border: 1px solid #ccc;
+  }
+  .pcsh-prpg{
+    margin-right: 6px;
+  }
+  span{
+    margin-right: 6px;
+    float: left;
+    width: 37px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    display: inline-block;
+    color: #ccc;
+    background: #fff;
+    border: 1px solid #ccc;
+  }
+  .pcsh-psty{
+    color: #2592d5;
+    border: 1px solid #2592d5;
   }
 }
 </style>
