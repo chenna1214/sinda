@@ -150,7 +150,6 @@ export default {
         this.ajaxProData(this.code, this.eachContent);
         console.log("点击某个页码--this.code", this.code);
       }
-
       this.textColor = idxPage;
     },
     ajaxProData(code, eachContent) {
