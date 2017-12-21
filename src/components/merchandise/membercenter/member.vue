@@ -34,7 +34,7 @@
           <div>订单操作</div>
         </div>
         <!-- 订单 -->
-        <div class="indent" :class="orderstyle">
+        <div class="indent">
           <!-- 大订单 -->
           <div v-for="product in products" :key="product.id">
             <!-- 订单号(头部) -->
@@ -49,7 +49,7 @@
               </div>
             </div>
             <!-- 具体信息 -->
-            <div class="ind-detail" v-for="subitem in (product.subItem)" :key="subitem.id">
+            <div class="ind-detail" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
               <!-- 左侧 -->
               <div class="det-left">
                 <!-- 商品 -->
@@ -75,21 +75,13 @@
                 <!-- 付款 -->
                 <router-link :to="{path:'/merchandise/goodsOrder',query:{data:subitem.businessNo}}" class="ind-pay">付款</router-link>
                 <!-- 删除订单 -->
-                <div class="ind-delete" @click="cancel">删除订单</div>
+                <div class="ind-delete" @click="cancel(subitem.id)">删除订单</div>
               </div>
               <!-- 支付完成：已付款 -->
 
 
 
             </div>
-            <!-- 右侧付款/删除 -->
-            <!-- <div class="det-right"> -->
-              <!-- 付款 -->
-              <!-- <router-link :to="{path:'/merchandise/goodsOrder',query:{data:gData.businessNo}}" class="ind-pay">付款</router-link> -->
-              <!-- 删除订单 -->
-              <!-- <div class="ind-delete" @click="cancel">删除订单</div> -->
-            <!-- </div> -->
-            <!-- 支付完成：已付款 -->
           </div>
         </div>
       </div>
@@ -108,7 +100,7 @@
       </div>
       <div class="maimes-no">
         <div>确定要删除该订单吗</div>
-        <div>
+        <div>                       
           <div class="mai-confirm" @click="maisure">确定</div>
           <div class="mai-undo" @click="mesx">取消</div>
         </div>
@@ -138,8 +130,7 @@ export default {
         }
         business[businessNo].subItem.push(Data[i]);//将gData[i]放入新属性里
         that.products = business;
-        // console.log('b===',that.products[businessNo].subItem);
-        // console.log('c===',that.products[businessNo].subItem.length);
+        // console.log('c===',that.products[businessNo].subItem);
 
         // 时间戳转化为时间函数
         var gDate = new Date(that.products[businessNo].createTime);
@@ -154,12 +145,14 @@ export default {
       }
     });
 
-
-    // 业务订单接口---删除按钮id 
-    this.ajax.post('/xinda-api/business-order/grid').then(function (data) {
-      console.log(data.data.data)
-    });
-
+    // // 业务订单
+    // this.ajax.post('/xinda-api/business-order/grid').then(function (data) {
+    //   var griDatas = data.data.data
+    //   for(var key in griDatas){
+    //     // console.log(griDatas[key].id)
+    //   }
+    //   // console.log(data.data.data);
+    // });
   },
   data () {
     return {
@@ -167,8 +160,9 @@ export default {
       orderstyle: 'transf',
       sure: true,
       // 订单
-      // gDatas:[],
+      gDatas:[],
       products:[],
+      griDatas: [],
 
       // input框里的时间
       stime: '',
@@ -177,33 +171,33 @@ export default {
   },
   methods: {
     // 删除按钮
-    cancel: function () {
+    cancel: function (code) {
       this.xstyle = 'transf';
-      var delId = localStorage.getItem('gId');
-      console.log('delId==',delId,localStorage.getItem('gId'))
+      // console.log(code)
+      sessionStorage.setItem('del',code);
     },
     // 取消按钮
     mesx: function () {
       this.xstyle = 'trans';
     },
     // 确定按钮
-    maisure: function () {
-      // var delId = localStorage.getItem('gId');
-      // console.log('delId==',this.delId,localStorage.getItem('gId'))
-      var that = this;
-      this.ajax.post('/xinda-api/business-order/del',
-      this.qs.stringify({
-        id: delId,
-      })).then (function (data) {
-        if(data.data.status == 1){
-          that.orderstyle = 'trans';
-          that.xstyle = 'trans';
-        }else{
-          that.orderstyle = 'transf';
-          that.xstyle = 'trans';
-        }
-        console.log(data.data)
-      });
+    maisure: function (code) {
+      var delId = sessionStorage.getItem('del');
+      // console.log('a==',delId)
+      // var that = this;
+      // this.ajax.post('/xinda-api/business-order/del',
+      // this.qs.stringify({
+      //   id: delId,
+      // })).then (function (data) {
+      //   if(data.data.status == 1){
+      //     that.orderstyle = 'trans';
+      //     that.xstyle = 'trans';
+      //   }else{
+      //     that.orderstyle = 'transf';
+      //     that.xstyle = 'trans';
+      //   }
+      //   console.log(data.data)
+      // });
     },
 
     // input框的开始结束时间
@@ -345,8 +339,6 @@ export default {
             width: 100%;
             border-bottom: 1px solid #e8e8e8;
             display: flex;
-            // width: 85%;
-            // flex-wrap: wrap;
             // 左侧
             .det-left{
               width: 100%;
@@ -435,36 +427,6 @@ export default {
               }
             }
           }
-          // // 右侧付款/删除
-          // .det-right{
-          //   width: 13%;
-          //   display: flex;
-          //   flex-wrap: wrap;
-          //   // align-content: center;
-          //   .ind-pay{
-          //     width: 67%;
-          //     height: 33px;
-          //     display: block;
-          //     text-align: center;
-          //     line-height: 33px;
-          //     color: #419bd7;
-          //     text-decoration: none;
-          //     margin: 0 auto;
-          //     border: 1px solid #2693d4;
-          //     border-radius: 6px;
-          //     cursor: pointer;
-          //   }
-          //   .ind-delete{
-          //     width: 67%;
-          //     height: 33px;
-          //     line-height: 33px;
-          //     text-align: center;
-          //     margin: 0 auto;
-          //     margin-top: 5%;
-          //     color: #ff4649;
-          //     cursor: pointer;
-          //   }
-          // }
         }
       }
     }

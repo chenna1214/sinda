@@ -12,7 +12,7 @@
 
           <!-- <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li> -->
 
-          <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj":key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
+          <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj" :key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
 
         </ul></el-col>
       </el-row>
