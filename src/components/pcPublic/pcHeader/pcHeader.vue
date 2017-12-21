@@ -57,7 +57,7 @@
       </el-row>
       <el-row class="pcHeaderBottom" type="flex" justify="center"><!-- 头部下半部分 -->
         <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink pcChoosedLink" @mouseover="navDis=true" @mouseleave="navDisLeave()">全部产品</a></el-col><!-- @mouseleave="navDisLeave()" -->
-        <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService" class="pcHeaderBottomLink">财税服务</a></el-col>
+        <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService?code=3" class="pcHeaderBottomLink">财税服务</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/companyIndustry" class="pcHeaderBottomLink">公司工商</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
         <el-col :sm="7" :md="7" :lg="7"><a href="#/merchandise/shop" class="pcHeaderBottomLink">店铺</a></el-col>
@@ -83,9 +83,13 @@
           <el-col :sm="{span:24,offset:23}" :md="{span:24,offset:23}" :lg="{span:24,offset:23}" >
             <div @mouseover="navDisOver()" @mouseleave="navDis=false">
               <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">
-               <router-link :to="{ path: '/merchandise/taxationService', query: { product:idx-1,code:secondTil.code }}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
-                  <div class="pcNavSec"  >{{secondTil.name}}>
-                    <div class="pcNavTidBox"><span class="pcNavSpan" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">|{{thirdTil.name}}</span></div>
+               <router-link :to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
+                  <div class="pcNavSec"  >{{secondTil.name}}
+                      <div class="pcNavTidBox">
+                        <router-link :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
+                          <span class="pcNavSpan" >|{{thirdTil.name}}</span>
+                        </router-link>
+                      </div>
                   </div>
                </router-link>
               </div>
