@@ -36,6 +36,8 @@ export default new Vuex.Store({
         gainNum({commit}){
             axios.post('/xinda-api/cart/cart-num').then(data=>{
                 commit('GAIN_NUM',data.data.data.cartNum);
+                console.log('gainNum')
+                
             });
         }
     },

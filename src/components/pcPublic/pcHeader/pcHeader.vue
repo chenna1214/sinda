@@ -4,7 +4,7 @@
     <el-col><div class="pcHeader">
       <el-row>
         <div class="pcHeaderTopContent"><!-- 上半部分内容 -->
-<el-col :sm="5" :md="5" :lg="6">
+    <el-col :sm="5" :md="5" :lg="6">
 
 <div class="pcHeaderLeft"><!-- 上半部分内容--左边 -->
 <img src="../../images/icon/sindaTextIcon.png" class="pcHeaderLeftsindaTextIcon">
@@ -58,7 +58,7 @@
       <el-row class="pcHeaderBottom" type="flex" justify="center"><!-- 头部下半部分 -->
         <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><a href="#/merchandise/allProduct" class="pcHeaderBottomLink pcChoosedLink" @mouseover="navDis=true" @mouseleave="navDisLeave()">全部产品</a></el-col><!-- @mouseleave="navDisLeave()" -->
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService?code=3" class="pcHeaderBottomLink">财税服务</a></el-col>
-        <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/companyIndustry" class="pcHeaderBottomLink">公司工商</a></el-col>
+        <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/taxationService?code=5" class="pcHeaderBottomLink">公司工商</a></el-col>
         <el-col :sm="4" :md="4" :lg="4"><a href="#/merchandise/joinUs" class="pcHeaderBottomLink">加盟我们</a></el-col>
         <el-col :sm="7" :md="7" :lg="7"><a href="#/merchandise/shop" class="pcHeaderBottomLink">店铺</a></el-col>
       </el-row>
@@ -67,14 +67,16 @@
 
             <!-- 全部产品--pc端--轮播左边的导航 -->
       <div class="pcNavBoxOut" v-show="navDis">
-        <el-row v-for="(rDataObj,idx) in rDataObjs" :key="rDataObj.id">
+        <el-row v-for="(rDataObj,idx) in rDataObjs.titles" :key="rDataObj.id">
           <el-col :sm="23" :md="23" :lg="23" >
             <div @mouseover="navDisOver()" @mouseleave="navDis=false">
                <div class="pcAllProductHeaderInner hidden-xs-only" @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)"  :class="{pcNavEventAft:idx==index}">
                 <img :src="pcNavImg[idx-1]" class="pcAllProductHeader-taxImg hidden-sm-and-down">
                   <div class="pcAllProductHeader-taxText">
-                    <span>{{rDataObj.name}}</span><br>
-                    <span v-for="secondTil in rDataObj.itemList" :key="secondTil.id">{{secondTil.name}}</span>
+                    <span class="pcFirstTil">{{rDataObj.name}}</span><br>
+                    <router-link :to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
+                      <span class="pcSecondTil">{{secondTil.name}}</span>
+                    </router-link >
                   </div>
               </div>
             </div>
@@ -83,10 +85,10 @@
           <el-col :sm="{span:24,offset:23}" :md="{span:24,offset:23}" :lg="{span:24,offset:23}" >
             <div @mouseover="navDisOver()" @mouseleave="navDis=false">
               <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">
-               <router-link :to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
+               <router-link tag='div':to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
                   <div class="pcNavSec"  >{{secondTil.name}}
                       <div class="pcNavTidBox">
-                        <router-link :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
+                        <router-link  :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
                           <span class="pcNavSpan" >|{{thirdTil.name}}</span>
                         </router-link>
                       </div>
@@ -111,6 +113,7 @@ import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
+import {getTitles} from './public'//获取产品导航标题
 let searchVal = "";
 export default {
   name: "pcHeader",
@@ -153,7 +156,7 @@ export default {
       serShow: true,
       getSearch: null,
       //全部产品导航
-      rDataObjs: {},
+      rDataObjs: {titles:{}},
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcNavImg: [
         "src/components/images/allProduct/icon1.png",
@@ -168,19 +171,7 @@ export default {
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     this.getSearch = this.debounce(this.getSearchList, 600);
-    var that = this;
-    this.ajax //获取全部产品的轮播左边的导航栏
-      .post("http://115.182.107.203:8088/xinda/xinda-api/product/style/list")
-      .then(function(data) {
-        var rData = data.data.data;
-        var rDataObj = {};
-        for (var Key in rData) {
-          rDataObj[rData[Key].code] = rData[Key];
-        }
-        that.rDataObjs = rDataObj;
-      });
-      
-      
+    getTitles(this.rDataObjs);
   },
   methods: {
     // 全部产品导航
@@ -296,14 +287,15 @@ export default {
 }
 .pcAllProductHeader-taxText {
   padding-left: 3%;
-  span {
+  .pcSecondTil {
     color: white;
     font-size: 12px;
     width: 50%;
     display: inline-block;
     white-space: nowrap;
   }
-  span:nth-child(1) {
+  .pcFirstTil {
+    color: white;
     font-size: 15px;
     width: 60px;
   }
@@ -314,7 +306,7 @@ export default {
   padding-bottom: 6px;
   min-height: 84px;
   height: auto;
-  background-color: rgba(152, 171, 196, 0.5);
+  background-color: rgba(152, 171, 196, 0.8);
   z-index: 100;
   position: absolute;
   width: 550%;
