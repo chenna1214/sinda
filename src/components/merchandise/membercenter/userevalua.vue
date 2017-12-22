@@ -99,11 +99,12 @@ export default {
     // 用户评价：
     this.ajax.post ('/xinda-api/service/judge/grid',
     this.qs.stringify({
-      start: 0,
-      limit: 6,
-      status: 2,
+      
+      // start: 0,
+      // limit: 6,
+      // status: 2,
     })).then (function (data) {
-      console.log(data.data.data)
+      console.log(data.data)
     });
   },
   data () {

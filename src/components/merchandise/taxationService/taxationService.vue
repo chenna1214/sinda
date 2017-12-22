@@ -129,7 +129,6 @@ export default {
       } else {
         this.ajaxProData(this.code, this.eachContent);
       }
-
       this.textColor = idxPage;
     },
     ajaxProData(code, eachContent, thirdId, proSort) {
@@ -159,6 +158,38 @@ export default {
           that.thirdBoxShow = thirdId;
         });
     },
+<<<<<<< HEAD
+=======
+    // getTitle(proType, showThree) {
+    //   var that = this;
+    //   that.secBox = [];
+    //   that.thirdTitle = [];
+    //   this.ajax //获取头部导航
+    //     .post("/xinda-api/product/style/list")
+    //     .then(function(data) {
+    //       var rData = data.data.data;
+    //       console.log("rData==", rData);
+    //       var rDataObj = {};
+    //       for (var Key in rData) {
+    //         rDataObj[rData[Key].code] = rData[Key];
+    //       }
+
+    //       for (var secKey in rDataObj) {
+    //         var secName = rDataObj[secKey].itemList;
+    //         that.sencodTitle.push(secName);
+    //       }
+    //       var onlySecTil = that.sencodTitle[proType];
+
+    //       for (var SecKey in onlySecTil) {
+    //         that.thirdTitle.push(onlySecTil[SecKey].itemList); //三级标题
+    //         that.secBox.push(onlySecTil[SecKey]); //二级标题
+    //         that.codeArr.push(onlySecTil[SecKey].code);
+    //       }
+    //       that.firstShowCode.first = that.codeArr[0];
+    //       that.reallyThird = that.thirdTitle[showThree];
+    //     });
+    // },
+>>>>>>> 3e7283f921df066bb9c038b3bf27ada1201738db
 
     selected(code) {
       this.distCode = code;

@@ -683,13 +683,14 @@ button{
 // 点击马上咨询
 .pro-consult{
   width: 48%;
-  height: 94%;
   border-bottom: 1px solid #aaa;
   box-shadow: 2px 1px 2px 1px #aaa;
   background-color: #fff;
-  position: absolute;
-  margin-top: -63%;
-  margin-left: 25%;
+  left: 35%;
+  top: 16%;
+  z-index: 25;
+  overflow: hidden;
+  position: fixed;
   display: none;
   // 头
   .procon-top{

@@ -46,7 +46,7 @@
       </div>
       <!-- 提交 -->
       <router-link tag="div" :to="{path: '/merchandise/membercenter/userevalua'}" class="to-submit">
-        <input type="submit" value="提交">
+        <input type="submit" value="提交" @click="mit">
       </router-link>
     </div>
    </div>
@@ -63,7 +63,11 @@ export default {
   methods: {
     star: function (index) {
       this.index = index;
-    }
+    },
+    // 提交评价
+    // mit: function () {
+
+    // }
   }
 }
 </script>
@@ -98,6 +102,9 @@ export default {
         width: 25%;
         font-size: 13px;
         line-height: 30px;
+        &:nth-child(3){
+          width: 40%;
+        }
       }
     }
     // 评价
@@ -140,15 +147,23 @@ export default {
         width: 8%;
         font-size: 13px;
         line-height: 32px;
+        &:nth-child(2){
+          width: 67%;
+          textarea{
+            width: 100%;
+          }
+        }
       }
     }
     // 提交
     .to-submit{
-      width: 76%;
-      display: inline-flex;
+      width: 17%;
+      margin-top: 3%;
+      margin: 0 auto;
+      display: flex;
       justify-content: flex-end;
       input{
-        width: 21%;
+        width: 100%;
         height: 40px;
         color: #fff;
         background-color: #2693d4;
