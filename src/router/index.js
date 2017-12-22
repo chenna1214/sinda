@@ -5,7 +5,7 @@ import merchandise from '../components/merchandise/merchandise'
 import allProduct from '../components/merchandise/allProduct/allProduct.vue'
 import taxationService from '../components/merchandise/taxationService/taxationService.vue'
 import productdetail from '../components/merchandise/taxationService/productdetail.vue'
-import companyIndustry from '../components/merchandise/companyIndustry/companyIndustry.vue'
+
 import joinUs from '../components/merchandise/joinUs/joinUs.vue'
 import shop from '../components/merchandise/shop/shop.vue'
 import failurePay from '../components/merchandise/order/failurePay.vue'//支付失败
@@ -28,6 +28,8 @@ import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
 import pay from '../components/merchandise/order/pay'
 //支付宝支付
 import Alipay from '../components/merchandise/order/Alipay'
+//手机端的全部产品的导航
+import navShow from '../components/merchandise/allProduct/navShow.vue'
 
 Vue.use(Router)
 
@@ -75,11 +77,7 @@ export default new Router({
           name: 'productdetail',
           component: productdetail
         },
-        {
-          path: 'companyIndustry',//公司工商
-          name: 'companyIndustry',
-          component: companyIndustry
-        },
+     
         {
           path: 'joinUs',//加盟我们
           name: 'joinUs',
@@ -156,7 +154,13 @@ export default new Router({
       path:'/Alipay',//支付宝支付
       name:'Alipay',
       component:Alipay
+    },
+    {
+      path:'/navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
+      name:'navShow',
+      component:navShow
     }
+    
   ]
 })
             

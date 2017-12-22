@@ -17,9 +17,6 @@
             <el-row class="pcauto-wrap hidden-xs-only">
               <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
               <el-col :span="21"><!-- 三级标题 -->
-                  <!-- <div v-for="(eachThird,thirdIndex) in reallyThird" :key="thirdIndex" class="pctax-servisenav clear pcSecBox">
-                    <a v-for="(thirdName,thirdIdx) in eachThird" :key="thirdName.name"  class="pcSecTil" @click="thirdClick(thirdName.id,thirdIdx)" :class="{changeColr:change==thirdIdx}">{{thirdName.name}}</a>
-                  </div> -->
                   <div class="pctax-servisenav clear pcSecBox">
                     <a v-for="(thirdName) in reallyThird" :key="thirdName.name"  class="pcSecTil" @click="thirdClick(thirdName.id)" :class="{changeColr:thirdId==thirdName.id}">{{thirdName.name}}</a>
                   </div>
@@ -31,8 +28,8 @@
           <!-- 财税服务 商品列表 -->
           <div class="pccny-gds">
             <ul class="pccn-ghead clear">
-              <li @click="ascendingOrder(1)" :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghcora">综合排序</li>
-              <li @click="ascendingOrder(2)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
+              <li @click="synthetical()" :class='{"pxtax-clickst-1":proSort==-10}' class="pccn-ghcora">综合排序</li>
+              <li @click="ascendingOrder()" :class='{"pxtax-clickst-1":proSort==3}' >价格<span class="pccn-ghico"></span></li>
             </ul>
             <!-- 商品列表下方 -->
             <div class="pccny-g-wr">
@@ -61,22 +58,16 @@
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
                     <p class="pccn-elprc">￥ {{product.price}}</p>
-                    <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
-                      立即购买
-                    </router-link> -->
-                    <a href="javascript:void(0)" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
-                    <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
-                      加入购物车 {{idx}}
-                    </router-link> -->
+                    <a href="#/merchandise/shoppingtrolley" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
                     <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
                   </div>
                 </li>
               </ul>
             </div>
-
-            
-            
           </div>
+
+
+
           <div class="pageBox"><!-- 页码 -->
             <button @click="upPage()">上一页</button>
             <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
@@ -84,31 +75,10 @@
           </div>
         </el-col>
         <el-col :span="5" class="hidden-xs-only">
-
-             <!-- <servicePart/> -->
-
-
-         
-          <!-- <div class="pccopny-r-wrap">
-            <ul class="pccopny-rintr">
-              <li class="pccopny-rel1">
-                <div class="pccopny-relim1"></div>
-                <p class="pccopny-r-tit">平台担保</p>
-              </li>
-              <li class="pccopny-rel2">
-                <div class="pccopny-relim2"></div>
-                <p class="pccopny-r-tit">优质服务</p>
-              </li>
-              <li class="pccopny-rel3">
-                <div class="pccopny-relim3"></div>
-                <p class="pccopny-r-tit">过程监督</p>
-              </li>
-              <li class="pccopny-rel4">
-                <div class="pccopny-relim4"></div>
-                <p class="pccopny-r-tit">增值服务</p>
-              </li>
-            </ul>
-          </div> -->
+           <!-- 财税服务右侧栏 -->
+            <servicePart v-show="taxRightSide==this.$route.query.code"></servicePart>
+            <!-- 公司工商右侧栏 -->
+            <company v-show="CompanyRightSide==this.$route.query.code"></company>
         </el-col>
       </el-row>
      
@@ -121,11 +91,11 @@
 // 三级联动模块
 import autourban from "./autourban";
 import { mapActions } from "vuex"; //改变数据
-import servicePart from './servicePart'//引用财税服务右侧栏组件
+import servicePart from "./servicePart.vue"; //引用财税服务右侧栏组件
+import company from "./company";
 
 export default {
   name: "taxationService",
-  components: {servicePart},
   methods: {
     upPage() {
       //点击向上一页翻页
@@ -161,23 +131,24 @@ export default {
       }
       this.textColor = idxPage;
     },
-    ajaxProData(code, eachContent, thirdId,proSort) {
+    ajaxProData(code, eachContent, thirdId, proSort) {
       //产品列表
       var that = this;
+      var params = {
+        productTypeCode: code,
+        limit: 3,
+        start: this.eachContent * 3,
+        sort: proSort
+      };
+      if (thirdId != -1) {
+        params.productId = thirdId;
+      }
+
       this.ajax
-        .post(
-          "/xinda-api/product/package/grid",
-          this.qs.stringify({
-            productTypeCode: code,
-            limit: 3,
-            start: this.eachContent * 3,
-            productId: thirdId,
-            sort:proSort
-          })
-        )
+        .post("/xinda-api/product/package/grid", this.qs.stringify(params))
         .then(function(data) {
           that.products = data.data.data;
-          var page = Math.ceil(data.data.totalCount /3 );
+          var page = Math.ceil(data.data.totalCount / 3);
           var pageCount = {};
           for (var i = 0; i < page; i++) {
             pageCount[i] = i + 1;
@@ -187,6 +158,8 @@ export default {
           that.thirdBoxShow = thirdId;
         });
     },
+<<<<<<< HEAD
+=======
     // getTitle(proType, showThree) {
     //   var that = this;
     //   that.secBox = [];
@@ -214,16 +187,13 @@ export default {
     //       }
     //       that.firstShowCode.first = that.codeArr[0];
     //       that.reallyThird = that.thirdTitle[showThree];
-
-
- 
     //     });
     // },
+>>>>>>> 3e7283f921df066bb9c038b3bf27ada1201738db
 
     selected(code) {
       this.distCode = code;
     },
-    ...mapActions(["setNum"]),
     ...mapActions(["gainNum"]),
     toDetail(id) {
       this.$router.push({
@@ -231,21 +201,29 @@ export default {
         query: { id: id }
       });
     },
-    // togoodsOrder(id) {
-    //   var that = this;
-    //   this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-
-    //   });
-    // },
+    //立即购买按钮
+    togoodsOrder(goodsId) {
+      var that = this;
+      this.shoppingCarNum(goodsId);
+    },
+    // 加入购物车按钮
+    addToCart: function(itsid) {
+      this.shoppingCarNum(itsid);
+    },
+    //购物车计算购买种类
+    shoppingCarNum(itsid) {
+      var that = this;
+      this.ajax
+        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid }))
+        .then(function(data) {
+          //查询购物车数量
+          that.gainNum();
+        });
+    },
     secTilShow(code) {
       //点击请求二级标题---我们需要把三级样式清除
-      // this.showIndex = code;
       this.thirdId = -1;
       this.change = code;
-      // this.index = this.codeArr[index];
-      // this.code = code;
-      // this.$route.query.code = code;
-      // this.getTitle(this.$route.query.product, index);
       //渲染二级标题列表
       for (var key in this.secBox) {
         if (this.secBox[key].code == code) {
@@ -260,43 +238,15 @@ export default {
       this.thirdId = thirId;
       this.ajaxProData(0, this.eachContent, thirId);
     },
-    // 商品排序方式
+    // 商品价格降序
     ascendingOrder: function() {
-      this.proSort=1
-      this.ajaxProData(this.change, this.eachContent,this.thirdId,this.proSort);
-      console.log(this.proSort)
-      // console.log('this.change',this.change)
-      // console.log('this.eachContent',this.eachContent)
-      
-      
-      // this.sortindex = sortindex;
-      // var that = this;
-      // this.ajax
-      //   .post(
-      //     "/xinda-api/product/package/grid",
-      //     this.qs.stringify({
-      //       start: 0,
-      //       sort: this.sortindex,
-      //       productTypeCode: 1
-      //     })
-      //   )
-      //   .then(function(data) {
-      //     that.products = data.data.data;
-      //   });
-      // this.products = that.products;
-      // console.log(this.products);
-
+      this.proSort = 3;
+      this.ajaxProData(this.change, this.eachContent, this.thirdId, 3);
     },
-    // 添加到购物车
-    addToCart: function(itsid) {
-      var that = this;
-      // 添加到购物车
-      this.ajax
-        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid, num: 1 }))
-        .then(function(data) {
-          //查询一下购物车数量
-          that.gainNum();
-        });
+    //综合排序
+    synthetical() {
+      this.proSort = -10;
+      this.ajaxProData(this.change, this.eachContent, this.thirdId);
     },
     initTypes() {
       for (var key in this.types) {
@@ -343,17 +293,14 @@ export default {
   },
   watch: {
     $route: function() {
-      // this.getTitle(this.$route.query.product);
-      // console.log('watch inner that.types==',this.types);
       this.initTypes();
-    },
-    ajaxProData1:function(){
-      this.ajaxProData()
-
     }
+    // ajaxProData1:function(){问题：如何监听多种变量
+    //   this.ajaxProData()
+
+    // }
   },
   created() {
-    // this.getTitle(this.$route.query.product, this.$route.query.product);
     var that = this;
     this.ajax //获取头部导航
       .post("/xinda-api/product/style/list")
@@ -370,10 +317,10 @@ export default {
   },
   data() {
     return {
-      ajaxProData1:this.ajaxProData,
-      hideArea: true,
+      taxRightSide: 3, //财税服务右侧栏
+      CompanyRightSide: 5, //公司工商右侧栏
       products: [],
-      sortindex: 2,
+      // sortindex: 2,
       idx: "",
       distCode: "",
       sencodTitle: [],
@@ -389,16 +336,15 @@ export default {
       textColor: 0, //控制页码被选中后的动态样式的初始值
       codeArr: [], //存产品类型请求参数
       firstShowCode: { first: 1 },
-      showIndex: "",
+      // showIndex: "",
       code: "",
       thirdBoxShow: "",
       reallyThird: "",
       types: [], //产品类型原始数据
-      proSort:''
-
+      proSort: -10//排序请求参数sort
     };
   },
-  components: { autourban }
+  components: { autourban, servicePart, company }
 };
 </script>
 
@@ -450,23 +396,6 @@ export default {
       border: 1px solid #ccc;
       border-bottom: 0;
       border-left: 0;
-      // li {
-      //   width: 80;
-      //   height: 25px;
-      //   border-radius: 2px;
-      //   a {
-      //     color: #626262;
-      //   }
-      // }
-      // .pctax-svsnav-eleml {
-      //   width: 106px;
-      // }
-      // li:hover {
-      //   background: #2693d4;
-      //   a {
-      //     color: #fff;
-      //   }
-      // }
     }
   }
 }
@@ -497,46 +426,6 @@ export default {
   margin-bottom: 20px;
   text-align: center;
 }
-// 右侧图标条
-// .pccopny-r-wrap {
-//   padding-left: 12px;
-//   .pccopny-rintr {
-//     max-width: 170px;
-//     padding: 0 37px 0 28px;
-//     border: 1px solid #ccc;
-//     li {
-//       overflow: hidden;
-//       border-bottom: 1px solid #ccc;
-//       height: 148px;
-//       div {
-//         margin: 11px auto 5px;
-//         width: 108px;
-//         height: 108px;
-//       }
-//       p {
-//         font-size: 17px;
-//         color: #000;
-//         line-height: 26px;
-//         text-align: center;
-//       }
-//     }
-//     .pccopny-relim1 {
-//       background: url(../pc_images/code.png) 0 -726px;
-//     }
-//     .pccopny-relim2 {
-//       background: url(../pc_images/code.png) 0 -864px;
-//     }
-//     .pccopny-relim3 {
-//       background: url(../pc_images/code.png) 0 -995px;
-//     }
-//     .pccopny-relim4 {
-//       background: url(../pc_images/code.png) 0 -1140px;
-//     }
-//     .pccopny-rel4 {
-//       border: 0;
-//     }
-//   }
-// }
 .active {
   background: blue;
 }

@@ -24,8 +24,6 @@ export default {
     );
     var formId = document.getElementById("pay_form");
     formId.submit();
-
-    
   }
 };
 </script>

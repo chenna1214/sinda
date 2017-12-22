@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="gouwuche" class="pctaxservices-body">
+        <div class="pctaxservices-body">
             <a class="pctaxservices-title">首页/购物车</a>
             <el-row>
                 <el-col :span="24">
@@ -49,8 +49,15 @@
                     <el-col :span="3">
                       <p class="pcsh-money pcsh-mnyin">￥{{shTrData.unitPrice*shTrData.buyNum}}</p>
                     </el-col>
-                    <el-col :span="5">
-                      <p @click="removeGoods(shTrData.serviceId)" class="pcsh-act pointer">删除</p>
+                    <el-col :span="5" class="pcsh-remv">
+                      <p  @click="centerDialogVisible = true"  class="pcsh-act pointer">删除</p>
+                      <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                        <div class="pcsh-pophd">信息</div>
+                        <span slot="footer" class="dialog-footer">
+                          <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
+                          <el-button @click="centerDialogVisible = false">取 消</el-button>
+                        </span>
+                      </el-dialog>
                     </el-col>
                   </el-row>
                 </div>
@@ -80,6 +87,7 @@
                       <p class="pcpp-more">查看详情>>></p>
                     </div>
                   </el-col>
+                  
                 </el-row>
               </div>
             </div>
@@ -132,6 +140,7 @@ export default {
     // -------------------
     //删除商品
     removeGoods: function(id) {
+      this.centerDialogVisible = false;
       var that = this;
       this.ajax
         .post("/xinda-api/cart/del", this.qs.stringify({ id: id }))
@@ -145,9 +154,9 @@ export default {
       //   that.shTrDatas = data.data.data;
       // });
     },
-    gouwuche: function() {
-      var that = this;
-    },
+    // gouwuche: function() {
+    //   var that = this;
+    // },
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
@@ -176,7 +185,6 @@ export default {
   // watch:{
 
   // },
-  computed() {},
   created() {
     var that = this;
     // 获取购物城商品数目
@@ -214,8 +222,9 @@ export default {
       tlPrice: 0,
       popservises: [],
       order: "",
-      oldvalue: 1
+      oldvalue: 1,
       // value: ''
+      centerDialogVisible: false
     };
   },
   components: {}
@@ -435,6 +444,25 @@ export default {
       padding: 0 18px;
       height: 20px;
       border: 0;
+    }
+  }
+}
+
+// 删除部分
+.pcsh-remv{
+  // 弹出框
+  .el-dialog--center{
+    position: relative;
+    // width: 300px;
+    .el-dialog__body{
+      position: absolute;
+      top:0;
+      width: 96%;
+      padding-left: 4%;
+      line-height: 50px;
+      color:#000;
+      font-weight: 700;
+      background: #ccc;
     }
   }
 }
