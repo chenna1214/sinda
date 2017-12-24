@@ -139,19 +139,15 @@
 <script>
 export default {
   name: 'pc_shophp',
+  watch:{//监听服务商的id，根据服务商的id获取最新的服务商数据
+    $route:function(){
+    this.getService()
+    }
+  },
   created () {
     // console.log('this.$route.query.id ==',this.$route.query.id);
     var that = this;
-    // 公司介绍
-    that.ajax.post('/xinda-api/provider/detail',
-    that.qs.stringify({
-      id: this.$route.query.id
-    })).then(function (data) {
-      var rData = data.data.data;
-      that.products = rData;
-      // console.log('rData==',rData)
-    });
-   
+    this.getService()
     // 服务产品
     this.ajax.post('xinda-api/recommend/list',
     this.qs.stringify({
@@ -181,6 +177,19 @@ export default {
   },
   methods: {
     // 点查看详情去商品详情页
+    getService(){
+       var that = this;
+    // 公司介绍
+    that.ajax.post('/xinda-api/provider/detail',
+    that.qs.stringify({
+      id: this.$route.query.id
+    })).then(function (data) {
+      var rData = data.data.data;
+      that.products = rData;
+      // console.log('rData==',rData)
+    });
+
+    },
     proDetail (id) {
       this.$router.push({
         path: '/merchandise/productdetail',

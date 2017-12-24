@@ -18,7 +18,8 @@
             <a href="#/merchandise/shoppingtrolley" class="pcTopBlackText">购物车</a>
             <p class="pcTopBlueText saveBuyNum">{{getNum}}</p>
             <p class="pcTopBlackText">件</p>
-            <p class="pcTopBlueText pcTopServiceEntryText">服务商入口</p>
+            <a class="pcorder" v-show="getName" href="#/merchandise/membercenter/member">我的订单</a>
+            <a class="pcTopBlueText pcTopServiceEntryText" href="#/merchandise/pc_shophp">服务商入口</a>
           </div>
         </el-col>
       </div>
@@ -44,14 +45,11 @@ export default {
     ...mapActions(["setName", "gainNum"]),
     logOff() {
       sessionStorage.removeItem("userName");
-      this.setName(this.pcUserName); //有时失效
-      setTimeout(
+      this.setName(this.pcUserName); 
         this.$message({
           type: "success",
           message: "您已成功退出登录!"
-        }),
-        100
-      );
+        })
     }
   },
   computed: {
@@ -94,6 +92,12 @@ export default {
 .pcTopBlackText {
   font-size: 12px;
   display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+.pcorder {
+  font-size: 12px;
+  margin-left: 1%;
   text-decoration: none;
   color: black;
 }

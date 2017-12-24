@@ -142,6 +142,11 @@ export default new Router({
           path: 'goodsOrder',//订单
           name: 'goodsOrder',
           component: goodsOrder,
+        },
+        {
+          path:'navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
+          name:'navShow',
+          component:navShow
         }
       ]
     },
@@ -154,11 +159,6 @@ export default new Router({
       path:'/Alipay',//支付宝支付
       name:'Alipay',
       component:Alipay
-    },
-    {
-      path:'/navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
-      name:'navShow',
-      component:navShow
     }
     
   ]

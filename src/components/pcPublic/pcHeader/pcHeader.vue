@@ -86,24 +86,24 @@
              
           </el-col>
           <el-col :sm="{span:24,offset:23}" :md="{span:24,offset:23}" :lg="{span:24,offset:23}" >
-            <div @mouseover="navDisOver()" @mouseleave="navDis=false">
-              <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">
-               <router-link tag='div':to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
-                  <div class="pcNavSec"  >{{secondTil.name}}
-                      <div class="pcNavTidBox">
-                        <router-link  :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
-                          <span class="pcNavSpan" >|{{thirdTil.name}}</span>
-                        </router-link>
-                      </div>
-                  </div>
-               </router-link>
+              <div @mouseover="navDisOver()" @mouseleave="navDis=false">
+                <div class="pcAllProTil hidden-xs-only" v-show="idx==index"  @mouseover="pcNavOver(idx)" @mouseleave="pcNavLeave(idx)">
+                <router-link tag='div':to="{ path: '/merchandise/taxationService', query: {code:secondTil.code}}" v-for="(secondTil,secIdx) in rDataObj.itemList" :key="secondTil.id">
+                    <div class="pcNavSec"  >{{secondTil.name}}
+                        <div class="pcNavTidBox">
+                          <router-link  :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
+                            <span class="pcNavSpan" >|{{thirdTil.name}}</span>
+                          </router-link>
+                        </div>
+                    </div>
+                </router-link>
+                </div>
               </div>
-            </div>
-          </el-col>
-        </el-row>
+            </el-col>
+          </el-row>
+        </div>
       </div>
-
-    </div></el-col>
+    </el-col>
     </el-row>
 
 
@@ -255,6 +255,13 @@ export default {
           path: "/merchandise/productdetail",
           query: { id:searchMatchId }
         });
+        if(this.bgBlue==false){
+          this.$router.push({
+          path: "/merchandise/pc_shophp",
+          query: { id:searchMatchId }
+        });
+
+        }
 
 
 
