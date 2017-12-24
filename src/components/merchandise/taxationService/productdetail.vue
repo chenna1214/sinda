@@ -201,11 +201,81 @@
 
   export default {
     name: "productdetail",
+    watch:{
+      $route:function(){
+         this.upData(this.$route.query.id)
+
+      }
+    },
       created() {
-      var that = this;
-      console.log('this.$router.query.id ==',this.$route.query.id );
-      // 商品详情页的评价
-      this.ajax.post("/xinda-api/product/judge/detail",
+        this.upData(this.$route.query.id)
+      // var that = this;
+      // console.log('this.$router.query.id ==',this.$route.query.id );
+      // // 商品详情页的评价
+      // this.ajax.post("/xinda-api/product/judge/detail",
+      //   this.qs.stringify({
+      //     serviceId: this.$route.query.id,
+      //     })).then(function (data) {
+      //     var prodata = data.data.data;
+      //     that.proevas = prodata;
+      //   });
+      // this.ajax.post('/xinda-api/product/judge/grid',
+      //   this.qs.stringify({
+      //     start:0,
+      //     limit:10,
+      //     serviceId: this.$route.query.id,
+      //     type:1,
+      //     })).then(function (eva) {
+      //       // console.log(eva.data)
+      // });
+       
+      // 相对路径
+      // this.ajax.post('/xinda-api/product/package/detail',
+      //   this.qs.stringify({
+      //     sId: this.$route.query.id,
+      //   })).then(function (data) {
+      //     var good = data.data.data
+      //     that.goods = good;
+      //     that.goods.marketprice = that.goods.product.marketPrice;//市场价
+      //     that.goods.img = that.goods.product.img;//图片
+      //     that.goods.price = that.goods.providerProduct.price;//价格
+      //     that.goods.servicename = that.goods.providerProduct.serviceName;//名字
+      //     that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
+      //     that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
+      //     console.log('good ==',good)
+      //   });
+    },
+
+    data() {
+      return {
+        proevas: [],
+        evaluates: [],
+        goods: [],
+        actstyle: 'chose',
+        tastyle: 'choses',
+        smstyle: 'choses',
+        buynum: 1,
+      };
+    },
+    methods: {
+      upData(){
+        var that = this;
+            this.ajax.post('/xinda-api/product/package/detail',
+        this.qs.stringify({
+          sId: this.$route.query.id,
+        })).then(function (data) {
+          var good = data.data.data
+          that.goods = good;
+          that.goods.marketprice = that.goods.product.marketPrice;//市场价
+          that.goods.img = that.goods.product.img;//图片
+          that.goods.price = that.goods.providerProduct.price;//价格
+          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
+          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
+          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
+          console.log('good ==',good)
+        });
+
+         this.ajax.post("/xinda-api/product/judge/detail",
         this.qs.stringify({
           serviceId: this.$route.query.id,
           })).then(function (data) {
@@ -221,35 +291,8 @@
           })).then(function (eva) {
             // console.log(eva.data)
       });
-      // 相对路径
-      this.ajax.post('/xinda-api/product/package/detail',
-        this.qs.stringify({
-          sId: this.$route.query.id,
-        })).then(function (data) {
-          var good = data.data.data
-          that.goods = good;
-          that.goods.marketprice = that.goods.product.marketPrice;//市场价
-          that.goods.img = that.goods.product.img;//图片
-          that.goods.price = that.goods.providerProduct.price;//价格
-          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
-          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
-          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
-          console.log('good ==',good)
-        });
-    },
 
-    data() {
-      return {
-        proevas: [],
-        evaluates: [],
-        goods: [],
-        actstyle: 'chose',
-        tastyle: 'choses',
-        smstyle: 'choses',
-        buynum: 1,
-      };
-    },
-    methods: {
+      },
       //加入购物车
        ...mapActions(["setNum"]),
        join () {

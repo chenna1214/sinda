@@ -7,7 +7,9 @@
     <el-col :sm="5" :md="5" :lg="6">
 
 <div class="pcHeaderLeft"><!-- 上半部分内容--左边 -->
-<img src="../../images/icon/sindaTextIcon.png" class="pcHeaderLeftsindaTextIcon">
+<a href="#/merchandise/allProduct">
+  <img src="../../images/icon/sindaTextIcon.png" class="pcHeaderLeftsindaTextIcon">
+</a>
 
 
 
@@ -39,15 +41,16 @@
 <span class="pcHeaderCityText" :class="{pcChangeColor:!bgBlue}" @click="choseType()">服务商</span><br>
 
 <div class="pcSearchBox">
-  <input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' @blur="serShow=false" v-model="serVal"><!-- 模糊搜索 -->
+   <!-- @blur="serShow=false" -->
+  <input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' v-model="serVal" @blur="searchBlur()" ><!-- 模糊搜索 -->
   <img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle">
 </div>
 <!-- 匹配搜索内容 -->
 <div class="pcSerBox" v-show='serShow'>
-  <p v-for="eachSer in serchMatch" :key="eachSer.providerName"  @click='pcDetail(eachSer)'>{{eachSer.serviceName||eachSer.providerName}}</p>
+  <p v-for="(eachSer,searchIdx) in serchMatch" :key="searchIdx"  @click='pcDetail(eachSer.id)'>{{eachSer.serviceName||eachSer.providerName}}</p>
 </div>
 
-<p class="pcHeaderMiddleHotServiceText">热门服务：社保开户  公司注册</p>
+<p class="pcHeaderMiddleHotServiceText">热门服务：<span class="pointer" @click="pcDetail('d0711135245247d486b3a6fb274546da')">社保开户</span>  <span class="pointer" @click="pcDetail('c3dbb4e69d6247ba9ef6785f573518a1')">公司注册</span></p>
   </div>
   </el-col>
 <el-col :md="5" :lg="6" class="pcHeaderRightBox hidden-sm-and-down"><!-- 上半部分内容--右边 -->
@@ -105,7 +108,6 @@
 
 
    </div>
-   
 </template>
 
 <script>
@@ -114,6 +116,8 @@ import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
 import {getTitles} from './public'//获取产品导航标题
+
+
 let searchVal = "";
 export default {
   name: "pcHeader",
@@ -142,19 +146,23 @@ export default {
   },
   data() {
     return {
+      //选择城市
       pcChoosedCity: { name: "" }, //当前已选城市
       pcCityNameSuc: { city: "" }, //已开通城市名称
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
       pcChoosedNum: 0, //判断用户是否选择城市
+      //模糊搜索
       searchArr: [], //搜索源
       serchMatch: [], //与用户输入所匹配的内容
       serName: [], //服务商公司名称
       serVal: "", //搜索input
       proServiceName: [], //产品搜索---产品名称
       proAllData: [], //全部产品数据
-      bgBlue: true,
-      serShow: true,
-      getSearch: null,
+      bgBlue: true,//控制选择搜索类型点击后的样式
+      serShow: true,//控制匹配搜索内容框的出现或消失
+      getSearch: null,//搜索函数的初始值
+      matchSearchDis:function(){},//用户使搜索框失去焦点时，指定时间后执行此函数，使匹配搜索内容框消失
+      searchMatchId:'',//商品详情的id
       //全部产品导航
       rDataObjs: {titles:{}},
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
@@ -164,55 +172,25 @@ export default {
         "src/components/images/allProduct/icon3.png",
         "src/components/images/allProduct/icon4.png"
       ],
-      navDis: false,
-      navGone: function() {},
+      navDis: false,//控制全部产品的下拉框是否出现或消失
+      navGone: function() {},//控制全部产品的下拉框是否出现或消失
+
+
     };
   },
   created() {
-    getCitys(this.pcChoosedCity, this.pcCityNameSuc);
+  
+    
+    getCitys(this.pcChoosedCity, this.pcCityNameSuc);//城市选择
     this.getSearch = this.debounce(this.getSearchList, 600);
     getTitles(this.rDataObjs);
   },
   methods: {
-    // 全部产品导航
-    pcNavOver: function(index) {
-      this.index = index;
-    },
-    pcNavLeave: function() {
-      this.index = -1;
-    },
-    navDisLeave() {
-      var that = this;
-      this.navGone = setTimeout(function() {
-        that.navDis = false;
-      }, 300);
-    },
-    navDisOver() {
-      clearTimeout(this.navGone);
-      this.navDis = true;
-    },
-    ...mapActions(["setNum"]),
-    getSearchList() {
-      var that = this;
-      var url = "";
-      if (this.bgBlue) {
-        url = "/xinda-api/product/package/search-grid"; //产品搜索
-      } else {
-        url = "/xinda-api/provider/search-grid"; //服务商接口
-      }
-      this.ajax
-        .post(url, this.qs.stringify({ searchName: this.serVal }))
-        .then(data => {
-          this.serchMatch = [];
-          this.serchMatch = data.data.data;
-          if (data.data.data.length == 0) {
-            this.serchMatch = [{ serviceName: "没有相关搜索内容" }];
-          }
-        });
-    },
-    goodsNum() {
-      this.setNum();
-    },
+    //
+    //  goodsNum() {
+    //   this.setNum();
+    // },
+    //城市选择
     pcChoosed() {
       //判断用户是否选择城市
       this.pcChoosedNum = 1;
@@ -228,7 +206,61 @@ export default {
     handleConfirm() {
       handleCon(this.dialogVisible, this.pcChoosedNum, this);
     },
-    choseType(param) {
+    // pc端--全部产品导航
+    pcNavOver: function(index) {
+      this.index = index;
+    },
+    pcNavLeave: function() {
+      this.index = -1;
+    },
+    navDisLeave() {//用户从全部产品移开300毫秒后执行下拉框消失
+      var that = this;
+      this.navGone = setTimeout(function() {
+        that.navDis = false;
+      }, 300);
+    },
+    navDisOver() {//用户从全部产品移开后，进入下拉框时停止执行navDisLeave()函数
+      clearTimeout(this.navGone);
+      this.navDis = true;
+    },
+    ...mapActions(["setNum"]),
+    //模糊搜索
+    getSearchList() {
+      var url = "";
+      if (this.bgBlue) {
+        url = "/xinda-api/product/package/search-grid"; //产品搜索
+      } else {
+        url = "/xinda-api/provider/search-grid"; //服务商接口
+      }
+      this.ajax
+        .post(url, this.qs.stringify({ searchName: this.serVal }))
+        .then(data => {
+          this.serchMatch = [];
+          this.serchMatch = data.data.data;
+          
+          if (data.data.data.length == 0) {
+            this.serchMatch = [{ serviceName: "没有相关搜索内容" }];
+          }
+        });
+    },
+    searchBlur(){//搜索框失去焦点时清空input的value值并且使匹配搜索内容框消失
+      var that =this;
+      this.matchSearchDis=setTimeout(function(){
+      that.serShow=false;
+      that.serVal='';
+      },1000)
+    },
+    pcDetail: function(searchMatchId) {//用户点击匹配的搜索内容，查看详情
+        this.$router.push({
+          path: "/merchandise/productdetail",
+          query: { id:searchMatchId }
+        });
+
+
+
+        
+    },   
+    choseType(param) {//选择搜索种类（产品/服务商）
       if (param) {
         this.bgBlue = true;
       } else {
@@ -239,7 +271,7 @@ export default {
     },
     pcSearch() {
       //模糊搜索
-
+      this.serShow=true;//使匹配搜索内容框出现
       if (!this.serVal) {
         //当input事件首次触发后，用中文输入法输入字母，但没有拼成文字前，input框内的value是空的，就返回。有的中文输入法时打汉字时，虽然有汉语拼音，但input框内的value值是空的，却触发input事件
         return;
@@ -252,17 +284,7 @@ export default {
       }
       this.getSearch();
     },
-    pcDetail: function(eachSer) {
-      //待优化
-      document.location.reload(
-        this.$router.push({
-          //匹配搜索内容---产品
-          path: "/merchandise/productdetail",
-          query: { id: eachSer.id }
-        }) //问题
-      );
-    }
-  }
+  },
 };
 </script>
 
@@ -385,8 +407,7 @@ export default {
   align-items: center;
 }
 .pcHeaderLeftsindaTextIcon {
-  width: 41%;
-  height: 19%;
+  width: 100%;
 }
 .pcHeaderCityBox {
   display: flex;
@@ -418,6 +439,11 @@ export default {
   font-size: 11px;
   color: #c7c7c7;
   margin-top: 7px;
+ 
+}
+.pointer{
+   cursor:pointer;
+
 }
 .pcHeaderMiddleProductText {
   margin-bottom: 5px;
