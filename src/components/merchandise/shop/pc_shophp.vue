@@ -1,7 +1,7 @@
 <template>
   <div>
    <!-- 店铺 -->
-    <div class="company" :key="products.id">
+    <div class="company hidden-xs-only" :key="products.id">
        <!-- 企业logo -->
       <div class="com-logo">
         <!-- 图 -->
@@ -133,6 +133,48 @@
         </div>
       </div>
     </div>
+
+    <!-- 微信端店铺首页 -->
+    <div class="hidden-sm-and-up" :key="products.id">
+      <!-- 公司具体信息 -->
+      <div class="wecompany">
+        <div class="wec-logo">
+          <img :src="'http://115.182.107.203:8088/xinda/pic'+products.providerImg" alt="">
+        </div>
+        <div class="wec-name">{{products.name}}</div>
+        <div class="wec-mes">{{products.providerInfo}}</div>
+      </div>
+      <!-- 所有服务 -->
+      <div class="weallser">
+        <div class="wea-allser">
+          <div class="wea-all">所有服务</div>
+          <span></span>
+        </div>
+        <!-- 具体信息 -->
+        <div class="wea-detail">
+          <div class="wea-box" v-for="service in services" :key="service.id">
+            <div class="wea-img" @click="proDetail(service.id)">
+              <img :src="'http://115.182.107.203:8088/xinda/pic'+service.providerImg" alt="">
+            </div>
+            <div class="wea-mes">
+              <div class="wea-name">{{service.serviceName}}</div>
+              <div class="wea-infor">{{service.serviceInfo}}</div>
+              <div class="wea-area">
+                <div class="wea-baidu">
+                  <div class="wea-icon"></div>
+                  <div class="wea-addshi">北京市</div>
+                  <div class="wea-addqu">朝阳区</div>
+                </div>
+                <div class="wea-price">
+                  <div class="wea-buynum">￥{{service.price}}.00</div>
+                  <div class="wea-yuan">元</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -164,7 +206,7 @@ export default {
     })).then(function (data) {
       var sData = data.data.data;
       that.services = sData.product;
-      // console.log('fuwu==',that.services);
+      console.log('fuwu==',that.services);
     });
   },
   data () {
@@ -216,257 +258,403 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  .change{
-    background-color: #efefff;
-  }
-  .changes{
-    background-color: #aaa;
-  }
-  .company{
-    width: 84%;
-    margin: 0 auto;
-    // 企业logo
-    .com-logo{
-      width: 100%;
-      border-bottom:1px solid #e9e9e9;
-      margin-top: 2%;
-      display: flex;
-      // 图
-      .comlogo-image{
-        width: 140px;
-        height: 140px;
-        border:1px solid #e9e9e9;
-        border-radius: 50%;
-        margin-bottom: 2%;
-        img{
-          width: 100%;
-          height: 100%;    
-          border-radius: 50%;
-        }
-      }
-      // 字
-      .comlogo-character{
-        margin-left: 3%;
-        >div{
-          line-height: 50px;
-          display: flex;
-          color: #676767;
-          font-size: 18px;
-        }
-        .comlogo-name{
-          font-size: 35px;
-          color: #000;
-          font-weight: bold;
-          line-height: 70px;
-        }
-      }
+  @media all and (min-width: 768px){
+    .change{
+      background-color: #efefff;
     }
-    // 身体部位 公司介绍
-    .com-introduction{
-      width: 100%;
-      margin-top: 1%;
-      margin-bottom: 5%;
-      display: flex;
-      // 左边
-      .comint-left{
-        width: 30%;
-        // 上
-        .comintleft-top{
-          border: 1px solid #e9e9e9;
-          >div{
-            width: 96%;
-            margin: 0 auto;
-          }
-          .comlefttop-introduce{
-            font-size: 23px;
-            line-height: 53px;
-            color: #000;
-          }
-          .comlefttop-definite{
-            font-size: 16px;
-            line-height: 30px;
-            margin-bottom: 5%;
-            text-indent: 2em;
-            color: #676767;
+    .changes{
+      background-color: #aaa;
+    }
+    .company{
+      width: 84%;
+      margin: 0 auto;
+      // 企业logo
+      .com-logo{
+        width: 100%;
+        border-bottom:1px solid #e9e9e9;
+        margin-top: 2%;
+        display: flex;
+        // 图
+        .comlogo-image{
+          width: 140px;
+          height: 140px;
+          border:1px solid #e9e9e9;
+          border-radius: 50%;
+          margin-bottom: 2%;
+          img{
+            width: 100%;
+            height: 100%;    
+            border-radius: 50%;
           }
         }
-        // 下
-        .comintleft-down{
-          margin: 4% 0 10% 0;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-around;
+        // 字
+        .comlogo-character{
+          margin-left: 3%;
           >div{
-            width: 40%;
-            margin-top: 6%;
+            line-height: 50px;
+            display: flex;
+            color: #676767;
+            font-size: 18px;
+          }
+          .comlogo-name{
+            font-size: 35px;
+            color: #000;
+            font-weight: bold;
+            line-height: 70px;
+          }
+        }
+      }
+      // 身体部位 公司介绍
+      .com-introduction{
+        width: 100%;
+        margin-top: 1%;
+        margin-bottom: 5%;
+        display: flex;
+        // 左边
+        .comint-left{
+          width: 30%;
+          // 上
+          .comintleft-top{
+            border: 1px solid #e9e9e9;
             >div{
-              width: 45%;
+              width: 96%;
               margin: 0 auto;
-              margin-top: 4%;
-              text-align: center;
-              img{
-                display: block;
+            }
+            .comlefttop-introduce{
+              font-size: 23px;
+              line-height: 53px;
+              color: #000;
+            }
+            .comlefttop-definite{
+              font-size: 16px;
+              line-height: 30px;
+              margin-bottom: 5%;
+              text-indent: 2em;
+              color: #676767;
+            }
+          }
+          // 下
+          .comintleft-down{
+            margin: 4% 0 10% 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            >div{
+              width: 40%;
+              margin-top: 6%;
+              >div{
+                width: 45%;
                 margin: 0 auto;
+                margin-top: 4%;
+                text-align: center;
+                img{
+                  display: block;
+                  margin: 0 auto;
+                }
               }
             }
           }
         }
-      }
-      // 右边
-      .comint-right{
-        width:69%;
-        margin-left: 1%;
-        // 头
-        .comintright-top{
-          width: 100%;
-          // 上
-          .comright-up{
+        // 右边
+        .comint-right{
+          width:69%;
+          margin-left: 1%;
+          // 头
+          .comintright-top{
             width: 100%;
-            display: flex;
-            line-height: 42px;
-            font-size: 20px;
-            background-color: #aaa;
-            border-bottom: 2px solid #aaa;
-            >div{
-              width: 12%;
-              text-align: center;
-              cursor: pointer;
-            }
-          }
-          // 下
-          .comright-under{
-            width: 100%;
-            border-top: none;
-            overflow: hidden;
-            border: 1px solid #e9e9e9; 
-            // 服务产品
-            .comright-serveproduct{
+            // 上
+            .comright-up{
               width: 100%;
+              display: flex;
+              line-height: 42px;
+              font-size: 20px;
+              background-color: #aaa;
+              border-bottom: 2px solid #aaa;
               >div{
+                width: 12%;
+                text-align: center;
+                cursor: pointer;
+              }
+            }
+            // 下
+            .comright-under{
+              width: 100%;
+              border-top: none;
+              overflow: hidden;
+              border: 1px solid #e9e9e9; 
+              // 服务产品
+              .comright-serveproduct{
                 width: 100%;
-                display: flex;
-                flex-wrap: wrap;
-                border: 1px solid #e9e9e9; 
-                // justify-content: space-around;
-                // 外层盒子
                 >div{
-                  width: 30%;
-                  border: 1px solid #e9e9e9;
-                  margin-top: 3%;
-                  margin-bottom: 2%;
-                  margin-left: 2%;
-                  // 内层盒子
+                  width: 100%;
+                  display: flex;
+                  flex-wrap: wrap;
+                  border: 1px solid #e9e9e9; 
+                  // justify-content: space-around;
+                  // 外层盒子
                   >div{
-                    width: 92%;
-                    margin: 0 auto;
-                    .comrightser-top{
-                      font-size: 17px;
-                      line-height: 40px;
-                      white-space: nowrap;
-                      text-overflow: ellipsis;
-                      overflow: hidden;
-                    }
-                    // 线
-                    .comrightser-line{
-                      width: 70%;
-                      display: flex;
-                      .comrightline-dot{
-                        width: 6px;
-                        height: 6px;
-                        background-color: #2693d4;
-                        border-radius: 50%;
+                    width: 30%;
+                    border: 1px solid #e9e9e9;
+                    margin-top: 3%;
+                    margin-bottom: 2%;
+                    margin-left: 2%;
+                    // 内层盒子
+                    >div{
+                      width: 92%;
+                      margin: 0 auto;
+                      .comrightser-top{
+                        font-size: 17px;
+                        line-height: 40px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                       }
-                      .comrightline-line{
-                        width: 100%;
-                        height: 2px;
-                        margin-top: 2px;
-                        background: linear-gradient(left,#2693d4,#fff);
+                      // 线
+                      .comrightser-line{
+                        width: 70%;
+                        display: flex;
+                        .comrightline-dot{
+                          width: 6px;
+                          height: 6px;
+                          background-color: #2693d4;
+                          border-radius: 50%;
+                        }
+                        .comrightline-line{
+                          width: 100%;
+                          height: 2px;
+                          margin-top: 2px;
+                          background: linear-gradient(left,#2693d4,#fff);
+                        }
                       }
-                    }
-                    // 质量认证
-                    .comrightser-quality{
-                      font-size: 14px;
-                      color: #666;
-                      line-height: 25px;
-                      white-space: nowrap;
-                      text-overflow: ellipsis;
-                      overflow: hidden;
-                    }
-                    // 销量
-                    .comrightser-sales{
-                      font-size: 14px;
-                      color: #666;
-                      line-height: 25px;
-                    }
-                    // 现价
-                    .comrightser-present{
-                      font-size: 38px;
-                      font-weight: bold;
-                      line-height: 60px;
-                      color: #2693d4;
-                    }
-                    // 原价
-                    .comrightser-original{
-                      font-size: 14px;
-                      line-height: 25px;
-                      color: #676767;
-                      margin-bottom: 3%;
-                      >a{
-                        text-decoration: none;
-                        font-size: 18px;
-                        line-height: 30px;
+                      // 质量认证
+                      .comrightser-quality{
+                        font-size: 14px;
+                        color: #666;
+                        line-height: 25px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                      }
+                      // 销量
+                      .comrightser-sales{
+                        font-size: 14px;
+                        color: #666;
+                        line-height: 25px;
+                      }
+                      // 现价
+                      .comrightser-present{
+                        font-size: 38px;
+                        font-weight: bold;
+                        line-height: 60px;
                         color: #2693d4;
-                        margin-left: 5%;
+                      }
+                      // 原价
+                      .comrightser-original{
+                        font-size: 14px;
+                        line-height: 25px;
+                        color: #676767;
+                        margin-bottom: 3%;
+                        >a{
+                          text-decoration: none;
+                          font-size: 18px;
+                          line-height: 30px;
+                          color: #2693d4;
+                          margin-left: 5%;
+                        }
                       }
                     }
                   }
                 }
-              }
-              // 尾
-              .comintright-down{
-                width: 80%;
-                margin: 0 auto;
-                border: none;
-                justify-content: space-between;
-                >div{
-                  width: 8%;
-                  line-height: 32px;
-                  text-align: center;
-                  margin-left: 0;
-                  cursor: pointer;
+                // 尾
+                .comintright-down{
+                  width: 80%;
+                  margin: 0 auto;
+                  border: none;
+                  justify-content: space-between;
+                  >div{
+                    width: 8%;
+                    line-height: 32px;
+                    text-align: center;
+                    margin-left: 0;
+                    cursor: pointer;
+                  }
                 }
               }
-            }
-            // 客服
-            .comright-service{
-              width: 94%;
-              font-size: 23px;
-              font-weight: bold;
-              line-height: 40px;
-              margin: 0 auto;
-              margin-top: 4%;
-              margin-bottom: 30%;
-              >div{
-                display: flex;
+              // 客服
+              .comright-service{
+                width: 94%;
+                font-size: 23px;
+                font-weight: bold;
+                line-height: 40px;
+                margin: 0 auto;
+                margin-top: 4%;
+                margin-bottom: 30%;
+                >div{
+                  display: flex;
+                }
               }
-            }
-            // 资质证书
-            .comright-certificate{
-              width: 31%;
-              margin: 0 auto;
-              margin-top: 5%;
-              margin-bottom: 5%;
-              img{
-                width: 100%;
-                height: 100%;
-                display: block;
+              // 资质证书
+              .comright-certificate{
+                width: 31%;
+                margin: 0 auto;
+                margin-top: 5%;
+                margin-bottom: 5%;
+                img{
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                }
+                // width: 20%;
+                // padding: 9% 0 10% 20%;
               }
-              // width: 20%;
-              // padding: 9% 0 10% 20%;
             }
           }
         }
       }
     }
   }
+  @media all and (max-width: 767px){
+    // 公司具体信息
+    .wecompany{
+      width: 96%;
+      margin: 0 auto;
+      .wec-logo{
+        width: 100%;
+        margin-top: 3.2rem;
+        img{
+          width: 3.85rem;
+          height: 4.15rem;
+          display: block;
+          margin: 0 auto;
+          border-radius: 50%;
+          border: 1px solid #e9e9e9;
+        }
+      }
+      .wec-name{
+        width: 100%;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        line-height: 2.75rem;
+      }
+      .wec-mes{
+        width: 100%;
+        font-size: 1.5rem;
+        line-height: 2.8rem;
+        margin-top: 3.5rem;
+        margin-bottom: 3.5rem;
+      }
+    }
+    // 所有服务
+    .weallser{
+      width: 100%;
+      margin-bottom: 7%;
+      .wea-allser{
+        width: 100%;
+        font-size: 1.4rem;
+        border-bottom: 2px solid #2693d4;
+        .wea-all{
+          width: 8.6rem;
+          text-align: center;
+          line-height: 2.6rem;
+          margin-top: 1rem;
+        }
+        span{
+          width: 0;
+          height: 0;
+          display: inline-block;
+          border-left: 4px solid transparent;
+          border-right: 4px solid transparent;
+          border-top: 5px solid #2693d4;
+          border-bottom: 4px solid transparent;
+          transform: rotate(180deg);
+          margin-top: -0.5rem;
+          margin-left: 4rem;
+          position: absolute;
+        }
+      }
+      // 具体信息
+      .wea-detail{
+        width: 98%;
+        margin-top: 0.9rem;
+        margin-left: 2%;
+        .wea-box{
+          width: 100%;
+          border-bottom: 1px solid #cfcfcf;
+          display: flex;
+          .wea-img{
+            // width: 8.3rem;
+            // height: 8.3rem;
+            border: 2px solid #e3e3e3;
+            margin-top: 1.25rem;
+            margin-bottom: 1.05rem;
+            img{
+              width: 8.3rem;
+              height: 8.3rem;
+              display: block;
+            }
+          }
+          .wea-mes{
+            width: 74%;
+            height: 8.5rem;
+            margin-left: 1.15rem;
+            margin-top: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: space-around; 
+            .wea-name{
+              font-size: 1.45rem;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+            .wea-infor{
+              width: 100%;
+              font-size: 1.2rem;
+              line-height: 2rem;
+              margin-top: 0.6rem;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+            .wea-area{
+              width: 94%;
+              margin-top: .6rem;
+              display:flex;
+              justify-content: space-between;
+              .wea-baidu{
+                display: flex;
+                .wea-icon{
+                  width: 15px;
+                  height: 21px;
+                  background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -75px -116px;
+                }
+                .wea-addshi{
+                  font-size: 0.9rem;
+                  margin-left: 0.5rem;
+                }
+                .wea-addqu{
+                  font-size: 0.9rem;
+                  margin-left: 1rem;
+                }
+              }
+              .wea-price{
+                display: flex;
+                .wea-buynum{
+                  font-size: 1.2rem;
+                  color: #ff1515;
+                  font-weight: bold;
+                  margin-right: 0.85rem;
+                }
+                .wea-yuan{
+                  font-size: 0.8rem;
+                  line-height: 2rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } 
 </style>
