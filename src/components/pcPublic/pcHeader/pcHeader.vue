@@ -98,12 +98,11 @@
                   </div>
                </router-link>
               </div>
-            </div>
-          </el-col>
-        </el-row>
+            </el-col>
+          </el-row>
+        </div>
       </div>
-
-    </div></el-col>
+    </el-col>
     </el-row>
 
 
@@ -255,6 +254,13 @@ export default {
           path: "/merchandise/productdetail",
           query: { id:searchMatchId }
         });
+        if(this.bgBlue==false){
+          this.$router.push({
+          path: "/merchandise/pc_shophp",
+          query: { id:searchMatchId }
+        });
+
+        }
 
 
 
