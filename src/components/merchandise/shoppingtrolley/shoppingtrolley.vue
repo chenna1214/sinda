@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="pctaxservices-body">
+        <div class="pctaxservices-body hidden-xs-only">
             <a class="pctaxservices-title">首页/购物车</a>
             <el-row>
                 <el-col :span="24">
@@ -99,6 +99,40 @@
               </div>
             </div>
         </div>
+
+
+        <!-- 手机端 购物车 -->
+        <div class="hidden-sm-and-up">
+          <!-- 头部 -->
+          <p class="tel-shhd">
+            购物车里有<span class="tel-shdnum">2</span>件商品
+          </p>
+
+          <div class="tel-shbody">
+
+            <!-- 财税服务 手机端商品列表 -->
+            <ul class="tel-texbdy">
+              <!-- 财税服务 手机端商品 -->       
+              <li class="tel-texelm clear" v-for="(popservise,idx) in popservises" :key="popservise.serviceName">
+                <p class="tel-spconm">{{shTrData.providerName}}</p>
+                <!-- 左侧图片 -->
+                <div class="tel-teimg">
+                  <!-- <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin"> -->
+                  </div>
+                  <!-- 右侧文字部分 -->
+                  <div class="tel-tewor">
+                    <p class="tel-tenmac clear"><span class="tel-tenm">{{popservise.serviceName}}</span> <span class="tel-act">删除订单</span></p>
+                    <p class="tel-spmony"><span class="tel-spmoin">￥{{popservise.price}}&nbsp;</span><span class="tel-spyuan">&nbsp;元</span></p>
+                    <div class="tel-buynum">购买数量：<span>计数器</span></div>
+                    <div class="tel-earea">
+                      <p>{{popservise.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</p>
+                      <!-- <i class="el-icon-location-outline"></i><span class="tel-earcon">{{product.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span> -->
+                    </div>
+                  </div>
+                </li>
+            </ul>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -125,8 +159,7 @@ export default {
           // 商品数量
           that.goodsnum += that.shTrDatas[i].buyNum;
           // 总价
-          that.tlPrice +=
-            that.shTrDatas[i].totalPrice;
+          that.tlPrice += that.shTrDatas[i].totalPrice;
         }
       });
     },
@@ -148,14 +181,12 @@ export default {
       //     that.getGoods();
       //   });
       // this.oldvalue = value;
-      
     },
     // 获取id
-    handleClick(sid, buynumber,idx) {
+    handleClick(sid, buynumber, idx) {
       this.buynumber = buynumber;
       console.log("sid==", sid);
       this.numid = sid;
-      
     },
     // -------------------
     //删除商品
@@ -202,7 +233,7 @@ export default {
       });
     }
   },
-  watch:{
+  watch: {
     // buynumber
   },
   created() {
@@ -257,180 +288,284 @@ export default {
 </script>
 
 <style scoped lang='less'>
-.pointer {
-  cursor: pointer;
-}
+@media all and (min-width: 768px) {
+  .pointer {
+    cursor: pointer;
+  }
 
-.pctaxservices-body {
-  max-width: 1200px;
-  margin: 0 auto;
-  .pctaxservices-title {
-    display: inline-block;
-    margin-top: 19px;
-    font-size: 13px;
-    color: #696969;
-    line-height: 27px;
-  }
-  // 全部产品
-  .pcsp-all {
-    margin-top: 11px;
-    padding-left: 65px;
-    color: #3e9bd6;
-    font-size: 13px;
-    line-height: 31px;
-  }
-  .pcsh-table {
-    padding-top: 18px;
-    line-height: 29px;
-    font-size: 13px;
-    color: #686868;
-    border-top: 1px solid #bdbdbd;
-    // 公司名
-    .pcsh-conm {
-      padding-left: 65px;
-    }
-    // 服务商品
-    .pcsh-sergd {
-    }
-    //单价
-    .pcsh-unipr {
-      padding-left: 35px;
-    }
-    // 数量
-    .pcsh-gsnum {
-      text-align: center;
-    }
-    // 金额
-    .pcsh-money {
-      text-align: right;
-    }
-    .pcsh-act {
-      padding-right: 32px;
-      text-align: right;
-    }
-    .pcsh-taelm {
-      line-height: 76px;
-      .pcsh-ginfo {
-        background: #f7f7f7;
-        // 图片
-        .pcsh-gimg {
-          padding: 16px 0 19px 31px;
-          width: 41px;
-          height: 41px;
-        }
-        .pcsh-mnyin {
-          color: #50a2da;
-        }
-        .pcsh-cot-w {
-          text-align: center;
-        }
-      }
-    }
-  }
-}
-
-// 金额总计
-
-.pctl-pr-wp {
-  padding: 11px 21px 0 0;
-  .pctl-price {
-    text-align: right;
-    font-size: 14px;
-    color: #676767;
-    line-height: 47px;
-    .pctl-prcin {
-      color: #2793d3;
-      font-size: 22px;
-    }
-  }
-  .pctl-prbtn {
-    float: right;
-    max-width: 215px;
-    .pctl-prbnst1 {
+  .pctaxservices-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    .pctaxservices-title {
       display: inline-block;
-      text-align: center;
-      width: 99px;
-      height: 24px;
-      line-height: 24px;
+      margin-top: 19px;
+      font-size: 13px;
+      color: #696969;
+      line-height: 27px;
+    }
+    // 全部产品
+    .pcsp-all {
+      margin-top: 11px;
+      padding-left: 65px;
+      color: #3e9bd6;
+      font-size: 13px;
+      line-height: 31px;
+    }
+    .pcsh-table {
+      padding-top: 18px;
+      line-height: 29px;
+      font-size: 13px;
+      color: #686868;
+      border-top: 1px solid #bdbdbd;
+      // 公司名
+      .pcsh-conm {
+        padding-left: 65px;
+      }
+      // 服务商品
+      .pcsh-sergd {
+      }
+      //单价
+      .pcsh-unipr {
+        padding-left: 35px;
+      }
+      // 数量
+      .pcsh-gsnum {
+        text-align: center;
+      }
+      // 金额
+      .pcsh-money {
+        text-align: right;
+      }
+      .pcsh-act {
+        padding-right: 32px;
+        text-align: right;
+      }
+      .pcsh-taelm {
+        line-height: 76px;
+        .pcsh-ginfo {
+          background: #f7f7f7;
+          // 图片
+          .pcsh-gimg {
+            padding: 16px 0 19px 31px;
+            width: 41px;
+            height: 41px;
+          }
+          .pcsh-mnyin {
+            color: #50a2da;
+          }
+          .pcsh-cot-w {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  // 金额总计
+
+  .pctl-pr-wp {
+    padding: 11px 21px 0 0;
+    .pctl-price {
+      text-align: right;
+      font-size: 14px;
+      color: #676767;
+      line-height: 47px;
+      .pctl-prcin {
+        color: #2793d3;
+        font-size: 22px;
+      }
+    }
+    .pctl-prbtn {
+      float: right;
+      max-width: 215px;
+      .pctl-prbnst1 {
+        display: inline-block;
+        text-align: center;
+        width: 99px;
+        height: 24px;
+        line-height: 24px;
+        color: #76b1dd;
+        border: 1px solid #2693d4;
+        border-radius: 3px;
+        background: #fff;
+      }
+    }
+  }
+
+  .pcpop-serw {
+    margin: 54px 0 99px;
+    .pcpop-seti {
+      padding-left: 65px;
       color: #76b1dd;
-      border: 1px solid #2693d4;
-      border-radius: 3px;
-      background: #fff;
+      font-size: 13px;
+      line-height: 31px;
+      border-bottom: 1px solid #bdbdbd;
+    }
+    .pcpop-serb {
+      padding: 34px 10px 0 17px;
+      .pcpop-selm {
+        overflow: hidden;
+        padding: 10px 19px 0 14px;
+        margin-right: 26px;
+        min-height: 189px;
+        border: 1px solid #b6b6b6;
+        .pcpp-senm {
+          overflow: hidden;
+          font-size: 17px;
+          color: #000;
+          height: 38px;
+          line-height: 38px;
+        }
+        .pcpp-line {
+          position: relative;
+          height: 10px;
+          .pcpp-lineh {
+            position: absolute;
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #2693d4;
+            border-radius: 3px;
+          }
+          .pcpp-lineb {
+            position: absolute;
+            top: 2px;
+            display: inline-block;
+            width: 160px;
+            height: 1px;
+            background: linear-gradient(left, #2693d4, #fff);
+          }
+        }
+        .pcpp-sinfo {
+          overflow: hidden;
+          height: 25px;
+          line-height: 25px;
+          color: #676767;
+          font-size: 13px;
+        }
+        .pcpp-price {
+          margin-top: 2.5px;
+          font-size: 35px;
+          color: #2693d4;
+          font-weight: 700;
+        }
+        .pcpp-marpr {
+          line-height: 38px;
+          display: inline-block;
+          color: #6b433b;
+          .pcpp-marpw {
+            color: #686868;
+          }
+        }
+        .pcpp-more {
+          line-height: 38px;
+          float: right;
+          display: inline-block;
+          color: #74b3df;
+          font-size: 13px;
+        }
+      }
     }
   }
 }
 
-.pcpop-serw {
-  margin: 54px 0 99px;
-  .pcpop-seti {
-    padding-left: 65px;
-    color: #76b1dd;
-    font-size: 13px;
-    line-height: 31px;
-    border-bottom: 1px solid #bdbdbd;
+// 手机端
+@media all and (max-width: 767px) {
+  // 购物车 头部全部商品数目
+  .tel-shhd {
+    position: fixed;
+    top: 0;
+    padding-left: 3.06%;
+    width: 96.94%;
+    color: #4b4b4b;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 3.85rem;
+    background: #e5e5e5;
+    .tel-shdnum {
+      color: #f00;
+    }
   }
-  .pcpop-serb {
-    padding: 34px 10px 0 17px;
-    .pcpop-selm {
-      overflow: hidden;
-      padding: 10px 19px 0 14px;
-      margin-right: 26px;
-      min-height: 189px;
-      border: 1px solid #b6b6b6;
-      .pcpp-senm {
-        overflow: hidden;
-        font-size: 17px;
-        color: #000;
-        height: 38px;
-        line-height: 38px;
-      }
-      .pcpp-line {
-        position: relative;
-        height: 10px;
-        .pcpp-lineh {
-          position: absolute;
+  // 购物车主体
+  .tel-shbody {
+    margin-top: 3.85rem;
+    .tel-texhd {
+      width: 100%;
+    }
+    // 商品列表块
+    .tel-texbdy {
+      width: 96.73%;
+      padding-left: 3.27%;
+      .tel-texelm {
+        width: 100%;
+        padding-top: 0.02rem;
+        min-height: 12.75rem;
+        border-bottom: 1px solid #cfcfcf;
+        // 元素顶部 公司名
+        .tel-spconm {
+          width: 100%;
+          line-height: 2.85rem;
+          font-size: 1.4rem;
+          font-weight: 500;
+          color: #000;
+        }
+        // 左侧图片
+        .tel-teimg {
+          margin: 0.4rem 1.2rem 0 0;
+          float: left;
+          // width: 22.64%;
+          width: 8.35rem;
+          height: 8.35rem;
+          border: 2px solid #e3e3e3;
+          .tel-imgin {
+            width: 100%;
+          }
+        }
+        .tel-tewor {
           display: inline-block;
-          width: 6px;
-          height: 6px;
-          background: #2693d4;
-          border-radius: 3px;
+          float: left;
+          padding-right: 5.45%;
+          width: 62%;
+          .tel-tenmac {
+            .tel-tenm {
+              color: #000;
+              font-size: 1.4rem;
+              font-weight: 300;
+              line-height: 2.5rem;
+            }
+            // 删除订单
+            .tel-act{
+              margin-top: 0.3rem;
+              float: right;
+              line-height: 2.15rem;
+              font-size: 1.1rem;
+              font-weight: 400;
+              color: #f00;
+            }
+          }
+          .tel-buynum{
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.8rem;
+            color: #000;
+          }
+          // 价格
+          .tel-spmony {
+            .tel-spmoin {
+              font-size: 1.3rem;
+              font-weight: 700;
+              color: #f00;
+            }
+            .tel-spyuan {
+              font-size: 0.8rem;
+            }
+          }
+          .tel-earea {
+            .tel-earcon {
+              line-height: 2.25rem;
+            }
+          }
         }
-        .pcpp-lineb {
-          position: absolute;
-          top: 2px;
-          display: inline-block;
-          width: 160px;
-          height: 1px;
-          background: linear-gradient(left, #2693d4, #fff);
-        }
-      }
-      .pcpp-sinfo {
-        overflow: hidden;
-        height: 25px;
-        line-height: 25px;
-        color: #676767;
-        font-size: 13px;
-      }
-      .pcpp-price {
-        margin-top: 2.5px;
-        font-size: 35px;
-        color: #2693d4;
-        font-weight: 700;
-      }
-      .pcpp-marpr {
-        line-height: 38px;
-        display: inline-block;
-        color: #6b433b;
-        .pcpp-marpw {
-          color: #686868;
-        }
-      }
-      .pcpp-more {
-        line-height: 38px;
-        float: right;
-        display: inline-block;
-        color: #74b3df;
-        font-size: 13px;
       }
     }
   }
@@ -442,6 +577,10 @@ export default {
   content: "";
   display: block;
   clear: both;
+}
+
+li {
+  list-style: none;
 }
 
 // 计数器

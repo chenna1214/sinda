@@ -104,7 +104,7 @@
             <p class="tel-tenm">{{product.serviceName}}</p>
             <div class="tel-elinfo">{{product.serviceInfo}}</div>
             <div class="tel-earea">
-              <i class="el-icon-location-outline"></i><span class="tel-earcon">北京市 朝阳区</span>
+              <i class="el-icon-location-outline"></i><span class="tel-earcon">{{product.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span>
               <div class="tel-monywr">
                 <span class="tel-temoney">￥ {{product.price}}&nbsp;</span><span class="tel-teyuan">&nbsp;元</span>
               </div>
@@ -588,9 +588,6 @@ export default {
 }
 
 @media all and (max-width: 767px) {
-  html {
-    font-size: 20px !important;
-  }
   .tel-texhd {
     width: 100%;
     // 头部ul
@@ -618,7 +615,7 @@ export default {
     .tel-texelm {
       width: 100%;
       padding-top: 0.85rem;
-      height: 10rem;
+      min-height: 10rem;
       border-bottom: 1px solid #cfcfcf;
       // 左侧图片
       .tel-teimg {
