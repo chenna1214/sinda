@@ -25,12 +25,11 @@
 
 <script>
 export default {
-    name: "servicePart"
+    name:'company'
 };
 </script>
 
-<style scoped lang='less'>
-// 右侧图标条
+<style scoped lang="less">
 .pccopny-r-wrap {
   padding-left: 12px;
   .pccopny-rintr {
@@ -42,9 +41,9 @@ export default {
       border-bottom: 1px solid #ccc;
       height: 148px;
       div {
-        margin: 11px auto 5px;
-        width: 108px;
-        height: 108px;
+        margin: 11px auto 13px;
+        width: 98px;
+        height: 98px;
       }
       p {
         font-size: 17px;
@@ -54,16 +53,16 @@ export default {
       }
     }
     .pccopny-relim1 {
-      background: url(../pc_images/code.png) 0 -726px;
+      background: url(../../images/companyIdstry/cpnyIndus.png) -8px 0;
     }
     .pccopny-relim2 {
-      background: url(../pc_images/code.png) 0 -864px;
+      background: url(../../images/companyIdstry/cpnyIndus.png) -8px -113px;
     }
     .pccopny-relim3 {
-      background: url(../pc_images/code.png) 0 -995px;
+      background: url(../../images/companyIdstry/cpnyIndus.png) -8px -226px;
     }
     .pccopny-relim4 {
-      background: url(../pc_images/code.png) 0 -1140px;
+      background: url(../../images/companyIdstry/cpnyIndus.png) -7px -341px;
     }
     .pccopny-rel4 {
       border: 0;
@@ -71,4 +70,6 @@ export default {
   }
 }
 </style>
+
+
 

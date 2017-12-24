@@ -1,7 +1,7 @@
 <template>
   <div>
-   <!-- 财税服务 -->
-    <div class="pctaxservices-body">
+   <!-- 财税服务 pc端-->
+    <div class="pctaxservices-body  hidden-xs-only">
       <a class="pctaxservices-title">首页/财税服务</a>
       <el-row>
         <el-col :span="19">
@@ -17,9 +17,6 @@
             <el-row class="pcauto-wrap hidden-xs-only">
               <el-col :span="3"><div class="pcau-serv-classify">类型</div></el-col>
               <el-col :span="21"><!-- 三级标题 -->
-                  <!-- <div v-for="(eachThird,thirdIndex) in reallyThird" :key="thirdIndex" class="pctax-servisenav clear pcSecBox">
-                    <a v-for="(thirdName,thirdIdx) in eachThird" :key="thirdName.name"  class="pcSecTil" @click="thirdClick(thirdName.id,thirdIdx)" :class="{changeColr:change==thirdIdx}">{{thirdName.name}}</a>
-                  </div> -->
                   <div class="pctax-servisenav clear pcSecBox">
                     <a v-for="(thirdName) in reallyThird" :key="thirdName.name"  class="pcSecTil" @click="thirdClick(thirdName.id)" :class="{changeColr:thirdId==thirdName.id}">{{thirdName.name}}</a>
                   </div>
@@ -31,8 +28,8 @@
           <!-- 财税服务 商品列表 -->
           <div class="pccny-gds">
             <ul class="pccn-ghead clear">
-              <li @click="ascendingOrder(1)" :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghcora">综合排序</li>
-              <li @click="ascendingOrder(2)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
+              <li @click="synthetical()" :class='{"pxtax-clickst-1":proSort==-10}' class="pccn-ghcora">综合排序</li>
+              <li @click="ascendingOrder()" :class='{"pxtax-clickst-1":proSort==3}' >价格<span class="pccn-ghico"></span></li>
             </ul>
             <!-- 商品列表下方 -->
             <div class="pccny-g-wr">
@@ -50,7 +47,7 @@
                       <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
                     </div>
                     <div class="pccn-tewor">
-                      <p @click="toDetail(product.id)" class="pccn-tenm" >
+                      <p @click="toDetail(product.id)" class="pccn-tenm">
                         {{product.serviceName}}
                       </p>
                       <p class="pccn-epmit">{{product.serviceInfo}}</p>
@@ -61,22 +58,14 @@
                   <!-- 元素右侧 -->
                   <div class="pccn-tbelr">
                     <p class="pccn-elprc">￥ {{product.price}}</p>
-                    <!-- <router-link class="pccn-ebyim pccn-btn1s" to="/merchandise/productdetail">
-                      立即购买
-                    </router-link> -->
-                    <a href="javascript:void(0)" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
-                    <!-- <router-link @click="addToCart(idx)" class="pccn-eadsp pccn-btn1s" to="">
-                      加入购物车 {{idx}}
-                    </router-link> -->
+                    <a href="#/merchandise/shoppingtrolley" class="pccn-ebyim pccn-btn1s" @click="togoodsOrder(product.id)">立即购买</a>
                     <a href="javascript:void(0)" @click="addToCart(product.id)" class="pccn-eadsp pccn-btn1s"> 加入购物车</a>
                   </div>
                 </li>
               </ul>
             </div>
-
-            
-            
           </div>
+
           <div class="pageBox"><!-- 页码 -->
             <button @click="upPage()">上一页</button>
             <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
@@ -84,36 +73,52 @@
           </div>
         </el-col>
         <el-col :span="5" class="hidden-xs-only">
-
-             <!-- <servicePart/> -->
-
-
-         
-          <!-- <div class="pccopny-r-wrap">
-            <ul class="pccopny-rintr">
-              <li class="pccopny-rel1">
-                <div class="pccopny-relim1"></div>
-                <p class="pccopny-r-tit">平台担保</p>
-              </li>
-              <li class="pccopny-rel2">
-                <div class="pccopny-relim2"></div>
-                <p class="pccopny-r-tit">优质服务</p>
-              </li>
-              <li class="pccopny-rel3">
-                <div class="pccopny-relim3"></div>
-                <p class="pccopny-r-tit">过程监督</p>
-              </li>
-              <li class="pccopny-rel4">
-                <div class="pccopny-relim4"></div>
-                <p class="pccopny-r-tit">增值服务</p>
-              </li>
-            </ul>
-          </div> -->
+           <!-- 财税服务右侧栏 -->
+            <servicePart v-show="taxRightSide==this.$route.query.code"></servicePart>
+            <!-- 公司工商右侧栏 -->
+            <company v-show="CompanyRightSide==this.$route.query.code"></company>
         </el-col>
       </el-row>
      
     </div>
    
+
+   <!-- 财税服务 手机端-->
+   <div class="hidden-sm-and-up">
+     <div class="tel-texhd">
+        <ul class="tel-txhin clear">
+          <li @click="synthetical()" :class='{"pxtax-clickst-1":proSort==-10}' class="pccn-ghcora">综合排序</li>
+          <li @click="ascendingOrder()" :class='{"pxtax-clickst-1":proSort==3}' >价格<span class="pccn-ghico"></span></li>
+        </ul>
+     </div>
+     <!-- 财税服务 手机端商品列表 -->
+     <ul class="tel-texbdy">
+      <!-- 财税服务 手机端商品 -->       
+       <li  v-for="(product,idx) in products" :key="product.serviceInfo" class="tel-texelm clear">
+         <!-- 左侧图片 -->
+         <div class="tel-teimg" @click="toDetail(product.id)" >
+           <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
+          </div>
+          <!-- 右侧文字部分 -->
+          <div class="tel-tewor">
+            <p class="tel-tenm">{{product.serviceName}}</p>
+            <div class="tel-elinfo">{{product.serviceInfo}}</div>
+            <div class="tel-earea">
+              <i class="el-icon-location-outline"></i><span class="tel-earcon">北京市 朝阳区</span>
+              <div class="tel-monywr">
+                <span class="tel-temoney">￥ {{product.price}}&nbsp;</span><span class="tel-teyuan">&nbsp;元</span>
+              </div>
+            </div>
+          </div>
+       </li>
+     </ul>
+      <div class="tel-pagBox"><!-- 页码 -->
+        <i class="el-icon-arrow-left"  @click="upPage()"></i>
+        <!-- <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span> -->
+        <i class="el-icon-arrow-right" @click="downPage()"></i>
+    </div>
+   </div>
+    
    </div>
 </template>
 
@@ -121,11 +126,11 @@
 // 三级联动模块
 import autourban from "./autourban";
 import { mapActions } from "vuex"; //改变数据
-import servicePart from './servicePart'//引用财税服务右侧栏组件
+import servicePart from "./servicePart.vue"; //引用财税服务右侧栏组件
+import company from "./company";
 
 export default {
   name: "taxationService",
-  components: {servicePart},
   methods: {
     upPage() {
       //点击向上一页翻页
@@ -161,23 +166,24 @@ export default {
       }
       this.textColor = idxPage;
     },
-    ajaxProData(code, eachContent, thirdId,proSort) {
+    ajaxProData(code, eachContent, thirdId, proSort) {
       //产品列表
       var that = this;
+      var params = {
+        productTypeCode: code,
+        limit: 3,
+        start: this.eachContent * 3,
+        sort: proSort
+      };
+      if (thirdId != -1) {
+        params.productId = thirdId;
+      }
+
       this.ajax
-        .post(
-          "/xinda-api/product/package/grid",
-          this.qs.stringify({
-            productTypeCode: code,
-            limit: 3,
-            start: this.eachContent * 3,
-            productId: thirdId,
-            sort:proSort
-          })
-        )
+        .post("/xinda-api/product/package/grid", this.qs.stringify(params))
         .then(function(data) {
           that.products = data.data.data;
-          var page = Math.ceil(data.data.totalCount /3 );
+          var page = Math.ceil(data.data.totalCount / 3);
           var pageCount = {};
           for (var i = 0; i < page; i++) {
             pageCount[i] = i + 1;
@@ -187,40 +193,10 @@ export default {
           that.thirdBoxShow = thirdId;
         });
     },
-    // getTitle(proType, showThree) {
-    //   var that = this;
-    //   that.secBox = [];
-    //   that.thirdTitle = [];
-    //   this.ajax //获取头部导航
-    //     .post("/xinda-api/product/style/list")
-    //     .then(function(data) {
-    //       var rData = data.data.data;
-    //       console.log("rData==", rData);
-    //       var rDataObj = {};
-    //       for (var Key in rData) {
-    //         rDataObj[rData[Key].code] = rData[Key];
-    //       }
-
-    //       for (var secKey in rDataObj) {
-    //         var secName = rDataObj[secKey].itemList;
-    //         that.sencodTitle.push(secName);
-    //       }
-    //       var onlySecTil = that.sencodTitle[proType];
-
-    //       for (var SecKey in onlySecTil) {
-    //         that.thirdTitle.push(onlySecTil[SecKey].itemList); //三级标题
-    //         that.secBox.push(onlySecTil[SecKey]); //二级标题
-    //         that.codeArr.push(onlySecTil[SecKey].code);
-    //       }
-    //       that.firstShowCode.first = that.codeArr[0];
-    //       that.reallyThird = that.thirdTitle[showThree];
-    //     });
-    // },
 
     selected(code) {
       this.distCode = code;
     },
-    ...mapActions(["setNum"]),
     ...mapActions(["gainNum"]),
     toDetail(id) {
       this.$router.push({
@@ -228,21 +204,29 @@ export default {
         query: { id: id }
       });
     },
-    // togoodsOrder(id) {
-    //   var that = this;
-    //   this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-
-    //   });
-    // },
+    //立即购买按钮
+    togoodsOrder(goodsId) {
+      var that = this;
+      this.shoppingCarNum(goodsId);
+    },
+    // 加入购物车按钮
+    addToCart: function(itsid) {
+      this.shoppingCarNum(itsid);
+    },
+    //购物车计算购买种类
+    shoppingCarNum(itsid) {
+      var that = this;
+      this.ajax
+        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid }))
+        .then(function(data) {
+          //查询购物车数量
+          that.gainNum();
+        });
+    },
     secTilShow(code) {
       //点击请求二级标题---我们需要把三级样式清除
-      // this.showIndex = code;
       this.thirdId = -1;
       this.change = code;
-      // this.index = this.codeArr[index];
-      // this.code = code;
-      // this.$route.query.code = code;
-      // this.getTitle(this.$route.query.product, index);
       //渲染二级标题列表
       for (var key in this.secBox) {
         if (this.secBox[key].code == code) {
@@ -257,43 +241,15 @@ export default {
       this.thirdId = thirId;
       this.ajaxProData(0, this.eachContent, thirId);
     },
-    // 商品排序方式
+    // 商品价格降序
     ascendingOrder: function() {
-      this.proSort=1
-      this.ajaxProData(this.change, this.eachContent,this.thirdId,this.proSort);
-      console.log(this.proSort)
-      // console.log('this.change',this.change)
-      // console.log('this.eachContent',this.eachContent)
-      
-      
-      // this.sortindex = sortindex;
-      // var that = this;
-      // this.ajax
-      //   .post(
-      //     "/xinda-api/product/package/grid",
-      //     this.qs.stringify({
-      //       start: 0,
-      //       sort: this.sortindex,
-      //       productTypeCode: 1
-      //     })
-      //   )
-      //   .then(function(data) {
-      //     that.products = data.data.data;
-      //   });
-      // this.products = that.products;
-      // console.log(this.products);
-
+      this.proSort = 3;
+      this.ajaxProData(this.change, this.eachContent, this.thirdId, 3);
     },
-    // 添加到购物车
-    addToCart: function(itsid) {
-      var that = this;
-      // 添加到购物车
-      this.ajax
-        .post("/xinda-api/cart/add", this.qs.stringify({ id: itsid, num: 1 }))
-        .then(function(data) {
-          //查询一下购物车数量
-          that.gainNum();
-        });
+    //综合排序
+    synthetical() {
+      this.proSort = -10;
+      this.ajaxProData(this.change, this.eachContent, this.thirdId);
     },
     initTypes() {
       for (var key in this.types) {
@@ -340,17 +296,14 @@ export default {
   },
   watch: {
     $route: function() {
-      // this.getTitle(this.$route.query.product);
-      // console.log('watch inner that.types==',this.types);
       this.initTypes();
-    },
-    ajaxProData1:function(){
-      this.ajaxProData()
-
     }
+    // ajaxProData1:function(){问题：如何监听多种变量
+    //   this.ajaxProData()
+
+    // }
   },
   created() {
-    // this.getTitle(this.$route.query.product, this.$route.query.product);
     var that = this;
     this.ajax //获取头部导航
       .post("/xinda-api/product/style/list")
@@ -361,16 +314,18 @@ export default {
 
     if (this.$route.query.code) {
       this.ajaxProData(this.$route.query.code, 0, this.$route.query.thirdId);
+      console.log('是否加载')
+      
     } else {
       this.ajaxProData(0, 0, this.$route.query.thirdId);
     }
   },
   data() {
     return {
-      ajaxProData1:this.ajaxProData,
-      hideArea: true,
+      taxRightSide: 3, //财税服务右侧栏
+      CompanyRightSide: 5, //公司工商右侧栏
       products: [],
-      sortindex: 2,
+      // sortindex: 2,
       idx: "",
       distCode: "",
       sencodTitle: [],
@@ -386,156 +341,214 @@ export default {
       textColor: 0, //控制页码被选中后的动态样式的初始值
       codeArr: [], //存产品类型请求参数
       firstShowCode: { first: 1 },
-      showIndex: "",
+      // showIndex: "",
       code: "",
       thirdBoxShow: "",
       reallyThird: "",
       types: [], //产品类型原始数据
-      proSort:''
-
+      proSort: -10 //排序请求参数sort
     };
   },
-  components: { autourban }
+  components: { autourban, servicePart, company }
 };
 </script>
 
 <style scoped lang='less'>
-// 财税服务框架
-.pctaxservices-body {
-  max-width: 1200px;
-  margin: 0 auto;
-  .pctaxservices-title {
-    display: inline-block;
-    margin-top: 19px;
-    font-size: 13px;
-    color: #696969;
-    line-height: 27px;
-  }
-  // 服务分类内容
-  .pctax-servisenav {
-    background: #f7f7f7;
-    height: 44px;
-    li {
-      margin: 9px 0 0 15px;
-      float: left;
-      width: 80px;
-      height: 25px;
-      line-height: 25px;
-      text-align: center;
-      border-radius: 2px;
-    }
-    // 点击样式
-    .pxtax-clickst-1 {
-      background: #2693d4;
-    }
-  }
-  // 财税服务单行
-  .pcauto-wrap {
-    // 行名称
-    .pcau-serv-classify {
-      background: #f7f7f7;
-      text-align: center;
-      height: 44px;
-      line-height: 44px;
-      border: 1px solid #ccc;
-      border-bottom: 0;
-    }
-    // 行内容
-    .pctax-servisenav {
-      height: 44px;
+@media all and (min-width: 768px) {
+  // 财税服务框架
+  .pctaxservices-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    .pctaxservices-title {
+      display: inline-block;
+      margin-top: 19px;
       font-size: 13px;
-      border: 1px solid #ccc;
-      border-bottom: 0;
-      border-left: 0;
-      // li {
-      //   width: 80;
-      //   height: 25px;
-      //   border-radius: 2px;
-      //   a {
-      //     color: #626262;
-      //   }
-      // }
-      // .pctax-svsnav-eleml {
-      //   width: 106px;
-      // }
-      // li:hover {
-      //   background: #2693d4;
-      //   a {
-      //     color: #fff;
-      //   }
-      // }
+      color: #696969;
+      line-height: 27px;
+    }
+    // 服务分类内容
+    .pctax-servisenav {
+      background: #f7f7f7;
+      height: 44px;
+      li {
+        margin: 9px 0 0 15px;
+        float: left;
+        width: 80px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        border-radius: 2px;
+      }
+      // 点击样式
+      .pxtax-clickst-1 {
+        background: #2693d4;
+      }
+    }
+    // 财税服务单行
+    .pcauto-wrap {
+      // 行名称
+      .pcau-serv-classify {
+        background: #f7f7f7;
+        text-align: center;
+        height: 44px;
+        line-height: 44px;
+        border: 1px solid #ccc;
+        border-bottom: 0;
+      }
+      // 行内容
+      .pctax-servisenav {
+        height: 44px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-bottom: 0;
+        border-left: 0;
+      }
     }
   }
-}
-.pcSecTil {
-  color: #626262;
-  margin-left: 3%;
-}
-.pcSecBox {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.changeColr {
-  color: #2693d4;
-}
-.pcPage {
-  width: 36px;
-  display: inline-block;
-  text-align: center;
-}
-.pageColor {
-  //页码被选中后的样式
-  color: #2693d4;
-  font-size: 28px;
-}
-.pageBox {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-// 右侧图标条
-// .pccopny-r-wrap {
-//   padding-left: 12px;
-//   .pccopny-rintr {
-//     max-width: 170px;
-//     padding: 0 37px 0 28px;
-//     border: 1px solid #ccc;
-//     li {
-//       overflow: hidden;
-//       border-bottom: 1px solid #ccc;
-//       height: 148px;
-//       div {
-//         margin: 11px auto 5px;
-//         width: 108px;
-//         height: 108px;
-//       }
-//       p {
-//         font-size: 17px;
-//         color: #000;
-//         line-height: 26px;
-//         text-align: center;
-//       }
-//     }
-//     .pccopny-relim1 {
-//       background: url(../pc_images/code.png) 0 -726px;
-//     }
-//     .pccopny-relim2 {
-//       background: url(../pc_images/code.png) 0 -864px;
-//     }
-//     .pccopny-relim3 {
-//       background: url(../pc_images/code.png) 0 -995px;
-//     }
-//     .pccopny-relim4 {
-//       background: url(../pc_images/code.png) 0 -1140px;
-//     }
-//     .pccopny-rel4 {
-//       border: 0;
-//     }
-//   }
-// }
-.active {
-  background: blue;
+  .pcSecTil {
+    color: #626262;
+    margin-left: 3%;
+  }
+  .pcSecBox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .changeColr {
+    color: #2693d4;
+  }
+  .pcPage {
+    width: 36px;
+    display: inline-block;
+    text-align: center;
+  }
+  .pageColor {
+    //页码被选中后的样式
+    color: #2693d4;
+    font-size: 28px;
+  }
+  .pageBox {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .active {
+    background: blue;
+  }
+
+  // 商品列表
+
+  .pccny-gds {
+    margin-top: 25px;
+    border: 1px solid #ccc;
+  }
+  // 排序方式选项
+  .pccn-ghead {
+    height: 43px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    li {
+      float: left;
+      height: 43px;
+      width: 107px;
+      text-align: center;
+      line-height: 43px;
+      .pccn-ghico {
+        margin-left: 5px;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background: url(../../images/companyIdstry/cpnyIndus.png) -2px -457px;
+      }
+    }
+  }
+  .pccny-g-wr {
+    padding: 0 8px;
+    .pccn-tblti {
+      li {
+        width: 89px;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+      }
+      .pccn-tbltg {
+        float: left;
+      }
+      .pccn-tbltm {
+        float: right;
+      }
+    }
+  }
+
+  // 商品列表
+  .pccn-tbody {
+    .pccn-tbelm {
+      padding: 11px 0 12px 0;
+      border-top: 1px solid #eaeaea;
+      // 商品图片
+      .pccn-teimg {
+        float: left;
+        margin-right: 12px;
+        width: 98px;
+        height: 98px;
+        border: 1px solid #ccc;
+        img {
+          width: 100%;
+        }
+      }
+      // 商品文字
+      .pccn-tewor {
+        float: left;
+        .pccn-tenm {
+          display: block;
+          margin-bottom: 11px;
+          line-height: 20px;
+          color: #000;
+          font-weight: 700;
+        }
+        & > p {
+          color: #676767;
+          font-size: 13px;
+          line-height: 36px;
+        }
+        .pccn-earea {
+          display: inline-block;
+        }
+      }
+      .pccn-tbell {
+        float: left;
+        max-width: 660px;
+        overflow: hidden;
+      }
+      .pccn-tbelr {
+        float: right;
+        width: 192px;
+        // 商品价格块
+        .pccn-elprc {
+          margin-bottom: 22px;
+          font-size: 25px;
+          color: #fd0100;
+          text-align: center;
+          font-weight: 300;
+          line-height: 50px;
+        }
+        .pccn-btn1s {
+          display: inline-block;
+          width: 89px;
+          height: 29px;
+          background: #2693d4;
+          color: #d5e8f6;
+          text-align: center;
+          line-height: 29px;
+          border-radius: 1px;
+        }
+        .pccn-ebyim {
+          margin-right: 9px;
+        }
+      }
+    }
+  }
 }
 
 // 点击样式
@@ -547,117 +560,98 @@ export default {
   }
 }
 
-// 商品列表
-
-.pccny-gds {
-  margin-top: 25px;
-  border: 1px solid #ccc;
-}
-// 排序方式选项
-.pccn-ghead {
-  height: 43px;
-  background: #f7f7f7;
-  border-bottom: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  li {
-    float: left;
-    height: 43px;
-    width: 107px;
-    text-align: center;
-    line-height: 43px;
-    .pccn-ghico {
-      margin-left: 5px;
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background: url(../../images/companyIdstry/cpnyIndus.png) -2px -457px;
-    }
+@media all and (max-width: 767px) {
+  html {
+    font-size: 20px !important;
   }
-}
-.pccny-g-wr {
-  padding: 0 8px;
-  .pccn-tblti {
-    li {
-      width: 89px;
-      text-align: center;
-      height: 50px;
-      line-height: 50px;
-    }
-    .pccn-tbltg {
-      float: left;
-    }
-    .pccn-tbltm {
-      float: right;
-    }
-  }
-}
-
-// 商品列表
-.pccn-tbody {
-  .pccn-tbelm {
-    padding: 11px 0 12px 0;
-    border-top: 1px solid #eaeaea;
-    // 商品图片
-    .pccn-teimg {
-      float: left;
-      margin-right: 12px;
-      width: 98px;
-      height: 98px;
-      border: 1px solid #ccc;
-      img {
-        width: 100%;
-      }
-    }
-    // 商品文字
-    .pccn-tewor {
-      float: left;
-      .pccn-tenm {
-        display: block;
-        margin-bottom: 11px;
-        line-height: 20px;
-        color: #000;
-        font-weight: 700;
-      }
-      & > p {
-        color: #676767;
-        font-size: 13px;
-        line-height: 36px;
-      }
-      .pccn-earea {
-        display: inline-block;
-      }
-    }
-    .pccn-tbell {
-      float: left;
-      max-width: 660px;
+  .tel-texhd {
+    width: 100%;
+    // 头部ul
+    .tel-txhin {
+      margin: 2.005rem auto 0.75rem;
+      width: 18rem;
+      height: 3rem;
       overflow: hidden;
-    }
-    .pccn-tbelr {
-      float: right;
-      width: 192px;
-      // 商品价格块
-      .pccn-elprc {
-        margin-bottom: 22px;
-        font-size: 25px;
-        color: #fd0100;
+      border: 1px solid #2693d4;
+      border-radius: 4px;
+      li {
+        font-size: 1.4rem;
+        float: left;
+        width: 9rem;
+        height: 3rem;
+        line-height: 3rem;
         text-align: center;
-        font-weight: 300;
-        line-height: 50px;
       }
-      .pccn-btn1s {
+    }
+  }
+  // 商品列表块
+  .tel-texbdy {
+    width: 100%;
+    padding-left: 3.27%;
+    .tel-texelm {
+      width: 100%;
+      padding-top: 0.85rem;
+      height: 10rem;
+      border-bottom: 1px solid #cfcfcf;
+      // 左侧图片
+      .tel-teimg {
+        margin: 0.4rem 1.2rem 0 0;
+        float: left;
+        width: 22.64%;
+        height: 8.35rem;
+        border: 2px solid #e3e3e3;
+        .tel-imgin{
+          width: 100%;
+        }
+      }
+      .tel-tewor {
         display: inline-block;
-        width: 89px;
-        height: 29px;
-        background: #2693d4;
-        color: #d5e8f6;
-        text-align: center;
-        line-height: 29px;
-        border-radius: 1px;
-      }
-      .pccn-ebyim {
-        margin-right: 9px;
+        float: left;
+        padding-right: 5.45%;
+        width: 62%;
+        .tel-tenm {
+          color: #000;
+          font-size: 1.4rem;
+          line-height: 2.5rem;
+        }
+        .tel-elinfo {
+          font-size: 1.1rem;
+          line-height: 2.05rem;
+          font-weight: 400;          
+        }
+        .tel-earcon {
+          line-height: 3.05rem;
+          font-size: 0.8rem;
+          color: #676767;
+        }
+        // 价格
+        .tel-monywr {
+          display: inline-block;
+          float: right;
+          .tel-temoney {
+            line-height: 3.05rem;
+            font-size: 1.3rem;
+            color: #ff1416;
+            font-weight: 700;
+          }
+          .tel-teyuan{
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+          }
+        }
       }
     }
+  }
+}
+// 翻页
+.tel-pagBox{
+  height: 8rem;
+  line-height: 8rem;
+  width: 20%;
+  margin: 0 auto;
+  i{
+    font-size: 2rem;
   }
 }
 </style>
+

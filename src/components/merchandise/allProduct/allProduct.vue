@@ -25,13 +25,15 @@
         <!-- 手机端--头部导航栏 -->
         <el-row>
           <div class="telNavBox">
-            <el-col :xs="6" v-for="telNav in telNavs" :key="telNav.telNavImg">       
+            <el-col :xs="6" v-for="(telNav,navIdx) in telNavs" :key="telNav.telNavImg">
+              <router-link :to="{ path: telNav.url, query: {code:telNav.code}}" tag="div">       
                 <div  class="telNavBoxIn">
-                  <div @click="telNavControlShow()">
+                  <div>
                     <img :src="telNav.telNavImg" class="telNavImg">
                   </div>
-                  <p class="telNavTexttelNavText">{{telNav.telNavInfo}}</p>
+                  <p>{{telNav.telNavInfo}}</p>
                 </div>
+              </router-link>
             </el-col>
           </div>
         </el-row>
@@ -40,7 +42,7 @@
 
 
         <!-- 手机端--全部产品--轮播左边的导航 -->
-        <div class="telNavToal" v-show="telNavShow">
+        <!-- <div class="telNavToal" v-show="telNavShow">
           <el-row v-for="(rDataObj,telIdx) in rDataObjs" :key="rDataObj.id" class="telNavBoxOut">
             <el-col :xs="5">
                 <div @click="telNavClick(telIdx)" :class="{telNavClickAft:telIdx==telIndex}" class="telNavTextBox">
@@ -60,9 +62,8 @@
                   </div>
                 </router-link>
             </el-col>
-        </el-row>
-
-        </div>
+          </el-row>
+        </div> -->
 
 
 
@@ -129,14 +130,13 @@
           <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
           <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
           <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
-            <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
-            <span class="pcCreateunit" >{{product.unit}}</span>
-            <button class="pcCreateDetail">查看详情</button>
+          <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
+          <span class="pcCreateunit" >{{product.unit}}</span>
+          <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
         </div>
       </div>
     </el-col>
   </el-row>
-
   <!-- 知识产权标题 -->
   <el-row>
     <el-col>
@@ -247,21 +247,15 @@
 <script>
 import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
 import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
+
+
+
+const gourl = '/merchandise/taxationService'//点击手机端端头部导航图片、文字，跳转到指定路径 
 export default {
   name: "allProduct",
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
-    var that = this; //this是指main.js中的new Vue
-    this.ajax //获取全部产品的轮播左边的导航栏
-      .post("http://115.182.107.203:8088/xinda/xinda-api/product/style/list")
-      .then(function(data) {
-        var rData = data.data.data;
-        var rDataObj = {};
-        for (var Key in rData) {
-          rDataObj[rData[Key].code] = rData[Key];
-        }
-        that.rDataObjs = rDataObj;
-      });
+    var that = this; 
     this.ajax //初创企业必备
       .post("/xinda-api/recommend/list")
       .then(function(data) {
@@ -290,12 +284,11 @@ export default {
         that.pcRecommends = myArray;
       });
   },
-  mounted() {},
   data() {
     return {
       //手机端
       isShow: false, //控制选择城市下拉框的出现与消失的初始值
-      telNavShow:false,//点击财税服务后控制弹出框出现或消失的初始值
+      telNavShow: false, //点击财税服务后控制弹出框出现或消失的初始值
       pcChoosedNum: 0, //判断用户是否选择城市
       pcChoosedCity: { name: "" }, //当前已选城市
       pcCityNameSuc: { city: "" }, //已开通城市名称
@@ -303,41 +296,56 @@ export default {
       telNavs: [
         {
           telNavImg: "./src/components/images/telIndex/m_homepage1.png", //手机端--头部导航图片
-          telNavInfo: "财税服务" //手机端--头部导航文字
+          telNavInfo: "财税服务", //手机端--头部导航文字
+          code: 1,
+          url:gourl //点击后向/merchandise/taxationService发送code，请求相关数据
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage2.png",
-          telNavInfo: "开公司"
+          telNavInfo: "开公司",
+          code: 4,
+          url:gourl
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage3.png",
-          telNavInfo: "公司变更"
+          telNavInfo: "公司变更",
+          code: 5,
+          url:gourl
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage4.png",
-          telNavInfo: "个人社保"
+          telNavInfo: "个人社保",
+          code: 7,
+          url:gourl
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage5.png",
-          telNavInfo: "公司社保"
+          telNavInfo: "公司社保",
+          code: 6,
+          url:gourl
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage6.png",
-          telNavInfo: "知识产权"
+          telNavInfo: "知识产权",
+          code: 3,
+          url:gourl
         },
         {
           telNavImg: "./src/components/images/telIndex/m_homepage7.png",
-          telNavInfo: "全部服务"
+          telNavInfo: "全部服务",
+          code:-1,
+          url:'/navShow'
         }
       ],
-      telIndex: 1,//点击财税服务后弹出框默认出现的初始值
+      telIndex: 1, //点击财税服务后弹出框默认出现的初始值
+      
 
       //pc端
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcSer: -1, //推荐服务商的标题click的变量
       pcSerCliList: ["推荐服务商", "推荐服务"],
       pcSerSty: 0,
-      rDataObjs: {},
+      // rDataObjs: {titles:{}},
       products: [], //初创企业必备
       pcRecommends: [], //推荐服务商
       pcCompanyRegisterList: [], //公司工商三级标题
@@ -387,8 +395,11 @@ export default {
     };
   },
   methods: {
+    productDetail(proId){//查看初创企业必备的产品详情
+    
 
 
+    },
     pcSerClick: function(index) {
       this.pcSer = index;
       this.pcSerSty = index;
@@ -399,6 +410,7 @@ export default {
     telNavClick(telIdx) {
       this.telIndex = telIdx;
       telIdx = !telIdx;
+       
     }, //手机端头部导航
     telMenu() {
       //选择城市下拉框
@@ -412,9 +424,18 @@ export default {
       this.pcChoosedNum = 1;
       handleCon(this.dialogVisible, this.pcChoosedNum, this);
     },
-    telNavControlShow(){
-      this.telNavShow=!this.telNavShow;
-      this.telIndex=1;
+    telNavControlShow(navIdx) {
+      console.log("this.$route.path==", this.$route.path);
+
+      if (navIdx == 6) {
+        //点击全部服务
+        this.telNavShow = !this.telNavShow;
+        this.telIndex = 1;
+        this.$route.path = "http://localhost:8080/#/merchandise/allProduct";
+      } else {
+        this.$route.path = '/merchandise/taxationService';
+
+      }
     }
   }
 };
@@ -432,16 +453,11 @@ export default {
   margin: 0 auto;
 }
 
-
 .pcNavCompanyH {
   height: 47px;
 }
 
 //全部产品--轮播左边的导航
-
-
-
-
 
 .pcAllProLine {
   height: 2px;
@@ -651,6 +667,7 @@ export default {
   font-size: 24px;
 }
 //手机端--头部
+
 .telCompanyIconBox {
   display: flex;
   justify-content: center;
@@ -691,29 +708,29 @@ export default {
   display: inline-block;
 }
 //手机端---头部导航
-.telNavText {
-  font-size: 22px;
-}
+// .telNavText {
+//   font-size: 22px;
+// }
 .telNavBox {
   text-align: center;
   padding-left: 4%;
   padding-right: 4%;
   margin-top: 36px;
 }
-.telNavToal {
-  .telNavBoxOut:nth-child(1) {
-    margin-top: -30px;
-  }
-  .telNavBoxOut:nth-child(2) {
-    margin-top: 64px;
-  }
-  .telNavBoxOut:nth-child(3) {
-    margin-top: 158px;
-  }
-  .telNavBoxOut:nth-child(4) {
-    margin-top: 252px;
-  }
-}
+// .telNavToal {
+//   .telNavBoxOut:nth-child(1) {
+//     margin-top: -30px;
+//   }
+//   .telNavBoxOut:nth-child(2) {
+//     margin-top: 64px;
+//   }
+//   .telNavBoxOut:nth-child(3) {
+//     margin-top: 158px;
+//   }
+//   .telNavBoxOut:nth-child(4) {
+//     margin-top: 252px;
+//   }
+// }
 .telNavBoxIn {
   margin-bottom: 27px;
 }
@@ -726,60 +743,59 @@ export default {
   font-size: 22px;
   margin-bottom: 15px;
 }
-.telNavTextBox {
-  height: 94px;
-  line-height: 94px;
-  border-bottom: 1px solid #cbcbcd;
-  background: white;
-}
-.telNavClickAft {
-  background: #f3f4f6;
-}
+// .telNavTextBox {
+//   height: 94px;
+//   line-height: 94px;
+//   border-bottom: 1px solid #cbcbcd;
+//   background: white;
+// }
+// .telNavClickAft {
+//   background: #f3f4f6;
+// }
 //全部产品--手机端--轮播左边的导航
-.telNavText {
-  font-size: 25px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
-}
+// .telNavText {
+//   font-size: 25px;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-align: center;
+// }
 
-.telNavThrid {
-  color: #666465;
-  font-size: 18px;
-  margin-left: 60px;
-  padding-top: 28px;
-  padding-bottom: 23px;
-  border-bottom: 1px solid #cbcbcd;
-}
-.telCarsoulArrow {
-  float: right;
-  margin-right: 3%;
-}
-.telSecondTil {
-  color: #666465;
-  font-size: 22px;
+// .telNavThrid {
+//   color: #666465;
+//   font-size: 18px;
+//   margin-left: 60px;
+//   padding-top: 28px;
+//   padding-bottom: 23px;
+//   border-bottom: 1px solid #cbcbcd;
+// }
+// .telCarsoulArrow {
+//   float: right;
+//   margin-right: 3%;
+// }
+// .telSecondTil {
+//   color: #666465;
+//   font-size: 22px;
 
-  border-bottom: 1px solid #cbcbcd;
-  padding-top: 23px;
-  padding-bottom: 23px;
-  background: #f3f4f6;
-}
-.telTilBox {
-  padding-top: 10px;
-  padding-bottom: 6px;
-  min-height: 84px;
-  height: auto;
-  background: #f3f4f6;
-  margin-top: -26px;
-}
-.telNavClickOut {
-  margin-top: -69px;
-}
-.telNavBoxOut {
-  position: absolute;
-  z-index: 9;
-  width: 100%;
-}
-
+//   border-bottom: 1px solid #cbcbcd;
+//   padding-top: 23px;
+//   padding-bottom: 23px;
+//   background: #f3f4f6;
+// }
+// .telTilBox {
+//   padding-top: 10px;
+//   padding-bottom: 6px;
+//   min-height: 84px;
+//   height: auto;
+//   background: #f3f4f6;
+//   margin-top: -26px;
+// }
+// .telNavClickOut {
+//   margin-top: -69px;
+// }
+// .telNavBoxOut {
+//   position: absolute;
+//   z-index: 9;
+//   width: 100%;
+// }
 </style>

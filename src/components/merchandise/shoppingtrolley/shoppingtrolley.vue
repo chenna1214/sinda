@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="gouwuche" class="pctaxservices-body">
+        <div class="pctaxservices-body">
             <a class="pctaxservices-title">首页/购物车</a>
             <el-row>
                 <el-col :span="24">
@@ -29,7 +29,7 @@
                       <p class="pcsh-act">操作</p>
                   </el-col>
                 </el-row>
-                <div class="pcsh-taelm" v-for="shTrData in shTrDatas" :key="shTrData.providerName">
+                <div class="pcsh-taelm" v-for="(shTrData,idx) in shTrDatas" :key="shTrData.providerName">
                   <p class="pcsh-conm">{{shTrData.providerName}}</p>
                   <el-row class="pcsh-ginfo">
                     <el-col :span="4">
@@ -43,14 +43,28 @@
                     <el-col :span="3">
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
                     </el-col>
-                    <el-col :span="5" class="pcsh-cot-w">
-                      <el-input-number @change="handleChange" class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
+                    <el-col :span="5" class="pcsh-cot-w" >
+                      <div @click='handleClick(shTrData.serviceId,shTrData.buyNum,idx)'>
+                        <el-input-number  @change="handleChange" class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
+                        <div>
+                          <span>{{shTrData.buyNum}}</span>
+                          <span></span>
+                          <!-- <input type="number"> -->
+                        </div>
+                      </div>
                     </el-col>
                     <el-col :span="3">
-                      <p class="pcsh-money pcsh-mnyin">￥{{shTrData.unitPrice*shTrData.buyNum}}</p>
+                      <p class="pcsh-money pcsh-mnyin">￥{{shTrData.totalPrice}}</p>
                     </el-col>
-                    <el-col :span="5">
-                      <p @click="removeGoods(shTrData.serviceId)" class="pcsh-act pointer">删除</p>
+                    <el-col :span="5" class="pcsh-remv">
+                      <p  @click="centerDialogVisible = true"  class="pcsh-act pointer">删除</p>
+                      <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                        <div class="pcsh-pophd">信息</div>
+                        <span slot="footer" class="dialog-footer">
+                          <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
+                          <el-button @click="centerDialogVisible = false">取 消</el-button>
+                        </span>
+                      </el-dialog>
                     </el-col>
                   </el-row>
                 </div>
@@ -80,6 +94,7 @@
                       <p class="pcpp-more">查看详情>>></p>
                     </div>
                   </el-col>
+                  
                 </el-row>
               </div>
             </div>
@@ -108,30 +123,44 @@ export default {
         // console.log("data.data.data==", data.data.data);
         for (var i = 0; i < that.shTrDatas.length; i++) {
           // 商品数量
-          // console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
           that.goodsnum += that.shTrDatas[i].buyNum;
           // 总价
           that.tlPrice +=
-            that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;
+            that.shTrDatas[i].totalPrice;
         }
       });
     },
     // 计数器变化
     handleChange(value) {
-      console.log(value);
-      // console.log(itsid);
-      // 添加到购物车
-      // this.ajax.post("/xinda-api/cart/add",
-      //     this.qs.stringify({ id: itsid, num: value-this.oldvalue  })
+      var that = this;
+      // console.log(value);
+      // // console.log(itsid);
+      // // 添加到购物车
+      // console.log('value - this.oldvalue==',value - this.oldvalue)
+      // var numberadd = value - this.oldvalue
+      // this.ajax
+      //   .post(
+      //     "/xinda-api/cart/add",
+      //     this.qs.stringify({ id: this.numid, num: numberadd })
       //   )
       //   .then(function(data) {
       //     console.log(data);
+      //     that.getGoods();
       //   });
       // this.oldvalue = value;
+      
+    },
+    // 获取id
+    handleClick(sid, buynumber,idx) {
+      this.buynumber = buynumber;
+      console.log("sid==", sid);
+      this.numid = sid;
+      
     },
     // -------------------
     //删除商品
     removeGoods: function(id) {
+      this.centerDialogVisible = false;
       var that = this;
       this.ajax
         .post("/xinda-api/cart/del", this.qs.stringify({ id: id }))
@@ -139,7 +168,7 @@ export default {
           // that.products = data.data.data;
           // console.log(data);
           // 重新获取数据
-          that.getGoods() 
+          that.getGoods();
         });
       // this.ajax.post("/xinda-api/cart/list").then(function(data) {
       //   that.shTrDatas = data.data.data;
@@ -173,21 +202,23 @@ export default {
       });
     }
   },
-  // watch:{
-
-  // },
+  watch:{
+    // buynumber
+  },
   created() {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
       console.log("data.data.data==", data.data.data);
+      // that.buynumber = that.shTrDatas[that.idx].buyNum;
       for (var i = 0; i < that.shTrDatas.length; i++) {
         // 商品数量
         console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
+        // 加减数初始值
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
-        that.tlPrice += that.shTrDatas[i].unitPrice * that.shTrDatas[i].buyNum;
+        that.tlPrice += that.shTrDatas[i].totalPrice;
       }
     });
     this.goodsnum = that.goodsnum;
@@ -213,8 +244,12 @@ export default {
       tlPrice: 0,
       popservises: [],
       order: "",
-      oldvalue: 1
+      oldvalue: 1,
       // value: ''
+      centerDialogVisible: false,
+      numid: "",
+      buynumber: 0,
+      idx: 0
     };
   },
   components: {}
@@ -435,6 +470,42 @@ export default {
       height: 20px;
       border: 0;
     }
+  }
+}
+
+// 删除部分
+.pcsh-remv {
+  // 弹出框
+  .el-dialog--center {
+    position: relative;
+    width: 22% !important;
+    overflow: hidden;
+    .el-dialog__header {
+      margin-top: 85px;
+      line-height: 60px;
+      padding: 0;
+    }
+    .el-dialog__body {
+      position: absolute;
+      top: 0;
+      width: 96%;
+      padding: 0 0 0 4%;
+      line-height: 50px;
+      color: #000;
+      font-weight: 700;
+      background: #bbb;
+    }
+    .el-dialog__footer {
+      padding: 0;
+      line-height: 100px;
+      .el-button {
+        width: 140px;
+        height: 45px;
+      }
+    }
+  }
+  .el-dialog__headerbtn {
+    z-index: 10;
   }
 }
 </style>
