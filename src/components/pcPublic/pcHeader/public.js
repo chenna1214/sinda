@@ -1,5 +1,7 @@
+import Vue from 'vue'
 import axios from 'axios';
-import ElementUI from 'element-ui'
+import ElementUI from 'element-ui';
+import Router from 'vue-router'
 
 export default function getCitys(pcChoosedCity, pcCityNameSuc) {
     axios.post("/xinda-api/common/select-region").then(data => {
@@ -51,7 +53,6 @@ export function getTitles(rDataObjs) {//获取产品导航标题
             }
             rDataObjs.titles = rDataObj;
         });
-        
-        
-
 }
+
+

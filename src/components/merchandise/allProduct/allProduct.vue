@@ -130,14 +130,13 @@
           <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
           <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
           <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
-            <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
-            <span class="pcCreateunit" >{{product.unit}}</span>
-            <button class="pcCreateDetail">查看详情</button>
+          <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
+          <span class="pcCreateunit" >{{product.unit}}</span>
+          <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
         </div>
       </div>
     </el-col>
   </el-row>
-
   <!-- 知识产权标题 -->
   <el-row>
     <el-col>
@@ -250,6 +249,7 @@ import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城�
 import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
 
 
+
 const gourl = '/merchandise/taxationService'//点击手机端端头部导航图片、文字，跳转到指定路径 
 export default {
   name: "allProduct",
@@ -284,7 +284,6 @@ export default {
         that.pcRecommends = myArray;
       });
   },
-  mounted() {},
   data() {
     return {
       //手机端
@@ -396,6 +395,11 @@ export default {
     };
   },
   methods: {
+    productDetail(proId){//查看初创企业必备的产品详情
+    
+
+
+    },
     pcSerClick: function(index) {
       this.pcSer = index;
       this.pcSerSty = index;
@@ -406,6 +410,7 @@ export default {
     telNavClick(telIdx) {
       this.telIndex = telIdx;
       telIdx = !telIdx;
+       
     }, //手机端头部导航
     telMenu() {
       //选择城市下拉框

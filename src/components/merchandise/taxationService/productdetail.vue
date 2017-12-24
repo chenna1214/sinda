@@ -155,25 +155,33 @@
           <div class="bodone-input">
             <!-- 手机号码 -->
             <div class="bodinp-tel">
-              <input type="text" placeholder="请输入手机号码">
+              <input type="text" placeholder="请输入手机号码" @focus="telfocus" @blur="telblur" v-model="telvalue">
+              <div class="tel-please" :class="telstyle">请输入11位中国大陆手机号</div>
+              <div class="tel-wrong" :class="wrostyle">× 手机号码输入错误</div>
+              <div class="tel-nonull" :class="nonstyle">× 手机号码不能为空</div>
             </div>
             <!-- 图形验证码 -->
             <div class="bodinp-piccode">
               <div class="bodinp-graphcode">
-                <input type="text" placeholder="请输入图形验证码">
+                <input type="text" placeholder="请输入图形验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
               </div>
-              <div class="bodinp-image">
-                <img src="../pc_images/u8382.png" alt="">
+              <div class="bodinp-image" @click="imgReflash">
+                <img :src="bodimg" alt="">
               </div>
+              <div class="code-nonull" v-show="yyan">× 验证码不能为空</div>
+              <div class="code-wrong" v-show="eyan">× 验证码错误</div>
             </div>
             <!-- 验证码 -->
             <div class="bodinp-code">
               <div class="bodinp-chacode">
-                <input type="text" placeholder="请输入验证码">
+                <input type="text" placeholder="请输入验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
               </div>
               <div class="bodinp-getcode">
-                <button>获取验证码</button>
+                <button v-show = "show" @click="getCode">获取验证码</button>
+                <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
               </div>
+              <div class="cha-nonull" :class="chanons">× 验证码不能为空</div>
+              <div class="cha-wrong" :class="chawros">× 验证码错误</div>
             </div>
             <!-- 开始免费咨询 -->
             <div class="bodinp-free">
@@ -201,11 +209,65 @@
 
   export default {
     name: "productdetail",
+    watch:{
+      $route:function(){
+         this.upData(this.$route.query.id)
+
+      }
+    },
       created() {
-      var that = this;
-      console.log('this.$router.query.id ==',this.$route.query.id );
-      // 商品详情页的评价
-      this.ajax.post("/xinda-api/product/judge/detail",
+        this.upData(this.$route.query.id)
+    },
+
+    data() {
+      return {
+        proevas: [],
+        evaluates: [],
+        goods: [],
+        actstyle: 'chose',
+        tastyle: 'choses',
+        smstyle: 'choses',
+        buynum: 1,
+        show: true,
+        // 手机号
+        telstyle: 'chahide',
+        wrostyle: 'chahide',
+        nonstyle: 'chahide',
+        telvalue: '',
+
+        // 图片验证码
+        bodimg: "/xinda-api/ajaxAuthcode",
+        imgCode: '',
+        yyan: false,
+        eyan: false,
+        // 验证码
+        chanons: 'chahide',
+        chawros: 'chahide',
+        smsNumber: "",
+        // 点击获取
+        count: "",
+        timer: null,
+      };
+    },
+    methods: {
+      upData(){
+        var that = this;
+        this.ajax.post('/xinda-api/product/package/detail',
+        this.qs.stringify({
+          sId: this.$route.query.id,
+        })).then(function (data) {
+          var good = data.data.data
+          that.goods = good;
+          that.goods.marketprice = that.goods.product.marketPrice;//市场价
+          that.goods.img = that.goods.product.img;//图片
+          that.goods.price = that.goods.providerProduct.price;//价格
+          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
+          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
+          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
+          console.log('good ==',good)
+        });
+
+         this.ajax.post("/xinda-api/product/judge/detail",
         this.qs.stringify({
           serviceId: this.$route.query.id,
           })).then(function (data) {
@@ -221,35 +283,9 @@
           })).then(function (eva) {
             // console.log(eva.data)
       });
-      // 相对路径
-      this.ajax.post('/xinda-api/product/package/detail',
-        this.qs.stringify({
-          sId: this.$route.query.id,
-        })).then(function (data) {
-          var good = data.data.data
-          that.goods = good;
-          that.goods.marketprice = that.goods.product.marketPrice;//市场价
-          that.goods.img = that.goods.product.img;//图片
-          that.goods.price = that.goods.providerProduct.price;//价格
-          that.goods.servicename = that.goods.providerProduct.serviceName;//名字
-          that.goods.info= that.goods.providerProduct.serviceInfo;//介绍
-          that.goods.content = that.goods.providerProduct.serviceContent;//服务内容
-          console.log('good ==',good)
-        });
     },
 
-    data() {
-      return {
-        proevas: [],
-        evaluates: [],
-        goods: [],
-        actstyle: 'chose',
-        tastyle: 'choses',
-        smstyle: 'choses',
-        buynum: 1,
-      };
-    },
-    methods: {
+
       //加入购物车
        ...mapActions(["setNum"]),
        join () {
@@ -304,11 +340,162 @@
           document.querySelector('.parinf-num input').value = 1;
         }
       },
+      // 手机号码
+      telfocus: function (){
+        this.telstyle = 'chashow';
+        this.nonstyle = 'chahide';
+        this.wrostyle = 'chahide';
+      },
+      telblur: function () {
+        if (!this.telvalue) {//未输入手机号码
+          this.nonstyle = 'chashow';
+          this.telstyle = 'chahide';
+          this.wrostyle = 'chahide';
+        }else {//手机号码输入
+          var telzz = /^1[3|4|5|7|8]\d{9}$/;
+          if (!telzz.test(this.telvalue)) {//手机号码不符合正则表达式
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chashow';
+          }else {//手机号码符合正则表达式
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chahide';
+          }
+        }
+      },
+      // 图片验证码
+        //验证码图片点击更换
+      imgReflash: function() {
+        this.bodimg = this.bodimg + "?t=" + new Date().getTime();
+      },
+      Zyan: function() {
+        this.eyan = false;
+        this.yyan = false;
+      },
+      Cyan: function() {
+        this.yyan = false;
+        this.eyan = false;
+        var imgCodeStyle = /^[A-Za-z0-9]{4}$/;
+        if (this.imgCode) {//输入了验证码
+          if (!imgCodeStyle.test(this.imgCode)) {//不符合正则
+            this.yyan = false;
+            this.eyan = true;
+          } else {//符合正则
+            this.eyan = false;
+            this.yyan = false;
+          }
+        } else {//验证码未输入
+          this.yyan = true;
+          this.eyan = false;
+        }
+      },
+      // 短信验证码
+      Zduan: function() {
+        this.eduan = false;
+        this.yduan = true;
+        this.showYDuan = false;
+      },
+      Cduan: function() {
+        var smsNumberStyle = /^[0-9]{6}$/;
+        if (this.smsNumber) {//输入框有输入
+          this.chanons = 'chahide';
+          if (!smsNumberStyle.test(this.smsNumber)) {//不符合正则
+            this.chanons = 'chahide';
+            this.chawros = 'chashow';
+          } else {//符合正则
+            this.chanons = 'chahide';
+            this.chawros = 'chahide';
+          }
+        } else {//无输入
+          this.chanons = 'chashow';
+          this.chawros = 'chahide';
+        }
+      },
+      //点击获取短信验证码
+      getCode: function() {
+        // 判断手机号
+        if (this.telvalue) {
+          //手机号有输入时
+          if (!/^1[3|4|5|7|8]\d{9}$/.test(this.telvalue)) {
+            //手机号匹配错误
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chashow';
+          } else {
+            //手机号匹配正确
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chahide';
+          }
+        } else {
+          //手机号为空时
+          this.nonstyle = 'chashow';
+          this.telstyle = 'chahide';
+          this.wrostyle = 'chahide';
+        }
+        // 判断验证码
+        if (this.imgCode) {
+          //验证码有输入时
+          //图片验证码匹配
+          this.ajax
+            .post(
+              "/xinda-api/register/sendsms",
+              this.qs.stringify({
+                cellphone: this.telvalue,
+                smsType: 1,
+                imgCode: this.imgCode
+              })
+            )
+            .then(data => {
+              console.log(data, data.data.status);
+              if (data.data.status == 1) {
+                //图片验证码输入正确
+                this.get = false;
+                this.getNew = true;
+                this.eyan = false;
+                this.yyan = false;
+                const TIME_COUNT = 60;
+                if (!this.timer) {
+                  this.count = TIME_COUNT;
+                  this.show = false;
+                  this.timer = setInterval(() => {
+                    if (this.count > 0 && this.count <= TIME_COUNT) {
+                      this.count--;
+                    } else {
+                      this.show = true;
+                      clearInterval(this.timer);
+                      this.timer = null;
+                    }
+                  }, 1000);
+                }
+              } else {
+                //图片验证码输入错误
+                console.log(data.data.msg);
+                this.yyan = false;
+                this.eyan = true;
+                this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
+              }
+            });
+        } else {
+          //验证码为空时
+          this.yyan = true;
+          this.eyan = false;
+        }
+      },
     }
   };
 </script>
 
 <style scoped lang='less'>
+// 显示隐藏
+.chashow{
+  display: block;
+}
+.chahide{
+  display: none;
+}
+
 .chose{
   color: #2693d4;
   border-color: #2693d4;
@@ -752,28 +939,48 @@ button{
         margin-top: 1%;
       }
       .bodone-input{
-        width:70%;
+        width:76%;
         margin: 0 auto;
         margin-top: 3%;
         margin-bottom: 5%;
         >div{
-          width: 50%;
+          width: 86%;
           margin: 0 auto;
           margin-top: 3%;
         }
+        // 手机号码
         .bodinp-tel{
+          font-size: 13px;
+          display: flex;
           input{
-            width: 100%;
+            width: 62%;
             height: 34px;
             border: 1px solid #aaa;
             border-radius: 4px;
           }
+          .tel-please{
+            color: #777;
+            margin-left: 5%;
+            line-height: 36px;
+          }
+          .tel-wrong{
+            color: #f00;
+            margin-left: 5%;
+            line-height: 36px;
+          }
+          .tel-nonull{
+            color: #f00;
+            margin-left: 5%;
+            line-height: 36px;
+          }
         }
+        // 图形验证码
         .bodinp-piccode{
+          font-size: 13px;
+          color: #777;
           display: flex;
-          justify-content: space-between;
           .bodinp-graphcode{
-            width: 60%;
+            width: 40%;
             height: 34px;
             input{
               width: 100%;
@@ -783,20 +990,34 @@ button{
             }
           }
           .bodinp-image{
-            width: 34%;
+            width: 20%;
             height: 34px;
+            margin-left: 2%;
+            border: 1px solid #999;
+            border-radius: 4px;
             img{
               width: 100%;
               height: 100%;
               border-radius: 4px;
             }
           }
+          .code-nonull{
+            color: #f00;
+            line-height: 34px;
+            margin-left: 5%;
+          }
+          .code-wrong{
+            color: #f00;
+            line-height: 34px;
+            margin-left: 5%;
+          }
         }
+        // 验证码
         .bodinp-code{
+          font-size: 13px;
           display: flex;
-          justify-content: space-between;
           .bodinp-chacode{
-            width: 60%;
+            width: 40%;
             height: 34px;
             input{
               width: 100%;
@@ -806,16 +1027,33 @@ button{
             }
           }
           .bodinp-getcode{
-            width: 34%;
+            width: 20%;
             height: 34px;
+            margin-left: 2%;
             button{
               width: 100%;
               height: 100%;
               border: none;
               border-radius: 4px;
             }
+            .getgray{
+              text-align: center;
+              line-height: 34px;
+              color: #6e6d6d;
+            }
+          }
+          .cha-nonull{
+            color: #f00;
+            line-height: 34px;
+            margin-left: 5%;
+          }
+          .cha-wrong{
+            color: #f00;
+            line-height: 34px;
+            margin-left: 5%;
           }
         }
+        // 开始免费咨询
         .bodinp-free{
           button{
             width: 100%;
@@ -841,8 +1079,15 @@ button{
       margin: 0 auto;
       display: none;
       >div{
-        font-size: 30px;
-        margin-top: 7%;
+        font-size: 24px;
+        line-height: 40px;
+        margin-bottom: 2%;
+        &:nth-child(1){
+          margin-top: 7%;
+        }
+        &:nth-child(3){
+          margin-bottom: 22%;
+        }
       }
     }
   }
