@@ -1,71 +1,108 @@
 <template>
   <div>
-   <!-- 店铺 -->
-    <div class="pctaxservices-body">
-      <a class="pctaxservices-title">首页/店铺</a>
-      <!-- 三级联动 -->
-      <autourban @selected="selected" class="pcshop-auto" style="width:100% ;background: #f7f7f7;"></autourban>
-      <el-row class="pcauto-wrap hidden-xs-only">
-        <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
-        <el-col :span="22"><ul class="pctax-servisenav clear">
-          <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
+    <div class="hidden-xs-only">
+<!-- 店铺 -->
+      <div class="pctaxservices-body">
+        <a class="pctaxservices-title">首页/店铺</a>
+        <!-- 三级联动 -->
+        <autourban @selected="selected" class="pcshop-auto" style="width:100% ;background: #f7f7f7;"></autourban>
+        <el-row class="pcauto-wrap hidden-xs-only">
+          <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
+          <el-col :span="22"><ul class="pctax-servisenav clear">
+            <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
 
-          <!-- <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li> -->
+            <!-- <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li> -->
 
-          <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj" :key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
+            <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj" :key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
 
-        </ul></el-col>
-      </el-row>
+          </ul></el-col>
+        </el-row>
+      </div>
+      <div class="pcsp-body">
+        <!-- 财税服务 商品列表 -->
+          <div class="pccny-gds">
+            <ul class="pccn-ghead clear">
+              <li @click="ascendingOrder(1)" :class='{"pxtax-clickst-1":sortindex==1}' class="pccn-ghcora">综合排序</li>
+              <li @click="ascendingOrder(2)" :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
+              <li @click="ascendingOrder(3)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">接单数<span class="pccn-ghico"></span></li>
+            </ul>
+            <div class="pcsp-shops">
+              <el-row>
+                <el-col :span="12" v-for="product in products" :key="product.providerName"  class="pcsp-shewp">
+                  <div class="pcsp-shelm clear">
+                    <div class="pcsp-shell">
+                      <div class="pcsp-imgwp">
+                        <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
+                      </div>
+                      <p class="pcsp-gdser"><span class="pcsp-gsico"></span><span class="pcsp-gswd">金牌服务商</span></p>
+                    </div>
+
+                    <div class="pcsp-shelr">
+                      <p class="pcsp-shenm">{{product.providerName}}</p>
+                      <p class="pcsp-elrpt">
+                        <span class="pcsh-repu">信誉</span>
+                        <span :class='{"pcs-redje":product.goodJudge>0}' class="pcsh-jewel pcs-blkje"></span>
+                        <span :class='{"pcs-redje":product.goodJudge>1}' class="pcsh-jewel pcs-blkje"></span>
+                        <span :class='{"pcs-redje":product.goodJudge>2}' class="pcsh-jewel pcs-blkje"></span>
+                        <span :class='{"pcs-redje":product.goodJudge>3}' class="pcsh-jewel pcs-blkje"></span>
+                        <span :class='{"pcs-redje":product.goodJudge>4}' class="pcsh-jewel pcs-blkje"></span>
+                      </p>
+                      <p class="pcsp-eladr">{{product.regionName}}</p>
+                      <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
+                      <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
+                      <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
+                      <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+          <!--  -->
+          <div class="pcsh-pgnm clear">
+            <input class="pcsh-prpg" @click="prPage()" type="button" value="上一页">
+            <span @click="choosePage(idx)" :class='{"pcsh-psty":code=idx}' v-for="(pageN,idx) in pageNum" :key="pageN">{{pageN}}</span>
+            <input type="button" value="下一页">
+          </div>
+          <!--  -->
+      </div>
     </div>
-    <div class="pcsp-body">
-      <!-- 财税服务 商品列表 -->
-        <div class="pccny-gds">
-          <ul class="pccn-ghead clear">
+
+    <!-- 店铺列表手机端 -->
+      <div class="hidden-sm-and-up">
+        <div class="tel-texhd">
+          <ul class="tel-txhin clear">
             <li @click="ascendingOrder(1)" :class='{"pxtax-clickst-1":sortindex==1}' class="pccn-ghcora">综合排序</li>
-            <li @click="ascendingOrder(2)" :class='{"pxtax-clickst-1":sortindex==2}' class="pccn-ghrise">价格<span class="pccn-ghico"></span></li>
             <li @click="ascendingOrder(3)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">接单数<span class="pccn-ghico"></span></li>
           </ul>
-          <div class="pcsp-shops">
-            <el-row>
-              <el-col :span="12" v-for="product in products" :key="product.providerName"  class="pcsp-shewp">
-                <div class="pcsp-shelm clear">
-                  <div class="pcsp-shell">
-                    <div class="pcsp-imgwp">
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
-                    </div>
-                    <p class="pcsp-gdser"><span class="pcsp-gsico"></span><span class="pcsp-gswd">金牌服务商</span></p>
-                  </div>
-
-                  <div class="pcsp-shelr">
-                    <p class="pcsp-shenm">{{product.providerName}}</p>
-                    <p class="pcsp-elrpt">
-                      <span class="pcsh-repu">信誉</span>
-                      <span :class='{"pcs-redje":product.goodJudge>0}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>1}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>2}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>3}' class="pcsh-jewel pcs-blkje"></span>
-                      <span :class='{"pcs-redje":product.goodJudge>4}' class="pcsh-jewel pcs-blkje"></span>
-                    </p>
-                    <p class="pcsp-eladr">{{product.regionName}}</p>
-                    <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
-                    <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
-                    <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
-                    <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
-                  </div>
+        </div>
+        <!-- 财税服务 手机端商品列表 -->
+        <ul class="tel-texbdy">
+          <!-- 财税服务 手机端商品 -->       
+          <li   v-for="product in products" :key="product.providerName" class="tel-texelm clear">
+            <!-- 左侧图片 -->
+            <div class="tel-teimg" @click="toDetail(product.id)" >
+              <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
+              </div>
+              <!-- 右侧文字部分 -->
+              <div class="tel-tewor">
+                <p class="tel-tenm">{{product.providerName}}</p>
+                <div class="tel-earea">
+                  <i class="el-icon-location-outline"></i><span class="tel-earcon">北京市 朝阳区</span>
                 </div>
-              </el-col>
-            </el-row>
-          </div>
+                <div class="tel-shcus">
+                  <p class="tel-cusnum">累计服务客户数量：<span>121</span></p>
+                  <p class="tel-sfavor">好评率：<span class="tel-sfarate">100%</span></p>
+                </div>
+              </div>
+          </li>
+        </ul>
+        <div class="tel-pagBox"><!-- 页码 -->
+          <i class="el-icon-arrow-left"  @click="upPage()"></i>
+          <!-- <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span> -->
+          <i class="el-icon-arrow-right" @click="downPage()"></i>
         </div>
-        <!--  -->
-        <div class="pcsh-pgnm clear">
-          <input class="pcsh-prpg" @click="prPage()" type="button" value="上一页">
-          <span @click="choosePage(idx)" :class='{"pcsh-psty":code=idx}' v-for="(pageN,idx) in pageNum" :key="pageN">{{pageN}}</span>
-          <input type="button" value="下一页">
-        </div>
-        <!--  -->
-    </div>
-    <router-view/>
+      </div>
    </div>
 </template>
 
@@ -247,253 +284,348 @@ export default {
 
 
 <style scoped lang='less'>
+@media all and (min-width: 768px) {
+  // 点击样式
+  .pxtax-clickst-1 {
+    background: #2693d4;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+    .pxtax-clickst-1a {
+      color: #fff !important;
+    }
+  }
+  .pctaxservices-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    .pctaxservices-title {
+      display: inline-block;
+      margin-top: 19px;
+      font-size: 13px;
+      color: #696969;
+      line-height: 27px;
+    }
+    // 服务分类内容
+    .pctax-servisenav {
+      height: 44px;
+      li {
+        margin: 9px 0 0 15px;
+        float: left;
+        width: 80px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        border-radius: 2px;
+      }
+    }
+    // 公司工商单行
+    .pcauto-wrap {
+      background: #f7f7f7;
+      // 行名称
+      .pcau-serv-classify {
+        text-align: center;
+        height: 44px;
+        line-height: 44px;
+        border: 1px solid #ccc;
+        border-top: 0;
+      }
+      // 行内容
+      .pctax-servisenav {
+        height: 44px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-top: 0;
+        border-left: 0;
+        li {
+          width: 80;
+          height: 25px;
+          border-radius: 2px;
+          a {
+            color: #626262;
+          }
+        }
+        .pctax-svsnav-eleml {
+          width: 106px;
+        }
+        li:hover {
+          background: #2693d4;
+          a {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .pccny-gds {
+    // max-width: 1200px;
+    // margin: 0 auto;
+    margin-top: 25px;
+    border: 1px solid #ccc;
+  }
+  // 排序方式选项
+  .pccn-ghead {
+    height: 43px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    li {
+      float: left;
+      height: 43px;
+      width: 107px;
+      text-align: center;
+      line-height: 43px;
+      .pccn-ghico {
+        margin-left: 5px;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background: url(../../images/companyIdstry/cpnyIndus.png) -2px -457px;
+      }
+    }
+  }
+
+  // 店铺列表
+  .pcsp-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    .pcsp-shops {
+      padding-top: 12px;
+      .pcsp-shewp {
+        .pcsp-shelm {
+          margin: 0 14px 15px;
+          min-height: 250px;
+          border: 1px solid #e9e9e9;
+          // 单个元素左侧
+          .pcsp-shell {
+            width: 35.1%;
+            float: left;
+            .pcsp-imgwp {
+              margin: 92px 48px 68px 35px;
+              width: 124px;
+              height: 30px;
+            }
+            .pcsp-gdser {
+              position: relative;
+              font-size: 13px;
+              color: #676767;
+              .pcsp-gsico {
+                display: inline-block;
+                margin-left: 47px;
+                width: 28px;
+                height: 32px;
+                background: transparent
+                  url("../../images/companyIdstry/m_xbt.png") -66px -75px;
+              }
+              .pcsp-gswd {
+                position: absolute;
+                top: 6px;
+                left: 83px;
+              }
+            }
+          }
+          // 单个元素右侧
+          .pcsp-shelr {
+            padding-top: 13.5px;
+            float: left;
+            font-size: 13px;
+            color: #676767;
+            .pcsp-shenm {
+              line-height: 38px;
+            }
+            // 信誉评价
+            .pcsp-elrpt {
+              overflow: hidden;
+              line-height: 21px;
+              // 小钻石
+              span {
+                float: left;
+                display: inline-block;
+              }
+              .pcsh-repu {
+                margin-right: 11px;
+              }
+              .pcsh-jewel {
+                margin-right: 7px;
+                width: 16px;
+                height: 15px;
+                background: lightcoral;
+              }
+              // 红钻石
+              .pcs-redje {
+                background: url("../../images/companyIdstry/m_xbt.png") !important;
+              }
+              // 黑钻石
+              .pcs-blkje {
+                background: url("../../images/companyIdstry/m_xbt.png") -20px 0;
+              }
+            }
+            .pcsp-eladr {
+              line-height: 21px;
+            }
+            .pcsp-elcnt {
+              line-height: 37px;
+            }
+            .pcsp-servs {
+              max-width: 320px;
+              height: 65px;
+              .pcsp-serv {
+                margin: 0 5px 5px 0;
+                display: inline-block;
+                width: 71px;
+                height: 22px;
+                line-height: 22px;
+                color: #fff;
+                text-align: center;
+                background: #2693d4;
+                border-radius: 3px;
+              }
+            }
+            .pcsp-enter {
+              width: 102px;
+              height: 33px;
+              color: #ffdcd6;
+              text-align: center;
+              line-height: 33px;
+              background: #ff591b;
+              border-radius: 3px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .pcsh-pgnm {
+    // display: flex;
+    // overflow: hidden;
+    margin: 62px auto;
+    max-width: 190px;
+    // height: 36px;
+    // justify-content: space-between;
+    color: #ccc;
+    font-size: 14px;
+    input {
+      float: left;
+      width: 68px;
+      height: 36px;
+      color: #ccc;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    .pcsh-prpg {
+      margin-right: 6px;
+    }
+    span {
+      margin-right: 6px;
+      float: left;
+      width: 37px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      display: inline-block;
+      color: #ccc;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    .pcsh-psty {
+      color: #2592d5;
+      border: 1px solid #2592d5;
+    }
+  }
+}
+
 // 点击样式
 .pxtax-clickst-1 {
   background: #2693d4;
   color: #fff;
-  a {
+  .pxtax-clickst-1a {
     color: #fff;
   }
-  .pxtax-clickst-1a {
-    color: #fff !important;
-  }
 }
-.pctaxservices-body {
-  max-width: 1200px;
-  margin: 0 auto;
-  .pctaxservices-title {
-    display: inline-block;
-    margin-top: 19px;
-    font-size: 13px;
-    color: #696969;
-    line-height: 27px;
+
+@media all and (max-width: 767px) {
+  html {
+    font-size: 20px !important;
   }
-  // 服务分类内容
-  .pctax-servisenav {
-    height: 44px;
-    li {
-      margin: 9px 0 0 15px;
-      float: left;
-      width: 80px;
-      height: 25px;
-      line-height: 25px;
-      text-align: center;
-      border-radius: 2px;
-    }
-  }
-  // 公司工商单行
-  .pcauto-wrap {
-    background: #f7f7f7;
-    // 行名称
-    .pcau-serv-classify {
-      text-align: center;
-      height: 44px;
-      line-height: 44px;
-      border: 1px solid #ccc;
-      border-top: 0;
-    }
-    // 行内容
-    .pctax-servisenav {
-      height: 44px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-top: 0;
-      border-left: 0;
+  .tel-texhd {
+    width: 100%;
+    // 头部ul
+    .tel-txhin {
+      margin: 2.005rem auto 0.75rem;
+      width: 18rem;
+      height: 3rem;
+      overflow: hidden;
+      border: 1px solid #2693d4;
+      border-radius: 4px;
       li {
-        width: 80;
-        height: 25px;
-        border-radius: 2px;
-        a {
-          color: #626262;
+        font-size: 1.4rem;
+        float: left;
+        width: 9rem;
+        height: 3rem;
+        line-height: 3rem;
+        text-align: center;
+      }
+    }
+  }
+  // 商品列表块
+  .tel-texbdy {
+    width: 100%;
+    padding-left: 3.27%;
+    .tel-texelm {
+      width: 100%;
+      padding-top: 0.85rem;
+      height: 10rem;
+      border-bottom: 1px solid #cfcfcf;
+      // 左侧图片
+      .tel-teimg {
+        margin: 0.4rem 1.2rem 0 0;
+        float: left;
+        width: 22.64%;
+        height: 8.35rem;
+        border: 2px solid #e3e3e3;
+        .tel-imgin {
+          width: 100%;
         }
       }
-      .pctax-svsnav-eleml {
-        width: 106px;
-      }
-      li:hover {
-        background: #2693d4;
-        a {
-          color: #fff;
+      .tel-tewor {
+        display: inline-block;
+        float: left;
+        padding-right: 5.45%;
+        width: 62%;
+        .tel-tenm {
+          color: #000;
+          font-size: 1.4rem;
+          line-height: 2.5rem;
+        }
+        .tel-earea{
+          .tel-earcon{
+            line-height: 2.7rem;
+          }
+        }
+        .tel-shcus{
+          margin-top: 1.25rem;
+          p{
+            line-height: 2.45rem;
+            display: inline-block;
+            span{
+              color: #f00;
+            }
+          }
         }
       }
     }
   }
 }
-
-.pccny-gds {
-  // max-width: 1200px;
-  // margin: 0 auto;
-  margin-top: 25px;
-  border: 1px solid #ccc;
-}
-// 排序方式选项
-.pccn-ghead {
-  height: 43px;
-  background: #f7f7f7;
-  border-bottom: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  li {
-    float: left;
-    height: 43px;
-    width: 107px;
-    text-align: center;
-    line-height: 43px;
-    .pccn-ghico {
-      margin-left: 5px;
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background: url(../../images/companyIdstry/cpnyIndus.png) -2px -457px;
-    }
-  }
-}
-
-// 店铺列表
-.pcsp-body {
-  max-width: 1200px;
+// 翻页
+.tel-pagBox {
+  width: 20%;
+  height: 8rem;
+  line-height: 8rem;
   margin: 0 auto;
-  .pcsp-shops {
-    padding-top: 12px;
-    .pcsp-shewp {
-      .pcsp-shelm {
-        margin: 0 14px 15px;
-        min-height: 250px;
-        border: 1px solid #e9e9e9;
-        // 单个元素左侧
-        .pcsp-shell {
-          width: 35.1%;
-          float: left;
-          .pcsp-imgwp {
-            margin: 92px 48px 68px 35px;
-            width: 124px;
-            height: 30px;
-          }
-          .pcsp-gdser {
-            position: relative;
-            font-size: 13px;
-            color: #676767;
-            .pcsp-gsico {
-              display: inline-block;
-              margin-left: 47px;
-              width: 28px;
-              height: 32px;
-              background: transparent
-                url("../../images/companyIdstry/m_xbt.png") -66px -75px;
-            }
-            .pcsp-gswd {
-              position: absolute;
-              top: 6px;
-              left: 83px;
-            }
-          }
-        }
-        // 单个元素右侧
-        .pcsp-shelr {
-          padding-top: 13.5px;
-          float: left;
-          font-size: 13px;
-          color: #676767;
-          .pcsp-shenm {
-            line-height: 38px;
-          }
-          // 信誉评价
-          .pcsp-elrpt {
-            overflow: hidden;
-            line-height: 21px;
-            // 小钻石
-            span {
-              float: left;
-              display: inline-block;
-            }
-            .pcsh-repu {
-              margin-right: 11px;
-            }
-            .pcsh-jewel {
-              margin-right: 7px;
-              width: 16px;
-              height: 15px;
-              background: lightcoral;
-            }
-            // 红钻石
-            .pcs-redje {
-              background: url("../../images/companyIdstry/m_xbt.png") !important;
-            }
-            // 黑钻石
-            .pcs-blkje {
-              background: url("../../images/companyIdstry/m_xbt.png") -20px 0;
-            }
-          }
-          .pcsp-eladr {
-            line-height: 21px;
-          }
-          .pcsp-elcnt {
-            line-height: 37px;
-          }
-          .pcsp-servs {
-            max-width: 320px;
-            height: 65px;
-            .pcsp-serv {
-              margin: 0 5px 5px 0;
-              display: inline-block;
-              width: 71px;
-              height: 22px;
-              line-height: 22px;
-              color: #fff;
-              text-align: center;
-              background: #2693d4;
-              border-radius: 3px;
-            }
-          }
-          .pcsp-enter {
-            width: 102px;
-            height: 33px;
-            color: #ffdcd6;
-            text-align: center;
-            line-height: 33px;
-            background: #ff591b;
-            border-radius: 3px;
-          }
-        }
-      }
-    }
-  }
-}
-
-.pcsh-pgnm {
-  // display: flex;
-  // overflow: hidden;
-  margin: 62px auto;
-  max-width: 190px;
-  // height: 36px;
-  // justify-content: space-between;
-  color: #ccc;
-  font-size: 14px;
-  input {
-    float: left;
-    width: 68px;
-    height: 36px;
-    color: #ccc;
-    background: #fff;
-    border: 1px solid #ccc;
-  }
-  .pcsh-prpg{
-    margin-right: 6px;
-  }
-  span{
-    margin-right: 6px;
-    float: left;
-    width: 37px;
-    height: 34px;
-    line-height: 34px;
-    text-align: center;
-    display: inline-block;
-    color: #ccc;
-    background: #fff;
-    border: 1px solid #ccc;
-  }
-  .pcsh-psty{
-    color: #2592d5;
-    border: 1px solid #2592d5;
+  i {
+    font-size: 2rem;
   }
 }
 </style>
