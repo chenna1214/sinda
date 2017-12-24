@@ -28,6 +28,7 @@
             </ul>
             <div class="pcsp-shops">
               <el-row>
+                <!-- pc端 单个元素 -->
                 <el-col :span="12" v-for="product in products" :key="product.providerName"  class="pcsp-shewp">
                   <div class="pcsp-shelm clear">
                     <div class="pcsp-shell">
@@ -48,10 +49,11 @@
                         <span :class='{"pcs-redje":product.goodJudge>4}' class="pcsh-jewel pcs-blkje"></span>
                       </p>
                       <p class="pcsp-eladr">{{product.regionName}}</p>
-                      <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}}</p>
+                      <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}} <span class="pcsp-favor">好评率：100%</span></p>
                       <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
                       <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
-                      <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
+                      <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺{{product.id}}</div>
+                      <!-- <router-link tag="button" :to="{path: '/merchandise/productdetail',query: { id: product.id }}" class="pcsp-enter">进入店铺</router-link> -->
                     </div>
                   </div>
                 </el-col>
@@ -81,20 +83,23 @@
           <!-- 财税服务 手机端商品 -->       
           <li   v-for="product in products" :key="product.providerName" class="tel-texelm clear">
             <!-- 左侧图片 -->
-            <div class="tel-teimg" @click="toDetail(product.id)" >
+            <router-link tag="button" :to="{path: '/merchandise/pc_shophp',query: { id: product.id }}" class="tel-teimg">
+              <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">            
+            </router-link>
+            <!-- <div class="tel-teimg" @click="toDetail(product.id)" >
               <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
+            </div> -->
+            <!-- 右侧文字部分 -->
+            <div class="tel-tewor">
+              <p class="tel-tenm">{{product.providerName}}</p>
+              <div class="tel-earea">
+                <i class="el-icon-location-outline"></i><span class="tel-earcon">{{product.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span>
               </div>
-              <!-- 右侧文字部分 -->
-              <div class="tel-tewor">
-                <p class="tel-tenm">{{product.providerName}}</p>
-                <div class="tel-earea">
-                  <i class="el-icon-location-outline"></i><span class="tel-earcon">北京市 朝阳区</span>
-                </div>
-                <div class="tel-shcus">
-                  <p class="tel-cusnum">累计服务客户数量：<span>121</span></p>
-                  <p class="tel-sfavor">好评率：<span class="tel-sfarate">100%</span></p>
-                </div>
+              <div class="tel-shcus">
+                <p class="tel-cusnum">累计服务客户数量：<span>{{product.orderNum}}</span></p>
+                <p class="tel-sfavor">好评率：<span class="tel-sfarate">100%</span></p>
               </div>
+            </div>
           </li>
         </ul>
         <div class="tel-pagBox"><!-- 页码 -->
@@ -127,10 +132,10 @@ export default {
       return newObj;
     },
     // 向商品详情页面传数据
-    toDetail(id) {
+    toDetail(sid) {
       this.$router.push({
         path: "/merchandise/productdetail",
-        query: { id: id }
+        query: { id: sid }
       });
     },
     // 商品筛选（产品类型）
@@ -427,6 +432,7 @@ export default {
           }
           // 单个元素右侧
           .pcsp-shelr {
+            width: 64.9%;
             padding-top: 13.5px;
             float: left;
             font-size: 13px;
@@ -464,8 +470,17 @@ export default {
             .pcsp-eladr {
               line-height: 21px;
             }
+            // 服务客户次数
             .pcsp-elcnt {
               line-height: 37px;
+              .pcsp-favor{
+                margin-left: 2%;
+                display: inline-block;
+                width: 41.66%;
+                line-height: 16px;
+                text-align: right;
+                border-left: 1px solid #a3a3a3;
+              }
             }
             .pcsp-servs {
               max-width: 320px;
@@ -546,9 +561,6 @@ export default {
 }
 
 @media all and (max-width: 767px) {
-  html {
-    font-size: 20px !important;
-  }
   .tel-texhd {
     width: 100%;
     // 头部ul
@@ -576,13 +588,15 @@ export default {
     .tel-texelm {
       width: 100%;
       padding-top: 0.85rem;
-      height: 10rem;
+      min-height: 10rem;
       border-bottom: 1px solid #cfcfcf;
       // 左侧图片
       .tel-teimg {
+        background: #fff;
         margin: 0.4rem 1.2rem 0 0;
         float: left;
-        width: 22.64%;
+        // width: 22.64%;
+        width: 8.35rem;
         height: 8.35rem;
         border: 2px solid #e3e3e3;
         .tel-imgin {
@@ -612,6 +626,9 @@ export default {
             span{
               color: #f00;
             }
+          }
+          .tel-sfavor{
+            padding-left: 3%;
           }
         }
       }
