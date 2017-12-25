@@ -1,8 +1,7 @@
 <template>
     <div>
       <!-- 支付宝支付 -->
-      <div class="Alipay"></div>
-        
+      <div class="Alipay" v-loading.fullscreen.lock="fullscreenLoading"></div>
     </div>
 
 </template>
@@ -23,10 +22,14 @@ export default {
     );
     var formId = document.getElementById("alipaysubmit");
     formId.submit();
-    console.log('支付宝', Alipay.innerHTML)
-    
-    
-    
+  },
+   created(){
+       const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)',
+        });
   }
 };
 </script>

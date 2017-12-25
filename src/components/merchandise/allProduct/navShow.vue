@@ -76,13 +76,12 @@ export default {
   height: 94px;
   line-height: 94px;
   border-bottom: 1px solid #cbcbcd;
-//   background: white;
 }
 .telNavText {
-  font-size: 22px;
+  font-size: 1.1rem;
 }
 .telNavText {
-  font-size: 25px;
+  font-size: 1.25rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -101,7 +100,7 @@ export default {
 }
 .telSecondTil {
   color: #666465;
-  font-size: 22px;
+  font-size: 1.1rem;
 
   border-bottom: 1px solid #cbcbcd;
   padding-top: 23px;
@@ -110,7 +109,7 @@ export default {
 }
 .telNavThrid {
   color: #666465;
-  font-size: 18px;
+  font-size: 0.9rem;
   margin-left: 60px;
   padding-top: 28px;
   padding-bottom: 23px;
