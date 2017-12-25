@@ -566,18 +566,18 @@ export default {
     width: 100%;
     // 头部ul
     .tel-txhin {
-      margin: 2.005rem auto 0.75rem;
-      width: 18rem;
-      height: 3rem;
+      margin: 0.401rem auto 0.15rem;
+      width: 3.6rem;
+      height: 0.6rem;
       overflow: hidden;
       border: 1px solid #2693d4;
       border-radius: 4px;
       li {
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         float: left;
-        width: 9rem;
-        height: 3rem;
-        line-height: 3rem;
+        width: 1.8rem;
+        height: 0.6rem;
+        line-height: 0.6rem;
         text-align: center;
       }
     }
@@ -588,17 +588,17 @@ export default {
     padding-left: 3.27%;
     .tel-texelm {
       width: 100%;
-      padding-top: 0.85rem;
-      min-height: 10rem;
+      padding-top: 0.17rem;
+      min-height: 2rem;
       border-bottom: 1px solid #cfcfcf;
       // 左侧图片
       .tel-teimg {
         background: #fff;
-        margin: 0.4rem 1.2rem 0 0;
+        margin: 0.08rem 0.24rem 0 0;
         float: left;
         // width: 22.64%;
-        width: 8.35rem;
-        height: 8.35rem;
+        width: 1.67rem;
+        height: 1.67rem;
         border: 2px solid #e3e3e3;
         .tel-imgin {
           width: 100%;
@@ -611,18 +611,18 @@ export default {
         width: 62%;
         .tel-tenm {
           color: #000;
-          font-size: 1.4rem;
-          line-height: 2.5rem;
+          font-size: 0.28rem;
+          line-height: 0.5rem;
         }
         .tel-earea{
           .tel-earcon{
-            line-height: 2.7rem;
+            line-height: 0.54rem;
           }
         }
         .tel-shcus{
-          margin-top: 1.25rem;
+          margin-top: 0.25rem;
           p{
-            line-height: 2.45rem;
+            line-height: 0.49rem;
             display: inline-block;
             span{
               color: #f00;
@@ -639,11 +639,11 @@ export default {
 // // 翻页
 // .tel-pagBox {
 //   width: 20%;
-//   height: 8rem;
-//   line-height: 8rem;
+//   height: 1.6rem;
+//   line-height: 1.6rem;
 //   margin: 0 auto;
 //   i {
-//     font-size: 2rem;
+//     font-size: 0.4rem;
 //   }
 // }
 </style>
