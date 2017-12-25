@@ -20,9 +20,9 @@ Vue.prototype.qs = qs;
 /**
  * 持续调用只执行一次工具方法
  *  @param fn {Function}   实际要执行的函数
-* @param delay {Number}  延迟时间，也就是阈值，单位是毫秒（ms）
-*
-* @return {Function}     返回一个“去弹跳”了的函数
+ * @param delay {Number}  延迟时间，也就是阈值，单位是毫秒（ms）
+ *
+ * @return {Function}     返回一个“去弹跳”了的函数
  */
 Vue.prototype.debounce = function debounce(fn, delay) {
 
@@ -47,6 +47,19 @@ Vue.prototype.debounce = function debounce(fn, delay) {
   }
 }
 
+// Vue.prototype.autoHtml = function () {
+  
+// }
+// Vue.prototype.autoHtml();
+function setRem(){
+  var _w = document.documentElement.clientWidth; //屏幕可视区域宽高w3c下全兼容
+  var _fontsize = (_w / 750) * 100;
+  var html = document.getElementsByTagName('html')[0];
+  html.style.fontSize = _fontsize+'px';
+}
+window.onresize = setRem;
+setRem();
+
 
 
 new Vue({
@@ -54,7 +67,16 @@ new Vue({
   router,
   store,
   template: '<sinda/>',
-  components: { sinda }
+  screenWidth: document.documentElement.clientWidth,
+  components: {
+    sinda
+  },
+  watch:{
+    screenWidth:function(){
+      Vue.prototype.autoHtml();
+
+    }
+
+  }
+
 })
-
-

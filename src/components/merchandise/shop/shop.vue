@@ -102,11 +102,12 @@
             </div>
           </li>
         </ul>
-        <div class="tel-pagBox"><!-- 页码 -->
+        <!-- 页码 -->
+        <!-- <div class="tel-pagBox">
           <i class="el-icon-arrow-left"  @click="upPage()"></i>
-          <!-- <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span> -->
+          <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
           <i class="el-icon-arrow-right" @click="downPage()"></i>
-        </div>
+        </div> -->
       </div>
    </div>
 </template>
@@ -635,16 +636,16 @@ export default {
     }
   }
 }
-// 翻页
-.tel-pagBox {
-  width: 20%;
-  height: 8rem;
-  line-height: 8rem;
-  margin: 0 auto;
-  i {
-    font-size: 2rem;
-  }
-}
+// // 翻页
+// .tel-pagBox {
+//   width: 20%;
+//   height: 8rem;
+//   line-height: 8rem;
+//   margin: 0 auto;
+//   i {
+//     font-size: 2rem;
+//   }
+// }
 </style>
 
 
