@@ -296,17 +296,20 @@
       <!-- 固定部分 -->
       <div class="wefixed">
         <!-- 联系商家 -->
-        <div class="wef-contact">
+        <div class="wef-contact"  @click="refer">
           <div>
             <img src="../pc_images/m_contact.png" alt="">
           </div>
           <div>联系商家</div>
         </div>
         <!-- 加入购物车 -->
-        <div class="wef-join">加入购物车</div>
+        <div class="wef-join" @click="join">加入购物车</div>
         <!-- 立即购买 -->
         <div class="wef-pay">立即购买</div>
       </div>
+
+      <!-- 出现部分 -->
+      <!-- <div class="joinsucess">加入成功</div> -->
     </div>
   </div>
 </template>
@@ -403,7 +406,7 @@
         this.setNum();
         this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: this.buynum }))
         .then(function(data) {
-          // console.log(data);
+          console.log(data.data.status);
         });
        },
 
@@ -1214,14 +1217,14 @@
       border-top: 5px solid #2693d4;
       border-bottom: 4px solid transparent;
       transform: rotate(180deg);
-      margin-top: -0.5rem;
-      margin-left: 4rem;
+      margin-top: -0.1rem;
+      margin-left: 0.8rem;
       position: absolute;
     }
     // 顶部图片及文字
     .wepic{
       width: 100%;
-      height: 24rem;
+      height: 4.8rem;
       display: flex;
       flex-wrap: wrap;
       .wep-img{
@@ -1234,22 +1237,22 @@
       }
       .wep-cha{
         width: 100%;
-        height: 6rem;
+        height: 1.2rem;
         color: #fff;
-        margin-top: 18rem;
+        margin-top: 1.6rem;
         background-color: rgba(128,120,108,.5);
         position: absolute;
         >div{
-          margin-left: 1.5rem;
+          margin-left: 0.3rem;
         }
         .wep-name{
-          font-size: 1.5rem;
-          line-height: 3.5rem;
+          font-size: 0.3rem;
+          line-height: 0.7rem;
           font-weight: bold;
         }
         .wep-info{
-          font-size: 1.2rem;
-          line-height: 2.4rem;
+          font-size: 0.24rem;
+          line-height: 0.48rem;
         }
       }
     }
@@ -1258,9 +1261,9 @@
       width: 100%;
       border-bottom: 5px solid #ebebeb;
       >div{
-        font-size: 1.2rem;
-        margin-left: 1.5rem;
-        line-height: 3.2rem;
+        font-size: 0.25rem;
+        margin-left: 0.3rem;
+        line-height: 0.64rem;
         display: flex;
       }
       .wea-area{
@@ -1269,12 +1272,12 @@
       .wea-price{
         .wea-now{
           color: #f00;
-          font-size: 1.4rem;
+          font-size: 0.28rem;
           font-weight: bold;
         }
         .wea-del{
-          font-size: 1rem;
-          margin-left: 1.6rem;
+          font-size: 0.2rem;
+          margin-left: 0.32rem;
         }
       }
     }
@@ -1284,13 +1287,13 @@
       border-bottom: 5px solid #ebebeb;
       .wes-service{
         width: 100%;
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         border-bottom: 2px solid #2693d4;
         .wes-ser{
-          width: 8.6rem;
+          width: 1.72rem;
           text-align: center;
-          line-height: 2.6rem;
-          margin-top: 1rem;
+          line-height: 0.52rem;
+          margin-top: 0.2rem;
         }
       }
       // 具体信息
@@ -1298,39 +1301,39 @@
         width: 100%;
         display: flex;
         .wes-logo{
-          width: 6.2rem;
-          height: 2.8rem;
-          margin-left: 3.9rem;
-          margin-top: 4.3rem;
+          width: 1.24rem;
+          height: 0.56rem;
+          margin-left: 0.78rem;
+          margin-top: 0.86rem;
           img{
             width: 100%;
             height: 100%;
           }
         }
         .wes-mes{
-          font-size: 0.7rem;
+          font-size: 0.14rem;
           color: #101010;
-          line-height: 1.5rem;
-          margin-left: 2.2rem;
-          margin-top: 1.75rem;
+          line-height: 0.3rem;
+          margin-left: 0.44rem;
+          margin-top: 0.35rem;
           >div{
-            margin-top: 0.5rem;
+            margin-top: 0.1rem;
           }
           .wes-credit{
             display: flex;
             .wes-diamond{
               display: flex;
               >div{
-                height: 1.5rem;
-                margin-left: 0.2rem;
+                height: 0.3rem;
+                margin-left: 0.04rem;
                 display: inline-block;
               }
             }
           }
           .wes-enter{
-            width: 5.1rem;
+            width: 1.02rem;
             text-align: center;
-            line-height: 1.65rem;
+            line-height: 0.33rem;
             border-radius: 4px;
             color: #fff;
             background-color: #ff591b;
@@ -1339,19 +1342,19 @@
       }
       // 金牌服务商
       .wes-gold{
-        width: 7rem;
-        font-size: 0.7rem;
-        line-height: 2rem;
-        margin: 0.5rem 0rem 0.85rem 1.8rem;
+        width: 1.4rem;
+        font-size: 0.14rem;
+        line-height: 0.4rem;
+        margin: 0.1rem 0rem 0.17rem 0.36rem;
         display: flex;
         .wes-goldpic{
-          width: 2rem;
-          height: 2rem;
+          width: 0.4rem;
+          height: 0.4rem;
           display: block;
           background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -66px -75px;
         }
         .wes-goldcha{
-          margin-left: 0.6rem;
+          margin-left: 0.12rem;
         }
       }
     }
@@ -1361,37 +1364,33 @@
       border-bottom: 5px solid #ebebeb;
       .wei-intro{
         width: 100%;
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         border-bottom: 2px solid #2693d4;
         .wei-int{
-          width: 8.6rem;
+          width: 1.72rem;
           text-align: center;
-          line-height: 2.6rem;
-          margin-top: 1rem;
+          line-height: 0.52rem;
+          margin-top: 0.2rem;
         }
       }
       // 信息
       .wei-mes{
-        margin: 0.8rem 0rem 1.1rem 1.4rem;
-        // >div{
-        //   font-size: 1.2rem;
-        //   line-height: 1.6rem;
-        // }
+        margin: 0.16rem 0rem 0.22rem 0.28rem;
       }
     }
     // 用户评价
     .weuseva{
       width: 100%;
-      margin-bottom: 10rem;
+      margin-bottom: 3rem;
       .weu-useva{
         width: 100%;
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         border-bottom: 2px solid #2693d4;
         .weu-use{
-          width: 8.6rem;
+          width: 1.72rem;
           text-align: center;
-          line-height: 2.6rem;
-          margin-top: 1rem;
+          line-height: 0.52rem;
+          margin-top: 0.2rem;
         }
       }
       // 评价
@@ -1399,13 +1398,13 @@
         width: 100%;
         // 可循环部分
         .weu-mes{
-          height: 6rem;
+          height: 1.2rem;
           display: flex;
           align-items: center;
           .weu-img{
-            width: 2.9rem;
-            height: 2.9rem;
-            margin-left: 1.3rem;
+            width: 0.58rem;
+            height: 0.58rem;
+            margin-left: 0.26rem;
             img{
               width: 100%;
               height: 100%;
@@ -1414,35 +1413,35 @@
           .weu-satiseva{
             width: 100%;
             height: 100%;
-            margin-left: 1.25rem;
+            margin-left: 0.25rem;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             >div{
               width: 100%;
-              height: 2rem;
+              height: 0.4rem;
             }
             .weu-satis{
               display: flex;
               >div{
-                line-height: 2rem;
-                margin-left: 0.5rem;
+                line-height: 0.4rem;
+                margin-left: 0.1rem;
               }
               .weu-hstar{
-                width: 2.1rem;
-                height: 2rem;
+                width: 0.42rem;
+                height: 0.4rem;
                 background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -63px -36px;
               }
               .weu-bstar{
-                width: 2.1rem;
-                height: 2rem;
+                width: 0.42rem;
+                height: 0.4rem;
                 background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -63px 0;
               }
             }
             .weu-eva{
-              margin-left: 0.5rem;
-              line-height: 2rem;
+              margin-left: 0.1rem;
+              line-height: 0.4rem;
             }
           }
         }
@@ -1451,25 +1450,26 @@
     // 固定部分
     .wefixed{
       width: 100%;
-      height: 5.75rem;
-      margin-top: 3.75rem;
+      height: 1.15rem;
+      margin-top: 0.75rem;
       display: flex;
       position: fixed;
       top: 524px;
       // 联系商家
       .wef-contact{
         width: 34%;
-        font-size: 1.5rem;
+        font-size: 0.3rem;
         color: #2d2d2d;
         background-color: #edeff2;
         display: flex;
         flex-wrap: wrap;
+        cursor: pointer;
         >div{
           width: 100%;
           text-align: center;
-          line-height: 2.1rem;
+          line-height: 0.42rem;
           &:nth-child(1){
-            margin-top: 0.8rem;
+            margin-top: 0.16rem;
           }
           img{
             display: block;
@@ -1480,20 +1480,22 @@
       // 加入购物车
       .wef-join{
         width: 33%;
-        font-size: 1.5rem;
+        font-size: 0.3rem;
         color: #fff;
         text-align: center;
-        line-height: 5.75rem;
+        line-height: 1.15rem;
         background-color: #2693d4;
+        cursor: pointer;
       }
       // 立即购买
       .wef-pay{
         width: 33%;
-        font-size: 1.5rem;
+        font-size: 0.3rem;
         color: #fff;
         text-align: center;
-        line-height: 5.75rem;
+        line-height: 1.15rem;
         background-color: #fc4145;
+        cursor: pointer;
       }
     }
   } 

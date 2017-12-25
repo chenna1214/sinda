@@ -3,131 +3,165 @@
     <!-- 注册 -->
     <div class="register">
 
-        <div class="graTop">
-          <div></div>
-          <p>注册</p>
+      <!-- 手机端样式 -->
+      <!-- 顶部 -->
+      <div class="hidden-sm-and-up">
+        <div class="graTop ">
+          <span></span>
+          <div>注册</div>
         </div>
-        <el-row type="flex" class="centent" justify="center" :gutter="20" style="margin: 52px auto 0">
-          
 
-          <el-col :xs="24" :sm="13" :md="13" :lg="13">
-            <div class="left">
-              <!-- 提示错误信息的盒子 -->
-              <div class="anError" v-if="showE">
-                <!-- 小红点 -->
-                <p>一</p>
-                <!-- 提示的错误信息 -->
-                <p class="wrongTip">{{error}}</p>
-              </div>
+        <div class="centent">
+          <!-- 手机号码 -->
+          <div class="fleBox">
+            <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
+          </div>
 
-              <!-- 手机号码 -->
-              <div class="fleBox">
-                <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
-                <div class="yeahGreen" v-show="showYphone"></div>
-                <div class="yeahing hidden-xs-only" v-show="yphone">
-                  <p class="yeahP">请输入11位中国大陆手机号</p>
-                </div>
-                <div class="erping" v-show="ephone">
-                  <div class="erImg"></div>
-                  <p class="errP">{{Ephone}}</p>
-                </div>
+          <!-- 验证码 -->
+            <div class="verify">
+              <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+              <div class="verifyI" @click="imgReflash">
+                <img :src="imgUrl">
               </div>
-
-              <!-- 验证码 -->
-              <div class="verify">
-                <input class="boxI box" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
-                <div class="verifyI" @click="imgReflash">
-                  <img :src="imgUrl">
-                </div>
-                <div class="yeahGreen" v-show="showYYan"></div>            
-                <div class="yeahing hidden-xs-only" v-show="yyan">
-                  <p>请输入四位图片验证码</p>
-                </div>
-                <div class="erping hidden-xs-only" v-show="eyan">
-                  <div class="erImg"></div>
-                  <p class="errP">{{Eyan}}</p>
-                </div>
+              <div class="yeahGreen" v-show="showYYan"></div>
+              <div class="erping hidden-xs-only" v-show="eyan">
+                <div class="erImg"></div>
+                <p class="errP">{{Eyan}}</p>
               </div>
-
-              <!-- 短信验证码 -->
-              <div class="acquire">
-                <input class="boxI box" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
-                <div class = "spanStyle">
-                  <span v-show = "show" @click="getCode" class="getblue">获取验证码</span>
-                  <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
-                </div>
-                <div class="yeahGreen" v-show="showYDuan"></div>                        
-                <div class="yeahing hidden-xs-only" v-show="yduan">
-                  <p>请输入六位短信验证码</p>
-                </div>
-                <div class="erping hidden-xs-only" v-show="eduan">
-                  <div class="erImg"></div>
-                  <p class="errP">{{Eduan}}</p>
-                </div>
-              </div>
-
-              <!-- 三级联动 -->
-              <div class="fleBox">
-                <select name="" id="" @change="proChange" v-model="province">
-                  <option value="0">省</option>
-                  <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-                </select>
-                <select name="" id="" @change="cityChange" v-model="city">
-                  <option value="0">市</option>
-                  <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-                </select>
-                <select name="" id="" v-model="area" @change="quhao">
-                  <option value="">区</option>
-                  <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
-                </select>
-                <!-- 三级联动错误提示 -->
-                <div class="erping hidden-xs-only" v-show="esan">
-                  <div class="erImg"></div>
-                  <p class="errP">{{Esan}}</p>
-                </div>
-              </div>
-
-              <!-- 密码 -->
-              <div class="fleBox">
-                <!-- 设置密码 -->
-                <div class="eyeBox">
-                  <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
-                  <img :src="logImg" class="eyes" alt="" @click="showHidden">
-                </div>
-                <div class = "yeahing hidden-xs-only" v-show="ymi">
-                  <p id = "miJian">• 长度为6-20个字符</p>
-                  <p id = "miJian">• 支持数字，大小写字母</p>
-                  <p id = "miJian">• 不允许有空格</p>
-                </div>
-                <div class="yeahGreen" v-show="showYMi"></div>            
-                <!-- 设置密码错误提示信息 -->
-                <div class="erping hidden-xs-only" v-show="emi">
-                  <div class="erImg"></div>
-                  <p class="errP">{{Emi}}</p>
-                </div>
-              </div>
-              
-              <button class="immediately" @click="iregister">立即注册</button>
-              <p>注册及同意遵守
-                <a class="agreement" href="">《服务协议》</a>
-              </p>
             </div>
-          </el-col>
-          
-          <el-col :span="0.5" style="padding: 0" class="hidden-xs-only">          
-            <!-- 中间分割线 -->
-            <p class="division"></p>
-          </el-col>
 
-          <el-col :sm="10" :md="10" :lg="10" class="hidden-xs-only">
-            <div class="registersecond">
-              <span>已有账号？</span><br>
-              <a class="dl" href="#/userData/login">立即登录>></a>
-              <img src="../merchandise/pc_images/pc_login.png" alt="">
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+    <div class="hidden-xs-only">
+
+      <!-- pc端样式 -->
+      <el-row type="flex" class="centent" justify="center" :gutter="20" style="margin: 52px auto 0">
+        <el-col class="hidden-xs-only" :sm="13" :md="13" :lg="13">
+          <div class="left">
+            <!-- 提示错误信息的盒子 -->
+            <div class="anError" v-if="showE">
+              <!-- 小红点 -->
+              <p>一</p>
+              <!-- 提示的错误信息 -->
+              <p class="wrongTip">{{error}}</p>
             </div>
-          </el-col>
 
-        </el-row>
+            <!-- 手机号码 -->
+            <div class="fleBox">
+              <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
+              <div class="yeahGreen" v-show="showYphone"></div>
+              <div class="yeahing hidden-xs-only" v-show="yphone">
+                <p class="yeahP">请输入11位中国大陆手机号</p>
+              </div>
+              <div class="erping" v-show="ephone">
+                <div class="erImg"></div>
+                <p class="errP">{{Ephone}}</p>
+              </div>
+            </div>
+
+            <!-- 验证码 -->
+            <div class="verify">
+              <input class="boxI box" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+              <div class="verifyI" @click="imgReflash">
+                <img :src="imgUrl">
+              </div>
+              <div class="yeahGreen" v-show="showYYan"></div>            
+              <div class="yeahing hidden-xs-only" v-show="yyan">
+                <p>请输入四位图片验证码</p>
+              </div>
+              <div class="erping hidden-xs-only" v-show="eyan">
+                <div class="erImg"></div>
+                <p class="errP">{{Eyan}}</p>
+              </div>
+            </div>
+
+            <!-- 短信验证码 -->
+            <div class="acquire">
+              <input class="boxI box" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+              <div class = "spanStyle">
+                <span v-show = "show" @click="getCode" class="getblue">获取验证码</span>
+                <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
+              </div>
+              <div class="yeahGreen" v-show="showYDuan"></div>                        
+              <div class="yeahing hidden-xs-only" v-show="yduan">
+                <p>请输入六位短信验证码</p>
+              </div>
+              <div class="erping hidden-xs-only" v-show="eduan">
+                <div class="erImg"></div>
+                <p class="errP">{{Eduan}}</p>
+              </div>
+            </div>
+
+            <!-- 三级联动 -->
+            <div class="fleBox">
+              <select name="" id="" @change="proChange" v-model="province">
+                <option value="0">省</option>
+                <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+              </select>
+              <select name="" id="" @change="cityChange" v-model="city">
+                <option value="0">市</option>
+                <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+              </select>
+              <select name="" id="" v-model="area" @change="quhao">
+                <option value="">区</option>
+                <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
+              </select>
+              <!-- 三级联动错误提示 -->
+              <div class="erping hidden-xs-only" v-show="esan">
+                <div class="erImg"></div>
+                <p class="errP">{{Esan}}</p>
+              </div>
+            </div>
+
+            <!-- 密码 -->
+            <div class="fleBox">
+              <!-- 设置密码 -->
+              <div class="eyeBox">
+                <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
+                <img :src="logImg" class="eyes" alt="" @click="showHidden">
+              </div>
+              <div class = "yeahing hidden-xs-only" v-show="ymi">
+                <p id = "miJian">• 长度为6-20个字符</p>
+                <p id = "miJian">• 支持数字，大小写字母</p>
+                <p id = "miJian">• 不允许有空格</p>
+              </div>
+              <div class="yeahGreen" v-show="showYMi"></div>            
+              <!-- 设置密码错误提示信息 -->
+              <div class="erping hidden-xs-only" v-show="emi">
+                <div class="erImg"></div>
+                <p class="errP">{{Emi}}</p>
+              </div>
+            </div>
+            
+            <button class="immediately" @click="iregister">立即注册</button>
+            <p>注册及同意遵守
+              <a class="agreement" href="">《服务协议》</a>
+            </p>
+          </div>
+        </el-col>
+        
+        <el-col :span="0.5" style="padding: 0" class="hidden-xs-only">          
+          <!-- 中间分割线 -->
+          <p class="division"></p>
+        </el-col>
+
+        <el-col :sm="10" :md="10" :lg="10" class="hidden-xs-only">
+          <div class="registersecond">
+            <span>已有账号？</span><br>
+            <a class="dl" href="#/userData/login">立即登录>></a>
+            <img src="../merchandise/pc_images/pc_login.png" alt="">
+          </div>
+        </el-col>
+
+      </el-row>
 
     </div>
     <!-- 注册成功弹出框 -->
@@ -142,6 +176,8 @@
           <el-button type="primary" @click="centerDialogVisible = false"><a href="#/userData/login">立即登录</a></el-button>
         </span>
       </el-dialog>
+    </div>
+
     </div>
   </div>
 </template>
@@ -752,60 +788,66 @@ input[type="number"] {
       padding: 10px 8px;
     }
   }
-  .graTop {
-    display: none;
-  }
+  // .graTop {
+  //   display: none;
+  // }
 }
 @media all and (max-width: 767px) {
   .graTop {
-    display: block;
-    height: 77px;
+    height: 0.72rem;
     background: #e5e5e5;
     width: 100%;
     display: flex;
-    > div {
-      width: 20px;
-      height: 20px;
+    align-items: center;
+    justify-content: space-around;
+    > span {
+      display: inline-block;
+      width: 0.16rem;
+      height: 0.16rem;
       border-left: 2px solid #838383;
       border-top: 2px solid #838383;
       transform: rotate(-45deg);
-      color: #fff;
-      position: relative;
-      left: 32px;
-      top: 28px;
     }
-    p {
-      line-height: 77px;
-      margin-left: 42%;
-      font-size: 21px;
+    div {
+      width: 88%;
+      text-align: center;
+      line-height: 0.72rem;
+      font-size: 0.3rem;
     }
   }
   .box {
-    width: 67%;
-    height: 73px;
+    width: 5.27rem;
+    height: 0.73rem;
     border: 1px solid #cbcbcb;
-    margin: 0 0 20px 14%;
-    border-radius: 3px;
-    padding: 0 0 0 20px;
-    font-size: 20px;
+    margin-top: 0.72rem;
+    border-radius: 0.03rem;
+    padding: 0 0 0 0.2rem;
+    font-size: 0.29rem;
   }
-  .erping {
+  .boxI {
+    width: 2.72rem;
+    height: 0.73rem;
+    border: 1px solid #cbcbcb;
+    margin-top: 0.72rem;
+    border-radius: 0.03rem;
+    padding: 0 0 0 0.2rem;
+    font-size: 0.29rem;
+  }
+  .verify {
     display: flex;
-    div {
-      margin: 10px 0 0 4px;
-    }
-    .errP {
-      margin: 9px 0 0 5px;
-      color: #e00202;
-      font-size: 17px;
+    .verifyI {
+      cursor: pointer;
+      img {
+        width: 2.41rem;
+        height: 0.72rem;
+        // margin-left: 18px;
+      }
     }
   }
-  .yeahGreen {
-    float: right;
-    margin: 30px 83px 0 0;
-  }
-  .erping{
-    
+  .centent {
+    width: 5.47rem;
+    margin: 0 auto;
+    border: 1px solid blue;
   }
 }
 </style>

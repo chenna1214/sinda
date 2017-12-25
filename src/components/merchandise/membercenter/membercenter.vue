@@ -1,7 +1,7 @@
 <template>
   <div>
    <!-- 会员中心头部 -->
-    <div class="membercenter">
+    <div class="membercenter hidden-xs-only">
       <!-- 首页 / 个人主页 -->
       <div class="member-top">首页 / 个人主页</div>
       <!-- 主体 -->

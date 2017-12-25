@@ -1,103 +1,105 @@
 <template>
   <div>
-    <!-- 账户设置 -->
-    <!-- 头部 -->
-    <div class="set-head">
-      <div @click="setacc" :class="accstyle">账户设置</div>
-      <div @click="setcha" :class="chastyle">修改密码</div>
-    </div>
-    <!-- 主体 -->
-    <div class="set-body">
+    <div class="hidden-xs-only">
       <!-- 账户设置 -->
-      <div class="set-account" v-show="setone" :key="settings.id">
-        <!-- 当前头像 -->
-        <div class="set-current">
-          <div>当前头像：</div>
-          <div class="cur-image"></div>
-        </div>
-        <!-- 姓名 -->
-        <div class="set-name">
-          <div>姓名：</div>
-          <div class="name-input">
-            <input type="text" placeholder="请输入姓名" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
-          </div>
-          <!-- 出错时出现 -->
-          <div class="nam-error" v-show="namer" >
-            <div class="set-error">×</div>
-            <div>请输入您的姓名</div>
-          </div>
-        </div>
-        <!-- 性别 -->
-        <div class="set-sex">
-          <div>性别：</div>
-          <div class="sex-input">
-            <el-radio v-model="radio" label="1" class="male" checked>男</el-radio>
-            <el-radio v-model="radio" label="2" class="female">女</el-radio>
-          </div>
-        </div>
-        <!-- 邮箱 -->
-        <div class="set-email">
-          <div>邮箱：</div>
-          <div class="email-input">
-            <input type="email" placeholder="请输入邮箱地址" v-model="set.email" ref="email" v-on:blur="emablur" :class="tboxstyle">
-          </div>
-          <!-- 出错时出现 -->
-          <div class="ema-error" v-show="emaer">
-            <div class="set-error">×</div>
-            <div>请填写邮箱地址</div>
-          </div>
-          <div class="emat-error" v-show="emaert">
-            <div class="set-error">×</div>
-            <div>请填写正确的邮箱地址</div>
-          </div>
-        </div>
-        <!-- 所在地区 -->
-        <div class="set-area">
-          <div>所在地区：</div>
-          <!-- 三级联动 -->
-          <div class="set-ssq">
-            <select name="" id="" @change="proChange" v-model="province">
-              <option value="0">省</option>
-              <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-            </select>
-            <select name="" id="" @change="cityChange" v-model="city">
-              <option value="0">市</option>
-              <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-            </select>
-            <select name="" id="" v-model="area">
-              <option value="">区</option>
-              <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
-            </select>
-          </div>
-          <!-- 未选择时出现 -->
-          <div class="are-error" v-show="areer">
-            <div class="set-error">×</div>
-            <div>请选择所在地区</div>
-          </div>
-        </div>
-        <!-- 保存 -->
-        <div class="set-save" @click="save">保存</div>
+      <!-- 头部 -->
+      <div class="set-head">
+        <div @click="setacc" :class="accstyle">账户设置</div>
+        <div @click="setcha" :class="chastyle">修改密码</div>
       </div>
+      <!-- 主体 -->
+      <div class="set-body">
+        <!-- 账户设置 -->
+        <div class="set-account" v-show="setone" :key="settings.id">
+          <!-- 当前头像 -->
+          <div class="set-current">
+            <div>当前头像：</div>
+            <div class="cur-image"></div>
+          </div>
+          <!-- 姓名 -->
+          <div class="set-name">
+            <div>姓名：</div>
+            <div class="name-input">
+              <input type="text" placeholder="请输入姓名" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
+            </div>
+            <!-- 出错时出现 -->
+            <div class="nam-error" v-show="namer" >
+              <div class="set-error">×</div>
+              <div>请输入您的姓名</div>
+            </div>
+          </div>
+          <!-- 性别 -->
+          <div class="set-sex">
+            <div>性别：</div>
+            <div class="sex-input">
+              <el-radio v-model="radio" label="1" class="male" checked>男</el-radio>
+              <el-radio v-model="radio" label="2" class="female">女</el-radio>
+            </div>
+          </div>
+          <!-- 邮箱 -->
+          <div class="set-email">
+            <div>邮箱：</div>
+            <div class="email-input">
+              <input type="email" placeholder="请输入邮箱地址" v-model="set.email" ref="email" v-on:blur="emablur" :class="tboxstyle">
+            </div>
+            <!-- 出错时出现 -->
+            <div class="ema-error" v-show="emaer">
+              <div class="set-error">×</div>
+              <div>请填写邮箱地址</div>
+            </div>
+            <div class="emat-error" v-show="emaert">
+              <div class="set-error">×</div>
+              <div>请填写正确的邮箱地址</div>
+            </div>
+          </div>
+          <!-- 所在地区 -->
+          <div class="set-area">
+            <div>所在地区：</div>
+            <!-- 三级联动 -->
+            <div class="set-ssq">
+              <select name="" id="" @change="proChange" v-model="province">
+                <option value="0">省</option>
+                <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+              </select>
+              <select name="" id="" @change="cityChange" v-model="city">
+                <option value="0">市</option>
+                <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+              </select>
+              <select name="" id="" v-model="area">
+                <option value="">区</option>
+                <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
+              </select>
+            </div>
+            <!-- 未选择时出现 -->
+            <div class="are-error" v-show="areer">
+              <div class="set-error">×</div>
+              <div>请选择所在地区</div>
+            </div>
+          </div>
+          <!-- 保存 -->
+          <div class="set-save" @click="save">保存</div>
+        </div>
 
-      <!-- 修改密码 -->
-      <div class="set-change" v-show="settwo">
-        <div class="oldpwd">
-          旧密码：<input type="password" v-model="oldpwd">
-          <p v-show="olderr">× 旧密码错误</p>
+        <!-- 修改密码 -->
+        <div class="set-change" v-show="settwo">
+          <div class="oldpwd">
+            旧密码：<input type="password" v-model="oldpwd">
+            <p v-show="olderr">× 旧密码错误</p>
+          </div>
+          <div class="newpwd">
+            新密码：<input type="password" v-model="newpwd">
+            <p v-show="newerr">× 密码不能为空</p>
+          </div>
+          <div class="pwdagain">
+            再次输入新密码：<input type="password" v-model="newpwda">
+            <p v-show="agaerr">× 两次密码输入不一致</p>
+          </div>
+          <!-- 保存 -->
+          <div class="cha-save" @click="chasave">保存</div>
         </div>
-        <div class="newpwd">
-          新密码：<input type="password" v-model="newpwd">
-          <p v-show="newerr">× 密码不能为空</p>
-        </div>
-        <div class="pwdagain">
-          再次输入新密码：<input type="password" v-model="newpwda">
-          <p v-show="agaerr">× 两次密码输入不一致</p>
-        </div>
-        <!-- 保存 -->
-        <div class="cha-save" @click="chasave">保存</div>
       </div>
     </div>
-   </div>
+  </div>
 </template>
 
 <script>
@@ -337,200 +339,202 @@ export default {
 </script>
 
 <style scoped lang='less'>
-.box {
-  border: 1px solid #b0b0b0;
-}
-.boxs {
-  border: 1px solid #f00;
-}
-.set {
-  color: #349ad7;
-  border-bottom: 2px solid #2693d4;
-}
-.sets {
-  color: #111;
-  border-bottom: none;
-}
-// 头部
-.set-head {
-  width: 100%;
-  height: 40px;
-  border-bottom: 2px solid #e9e9e9;
-  display: flex;
-  > div {
-    width: 13%;
-    font-size: 18px;
-    line-height: 40px;
-    text-align: center;
-    margin-left: 3%;
-    cursor: pointer;
-  }
-}
-// 主体
-.set-body {
-  width: 100%;
-  // 账户设置
-  .set-account {
-    width: 100%;
-    > div {
-      margin-top: 3%;
+  @media all and (min-width: 768px){
+    .box {
+      border: 1px solid #b0b0b0;
+    }
+    .boxs {
+      border: 1px solid #f00;
+    }
+    .set {
+      color: #349ad7;
+      border-bottom: 2px solid #2693d4;
+    }
+    .sets {
+      color: #111;
+      border-bottom: none;
+    }
+    // 头部
+    .set-head {
+      width: 100%;
+      height: 40px;
+      border-bottom: 2px solid #e9e9e9;
       display: flex;
       > div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        &:nth-child(1) {
-          width: 10%;
-        }
+        width: 13%;
+        font-size: 18px;
+        line-height: 40px;
+        text-align: center;
+        margin-left: 3%;
+        cursor: pointer;
+      }
+    }
+    // 主体
+    .set-body {
+      width: 100%;
+      // 账户设置
+      .set-account {
+        width: 100%;
         > div {
-          color: #f00;
+          margin-top: 3%;
+          display: flex;
+          > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &:nth-child(1) {
+              width: 10%;
+            }
+            > div {
+              color: #f00;
+            }
+            .set-error {
+              width: 12px;
+              height: 12px;
+              text-align: center;
+              line-height: 12px;
+              color: #fff;
+              border-radius: 50%;
+              background-color: #f00;
+            }
+          }
         }
-        .set-error {
-          width: 12px;
-          height: 12px;
-          text-align: center;
-          line-height: 12px;
-          color: #fff;
-          border-radius: 50%;
-          background-color: #f00;
+        // 所在地区
+        .set-area {
+          width: 100%;
+          .set-ssq {
+            width: 50%;
+            justify-content: space-between;
+            select {
+              width: 30%;
+              height: 32px;
+            }
+          }
+          .are-error {
+            width: 14%;
+            height: 35px;
+            margin-left: 3%;
+          }
+        }
+        // 当前头像
+        .set-current {
+          width: 100%;
+          align-items: center;
+          .cur-image {
+            width: 11%;
+            height: 100px;
+            background: url(../pc_images/login_logo.png) no-repeat 0 -113px;
+          }
+        }
+        // 姓名
+        .set-name {
+          width: 100%;
+          align-items: center;
+          .name-input {
+            width: 27%;
+            height: 35px;
+            input {
+              width: 98%;
+              height: 90%;
+            }
+          }
+          .nam-error {
+            width: 14%;
+            height: 35px;
+            margin-left: 3%;
+          }
+        }
+        // 性别
+        .set-sex {
+          width: 100%;
+          align-items: center;
+          .sex-input {
+            width: 10%;
+            display: flex;
+            > div {
+              width: 40%;
+            }
+          }
+        }
+        // 邮箱
+        .set-email {
+          width: 100%;
+          align-items: center;
+          .email-input {
+            width: 27%;
+            height: 35px;
+            input {
+              width: 98%;
+              height: 90%;
+            }
+          }
+          .ema-error {
+            width: 14%;
+            height: 35px;
+            margin-left: 3%;
+          }
+          .emat-error {
+            width: 20%;
+            height: 35px;
+            margin-left: 3%;
+          }
+        }
+        // 保存
+        .set-save {
+          width: 12%;
+          font-size: 19px;
+          color: #5caedf;
+          line-height: 40px;
+          border: 1px solid #2693d4;
+          border-radius: 6px;
+          margin-left: 13%;
+          justify-content: center;
+          cursor: pointer;
         }
       }
-    }
-    // 所在地区
-    .set-area {
-      width: 100%;
-      .set-ssq {
-        width: 50%;
-        justify-content: space-between;
-        select {
-          width: 30%;
-          height: 32px;
-        }
-      }
-      .are-error {
-        width: 14%;
-        height: 35px;
-        margin-left: 3%;
-      }
-    }
-    // 当前头像
-    .set-current {
-      width: 100%;
-      align-items: center;
-      .cur-image {
-        width: 11%;
-        height: 100px;
-        background: url(../pc_images/login_logo.png) no-repeat 0 -113px;
-      }
-    }
-    // 姓名
-    .set-name {
-      width: 100%;
-      align-items: center;
-      .name-input {
-        width: 27%;
-        height: 35px;
-        input {
-          width: 98%;
-          height: 90%;
-        }
-      }
-      .nam-error {
-        width: 14%;
-        height: 35px;
-        margin-left: 3%;
-      }
-    }
-    // 性别
-    .set-sex {
-      width: 100%;
-      align-items: center;
-      .sex-input {
-        width: 10%;
-        display: flex;
+      // 修改密码
+      .set-change {
+        width: 100%;
         > div {
-          width: 40%;
+          width: 70%;
+          margin-top: 3%;
+          display: flex;
+          input {
+            width: 40%;
+            height: 35px;
+            display: inline-block;
+          }
+          p{
+            width: 27%;
+            color: #f00;
+            line-height: 39px;
+            margin-left: 2%;
+          }
+        }
+        // 旧密码
+        .oldpwd {
+          margin-left: 7%;
+        }
+        // 新密码
+        .newpwd {
+          margin-left: 7%;
+        }
+        // 再次输入新密码
+        .pwdagain {
+        }
+        // 保存
+        .cha-save {
+          width: 12%;
+          font-size: 19px;
+          color: #5caedf;
+          line-height: 40px;
+          border: 1px solid #2693d4;
+          border-radius: 6px;
+          margin-left: 18%;
+          justify-content: center;
+          cursor: pointer;
         }
       }
     }
-    // 邮箱
-    .set-email {
-      width: 100%;
-      align-items: center;
-      .email-input {
-        width: 27%;
-        height: 35px;
-        input {
-          width: 98%;
-          height: 90%;
-        }
-      }
-      .ema-error {
-        width: 14%;
-        height: 35px;
-        margin-left: 3%;
-      }
-      .emat-error {
-        width: 20%;
-        height: 35px;
-        margin-left: 3%;
-      }
-    }
-    // 保存
-    .set-save {
-      width: 12%;
-      font-size: 19px;
-      color: #5caedf;
-      line-height: 40px;
-      border: 1px solid #2693d4;
-      border-radius: 6px;
-      margin-left: 13%;
-      justify-content: center;
-      cursor: pointer;
-    }
-  }
-  // 修改密码
-  .set-change {
-    width: 100%;
-    > div {
-      width: 70%;
-      margin-top: 3%;
-      display: flex;
-      input {
-        width: 40%;
-        height: 35px;
-        display: inline-block;
-      }
-      p{
-        width: 27%;
-        color: #f00;
-        line-height: 39px;
-        margin-left: 2%;
-      }
-    }
-    // 旧密码
-    .oldpwd {
-      margin-left: 7%;
-    }
-    // 新密码
-    .newpwd {
-      margin-left: 7%;
-    }
-    // 再次输入新密码
-    .pwdagain {
-    }
-    // 保存
-    .cha-save {
-      width: 12%;
-      font-size: 19px;
-      color: #5caedf;
-      line-height: 40px;
-      border: 1px solid #2693d4;
-      border-radius: 6px;
-      margin-left: 18%;
-      justify-content: center;
-      cursor: pointer;
-    }
-  }
-}
+  } 
 </style>
