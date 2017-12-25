@@ -23,7 +23,10 @@ import membercenter from '../components/merchandise/membercenter/membercenter.vu
 import member from '../components/merchandise/memberCenter/member.vue'
 import accountpwd from '../components/merchandise/memberCenter/accountpwd.vue'
 import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
-import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
+import userevalua from '../components/merchandise/memberCenter/userevalua.vue'  
+//  微信端
+import unregistered from '../components/merchandise/my/unregistered.vue'
+import havelogined from '../components/merchandise/my/havelogined.vue'
 //银联支付
 import pay from '../components/merchandise/order/pay'
 //支付宝支付
@@ -144,10 +147,15 @@ export default new Router({
           component: goodsOrder,
         },
         {
-          path:'navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
-          name:'navShow',
-          component:navShow
-        }
+          path: 'unregistered',//我的（未注册）
+          name: 'unregistered',
+          component: unregistered
+        },
+        {
+          path: 'havelogined',//我的（已登录）
+          name: 'havelogined',
+          component: havelogined
+        },
       ]
     },
     {
@@ -159,7 +167,12 @@ export default new Router({
       path:'/Alipay',//支付宝支付
       name:'Alipay',
       component:Alipay
-    }
+    },
+    {
+      path:'/navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
+      name:'navShow',
+      component:navShow
+    },
     
   ]
 })
