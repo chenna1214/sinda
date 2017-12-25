@@ -12,12 +12,12 @@
         <div class="telFooterFix">
           <div class="telFootBox hidden-sm-and-up">
             <div v-for="(eachTil,index) in telFootTil" :key="index" @click="telColorChange(index)">
-              <a :href='eachTil.href' class="telFootNavHref">
+              <router-link :to="{path:eachTil.href}" class="telFootNavHref"  active-class="telChangeText">
                 <div class="telFootImgBox">
-                  <div class="telImg" :class="{telHome:index==0,telShop:index==1,telShoppingCar:index==2,telUser:index==3}"></div>
+                  <div class="telImg" ></div>
                 </div>
-                <p class="telTil" :class="{telChangeText:textCol==index}">{{eachTil.name}}</p>
-              </a>
+                <p >{{eachTil.name}}</p>
+              </router-link>
             </div>
           </div>
         </div>
@@ -36,10 +36,10 @@ export default {
     return {
       telFootTil: [
         //手机端--首页底部导航标签
-        { name: "首页", href: "#/merchandise/allProduct" },
-        { name: "店铺", href: "#/merchandise/shop" },
-        { name: "购物车", href: "#/merchandise/shoppingtrolley" },
-        { name: "我的", href: "#/merchandise/membercenter" }
+        { name: "首页", href: "/merchandise/allProduct" },
+        { name: "店铺", href: "/merchandise/shop" },
+        { name: "购物车", href: "/merchandise/shoppingtrolley" },
+        { name: "我的", href: "/merchandise/membercenter" }
       ],
       textCol: -1 //点击改变手机端首页底部导航标签颜色的初始值
     };
@@ -49,8 +49,11 @@ export default {
       //点击改变手机端底部导航按钮颜色
       this.textCol = index;
       var telImg = document.querySelectorAll(".telImg"); //待优化：用backgroundPosition太繁琐
-      if (index == 0) {
+      var link=window.location.href
+      if (link.indexOf('allProduct')!=-1) {
         telImg[0].style.backgroundPosition = "0 -42px";
+        console.log('window.location.href==',window.location.href)
+        
       } else {
         telImg[0].style.backgroundPosition = "0 0";
       }
@@ -112,7 +115,9 @@ export default {
     padding-bottom: 0.5rem;
   }
   .telFootNavHref {
-    text-decoration: none;
+      text-decoration: none;
+      font-size: 1.15rem;
+      color: #999;
   }
   .telFooterFix {
     position: fixed;
@@ -120,6 +125,7 @@ export default {
     width: 100%;
     background: white;
     z-index: 6000;
+    text-align: center;
   }
   //手机端--底部--灰色--导航logo
   .telHome {
