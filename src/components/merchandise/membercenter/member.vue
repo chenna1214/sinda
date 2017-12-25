@@ -149,7 +149,7 @@ export default {
     // this.ajax.post('/xinda-api/business-order/grid').then(function (data) {
     //   var griDatas = data.data.data
     //   for(var key in griDatas){
-    //     // console.log(griDatas[key].id)
+    //     console.log(griDatas[key].id)
     //   }
     //   // console.log(data.data.data);
     // });
