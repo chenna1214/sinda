@@ -65,8 +65,8 @@
               </ul>
             </div>
           </div>
-
-          <div class="pageBox"><!-- 页码 -->
+          <!-- 页码 -->
+          <div class="pageBox">
             <button @click="upPage()">上一页</button>
             <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
             <button @click="downPage()">下一页</button>
@@ -112,11 +112,12 @@
           </div>
        </li>
      </ul>
-      <div class="tel-pagBox"><!-- 页码 -->
+     <!-- 页码 -->
+      <!-- <div class="tel-pagBox">
         <i class="el-icon-arrow-left"  @click="upPage()"></i>
-        <!-- <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span> -->
+        <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
         <i class="el-icon-arrow-right" @click="downPage()"></i>
-    </div>
+    </div> -->
    </div>
     
    </div>
@@ -584,6 +585,7 @@ export default {
   // 商品列表块
   .tel-texbdy {
     width: 100%;
+    padding-bottom: 5rem;
     padding-left: 3.27%;
     .tel-texelm {
       width: 100%;
