@@ -36,4 +36,28 @@ export default {
 .pcChoosedCity {//网页头部---点击被选择城市后，字的颜色变蓝
   color: #2693d4;
 }
+
+@media all and (max-width: 767px) and (min-width: 640px) {
+  html {
+    font-size: 20px !important;
+  }
+}
+
+@media all and (max-width: 639px) and (min-width: 480px) {
+  html {
+    font-size: 15px !important;
+  }
+}
+
+@media all and (max-width: 479px) and (min-width: 384px) {
+  html {
+    font-size: 12px !important;
+  }
+}
+
+@media all and (max-width: 383px) and (min-width: 320px) {
+  html {
+    font-size: 10px !important;
+  }
+}
 </style>
