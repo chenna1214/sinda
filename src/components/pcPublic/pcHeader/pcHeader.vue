@@ -457,7 +457,6 @@ export default {
 }
 .pcHeaderMiddleSearchImg {
   margin-left: -6px;
-  // padding-top: 2px;
 }
 //头部的右边内容
 .pcHeaderRightBox {

@@ -44,14 +44,15 @@
                       <p class="pcsh-unipr">￥{{shTrData.unitPrice}}</p>
                     </el-col>
                     <el-col :span="5" class="pcsh-cot-w" >
-                      <div @click='handleClick(shTrData.serviceId,shTrData.buyNum,idx)'>
-                        <el-input-number  @change="handleChange" class="pcsh-count" v-model="shTrData.buyNum" :min="1" :max="100" label="描述文字"></el-input-number>
-                        <div>
-                          <span>{{shTrData.buyNum}}</span>
-                          <span></span>
-                          <!-- <input type="number"> -->
-                        </div>
+                      <!-- 数字框 -->
+                      <div class="pcsh-count clear">
+                        <!-- 减法按钮 -->
+                        <span @click="addGoodsbtn(shTrData.serviceId,-1,shTrData.buyNum)" class="pc-subbtn pc-combtn pointer">-</span>
+                        <input @focus="fcsGoodipt(shTrData.serviceId,shTrData.buyNum)" @blur="blurGoodipt(shTrData.serviceId,shTrData.buyNum)" class="pcsh-ipt" type="number" min="1" step="1" v-model="shTrData.buyNum">
+                        <!-- 加法按钮 -->
+                        <span @click="addGoodsbtn(shTrData.serviceId,1,shTrData.buyNum)" class="pc-addbtn pc-combtn pointer">+</span>
                       </div>
+                      
                     </el-col>
                     <el-col :span="3">
                       <p class="pcsh-money pcsh-mnyin">￥{{shTrData.totalPrice}}</p>
@@ -102,7 +103,7 @@
 
 
         <!-- 手机端 购物车 -->
-        <div class="hidden-sm-and-up">
+        <div class="tel-shptro hidden-sm-and-up">
           <!-- 头部 -->
           <p class="tel-shhd">
             购物车里有<span class="tel-shdnum">2</span>件商品
@@ -114,23 +115,46 @@
             <ul class="tel-texbdy">
               <!-- 财税服务 手机端商品 -->       
               <li class="tel-texelm clear" v-for="(popservise,idx) in popservises" :key="popservise.serviceName">
-                <p class="tel-spconm">{{shTrData.providerName}}</p>
+                <p class="tel-spconm">{{popservise.providerName}}</p>
                 <!-- 左侧图片 -->
                 <div class="tel-teimg">
                   <!-- <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin"> -->
                   </div>
                   <!-- 右侧文字部分 -->
                   <div class="tel-tewor">
-                    <p class="tel-tenmac clear"><span class="tel-tenm">{{popservise.serviceName}}</span> <span class="tel-act">删除订单</span></p>
+                    <p class="tel-tenmac clear"><span class="tel-tenm">{{popservise.serviceName}}</span> <span @click="centerDialogVisible = true"  class="tel-act">删除订单</span>
+                    </p>
+                    <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                      <div class="pcsh-pophd">信息</div>
+                      <span slot="footer" class="dialog-footer">
+                        <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
+                        <el-button @click="centerDialogVisible = false">取 消</el-button>
+                      </span>
+                    </el-dialog>
                     <p class="tel-spmony"><span class="tel-spmoin">￥{{popservise.price}}&nbsp;</span><span class="tel-spyuan">&nbsp;元</span></p>
-                    <div class="tel-buynum">购买数量：<span>计数器</span></div>
+                    <div class="tel-buynum">购买数量：
+                      <span>
+
+                        <div class="pcsh-count clear">
+                          <!-- 减法按钮 -->
+                          <span @click="addGoodsbtn(shTrData.serviceId,-1,shTrData.buyNum)" class="pc-subbtn pc-combtn pointer">-</span>
+                          <!-- <input @focus="fcsGoodipt(shTrData.serviceId,shTrData.buyNum)" @blur="blurGoodipt(shTrData.serviceId,shTrData.buyNum)" class="pcsh-ipt" type="number" min="1" step="1" v-model="shTrData.buyNum"> -->
+                          <!-- 加法按钮 -->
+                          <span @click="addGoodsbtn(shTrData.serviceId,1,shTrData.buyNum)" class="pc-addbtn pc-combtn pointer">+</span>
+                        </div>
+
+                      </span></div>
                     <div class="tel-earea">
-                      <p>{{popservise.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</p>
+                      <p>北京</p>
                       <!-- <i class="el-icon-location-outline"></i><span class="tel-earcon">{{product.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span> -->
                     </div>
                   </div>
                 </li>
             </ul>
+          </div>
+          <div class="tel-shft clear">
+            <div class="tel-shprc tel-inline">合计：<span class="telt-prcin">￥{{tlPrice+'.00'}}</span></div>
+            <div class="tel-settle tel-inline">去结算</div>
           </div>
         </div>
     </div>
@@ -141,6 +165,71 @@ import { mapActions } from "vuex"; //显示数据
 export default {
   name: "shoppingtrolley",
   methods: {
+    // 数字框获取焦点事件
+    fcsGoodipt(goodId,buyNum){
+      var that = this;
+      this.ajax
+          .post(
+            "/xinda-api/cart/add",
+            this.qs.stringify({ id: goodId, num: (0-buyNum) })
+          )
+          .then(function(data) {
+            // buyNum++;
+            that.getGoods();
+          });
+    },
+    // 数字框失去焦点事件    
+    blurGoodipt(goodId,buyNum){
+      var that = this;
+      this.ajax
+          .post(
+            "/xinda-api/cart/add",
+            this.qs.stringify({ id: goodId, num: buyNum })
+          )
+          .then(function(data) {
+            // buyNum++;
+            that.getGoods();
+          });
+    },
+    // 添加（减少）购物车商品
+    addGoodsbtn(goodId, numb, buyNum) {
+      var that = this;
+      if ((numb == 1)&&(buyNum>0)) {
+        this.ajax
+          .post(
+            "/xinda-api/cart/add",
+            this.qs.stringify({ id: goodId, num: 1 })
+          )
+          .then(function(data) {
+            // buyNum++;
+            that.getGoods();
+          });
+      }else if((numb == -1)&&(buyNum>1)){
+        this.ajax
+          .post(
+            "/xinda-api/cart/add",
+            this.qs.stringify({ id: goodId, num: -1 })
+          )
+          .then(function(data) {
+            // buyNum++;
+            that.getGoods();
+          });
+      }
+            // that.getGoods();
+  
+      // } elseif() {
+      //   this.ajax
+      //     .post(
+      //       "/xinda-api/cart/add",
+      //       this.qs.stringify({ id: goodId, num: numb })
+      //     )
+      //     .then(function(data) {
+      //       // buyNum++;
+      //       that.getGoods();
+      //     });
+      // }
+    },
+
     ...mapActions(["setNum"]),
     toDetail(id) {
       this.$router.push({
@@ -155,6 +244,7 @@ export default {
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
         // console.log("data.data.data==", data.data.data);
+        that.tlPrice = 0;
         for (var i = 0; i < that.shTrDatas.length; i++) {
           // 商品数量
           that.goodsnum += that.shTrDatas[i].buyNum;
@@ -163,31 +253,7 @@ export default {
         }
       });
     },
-    // 计数器变化
-    handleChange(value) {
-      var that = this;
-      // console.log(value);
-      // // console.log(itsid);
-      // // 添加到购物车
-      // console.log('value - this.oldvalue==',value - this.oldvalue)
-      // var numberadd = value - this.oldvalue
-      // this.ajax
-      //   .post(
-      //     "/xinda-api/cart/add",
-      //     this.qs.stringify({ id: this.numid, num: numberadd })
-      //   )
-      //   .then(function(data) {
-      //     console.log(data);
-      //     that.getGoods();
-      //   });
-      // this.oldvalue = value;
-    },
-    // 获取id
-    handleClick(sid, buynumber, idx) {
-      this.buynumber = buynumber;
-      console.log("sid==", sid);
-      this.numid = sid;
-    },
+
     // -------------------
     //删除商品
     removeGoods: function(id) {
@@ -205,9 +271,6 @@ export default {
       //   that.shTrDatas = data.data.data;
       // });
     },
-    // gouwuche: function() {
-    //   var that = this;
-    // },
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
@@ -280,7 +343,9 @@ export default {
       centerDialogVisible: false,
       numid: "",
       buynumber: 0,
-      idx: 0
+      idx: 0,
+      // 获取焦点
+
     };
   },
   components: {}
@@ -354,6 +419,8 @@ export default {
             color: #50a2da;
           }
           .pcsh-cot-w {
+            height: 76px;
+            overflow: hidden;
             text-align: center;
           }
         }
@@ -467,10 +534,45 @@ export default {
       }
     }
   }
+  // 计数器 pc
+  .pcsh-count {
+    margin: 30px auto;
+    overflow: hidden;
+    width: 69px;
+    height: 20px;
+    input.pcsh-ipt {
+      display: inline-block;
+      float: left;
+      width: 33px;
+      height: 20px;
+      text-align: center;
+      color: #565656;
+      border: 0;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0;
+    }
+    .pc-combtn {
+      background: #bdbdbd;
+      width: 18px;
+      height: 20px;
+      float: left;
+      line-height: 18px;
+      color: #202020;
+      font-size: 25px;
+      text-align: center;
+      display: inline-block;
+    }
+  }
 }
 
 // 手机端
 @media all and (max-width: 767px) {
+  .tel-shptro {
+    height: 62.9rem;
+  }
   // 购物车 头部全部商品数目
   .tel-shhd {
     position: fixed;
@@ -534,7 +636,7 @@ export default {
               line-height: 2.5rem;
             }
             // 删除订单
-            .tel-act{
+            .tel-act {
               margin-top: 0.3rem;
               float: right;
               line-height: 2.15rem;
@@ -543,7 +645,7 @@ export default {
               color: #f00;
             }
           }
-          .tel-buynum{
+          .tel-buynum {
             height: 1.65rem;
             line-height: 1.65rem;
             font-size: 0.8rem;
@@ -569,6 +671,66 @@ export default {
       }
     }
   }
+  // 底部
+  .tel-shft {
+    position: fixed;
+    bottom: 4.2rem;
+    width: 100%;
+    height: 5.5rem;
+    line-height: 5.5rem;
+    .tel-inline {
+      float: left;
+      font-size: 1.4rem;
+      display: inline-block;
+    }
+    .tel-shprc {
+      padding-left: 4%;
+      width: 61%;
+      background: #e5e5e5;
+      .telt-prcin {
+        color: #f00;
+      }
+    }
+    .tel-settle {
+      width: 35%;
+      text-align: center;
+      color: #fff;
+      background: #fb2d2d;
+    }
+  }
+  // 计数器 手机
+  .pcsh-count {
+    display: inline-block;
+    // margin: 30px auto 0;
+    overflow: hidden;
+    width: 69px;
+    height: 20px;
+    input.pcsh-ipt {
+      display: inline-block;
+      float: left;
+      width: 33px;
+      height: 20px;
+      text-align: center;
+      color: #565656;
+      border: 0;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0;
+    }
+    .pc-combtn {
+      background: #bdbdbd;
+      width: 18px;
+      height: 20px;
+      float: left;
+      line-height: 18px;
+      color: #202020;
+      font-size: 25px;
+      text-align: center;
+      display: inline-block;
+    }
+  }
 }
 </style>
 
@@ -583,68 +745,75 @@ li {
   list-style: none;
 }
 
-// 计数器
-.pcsh-count {
-  margin: 0 auto;
-  width: 69px;
-  height: 20px;
-  .el-input-number__decrease,
-  .el-input-number__increase {
-    width: 18px;
-    height: 20px;
-    background: #bcbebd;
-    border-radius: 0;
-    i {
-      color: #202020;
-      position: absolute;
-      top: 3px;
-      left: 2px;
+@media all and (min-width: 768px) {
+  // 计数器
+  // .pcsh-count {
+  //   margin: 0 auto;
+  //   width: 69px;
+  //   height: 20px;
+  //   .el-input-number__decrease,
+  //   .el-input-number__increase {
+  //     width: 18px;
+  //     height: 20px;
+  //     background: #bcbebd;
+  //     border-radius: 0;
+  //     i {
+  //       color: #202020;
+  //       position: absolute;
+  //       top: 3px;
+  //       left: 2px;
+  //     }
+  //   }
+
+  //   .el-input {
+  //     width: 69px;
+  //     line-height: 20px;
+  //     .el-input__inner {
+  //       padding: 0 18px;
+  //       height: 20px;
+  //       border: 0;
+  //     }
+  //   }
+  // }
+
+  // 删除部分
+  .pcsh-remv {
+    // 弹出框
+    .el-dialog--center {
+      position: relative;
+      width: 22% !important;
+      overflow: hidden;
+      .el-dialog__header {
+        margin-top: 85px;
+        line-height: 60px;
+        padding: 0;
+      }
+      .el-dialog__body {
+        position: absolute;
+        top: 0;
+        width: 96%;
+        padding: 0 0 0 4%;
+        line-height: 50px;
+        color: #000;
+        font-weight: 700;
+        background: #bbb;
+      }
+      .el-dialog__footer {
+        padding: 0;
+        line-height: 100px;
+        .el-button {
+          width: 30%;
+          height: 45px;
+        }
+      }
     }
-  }
-  .el-input {
-    width: 69px;
-    line-height: 20px;
-    .el-input__inner {
-      padding: 0 18px;
-      height: 20px;
-      border: 0;
+    .el-dialog__headerbtn {
+      z-index: 10;
     }
   }
 }
 
-// 删除部分
-.pcsh-remv {
-  // 弹出框
-  .el-dialog--center {
-    position: relative;
-    width: 22% !important;
-    overflow: hidden;
-    .el-dialog__header {
-      margin-top: 85px;
-      line-height: 60px;
-      padding: 0;
-    }
-    .el-dialog__body {
-      position: absolute;
-      top: 0;
-      width: 96%;
-      padding: 0 0 0 4%;
-      line-height: 50px;
-      color: #000;
-      font-weight: 700;
-      background: #bbb;
-    }
-    .el-dialog__footer {
-      padding: 0;
-      line-height: 100px;
-      .el-button {
-        width: 140px;
-        height: 45px;
-      }
-    }
-  }
-  .el-dialog__headerbtn {
-    z-index: 10;
-  }
+@media all and (max-width: 767px) {
+  // 计数器
 }
 </style>

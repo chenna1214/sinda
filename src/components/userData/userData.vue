@@ -1,20 +1,27 @@
 <template>
   <div>
-   <!-- 登录、注册、忘记密码头部 -->
-    <div class="welcome hidden-xs-only">
-     <!-- 信达图标 -->
-     <div class="logo"></div>
-     <!-- 竖线 -->
-     <div class="virgule"></div>
-     <!-- 欢迎登录 -->
-     <p>{{getTitle}}</p>
-   </div>
+    <!-- <el-row justify="center" type="flex"> -->
+      <!-- <el-col class="hidden-xs-only" :sm="20" :md="20" :lg="20"> -->
+        <div class="hidden-xs-only">
+          <!-- 登录、注册、忘记密码头部 -->
+          <div class="welcome">
+            <!-- 信达图标 -->
+            <div class="logo"></div>
+            <!-- 竖线 -->
+            <div class="virgule"></div>
+            <!-- 欢迎登录 -->
+            <p>{{getTitle}}</p>
+          </div>
+        </div>
+      <!-- </el-col> -->
+    <!-- </el-row> -->
+
    <router-view/> 
    </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 var md5 = require("md5");
 
 export default {
@@ -38,15 +45,15 @@ export default {
     //   console.log('忘记密码')
     // }
   },
-  computed:{
-    ...mapGetters(['getTitle'])
+  computed: {
+    ...mapGetters(["getTitle"])
   }
 };
 </script>
 
 <style scoped lang='less'>
 .welcome {
-  width: 1200px;
+  max-width: 1200px;
   height: 97px;
   margin: 0 auto;
   display: flex;
