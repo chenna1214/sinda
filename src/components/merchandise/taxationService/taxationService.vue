@@ -566,7 +566,7 @@ export default {
     // 头部ul
     .tel-txhin {
       margin: 0.401rem auto 0.15rem;
-      width: 3.6rem;
+      width: 47.73%;
       height: 0.6rem;
       overflow: hidden;
       border: 1px solid #2693d4;
@@ -574,7 +574,7 @@ export default {
       li {
         font-size: 0.28rem;
         float: left;
-        width: 0.18rem;
+        width: 50%;
         height: 0.6rem;
         line-height: 0.6rem;
         text-align: center;
@@ -616,6 +616,12 @@ export default {
           font-size: 0.22rem;
           line-height: 0.41rem;
           font-weight: 400;
+        }
+        .tel-earea{
+          line-height: 0.61rem;
+        }
+        .el-icon-location-outline{
+          font-size: 0.16rem;          
         }
         .tel-earcon {
           line-height: 0.61rem;
