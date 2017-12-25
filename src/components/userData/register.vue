@@ -2,116 +2,133 @@
   <div>
     <!-- 注册 -->
     <div class="register">
-      <div class="centent">
-        <div class="left">
-          <!-- 提示错误信息的盒子 -->
-          <div class="anError" v-if="showE">
-            <!-- 小红点 -->
-            <p>一</p>
-            <!-- 提示的错误信息 -->
-            <p class="wrongTip">{{error}}</p>
-          </div>
 
-          <!-- 手机号码 -->
-          <div class="fleBox">
-            <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
-            <div class="yeahGreen" v-show="showYphone"></div>
-            <div class="yeahing" v-show="yphone">
-              <p class="yeahP">请输入11位中国大陆手机号</p>
-            </div>
-            <div class="erping" v-show="ephone">
-              <div class="erImg"></div>
-              <p class="errP">{{Ephone}}</p>
-            </div>
-          </div>
-
-          <!-- 验证码 -->
-          <div class="verify">
-            <input class="boxI box" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
-            <div class="verifyI" @click="imgReflash">
-              <img :src="imgUrl">
-            </div>
-            <div class="yeahGreen" v-show="showYYan"></div>            
-            <div class="yeahing" v-show="yyan">
-              <p>请输入四位图片验证码</p>
-            </div>
-            <div class="erping" v-show="eyan">
-              <div class="erImg"></div>
-              <p class="errP">{{Eyan}}</p>
-            </div>
-          </div>
-
-          <!-- 短信验证码 -->
-          <div class="acquire">
-            <input class="boxI box" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
-            <div class = "spanStyle">
-              <span v-show = "show" @click="getCode" class="getblue">获取验证码</span>
-              <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
-            </div>
-            <div class="yeahGreen" v-show="showYDuan"></div>                        
-            <div class="yeahing" v-show="yduan">
-              <p>请输入六位短信验证码</p>
-            </div>
-            <div class="erping" v-show="eduan">
-              <div class="erImg"></div>
-              <p class="errP">{{Eduan}}</p>
-            </div>
-          </div>
-
-          <!-- 三级联动 -->
-          <div class="fleBox">
-            <select name="" id="" @change="proChange" v-model="province">
-              <option value="0">省</option>
-              <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-            </select>
-            <select name="" id="" @change="cityChange" v-model="city">
-              <option value="0">市</option>
-              <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-            </select>
-            <select name="" id="" v-model="area" @change="quhao">
-              <option value="">区</option>
-              <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
-            </select>
-            <!-- 三级联动错误提示 -->
-            <div class="erping" v-show="esan">
-              <div class="erImg"></div>
-              <p class="errP">{{Esan}}</p>
-            </div>
-          </div>
-
-          <!-- 密码 -->
-          <div class="fleBox">
-            <!-- 设置密码 -->
-            <div class="eyeBox">
-              <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
-              <img :src="logImg" class="eyes" alt="" @click="showHidden">
-            </div>
-            <div class = "yeahing" v-show="ymi">
-              <p id = "miJian">• 长度为6-20个字符</p>
-              <p id = "miJian">• 支持数字，大小写字母</p>
-              <p id = "miJian">• 不允许有空格</p>
-            </div>
-            <div class="yeahGreen" v-show="showYMi"></div>            
-            <!-- 设置密码错误提示信息 -->
-            <div class="erping" v-show="emi">
-              <div class="erImg"></div>
-              <p class="errP">{{Emi}}</p>
-            </div>
-          </div>
+        <div class="graTop">
+          <div></div>
+          <p>注册</p>
+        </div>
+        <el-row type="flex" class="centent" justify="center" :gutter="20" style="margin: 52px auto 0">
           
-          <button class="immediately" @click="iregister">立即注册</button>
-          <p>注册及同意遵守
-            <a class="agreement" href="">《服务协议》</a>
-          </p>
-        </div>
-        <p class="division"></p>
-        <!-- 中间分割线 -->
-        <div class="registersecond">
-          <span>已有账号？</span><br>
-          <a class="dl" href="#/userData/login">立即登录>></a>
-          <img src="../merchandise/pc_images/pc_login.png" alt="">
-        </div>
-      </div>
+
+          <el-col :xs="24" :sm="13" :md="13" :lg="13">
+            <div class="left">
+              <!-- 提示错误信息的盒子 -->
+              <div class="anError" v-if="showE">
+                <!-- 小红点 -->
+                <p>一</p>
+                <!-- 提示的错误信息 -->
+                <p class="wrongTip">{{error}}</p>
+              </div>
+
+              <!-- 手机号码 -->
+              <div class="fleBox">
+                <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
+                <div class="yeahGreen" v-show="showYphone"></div>
+                <div class="yeahing hidden-xs-only" v-show="yphone">
+                  <p class="yeahP">请输入11位中国大陆手机号</p>
+                </div>
+                <div class="erping" v-show="ephone">
+                  <div class="erImg"></div>
+                  <p class="errP">{{Ephone}}</p>
+                </div>
+              </div>
+
+              <!-- 验证码 -->
+              <div class="verify">
+                <input class="boxI box" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+                <div class="verifyI" @click="imgReflash">
+                  <img :src="imgUrl">
+                </div>
+                <div class="yeahGreen" v-show="showYYan"></div>            
+                <div class="yeahing hidden-xs-only" v-show="yyan">
+                  <p>请输入四位图片验证码</p>
+                </div>
+                <div class="erping hidden-xs-only" v-show="eyan">
+                  <div class="erImg"></div>
+                  <p class="errP">{{Eyan}}</p>
+                </div>
+              </div>
+
+              <!-- 短信验证码 -->
+              <div class="acquire">
+                <input class="boxI box" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+                <div class = "spanStyle">
+                  <span v-show = "show" @click="getCode" class="getblue">获取验证码</span>
+                  <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
+                </div>
+                <div class="yeahGreen" v-show="showYDuan"></div>                        
+                <div class="yeahing hidden-xs-only" v-show="yduan">
+                  <p>请输入六位短信验证码</p>
+                </div>
+                <div class="erping hidden-xs-only" v-show="eduan">
+                  <div class="erImg"></div>
+                  <p class="errP">{{Eduan}}</p>
+                </div>
+              </div>
+
+              <!-- 三级联动 -->
+              <div class="fleBox">
+                <select name="" id="" @change="proChange" v-model="province">
+                  <option value="0">省</option>
+                  <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+                </select>
+                <select name="" id="" @change="cityChange" v-model="city">
+                  <option value="0">市</option>
+                  <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+                </select>
+                <select name="" id="" v-model="area" @change="quhao">
+                  <option value="">区</option>
+                  <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
+                </select>
+                <!-- 三级联动错误提示 -->
+                <div class="erping hidden-xs-only" v-show="esan">
+                  <div class="erImg"></div>
+                  <p class="errP">{{Esan}}</p>
+                </div>
+              </div>
+
+              <!-- 密码 -->
+              <div class="fleBox">
+                <!-- 设置密码 -->
+                <div class="eyeBox">
+                  <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
+                  <img :src="logImg" class="eyes" alt="" @click="showHidden">
+                </div>
+                <div class = "yeahing hidden-xs-only" v-show="ymi">
+                  <p id = "miJian">• 长度为6-20个字符</p>
+                  <p id = "miJian">• 支持数字，大小写字母</p>
+                  <p id = "miJian">• 不允许有空格</p>
+                </div>
+                <div class="yeahGreen" v-show="showYMi"></div>            
+                <!-- 设置密码错误提示信息 -->
+                <div class="erping hidden-xs-only" v-show="emi">
+                  <div class="erImg"></div>
+                  <p class="errP">{{Emi}}</p>
+                </div>
+              </div>
+              
+              <button class="immediately" @click="iregister">立即注册</button>
+              <p>注册及同意遵守
+                <a class="agreement" href="">《服务协议》</a>
+              </p>
+            </div>
+          </el-col>
+          
+          <el-col :span="0.5" style="padding: 0" class="hidden-xs-only">          
+            <!-- 中间分割线 -->
+            <p class="division"></p>
+          </el-col>
+
+          <el-col :sm="10" :md="10" :lg="10" class="hidden-xs-only">
+            <div class="registersecond">
+              <span>已有账号？</span><br>
+              <a class="dl" href="#/userData/login">立即登录>></a>
+              <img src="../merchandise/pc_images/pc_login.png" alt="">
+            </div>
+          </el-col>
+
+        </el-row>
+
     </div>
     <!-- 注册成功弹出框 -->
     <div class="tanchu">
@@ -193,7 +210,6 @@ export default {
     };
   },
   methods: {
-    
     // 打印区号
     quhao: function() {
       console.log(this.area);
@@ -509,30 +525,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.yeahing {
-  p {
-    font-size: 11px;
-    color: #999;
-    margin: 10px 0 0 9px;
-  }
-  #miJian {
-    line-height: 0.9;
-  }
-}
-.erping {
-  display: flex;
-  div {
-    margin: 10px 0 0 4px;
-  }
-  .errP {
-    margin: 9px 0 0 5px;
-    color: #e00202;
-    font-size: 10px;
-  }
-}
-.fleBox {
-  display: flex;
-}
 .erImg {
   width: 15px;
   height: 15px;
@@ -548,193 +540,272 @@ input[type="number"] {
   margin: 10px 0 0 5px;
   line-height: 30px;
 }
-.ephone {
-  display: flex;
-}
-.tanchu {
-  title {
-    font-size: 12px;
+@media all and (min-width: 768px) {
+  .yeahing {
+    p {
+      font-size: 11px;
+      color: #999;
+      margin: 10px 0 0 9px;
+    }
+    #miJian {
+      line-height: 0.9;
+    }
   }
-  button {
-    width: 118px;
-    margin-left: 30px;
+  .erping {
+    display: flex;
+    div {
+      margin: 10px 0 0 4px;
+    }
+    .errP {
+      margin: 9px 0 0 5px;
+      color: #e00202;
+      font-size: 0.5rem;
+    }
   }
-  h3 {
-    margin: 15px 0 0 37px;
-    font-size: 19px;
-  }
-  .ping {
+  .fleBox {
     display: flex;
   }
-  a {
-    color: #fff;
-    text-decoration: none;
-  }
-  img {
-    width: 76px;
-    height: 62px;
-    margin-left: 40px;
-  }
-}
-.anError {
-  width: 283px;
-  height: 25px;
-  border: 1px solid #fcaeae;
-  margin-bottom: 20px;
-  background: #fffef5;
-  display: flex;
-  p:nth-child(1) {
-    background: #f33e3e;
-    color: #fff;
-    border: 1px solid #f33e3e;
-    border-radius: 50%;
-    height: 15px;
-    line-height: 16px;
-    margin: 4px 0 0 20px;
-    width: 15px;
-  }
-  .wrongTip {
-    color: #ea2b2b;
-    padding: 0 20px;
-    font-size: 14px;
-    margin-top: 3px;
-  }
-}
-.register {
-  width: 100%;
-  height: 654px;
-  background: #f5f5f5;
-  border: 1px solid #f5f5f5;
-  .centent {
-    width: 1200px;
-    height: 500px;
-    margin: 52px auto 0;
+  .ephone {
     display: flex;
-    background-color: #fff;
   }
-  .left {
-    width: 500px;
-    margin-top: 50px;
-    margin-left: 100px;
-    > p {
+  .tanchu {
+    title {
+      font-size: 12px;
+    }
+    button {
+      width: 118px;
+      margin-left: 30px;
+    }
+    h3 {
+      margin: 15px 0 0 37px;
+      font-size: 19px;
+    }
+    .ping {
+      display: flex;
+    }
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+    img {
+      width: 76px;
+      height: 62px;
+      margin-left: 40px;
+    }
+  }
+  .anError {
+    width: 283px;
+    height: 25px;
+    border: 1px solid #fcaeae;
+    margin-bottom: 20px;
+    background: #fffef5;
+    display: flex;
+    p:nth-child(1) {
+      background: #f33e3e;
+      color: #fff;
+      border: 1px solid #f33e3e;
+      border-radius: 50%;
+      height: 15px;
+      line-height: 16px;
+      margin: 4px 0 0 20px;
+      width: 15px;
+    }
+    .wrongTip {
+      color: #ea2b2b;
+      padding: 0 20px;
       font-size: 14px;
-      margin: 15px 0 0 43px;
-      a {
+      margin-top: 3px;
+    }
+  }
+  .register {
+    height: 654px;
+    background: #f5f5f5;
+    border: 1px solid #f5f5f5;
+    .centent {
+      max-width: 1200px;
+      height: 500px;
+      margin: 52px auto 0;
+      display: flex;
+      background-color: #fff;
+    }
+    .left {
+      margin: 50px 0 0 12%;
+      > p {
         font-size: 14px;
-        color: #2693d4;
-        text-decoration: none;
+        margin: 15px 0 0 43px;
+        a {
+          font-size: 14px;
+          color: #2693d4;
+          text-decoration: none;
+        }
       }
     }
   }
-}
-.division {
-  width: 1px;
-  height: 260px;
-  background-color: #cbcbcb;
-  margin-top: 82px;
-}
+  .division {
+    width: 1px;
+    height: 260px;
+    background-color: #cbcbcb;
+    margin: 82px auto 0;
+  }
 
-.verify {
-  display: flex;
-  .verifyI {
-    cursor:pointer;
-    img {
-      width: 87px;
-      height: 37px;
-      margin-left: 18px;
+  .verify {
+    display: flex;
+    .verifyI {
+      cursor: pointer;
+      img {
+        width: 87px;
+        height: 37px;
+        margin-left: 18px;
+      }
     }
   }
-}
-.acquire {
-  display: flex;
-  .spanStyle {
-    cursor:pointer;
-    margin-left: 5px;
+  .acquire {
+    display: flex;
+    .spanStyle {
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .getblue {
+      display: block;
+      text-align: center;
+      line-height: 35px;
+      width: 98px;
+      height: 35px;
+      border: 1px solid #2693d4;
+      border-radius: 3px;
+      background-color: #fff;
+      color: #2693d4;
+      font-size: 13px;
+    }
+    .getgray {
+      font-size: 13px;
+      display: block;
+      text-align: center;
+      line-height: 35px;
+      width: 98px;
+      height: 35px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      background-color: #aaa;
+      color: #fff;
+    }
   }
-  .getblue {
-    display: block;
-    text-align: center;
-    line-height: 35px;
-    width: 98px;
+  .registersecond {
+    width: 37%;
+    height: 350px;
+    // border: 1px solid red;
+    margin: 50px auto 0;
+    span {
+      display: block;
+    }
+    a {
+      font-size: 16px;
+      color: #2693d4;
+      text-decoration: none;
+    }
+    img {
+      margin-left: -15px;
+      margin-top: 18px;
+    }
+  }
+  .box {
+    width: 260px;
     height: 35px;
+    border: 1px solid #cbcbcb;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    padding: 0 0 0 20px;
+    font-size: 15px;
+  }
+  .boxI {
+    width: 154px;
+  }
+  .immediately {
+    cursor: pointer;
+    width: 280px;
+    height: 35px;
+    margin-top: 15px;
     border: 1px solid #2693d4;
+    color: #2693d4;
     border-radius: 3px;
     background-color: #fff;
-    color: #2693d4;
-    font-size: 13px;
   }
-  .getgray {
-    font-size: 13px;
-    display: block;
-    text-align: center;
-    line-height: 35px;
-    width: 98px;
+  .bottom {
+    padding-bottom: 150px;
+  }
+  select {
+    width: 91px;
     height: 35px;
-    border: 1px solid #aaa;
+    margin-bottom: 20px;
     border-radius: 3px;
-    background-color: #aaa;
-    color: #fff;
+    border: 1px solid #cbcbcb;
+    margin-right: 3px;
+  }
+  .eyeBox {
+    position: relative;
+    padding-bottom: 5px;
+    .eyes {
+      cursor: pointer;
+      position: absolute;
+      right: 0px;
+      top: 1px;
+      padding: 10px 8px;
+    }
+  }
+  .graTop {
+    display: none;
   }
 }
-.registersecond {
-  width: 283px;
-  height: 258px;
-  margin: 50px 0 0 190px;
-  span {
+@media all and (max-width: 767px) {
+  .graTop {
     display: block;
+    height: 77px;
+    background: #e5e5e5;
+    width: 100%;
+    display: flex;
+    > div {
+      width: 20px;
+      height: 20px;
+      border-left: 2px solid #838383;
+      border-top: 2px solid #838383;
+      transform: rotate(-45deg);
+      color: #fff;
+      position: relative;
+      left: 32px;
+      top: 28px;
+    }
+    p {
+      line-height: 77px;
+      margin-left: 42%;
+      font-size: 21px;
+    }
   }
-  a {
-    font-size: 16px;
-    color: #2693d4;
-    text-decoration: none;
+  .box {
+    width: 67%;
+    height: 73px;
+    border: 1px solid #cbcbcb;
+    margin: 0 0 20px 14%;
+    border-radius: 3px;
+    padding: 0 0 0 20px;
+    font-size: 20px;
   }
-  img {
-    margin-left: -15px;
-    margin-top: 18px;
+  .erping {
+    display: flex;
+    div {
+      margin: 10px 0 0 4px;
+    }
+    .errP {
+      margin: 9px 0 0 5px;
+      color: #e00202;
+      font-size: 17px;
+    }
   }
-}
-.box {
-  width: 260px;
-  height: 35px;
-  border: 1px solid #cbcbcb;
-  margin-bottom: 20px;
-  border-radius: 3px;
-  padding: 0 0 0 20px;
-  font-size: 15px;
-}
-.boxI {
-  width: 154px;
-}
-.immediately {
-  cursor:pointer;
-  width: 280px;
-  height: 35px;
-  margin-top: 15px;
-  border: 1px solid #2693d4;
-  color: #2693d4;
-  border-radius: 3px;
-  background-color: #fff;
-}
-.bottom {
-  padding-bottom: 150px;
-}
-select {
-  width: 91px;
-  height: 35px;
-  margin-bottom: 20px;
-  border-radius: 3px;
-  border: 1px solid #cbcbcb;
-  margin-right: 3px;
-}
-.eyeBox {
-  position: relative;
-  padding-bottom: 5px;
-  .eyes {
-    cursor:pointer;
-    position: absolute;
-    right: 0px;
-    top: 1px;
-    padding: 10px 8px;
+  .yeahGreen {
+    float: right;
+    margin: 30px 83px 0 0;
+  }
+  .erping{
+    
   }
 }
 </style>

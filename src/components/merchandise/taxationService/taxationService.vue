@@ -158,8 +158,6 @@ export default {
           that.thirdBoxShow = thirdId;
         });
     },
-<<<<<<< HEAD
-=======
     // getTitle(proType, showThree) {
     //   var that = this;
     //   that.secBox = [];
@@ -189,7 +187,6 @@ export default {
     //       that.reallyThird = that.thirdTitle[showThree];
     //     });
     // },
->>>>>>> 3e7283f921df066bb9c038b3bf27ada1201738db
 
     selected(code) {
       this.distCode = code;
