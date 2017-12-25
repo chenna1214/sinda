@@ -17,6 +17,19 @@
             <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
           </div>
 
+          <!-- 验证码 -->
+            <div class="verify">
+              <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+              <div class="verifyI" @click="imgReflash">
+                <img :src="imgUrl">
+              </div>
+              <div class="yeahGreen" v-show="showYYan"></div>
+              <div class="erping hidden-xs-only" v-show="eyan">
+                <div class="erImg"></div>
+                <p class="errP">{{Eyan}}</p>
+              </div>
+            </div>
+
         </div>
 
       </div>
@@ -164,7 +177,7 @@
         </span>
       </el-dialog>
     </div>
-    
+
     </div>
   </div>
 </template>
@@ -781,7 +794,7 @@ input[type="number"] {
 }
 @media all and (max-width: 767px) {
   .graTop {
-    height: 3.6rem;
+    height: 0.72rem;
     background: #e5e5e5;
     width: 100%;
     display: flex;
@@ -789,8 +802,8 @@ input[type="number"] {
     justify-content: space-around;
     > span {
       display: inline-block;
-      width: 0.8rem;
-      height: 0.8rem;
+      width: 0.16rem;
+      height: 0.16rem;
       border-left: 2px solid #838383;
       border-top: 2px solid #838383;
       transform: rotate(-45deg);
@@ -798,59 +811,43 @@ input[type="number"] {
     div {
       width: 88%;
       text-align: center;
-      line-height: 3.6rem;
-      font-size: 1.5rem;
+      line-height: 0.72rem;
+      font-size: 0.3rem;
     }
   }
   .box {
-    width: 26.35rem;
-    height: 3.65rem;
+    width: 5.27rem;
+    height: 0.73rem;
     border: 1px solid #cbcbcb;
-    margin-top: 3.6rem;
-    border-radius: 3px;
-    padding: 0 0 0 1rem;
-    font-size: 1.45rem;
+    margin-top: 0.72rem;
+    border-radius: 0.03rem;
+    padding: 0 0 0 0.2rem;
+    font-size: 0.29rem;
   }
   .boxI {
-    width: 26.35rem;
-    height: 3.65rem;
+    width: 2.72rem;
+    height: 0.73rem;
     border: 1px solid #cbcbcb;
-    margin-top: 3.6rem;
-    border-radius: 3px;
-    padding: 0 0 0 1rem;
-    font-size: 1.45rem;
+    margin-top: 0.72rem;
+    border-radius: 0.03rem;
+    padding: 0 0 0 0.2rem;
+    font-size: 0.29rem;
+  }
+  .verify {
+    display: flex;
+    .verifyI {
+      cursor: pointer;
+      img {
+        width: 2.41rem;
+        height: 0.72rem;
+        // margin-left: 18px;
+      }
+    }
   }
   .centent {
-    width: 27.35rem;
+    width: 5.47rem;
     margin: 0 auto;
     border: 1px solid blue;
   }
 }
-// @media screen and (min-width: 480px) and (max-width: 639px) {
-//   .graTop {
-//     display: block;
-//     height: 77px;
-//     background: #e5e5e5;
-//     width: 100%;
-//     display: flex;
-//     > div {
-//       width: 20px;
-//       height: 20px;
-//       border-left: 2px solid #838383;
-//       border-top: 2px solid #838383;
-//       transform: rotate(-45deg);
-//       color: #fff;
-//       position: relative;
-//       left: 32px;
-//       top: 28px;
-//     }
-//     p {
-//       line-height: 77px;
-//       margin-left: 42%;
-//       font-size: 30px;
-//     }
-//   }
-// }
-// @media screen and (min-width: 280px) and (max-width: 479px) {
-// }
 </style>

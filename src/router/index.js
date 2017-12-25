@@ -27,6 +27,8 @@ import userevalua from '../components/merchandise/memberCenter/userevalua.vue'
 //  微信端
 import unregistered from '../components/merchandise/my/unregistered.vue'
 import havelogined from '../components/merchandise/my/havelogined.vue'
+import myorder from '../components/merchandise/my/myorder.vue'
+import accountset from '../components/merchandise/my/accountset.vue'
 //银联支付
 import pay from '../components/merchandise/order/pay'
 //支付宝支付
@@ -147,14 +149,24 @@ export default new Router({
           component: goodsOrder,
         },
         {
-          path: 'unregistered',//我的（未注册）
+          path: 'unregistered',//微信-我的（未注册）
           name: 'unregistered',
           component: unregistered
         },
         {
-          path: 'havelogined',//我的（已登录）
+          path: 'havelogined',//微信-我的（已登录）
           name: 'havelogined',
           component: havelogined
+        },
+        {
+          path: 'myorder',//微信-我的订单
+          name: 'myorder',
+          component: myorder
+        },
+        {
+          path: 'accountset',//微信-账户设置
+          name: 'accountset',
+          component: accountset
         },
       ]
     },
