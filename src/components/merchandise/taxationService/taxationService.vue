@@ -94,7 +94,7 @@
      <!-- 财税服务 手机端商品列表 -->
      <ul class="tel-texbdy">
       <!-- 财税服务 手机端商品 -->       
-       <li  v-for="(product,idx) in products" :key="product.serviceInfo" class="tel-texelm clear">
+       <li  v-for="(product,idx) in products" :key="product.serviceInfo" class="tel-texelm clear" :class="{lastMessage:idx==totalCount}">
          <!-- 左侧图片 -->
          <div class="tel-teimg" @click="toDetail(product.id)" >
            <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
@@ -112,11 +112,6 @@
           </div>
        </li>
      </ul>
-      <div class="tel-pagBox"><!-- 页码 -->
-        <i class="el-icon-arrow-left"  @click="upPage()"></i>
-        <!-- <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span> -->
-        <i class="el-icon-arrow-right" @click="downPage()"></i>
-    </div>
    </div>
     
    </div>
@@ -171,18 +166,22 @@ export default {
       var that = this;
       var params = {
         productTypeCode: code,
-        limit: 3,
         start: this.eachContent * 3,
         sort: proSort
       };
+      if (window.screen.availWidth >= 768) {
+        params.limit = 3;
+      } else {
+        delete params.limit;
+      }
       if (thirdId != -1) {
         params.productId = thirdId;
       }
-
       this.ajax
         .post("/xinda-api/product/package/grid", this.qs.stringify(params))
         .then(function(data) {
           that.products = data.data.data;
+          that.thirdBoxShow = thirdId;
           var page = Math.ceil(data.data.totalCount / 3);
           var pageCount = {};
           for (var i = 0; i < page; i++) {
@@ -190,10 +189,9 @@ export default {
           }
           that.pageNum = pageCount;
           that.page = page;
-          that.thirdBoxShow = thirdId;
+          that.totalCount=data.data.totalCount-1;//从服务器请求的信息总条数
         });
     },
-
     selected(code) {
       this.distCode = code;
     },
@@ -234,7 +232,7 @@ export default {
           break;
         }
       }
-      this.ajaxProData(this.change, this.eachContent);
+      this.ajaxProData(this.change);
     },
     thirdClick(thirId) {
       //点击请求三级标题
@@ -297,11 +295,10 @@ export default {
   watch: {
     $route: function() {
       this.initTypes();
-    }
-    // ajaxProData1:function(){问题：如何监听多种变量
-    //   this.ajaxProData()
-
-    // }
+    },
+    // limit: function() {
+    //   this.ajaxProData();
+    // }问题：如何监听
   },
   created() {
     var that = this;
@@ -314,8 +311,6 @@ export default {
 
     if (this.$route.query.code) {
       this.ajaxProData(this.$route.query.code, 0, this.$route.query.thirdId);
-      console.log('是否加载')
-      
     } else {
       this.ajaxProData(0, 0, this.$route.query.thirdId);
     }
@@ -341,12 +336,12 @@ export default {
       textColor: 0, //控制页码被选中后的动态样式的初始值
       codeArr: [], //存产品类型请求参数
       firstShowCode: { first: 1 },
-      // showIndex: "",
       code: "",
       thirdBoxShow: "",
       reallyThird: "",
       types: [], //产品类型原始数据
-      proSort: -10 //排序请求参数sort
+      proSort: -10, //排序请求参数sort
+      totalCount:''//从服务器获取信息总条数
     };
   },
   components: { autourban, servicePart, company }
@@ -561,6 +556,10 @@ export default {
 }
 
 @media all and (max-width: 767px) {
+  .lastMessage{
+    margin-bottom: 4rem;
+
+  }
   .tel-texhd {
     width: 100%;
     // 头部ul
@@ -597,7 +596,7 @@ export default {
         width: 22.64%;
         height: 8.35rem;
         border: 2px solid #e3e3e3;
-        .tel-imgin{
+        .tel-imgin {
           width: 100%;
         }
       }
@@ -614,7 +613,7 @@ export default {
         .tel-elinfo {
           font-size: 1.1rem;
           line-height: 2.05rem;
-          font-weight: 400;          
+          font-weight: 400;
         }
         .tel-earcon {
           line-height: 3.05rem;
@@ -631,7 +630,7 @@ export default {
             color: #ff1416;
             font-weight: 700;
           }
-          .tel-teyuan{
+          .tel-teyuan {
             margin-right: 0.5rem;
             font-size: 0.8rem;
           }
@@ -641,12 +640,12 @@ export default {
   }
 }
 // 翻页
-.tel-pagBox{
+.tel-pagBox {
   height: 8rem;
   line-height: 8rem;
   width: 20%;
   margin: 0 auto;
-  i{
+  i {
     font-size: 2rem;
   }
 }
