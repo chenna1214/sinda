@@ -58,6 +58,9 @@ function setRem() {
     var _fontsize = (_w / 750) * 100;
     var html = document.getElementsByTagName('html')[0];
     html.style.fontSize = _fontsize + 'px';
+  }else{
+    var html = document.getElementsByTagName('html')[0];
+    html.style.fontSize = 1 + 'px';
   }
 }
 window.onresize = setRem;

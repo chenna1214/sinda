@@ -98,10 +98,10 @@ export default {
   .telImg {
     background: url("../../images/telIndex/telFooter.png") no-repeat;
     width: 35px;
-    height: 1.75rem;
+    height: 0.35rem;
   }
   .telTil {
-    font-size: 1.15rem;
+    font-size:0.23rem;
     color: #999;
   }
   .telFootImgBox {
@@ -111,12 +111,12 @@ export default {
   .telFootBox {
     display: flex;
     justify-content: space-around;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
   }
   .telFootNavHref {
       text-decoration: none;
-      font-size: 1.15rem;
+      font-size: 0.23rem;
       color: #999;
   }
   .telFooterFix {
