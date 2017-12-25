@@ -48,14 +48,17 @@ Vue.prototype.debounce = function debounce(fn, delay) {
 }
 
 // Vue.prototype.autoHtml = function () {
-  
+
 // }
 // Vue.prototype.autoHtml();
-function setRem(){
-  var _w = document.documentElement.clientWidth; //屏幕可视区域宽高w3c下全兼容
-  var _fontsize = (_w / 750) * 100;
-  var html = document.getElementsByTagName('html')[0];
-  html.style.fontSize = _fontsize+'px';
+function setRem() {
+  var _w = document.documentElement.clientWidth;
+  if (_w <= 768) {
+    //屏幕可视区域宽高w3c下全兼容
+    var _fontsize = (_w / 750) * 100;
+    var html = document.getElementsByTagName('html')[0];
+    html.style.fontSize = _fontsize + 'px';
+  }
 }
 window.onresize = setRem;
 setRem();
@@ -71,8 +74,8 @@ new Vue({
   components: {
     sinda
   },
-  watch:{
-    screenWidth:function(){
+  watch: {
+    screenWidth: function () {
       Vue.prototype.autoHtml();
 
     }

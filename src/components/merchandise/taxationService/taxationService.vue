@@ -112,15 +112,6 @@
           </div>
        </li>
      </ul>
-<<<<<<< HEAD
-     <!-- 页码 -->
-      <!-- <div class="tel-pagBox">
-        <i class="el-icon-arrow-left"  @click="upPage()"></i>
-        <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
-        <i class="el-icon-arrow-right" @click="downPage()"></i>
-    </div> -->
-=======
->>>>>>> 76b2e943e3d6cfcfea083d062c592cbf5d1832f4
    </div>
     
    </div>
@@ -422,6 +413,7 @@ export default {
     color: #2693d4;
   }
   .pcPage {
+    font-size: 28px;
     width: 36px;
     display: inline-block;
     text-align: center;
@@ -566,25 +558,25 @@ export default {
 
 @media all and (max-width: 767px) {
   .lastMessage{
-    margin-bottom: 4rem;
+    margin-bottom: 0.8rem;
 
   }
   .tel-texhd {
     width: 100%;
     // 头部ul
     .tel-txhin {
-      margin: 2.005rem auto 0.75rem;
-      width: 18rem;
-      height: 3rem;
+      margin: 0.401rem auto 0.15rem;
+      width: 3.6rem;
+      height: 0.6rem;
       overflow: hidden;
       border: 1px solid #2693d4;
       border-radius: 4px;
       li {
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         float: left;
-        width: 9rem;
-        height: 3rem;
-        line-height: 3rem;
+        width: 0.18rem;
+        height: 0.6rem;
+        line-height: 0.6rem;
         text-align: center;
       }
     }
@@ -592,19 +584,19 @@ export default {
   // 商品列表块
   .tel-texbdy {
     width: 100%;
-    padding-bottom: 5rem;
+    padding-bottom: 1rem;
     padding-left: 3.27%;
     .tel-texelm {
       width: 100%;
-      padding-top: 0.85rem;
-      min-height: 10rem;
+      padding-top: 0.17rem;
+      min-height: 2rem;
       border-bottom: 1px solid #cfcfcf;
       // 左侧图片
       .tel-teimg {
-        margin: 0.4rem 1.2rem 0 0;
+        margin: 0.08rem 0.24rem 0 0;
         float: left;
         width: 22.64%;
-        height: 8.35rem;
+        height: 1.67rem;
         border: 2px solid #e3e3e3;
         .tel-imgin {
           width: 100%;
@@ -617,17 +609,17 @@ export default {
         width: 62%;
         .tel-tenm {
           color: #000;
-          font-size: 1.4rem;
-          line-height: 2.5rem;
+          font-size: 0.28rem;
+          line-height: 0.5rem;
         }
         .tel-elinfo {
-          font-size: 1.1rem;
-          line-height: 2.05rem;
+          font-size: 0.22rem;
+          line-height: 0.41rem;
           font-weight: 400;
         }
         .tel-earcon {
-          line-height: 3.05rem;
-          font-size: 0.8rem;
+          line-height: 0.61rem;
+          font-size: 0.16rem;
           color: #676767;
         }
         // 价格
@@ -635,14 +627,14 @@ export default {
           display: inline-block;
           float: right;
           .tel-temoney {
-            line-height: 3.05rem;
-            font-size: 1.3rem;
+            line-height: 0.61rem;
+            font-size: 0.26rem;
             color: #ff1416;
             font-weight: 700;
           }
           .tel-teyuan {
-            margin-right: 0.5rem;
-            font-size: 0.8rem;
+            margin-right: 0.1rem;
+            font-size: 0.16rem;
           }
         }
       }
@@ -651,12 +643,12 @@ export default {
 }
 // 翻页
 .tel-pagBox {
-  height: 8rem;
-  line-height: 8rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
   width: 20%;
   margin: 0 auto;
   i {
-    font-size: 2rem;
+    font-size: 0.4rem;
   }
 }
 </style>

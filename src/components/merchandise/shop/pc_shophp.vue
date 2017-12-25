@@ -529,10 +529,10 @@ export default {
       margin: 0 auto;
       .wec-logo{
         width: 100%;
-        margin-top: 3.2rem;
+        margin-top: 0.64rem;
         img{
-          width: 3.85rem;
-          height: 4.15rem;
+          width: 0.77rem;
+          height: 0.83rem;
           display: block;
           margin: 0 auto;
           border-radius: 50%;
@@ -541,17 +541,17 @@ export default {
       }
       .wec-name{
         width: 100%;
-        font-size: 1.8rem;
+        font-size: 0.36rem;
         font-weight: bold;
         text-align: center;
-        line-height: 2.75rem;
+        line-height: 0.55rem;
       }
       .wec-mes{
         width: 100%;
-        font-size: 1.5rem;
-        line-height: 2.8rem;
-        margin-top: 3.5rem;
-        margin-bottom: 3.5rem;
+        font-size: 0.3rem;
+        line-height: 0.56rem;
+        margin-top: 0.7rem;
+        margin-bottom: 0.7rem;
       }
     }
     // 所有服务
@@ -560,13 +560,13 @@ export default {
       margin-bottom: 7%;
       .wea-allser{
         width: 100%;
-        font-size: 1.4rem;
+        font-size: 0.28rem;
         border-bottom: 2px solid #2693d4;
         .wea-all{
-          width: 8.6rem;
+          width: 1.72rem;
           text-align: center;
-          line-height: 2.6rem;
-          margin-top: 1rem;
+          line-height: 0.52rem;
+          margin-top: 0.2rem;
         }
         span{
           width: 0;
@@ -577,16 +577,17 @@ export default {
           border-top: 5px solid #2693d4;
           border-bottom: 4px solid transparent;
           transform: rotate(180deg);
-          margin-top: -0.5rem;
-          margin-left: 4rem;
+          margin-top: -0.1rem;
+          margin-left: 0.8rem;
           position: absolute;
         }
       }
       // 具体信息
       .wea-detail{
         width: 98%;
-        margin-top: 0.9rem;
+        margin-top: 0.18rem;
         margin-left: 2%;
+        margin-bottom: 1.6rem;
         .wea-box{
           width: 100%;
           border-bottom: 1px solid #cfcfcf;
@@ -595,69 +596,69 @@ export default {
             // width: 8.3rem;
             // height: 8.3rem;
             border: 2px solid #e3e3e3;
-            margin-top: 1.25rem;
-            margin-bottom: 1.05rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.21rem;
             img{
-              width: 8.3rem;
-              height: 8.3rem;
+              width: 1.66rem;
+              height: 1.66rem;
               display: block;
             }
           }
           .wea-mes{
             width: 74%;
-            height: 8.5rem;
-            margin-left: 1.15rem;
-            margin-top: 1.25rem;
+            height: 1.7rem;
+            margin-left: 0.23rem;
+            margin-top: 0.25rem;
             display: flex;
             flex-wrap: wrap;
             align-content: space-around; 
             .wea-name{
-              font-size: 1.45rem;
+              font-size: 0.29rem;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
             }
             .wea-infor{
               width: 100%;
-              font-size: 1.2rem;
-              line-height: 2rem;
-              margin-top: 0.6rem;
+              font-size: 0.24rem;
+              line-height: 0.4rem;
+              margin-top: 0.12rem;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
             }
             .wea-area{
               width: 94%;
-              margin-top: .6rem;
+              margin-top: 0.12rem;
               display:flex;
               justify-content: space-between;
               .wea-baidu{
                 display: flex;
                 .wea-icon{
-                  width: 15px;
-                  height: 21px;
+                  width: 0.15rem;
+                  height: 0.21rem;
                   background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -75px -116px;
                 }
                 .wea-addshi{
-                  font-size: 0.9rem;
-                  margin-left: 0.5rem;
+                  font-size: 0.14rem;
+                  margin-left: 0.1rem;
                 }
                 .wea-addqu{
-                  font-size: 0.9rem;
-                  margin-left: 1rem;
+                  font-size: 0.14rem;
+                  margin-left: 0.2rem;
                 }
               }
               .wea-price{
                 display: flex;
                 .wea-buynum{
-                  font-size: 1.2rem;
+                  font-size: 0.24rem;
                   color: #ff1515;
                   font-weight: bold;
-                  margin-right: 0.85rem;
+                  margin-right: 0.17rem;
                 }
                 .wea-yuan{
-                  font-size: 0.8rem;
-                  line-height: 2rem;
+                  font-size: 0.16rem;
+                  line-height: 0.4rem;
                 }
               }
             }

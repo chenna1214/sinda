@@ -1,108 +1,110 @@
 <template>
   <div>
-   <!-- 我的订单 -->
-   <!-- 右侧头部 -->
-    <div class="mai-head">
-      <div>我的订单</div>
-    </div>
-    <!-- 右侧身体 -->
-    <div class="mai-body">
-      <!-- 订单号 -->
-      <div class="ordernum">
-        <div class="transcode">订单号 ：</div>
-        <div class="seekcode">
-          <input type="text" placeholder="请输入订单号搜索">
-        </div>
-        <div class="seek">搜索</div>
+    <div class="hidden-xs-only">
+      <!-- 我的订单 -->
+      <!-- 右侧头部 -->
+      <div class="mai-head">
+        <div>我的订单</div>
       </div>
-      <!-- 创建时间 -->
-      <div class="creatime">
-        <div class="createdate">创建时间 ：</div>
-        <div class="schedule">
-          <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
+      <!-- 右侧身体 -->
+      <div class="mai-body">
+        <!-- 订单号 -->
+        <div class="ordernum">
+          <div class="transcode">订单号 ：</div>
+          <div class="seekcode">
+            <input type="text" placeholder="请输入订单号搜索">
+          </div>
+          <div class="seek">搜索</div>
         </div>
-      </div>
-      <!-- 商品名称 -->
-      <div class="goodsname">
-        <!-- 头 -->
-        <div class="gname-top">
-          <div class="gna-pro">商品名称</div>
-          <div>单价</div>
-          <div>数量</div>
-          <div>总金额</div>
-          <div>订单状态</div>
-          <div>订单操作</div>
+        <!-- 创建时间 -->
+        <div class="creatime">
+          <div class="createdate">创建时间 ：</div>
+          <div class="schedule">
+            <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
+          </div>
         </div>
-        <!-- 订单 -->
-        <div class="indent">
-          <!-- 大订单 -->
-          <div v-for="product in products" :key="product.id">
-            <!-- 订单号(头部) -->
-            <div class="indent-top">
-              <div>
-                <div>订单号:</div>
-                <div>{{product.businessNo}}</div>
-              </div>
-              <div>
-                <div>下单时间:</div>
-                <div>{{product.gdate}}</div>
-              </div>
-            </div>
-            <!-- 具体信息 -->
-            <div class="ind-detail" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
-              <!-- 左侧 -->
-              <div class="det-left">
-                <!-- 商品 -->
+        <!-- 商品名称 -->
+        <div class="goodsname">
+          <!-- 头 -->
+          <div class="gname-top">
+            <div class="gna-pro">商品名称</div>
+            <div>单价</div>
+            <div>数量</div>
+            <div>总金额</div>
+            <div>订单状态</div>
+            <div>订单操作</div>
+          </div>
+          <!-- 订单 -->
+          <div class="indent">
+            <!-- 大订单 -->
+            <div v-for="product in products" :key="product.id">
+              <!-- 订单号(头部) -->
+              <div class="indent-top">
                 <div>
-                  <div class="comname">
-                    <div class="indname-img">
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'" alt="">
-                    </div>
-                    <div class="indname-cha">
-                      <div class="indcha-one">{{subitem.providerName}}</div>
-                      <div class="indcha-two">{{subitem.serviceName}}</div>
-                    </div>
-                  </div>
-                  <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
-                  <div class="ind-quant">{{subitem.buyNum}}</div>
-                  <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
-                  <div class="ind-status">等待买家付款</div>
+                  <div>订单号:</div>
+                  <div>{{product.businessNo}}</div>
+                </div>
+                <div>
+                  <div>下单时间:</div>
+                  <div>{{product.gdate}}</div>
                 </div>
               </div>
+              <!-- 具体信息 -->
+              <div class="ind-detail" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
+                <!-- 左侧 -->
+                <div class="det-left">
+                  <!-- 商品 -->
+                  <div>
+                    <div class="comname">
+                      <div class="indname-img">
+                        <img :src="'http://115.182.107.203:8088/xinda/pic'" alt="">
+                      </div>
+                      <div class="indname-cha">
+                        <div class="indcha-one">{{subitem.providerName}}</div>
+                        <div class="indcha-two">{{subitem.serviceName}}</div>
+                      </div>
+                    </div>
+                    <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
+                    <div class="ind-quant">{{subitem.buyNum}}</div>
+                    <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
+                    <div class="ind-status">等待买家付款</div>
+                  </div>
+                </div>
 
-              <!-- 右侧付款/删除 -->
-              <div class="det-right">
-                <!-- 付款 -->
-                <router-link :to="{path:'/merchandise/goodsOrder',query:{data:subitem.businessNo}}" class="ind-pay">付款</router-link>
-                <!-- 删除订单 -->
-                <div class="ind-delete" @click="cancel(subitem.id)">删除订单</div>
+                <!-- 右侧付款/删除 -->
+                <div class="det-right">
+                  <!-- 付款 -->
+                  <router-link :to="{path:'/merchandise/goodsOrder',query:{data:subitem.businessNo}}" class="ind-pay">付款</router-link>
+                  <!-- 删除订单 -->
+                  <div class="ind-delete" @click="cancel(subitem.id)">删除订单</div>
+                </div>
+                <!-- 支付完成：已付款 -->
+
+
+
               </div>
-              <!-- 支付完成：已付款 -->
-
-
-
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 右侧尾部 -->
-    <div class="mai-tail">
-      <div>上一页</div>
-      <div style="color: #2494d4;border-color: #2494d4;width: 3%;">1</div>
-      <div>下一页</div>
-    </div>
-    <!-- 确定删除吗 -->
-    <div class="mai-sure" v-show="sure" :class="xstyle">
-      <div class="mai-mess">
-        <div>信息</div>
-        <div class="maimess-x" @click="mesx">×</div>
+      <!-- 右侧尾部 -->
+      <div class="mai-tail">
+        <div>上一页</div>
+        <div style="color: #2494d4;border-color: #2494d4;width: 3%;">1</div>
+        <div>下一页</div>
       </div>
-      <div class="maimes-no">
-        <div>确定要删除该订单吗</div>
-        <div>                       
-          <div class="mai-confirm" @click="maisure">确定</div>
-          <div class="mai-undo" @click="mesx">取消</div>
+      <!-- 确定删除吗 -->
+      <div class="mai-sure" v-show="sure" :class="xstyle">
+        <div class="mai-mess">
+          <div>信息</div>
+          <div class="maimess-x" @click="mesx">×</div>
+        </div>
+        <div class="maimes-no">
+          <div>确定要删除该订单吗</div>
+          <div>                       
+            <div class="mai-confirm" @click="maisure">确定</div>
+            <div class="mai-undo" @click="mesx">取消</div>
+          </div>
         </div>
       </div>
     </div>
