@@ -23,6 +23,7 @@
             </el-col>
           </el-row>
         </div>
+
     </div>
 </template>
 
@@ -39,6 +40,8 @@ export default {
   created() {
    getTitles(this.rDataObjs);//获取产品导航标题
     var that = this; //this是指main.js中的new Vue
+    console.log('nav')
+    
   },
   methods: {
     telNavClick(telIdx) {
@@ -78,10 +81,10 @@ export default {
   border-bottom: 1px solid #cbcbcd;
 }
 .telNavText {
-  font-size: 1.1rem;
+  font-size: 0.22rem;
 }
 .telNavText {
-  font-size: 1.25rem;
+  font-size: 0.25rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -100,7 +103,7 @@ export default {
 }
 .telSecondTil {
   color: #666465;
-  font-size: 1.1rem;
+  font-size: 0.22rem;
 
   border-bottom: 1px solid #cbcbcd;
   padding-top: 23px;
@@ -109,7 +112,7 @@ export default {
 }
 .telNavThrid {
   color: #666465;
-  font-size: 0.9rem;
+  font-size: 0.16rem;
   margin-left: 60px;
   padding-top: 28px;
   padding-bottom: 23px;

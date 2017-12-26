@@ -15,22 +15,23 @@
         </div>
         <div class="searchBtn" @click="searchClick()">搜索</div>
       </div>
-      <!-- 右侧身体 -->
-      <div class="mai-body">
-        <!-- 订单号 -->
-        <div class="ordernum">
-          <div class="transcode">订单号 ：</div>
-          <div class="seekcode">
-            <input type="text" placeholder="请输入订单号搜索">
-          </div>
-          <div class="seek">搜索</div>
+      <!-- 创建时间 -->
+      <div class="creatime">
+        <div class="createdate">创建时间 ：</div>
+        <div class="schedule">
+          <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
         </div>
-        <!-- 创建时间 -->
-        <div class="creatime">
-          <div class="createdate">创建时间 ：</div>
-          <div class="schedule">
-            <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
-          </div>
+      </div>
+      <!-- 商品名称 -->
+      <div class="goodsname">
+        <!-- 头 -->
+        <div class="gname-top">
+          <div class="gna-pro">商品名称</div>
+          <div>单价</div>
+          <div>数量</div>
+          <div>总金额</div>
+          <div>订单状态</div>
+          <div>订单操作</div>
         </div>
         <!-- 订单 -->
         <div class="indent">
@@ -49,9 +50,9 @@
               </div>
             </div>
             <!-- 具体信息 -->
-            <div class="ind-detail" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
+            <div class="ind-detail">
               <!-- 左侧 -->
-              <div class="det-left">
+              <div class="det-left" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
                 <!-- 商品 -->
                 <div>
                   <div class="comname">
@@ -62,40 +63,40 @@
                       <div class="indcha-one">{{subitem.providerName}}</div>
                       <div class="indcha-two">{{subitem.serviceName}}</div>
                     </div>
-                    <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
-                    <div class="ind-quant">{{subitem.buyNum}}</div>
-                    <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
-                    <div class="ind-status">等待买家付款</div>
                   </div>
+                  <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
+                  <div class="ind-quant">{{subitem.buyNum}}</div>
+                  <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
+                  <div class="ind-status">等待买家付款</div>
                 </div>
               </div>
-            </div>
               <!-- 付款、删除订单按钮 -->
               <div class="det-right">
                 <router-link :to="{path:'/merchandise/goodsOrder',query:{data:product.businessNo}}" class="ind-pay" tag='span'>付款</router-link>
                 <span class="ind-delete" @click="cancel(product.businessNo,proIdx)">删除订单</span>
               </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- 右侧尾部 -->
-      <div class="mai-tail">
-        <div>上一页</div>
-        <div style="color: #2494d4;border-color: #2494d4;width: 3%;">1</div>
-        <div>下一页</div>
-      </div>
-      <!-- 确定删除吗 -->
-      <div class="mai-sure" v-show="sure" :class="xstyle">
-        <div class="mai-mess">
-          <div>信息</div>
-          <div class="maimess-x" @click="mesx">×</div>
-        </div>
-        <div class="maimes-no">
-          <div>确定要删除该订单吗</div>
-          <div>                       
-            <div class="mai-confirm" @click="maisure">确定</div>
-            <div class="mai-undo" @click="mesx">取消</div>
+    </div>
+          <!-- 页码 -->
+          <div class="mai-tail">
+            <button @click="upPage()" class="pageBtn">上一页</button>
+            <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" @click="pageClick(idxPage)" class="pcPage" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
+            <button @click="downPage()" class="pageBtn">下一页</button>
           </div>
+    <!-- 确定删除吗 -->
+    <div class="mai-sure" v-show="sure" :class="xstyle">
+      <div class="mai-mess">
+        <div>信息</div>
+        <div class="maimess-x" @click="mesx">×</div>
+      </div>
+      <div class="maimes-no">
+        <div>确定要删除该订单吗</div>
+        <div>                       
+          <div class="mai-confirm" @click="maisure">确定</div>
+          <div class="mai-undo" @click="mesx">取消</div>
         </div>
       </div>
     </div>
@@ -106,7 +107,7 @@
 export default {
   name: "changepwd",
   created() {
-    this.getGoodsData();
+    this.getGoodsData(0);
   },
   data() {
     return {
@@ -123,60 +124,115 @@ export default {
       etime: "",
       business: "",
       searchVal: "", //搜索框的value值
-      orderNum: "" ,//搜索后让匹配搜索内容的订单出现或消失
+      orderNum: "", //搜索后让匹配搜索内容的订单出现或消失
+      pageNum: {}, //页数
+      eachContent: 0, //每页内容
+      page: "", //每类数据分的总页数
+      textColor: 0 //控制页码被选中后的动态样式的初始值
     };
   },
+  watch: {
+    searchVal: function() {
+      if (!this.searchVal) {
+        this.orderNum = "";
+        this.getGoodsData();
+      }
+    }
+  },
   methods: {
+       pageClick(idxPage) {
+      //点击某个页码进行翻页
+      this.eachContent = idxPage;
+      this.textColor = idxPage;
+      this.getGoodsData(this.eachContent);
+
+    },
+     upPage() {
+      //点击向上一页翻页
+      if (this.eachContent - 1 >= 0) {
+        this.getGoodsData(this.eachContent);
+        this.textColor = this.eachContent;
+      }
+    },
+    downPage() {
+      //点击向下一页翻页
+      if (Number(this.eachContent) + 1 < this.page) {
+        this.eachContent = Number(this.eachContent) + 1;
+         this.getGoodsData(this.eachContent);
+        this.textColor = this.eachContent;
+      }
+    },
     searchClick() {
       //搜索订单的按钮
       for (var key in this.products) {
         if (key.indexOf(this.searchVal) != -1) {
-          this.orderNum=key;
-          console.log("匹配");
+          this.orderNum = key;
+          this.getGoodsData();
         }
+      }
+      if (!this.searchVal) {
+        this.orderNum = "";
+        this.getGoodsData(this.eachContent);
       }
     },
     //从服务订单接口获取订单数据
-    getGoodsData() {
+    getGoodsData(eachContent) {
       var that = this;
       // 订单号及其之下的信息
       // var creTime = localStorage.getItem('time');
-      this.ajax.post("/xinda-api/service-order/grid").then(function(data) {
-        var Data = data.data.data;
-        // that.gDatas = Data;
-        var business = {}; //定义空对象
-        for (var i in Data) {
-          // 不同订单号下的商品
-          var businessNo = Data[i].businessNo; //让gData里的订单号等于businessNo
-          if (!business[businessNo]) {
-            //business里没有businessNo
-            business[businessNo] = Data[i]; //让business[businessNo]等于gData[i]
-            // console.log(business[businessNo])
-            business[businessNo].subItem = []; //给对象business[businessNo]里定义一个新的属性
+      this.ajax
+        .post(
+          "/xinda-api/service-order/grid",
+          this.qs.stringify({
+            businessNo: that.orderNum,
+            limit: 5,
+            start: eachContent * 5
+          })
+        )
+        .then(function(data) {
+          var Data = data.data.data;
+          // that.gDatas = Data;
+          var business = {}; //定义空对象
+          for (var i in Data) {
+            // 不同订单号下的商品
+            var businessNo = Data[i].businessNo; //让gData里的订单号等于businessNo
+            if (!business[businessNo]) {
+              //business里没有businessNo
+              business[businessNo] = Data[i]; //让business[businessNo]等于gData[i]
+              // console.log(business[businessNo])
+              business[businessNo].subItem = []; //给对象business[businessNo]里定义一个新的属性
+            }
+            business[businessNo].subItem.push(Data[i]); //将gData[i]放入新属性里
+            that.products = business;
+            // 时间戳转化为时间函数
+            var gDate = new Date(that.products[businessNo].createTime);
+            var gyear = gDate.getFullYear();
+            var gmonth = gDate.getMonth() + 1;
+            var gdate = gDate.getDate();
+            var ghour = gDate.getHours();
+            var gminute = gDate.getMinutes();
+            var gsecond = gDate.getSeconds();
+            var gNowDate =
+              [gyear, gmonth, gdate].join("-") +
+              " " +
+              ghour +
+              ":" +
+              gminute +
+              ":" +
+              gsecond;
+            that.products[businessNo].gdate = gNowDate;
           }
-          business[businessNo].subItem.push(Data[i]); //将gData[i]放入新属性里
-          that.products = business;
-          // 时间戳转化为时间函数
-          var gDate = new Date(that.products[businessNo].createTime);
-          var gyear = gDate.getFullYear();
-          var gmonth = gDate.getMonth() + 1;
-          var gdate = gDate.getDate();
-          var ghour = gDate.getHours();
-          var gminute = gDate.getMinutes();
-          var gsecond = gDate.getSeconds();
-          var gNowDate =
-            [gyear, gmonth, gdate].join("-") +
-            " " +
-            ghour +
-            ":" +
-            gminute +
-            ":" +
-            gsecond;
-          that.products[businessNo].gdate = gNowDate;
-        }
-        console.log('that.products',that.products)
-        
-      });
+          var page = Math.ceil(data.data.totalCount / 5);
+          var pageCount = {};
+          for (var i = 0; i < page; i++) {
+            pageCount[i] = i + 1;
+          }
+          that.pageNum = pageCount;
+          that.page = page;
+          that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
+          console.log('data.data.totalCount',page)
+          
+        });
     },
     // 删除按钮
     cancel: function(code, proIdx) {
@@ -233,35 +289,20 @@ export default {
 </script>
 
 <style scoped lang='less'>
-// 右侧付款/删除
-.det-right {
-  width: 13%;
-  display: flex;
-  margin-left: 85%;
-  .ind-pay {
-    width: 67%;
-    height: 27px;
-    display: block;
-    text-align: center;
-    line-height: 27px;
-    color: #419bd7;
-    text-decoration: none;
-    margin: 0 auto;
-    border: 1px solid #2693d4;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .ind-delete {
-    width: 67%;
-    height: 27px;
-    line-height: 27px;
-    text-align: center;
-    margin: 0 auto;
-    color: #ff4649;
-    cursor: pointer;
-    display: inline-block;
-  }
+.pageBtn{
+  width: 100px;  
 }
+  .pcPage {
+    font-size: 16px;
+    width: 36px;
+    display: inline-block;
+    text-align: center;
+  }
+  .pageColor {
+    //页码被选中后的样式
+    color: #2693d4;
+    font-size: 16px;
+  }
 .trans {
   display: none;
 }
@@ -381,15 +422,15 @@ export default {
         // 具体信息
         .ind-detail {
           width: 100%;
-          border-bottom: 1px solid #e8e8e8;
           display: flex;
+          flex-wrap: wrap;
           // 左侧
           .det-left {
-            width: 100%;
+            width: 87%;
             // 商品
             > div {
               display: flex;
-
+              border-bottom: 1px solid #e8e8e8;
               > div {
                 width: 17%;
                 text-align: center;
@@ -439,6 +480,37 @@ export default {
                 color: #53a4d9;
                 border-right: 1px solid #e8e8e8;
               }
+            }
+          }
+          // 右侧付款/删除
+          .det-right {
+            margin-top: -100px;
+            width: 13%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 87%;
+            .ind-pay {
+              width: 67%;
+              height: 27px;
+              display: block;
+              text-align: center;
+              line-height: 27px;
+              color: #419bd7;
+              text-decoration: none;
+              margin: 0 auto;
+              border: 1px solid #2693d4;
+              border-radius: 6px;
+              cursor: pointer;
+            }
+            .ind-delete {
+              width: 67%;
+              height: 27px;
+              line-height: 27px;
+              text-align: center;
+              margin: 0 auto;
+              color: #ff4649;
+              cursor: pointer;
+              display: inline-block;
             }
           }
         }

@@ -296,8 +296,8 @@
       <!-- 固定部分 -->
       <div class="wefixed">
         <!-- 联系商家 -->
-        <div class="wef-contact"  @click="refer">
-          <div>
+        <div class="wef-contact"  @click="refers">
+          <div class="wef-conimg">
             <img src="../pc_images/m_contact.png" alt="">
           </div>
           <div>联系商家</div>
@@ -305,11 +305,71 @@
         <!-- 加入购物车 -->
         <div class="wef-join" @click="join">加入购物车</div>
         <!-- 立即购买 -->
-        <div class="wef-pay">立即购买</div>
+        <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay">立即购买</router-link>
       </div>
 
       <!-- 出现部分 -->
-      <!-- <div class="joinsucess">加入成功</div> -->
+      <div class="joinsucess" v-show="joinsuc">加入成功</div>
+      <div class="pro-consult" v-show="wrefer">
+        <!-- 头 -->
+        <div class="procon-top">
+          <div class="contop-free">免费电话咨询</div>
+          <div class="contop-x" @click="closes">×</div>
+        </div>
+        <!-- 身体 -->
+        <div class="procon-body">
+          <!-- 点之前 -->
+          <div class="conbod-one" v-show="before">
+            <!-- 免费 -->
+            <div class="bodinp-down">
+              本次电话咨询完全免费，我们将对您的号码严格保密，请放心使用！
+            </div>
+            <!-- 输入框 -->
+            <div class="bodone-input">
+              <!-- 手机号码 -->
+              <div class="bodinp-tel">
+                <input type="text" placeholder="请输入手机号码" @focus="telfocus" @blur="telblur" v-model="telvalue">
+                <div class="tel-please" :class="telstyle">请输入11位中国大陆手机号</div>
+                <div class="tel-wrong" :class="wrostyle">× 手机号码输入错误</div>
+                <div class="tel-nonull" :class="nonstyle">× 手机号码不能为空</div>
+              </div>
+              <!-- 图形验证码 -->
+              <div class="bodinp-piccode">
+                <div class="bodinp-graphcode">
+                  <input type="text" placeholder="请输入图形验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+                </div>
+                <div class="bodinp-image" @click="imgReflash">
+                  <img :src="bodimg" alt="">
+                </div>
+                <div class="code-nonull" v-show="yyan">× 验证码不能为空</div>
+                <div class="code-wrong" v-show="eyan">× 验证码错误</div>
+              </div>
+              <!-- 验证码 -->
+              <div class="bodinp-code">
+                <div class="bodinp-chacode">
+                  <input type="text" placeholder="请输入验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+                </div>
+                <div class="bodinp-getcode">
+                  <button v-show = "show" @click="getCode">获取验证码</button>
+                  <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
+                </div>
+                <div class="cha-nonull" :class="chanons">× 验证码不能为空</div>
+                <div class="cha-wrong" :class="chawros">× 验证码错误</div>
+              </div>
+              <!-- 开始免费咨询 -->
+              <div class="bodinp-free">
+                <button @click="transfers">开始免费咨询</button>
+              </div>
+            </div>
+          </div>
+          <!-- 点之后 -->
+          <div class="conbod-two" v-show="forword">
+            <div style="color: #aaa">本次电话咨询完全免费，我们将对您的号码严格保密，请放心使用！</div>
+            <div style="color: #57d8c1;text-align: center;">正在为您接通电话</div>
+            <div style="color: #57d8c1;text-align: center;">请您注意接听来电</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -358,9 +418,29 @@
         // 点击获取
         count: "",
         timer: null,
+        // 微信-加入购物车
+        jData: [],
+        joinsuc: false,
+        // 微信-联系商家
+        wrefer: false,
+        before: true,
+        forword: false,
       };
     },
     methods: {
+      // 微信
+      refers: function () {
+        this.wrefer = true;
+      },
+      closes: function () {
+        this.wrefer = false;
+      },
+      transfers:function () {
+        this.wrefer = true;
+        this.before = false;
+        this.forword = true;
+      },
+
       upData(){
         var that = this;
         this.ajax.post('/xinda-api/product/package/detail',
@@ -387,15 +467,15 @@
           var prodata = data.data.data;
           that.proevas = prodata;
         });
-      this.ajax.post('/xinda-api/product/judge/grid',
-        this.qs.stringify({
-          start:0,
-          limit:10,
-          serviceId: this.$route.query.id,
-          type:1,
-          })).then(function (eva) {
-            // console.log(eva.data)
-      });
+        this.ajax.post('/xinda-api/product/judge/grid',
+          this.qs.stringify({
+            start:0,
+            limit:10,
+            serviceId: this.$route.query.id,
+            type:1,
+            })).then(function (eva) {
+              // console.log(eva.data)
+        });
     },
 
 
@@ -403,10 +483,18 @@
        ...mapActions(["setNum"]),
        join () {
         // console.log(this.buynum);//购买数量
+        var that = this;
         this.setNum();
         this.ajax.post("/xinda-api/cart/add", this.qs.stringify({ id: this.$route.query.id, num: this.buynum }))
         .then(function(data) {
-          console.log(data.data.status);
+          var jData = data.data;
+          console.log(jData.status);
+          if (jData.status == 1) {
+            that.joinsuc = true;
+            setInterval((function(){
+              that.joinsuc = false;
+            }),1500);
+          }
         });
        },
 
@@ -600,16 +688,14 @@
   };
 </script>
 
-<style scoped lang='less'>
-  @media all and (min-width: 768px){
-    // 显示隐藏
+<style scoped lang='less'>    // 显示隐藏
     .chashow{
       display: block;
     }
     .chahide{
       display: none;
     }
-
+  @media all and (min-width: 768px){
     .chose{
       color: #2693d4;
       border-color: #2693d4;
@@ -733,6 +819,7 @@
           }
         }
       }
+      // 右边
       .par-contact {
         width: 20%;
         height: 50%;
@@ -1253,6 +1340,9 @@
         .wep-info{
           font-size: 0.24rem;
           line-height: 0.48rem;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       }
     }
@@ -1463,7 +1553,8 @@
       margin-top: 0.75rem;
       display: flex;
       position: fixed;
-      top: 524px;
+      // top: 524px;
+      bottom: 0.73rem;
       // 联系商家
       .wef-contact{
         width: 34%;
@@ -1477,12 +1568,17 @@
           width: 100%;
           text-align: center;
           line-height: 0.42rem;
-          &:nth-child(1){
-            margin-top: 0.16rem;
-          }
+        }
+        .wef-conimg{
+          width: 0.51rem;
+          height: 0.41rem;
+          margin: 0 auto;
+          margin-top: 0.16rem;
+          // 图片
           img{
+            width: 100%;
+            height: 100%;
             display: block;
-            margin: 0 auto;
           }
         }
       }
@@ -1507,26 +1603,283 @@
         cursor: pointer;
       }
     }
+
+    .joinsucess{
+      width: 1.15rem;
+      height: 0.73rem;
+      font-size: 0.2rem;
+      color: #fff;
+      text-align: center;
+      line-height: 0.73rem;
+      background-color: rgba(0,0,0,.3);
+      left: 36%;
+      top: 46%;
+      z-index: 25;
+      overflow: hidden;
+      position: fixed;
+    }
+    .pro-consult{
+      width: 98%;
+      margin: 0 auto;
+      border-bottom: 1px solid #aaa;
+      box-shadow: 2px 1px 2px 1px #aaa;
+      background-color: #fff;
+      left: 1%;
+      top: 42%;
+      z-index: 25;
+      overflow: hidden;
+      position: fixed;
+      // 头
+      .procon-top{
+        width: 100%;
+        height: 10%;
+        display: flex;
+        background-color: #eee;
+        justify-content: space-between;
+        .contop-free{
+          width: 20%;
+          height: 100%;
+          font-size: 0.14rem;
+          line-height: 0.4rem;
+          text-align: center;
+        }
+        .contop-x{
+          width: 5%;
+          font-size: 0.24rem;
+          text-align: center;
+          line-height: 0.4rem;
+          background-color: #aaa;
+          cursor: pointer;
+        }
+      }
+      // 身体
+      .procon-body{
+        width: 100%;
+        height: 80%;
+        // 一
+        .conbod-one{
+          width: 100%;
+          .bodinp-down{
+            width: 80%;
+            font-size: 0.13rem;
+            color: #888;
+            text-align: center;
+          }
+          .bodone-input{
+            width:76%;
+            margin: 0 auto;
+            margin-top: 3%;
+            margin-bottom: 5%;
+            >div{
+              width: 86%;
+              margin: 0 auto;
+              margin-top: 3%;
+            }
+            // 手机号码
+            .bodinp-tel{
+              font-size: 0.13rem;
+              display: flex;
+              input{
+                width: 62%;
+                height: 0.34rem;
+                border: 1px solid #aaa;
+                border-radius: 4px;
+              }
+              .tel-please{
+                color: #777;
+                margin-left: 5%;
+              }
+              .tel-wrong{
+                color: #f00;
+                margin-left: 5%;
+                line-height: 0.36rem;
+              }
+              .tel-nonull{
+                color: #f00;
+                margin-left: 5%;
+                line-height: 0.36rem;
+              }
+            }
+            // 图形验证码
+            .bodinp-piccode{
+              font-size: 0.13rem;
+              color: #777;
+              display: flex;
+              .bodinp-graphcode{
+                width: 40%;
+                height: 0.34rem;
+                input{
+                  width: 100%;
+                  height: 100%;
+                  border: 1px solid #aaa;
+                  border-radius: 4px;
+                }
+              }
+              .bodinp-image{
+                width: 20%;
+                height: 0.34rem;
+                margin-left: 2%;
+                border: 1px solid #999;
+                border-radius: 4px;
+                img{
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 4px;
+                }
+              }
+              .code-nonull{
+                color: #f00;
+                line-height: 0.34rem;
+                margin-left: 5%;
+              }
+              .code-wrong{
+                color: #f00;
+                line-height: 0.34rem;
+                margin-left: 5%;
+              }
+            }
+            // 验证码
+            .bodinp-code{
+              font-size: 0.13rem;
+              display: flex;
+              .bodinp-chacode{
+                width: 40%;
+                height: 0.34rem;
+                input{
+                  width: 100%;
+                  height: 100%;
+                  border: 1px solid #aaa;
+                  border-radius: 4px;
+                }
+              }
+              .bodinp-getcode{
+                width: 20%;
+                height: 0.34rem;
+                margin-left: 2%;
+                button{
+                  width: 100%;
+                  height: 100%;
+                  border: none;
+                  border-radius: 4px;
+                }
+                .getgray{
+                  text-align: center;
+                  line-height: 0.34rem;
+                  color: #6e6d6d;
+                }
+              }
+              .cha-nonull{
+                color: #f00;
+                line-height: 0.34rem;
+                margin-left: 5%;
+              }
+              .cha-wrong{
+                color: #f00;
+                line-height: 0.34rem;
+                margin-left: 5%;
+              }
+            }
+            // 开始免费咨询
+            .bodinp-free{
+              button{
+                width: 100%;
+                height: 0.34rem;
+                color: #fff;
+                font-size: 0.16rem;
+                border: none;
+                background-color: #57d8c1;
+                border-radius: 4px;
+              }
+            }
+          }
+        }
+        // 二
+        .conbod-two{
+          width: 80%;
+          margin: 0 auto;
+          display: none;
+          >div{
+            font-size: 0.24rem;
+            line-height: 0.4rem;
+            margin-bottom: 2%;
+            &:nth-child(1){
+              margin-top: 7%;
+            }
+            &:nth-child(3){
+              margin-bottom: 22%;
+            }
+          }
+        }
+      }
+    }
   } 
   // span
   @media all and (max-width: 767px) and (min-width: 680px){
-    span{
-      margin-top: -0.08rem;
+    .weservice{
+      span{
+        margin-top: -0.08rem;
+      }
+    }
+    .weintro{
+      span{
+        margin-top: -0.08rem;
+      }
+    }
+    .weuseva{
+      span{
+        margin-top: -0.08rem;
+      }
     }
   }
   @media all and (max-width: 680px) and (min-width: 490px){
-    span{
-      margin-top: -0.1rem;
+    .weservice{
+      span{
+        margin-top: -0.1rem;
+      }
+    }
+    .weintro{
+      span{
+        margin-top: -0.1rem;
+      }
+    }
+    .weuseva{
+      span{
+        margin-top: -0.1rem;
+      }
     }
   }
   @media all and (max-width: 490px) and (min-width: 380px){
-    span{
-      margin-top: -0.14rem;
+    .weservice{
+      span{
+        margin-top: -0.14rem;
+      }
+    }
+    .weintro{
+      span{
+        margin-top: -0.14rem;
+      }
+    }
+    .weuseva{
+      span{
+        margin-top: -0.14rem;
+      }
     }
   }
   @media all and (max-width: 380px){
-    span{
-      margin-top: -0.18rem;
+    .weservice{
+      span{
+        margin-top: -0.18rem;
+      }
+    }
+    .weintro{
+      span{
+        margin-top: -0.18rem;
+      }
+    }
+    .weuseva{
+      span{
+        margin-top: -0.18rem;
+      }
     }
   }
 </style>
