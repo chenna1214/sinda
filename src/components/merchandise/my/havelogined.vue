@@ -8,7 +8,7 @@
     <!-- 我的订单，账户设置 -->
     <div class="weorderset">
       <!-- 我的订单 -->
-      <div class="we-myorder">
+      <router-link tag="div" :to="{path: '/merchandise/myorder'}" class="we-myorder">
         <div>
           <div class="myo-img">
             <img src="../pc_images/we-myorder.png" alt="">
@@ -16,9 +16,9 @@
           <div class="myo-order">我的订单</div>
         </div>
         <span class="myo-arrow"></span>
-      </div>
+      </router-link>
       <!-- 账户设置 -->
-      <div class="we-setting">
+      <router-link tag="div" :to="{path: '/merchandise/accountset'}" class="we-setting">
         <div>
           <div class="set-img">
             <img src="../pc_images/we-setting.png" alt="">
@@ -26,7 +26,7 @@
           <div class="set-setting">账户设置</div>
         </div>
         <span class="set-arrow"></span>
-      </div>
+      </router-link>
     </div>
     <!-- 退出登录 -->
     <div class="welogout">退出登录</div>

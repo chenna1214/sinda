@@ -431,9 +431,13 @@
       // 微信
       refers: function () {
         this.wrefer = true;
+        this.before = true;
+        this.forword = false;
       },
       closes: function () {
         this.wrefer = false;
+        this.before = false;
+        this.forword = false;
       },
       transfers:function () {
         this.wrefer = true;
@@ -1796,8 +1800,9 @@
         // 二
         .conbod-two{
           width: 80%;
+          height: 3.4rem;
+          background-color: #fff;
           margin: 0 auto;
-          display: none;
           >div{
             font-size: 0.24rem;
             line-height: 0.4rem;

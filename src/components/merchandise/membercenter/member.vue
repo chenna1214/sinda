@@ -52,7 +52,7 @@
             <!-- 具体信息 -->
             <div class="ind-detail">
               <!-- 左侧 -->
-              <div class="det-left" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
+              <div class="det-left" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
                 <!-- 商品 -->
                 <div>
                   <div class="comname">
@@ -140,14 +140,14 @@ export default {
     }
   },
   methods: {
-       pageClick(idxPage) {
+    pageClick(idxPage) {
       //点击某个页码进行翻页
       this.eachContent = idxPage;
       this.textColor = idxPage;
       this.getGoodsData(this.eachContent);
 
     },
-     upPage() {
+    upPage() {
       //点击向上一页翻页
       if (this.eachContent - 1 >= 0) {
         this.getGoodsData(this.eachContent);
@@ -484,7 +484,7 @@ export default {
           }
           // 右侧付款/删除
           .det-right {
-            margin-top: -100px;
+            margin-top: -72px;
             width: 13%;
             display: flex;
             flex-wrap: wrap;
