@@ -43,7 +43,7 @@
 <div class="pcSearchBox">
    <!-- @blur="serShow=false" -->
   <input type="text" class="pcHeaderSearchInput" placeholder="搜索您需要的服务或服务商" @input='pcSearch()' v-model="serVal" @blur="searchBlur()" ><!-- 模糊搜索 -->
-  <img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle">
+  <img src="../../images/icon/serchIcon.png" class="pcHeaderMiddleSearchImg" align="absmiddle" @click="searchBtn()">
 </div>
 <!-- 匹配搜索内容 -->
 <div class="pcSerBox" v-show='serShow'>
@@ -243,6 +243,9 @@ export default {
           }
         });
     },
+    searchBtn(){//点击搜索按钮进行跳转
+      this.$router.push({path:'/merchandise/shop'});
+    },
     searchBlur(){//搜索框失去焦点时清空input的value值并且使匹配搜索内容框消失
       var that =this;
       this.matchSearchDis=setTimeout(function(){
@@ -262,10 +265,6 @@ export default {
         });
 
         }
-
-
-
-        
     },   
     choseType(param) {//选择搜索种类（产品/服务商）
       if (param) {

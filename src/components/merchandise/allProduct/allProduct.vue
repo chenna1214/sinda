@@ -617,24 +617,26 @@ export default {
     border-bottom: 1px solid #cfcfcf;
   }
   .telCreatText {
-    font-size: 1.4rem;
+    font-size: 0.28rem;
     font-weight: bold;
     margin-bottom: 19px;
   }
   .telCreatInfo {
-    font-size: 1.15rem;
-    margin-bottom: 19px;
+    font-size: 0.23rem;
+    // margin-bottom: 19px;
   }
   .telCreatImg {
-    height: 4.3rem;
+    height: 1.15rem;
     width: 116%;
   }
   .telCreateunit {
-    font-size: 0.7rem;
+    font-size: 0.14rem;
   }
   .telCreatemarketPrice {
     color: red;
-    font-size: 1.2rem;
+    font-size: 0.24rem;
+    margin-top: -0.6rem;
+    display: inline-block;
   }
   //手机端--头部
   .telCompanyIconBox {
@@ -644,36 +646,40 @@ export default {
     margin-bottom: 7px;
     img {
       width: 20%;
-      height: 3rem;
+      height: 0.6rem;
     }
   }
   .telChoosedCity {
-    font-size: 1.15rem;
+    font-size: 0.23rem;
+    // text-align: center;
   }
   .telArrow {
     transform: rotate(90deg);
     display: inline-block;
+    font-size:0.28rem;
   }
   .telHeaderBox {
+    // display: flex;
+    // justify-content: center;
     position: absolute;
     z-index: 600;
-    top: 20px;
+    top: -0.58rem;
     left: 2%;
   }
   .telMenuBox {
     background: rgba(255, 255, 255, 0.8);
-    width: 93px;
-    padding-top: 8px;
+    width: 15%;
+    padding-top: 0.08rem;
     border: 1px solid;
     border-top: none;
-    padding-bottom: 8px;
+    padding-bottom: 0.08rem;
     position: absolute;
     z-index: 600;
-    top: 50px;
+    top: 0.5rem;
     left: 2%;
     p {
       text-align: center;
-      font-size: 16px;
+      font-size: 0.16rem;
     }
   }
   .telTranDeg {
@@ -694,37 +700,37 @@ export default {
     width: 58.67%;
   }
   .telNavText {
-    font-size: 1.05rem;
+    font-size: 0.21rem;
   }
   .telFooterP {
     text-align: center;
     color: #8e8e8e;
-    font-size: 1.1rem;
-    margin-bottom: 5rem;
+    font-size: 0.22rem;
+    margin-bottom: 1rem;
   }
   //手机底部
   .telFootImg {
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     img {
       width: 20%;
-      height: 3rem;
+      height: 0.6rem;
     }
   }
   //手机端栏目标题
   .telColumn {
-    font-size: 1.45rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.29rem;
+    margin-bottom: 0.1rem;
     margin-left: 3%;
   }
   //手机端：知识产权图片列表
   .telKnow {
     display: flex;
     justify-content: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
     img {
       width: 93%;
-      height: 19.7rem;
+      height: 3.94rem;
     }
   }
 }
