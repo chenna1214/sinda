@@ -8,30 +8,69 @@
       <div class="hidden-sm-and-up">
         <div class="graTop ">
           <span></span>
-          <div>注册</div>
+          <p>注册</p>
         </div>
 
         <div class="centent">
-          <!-- 手机号码 -->
-          <div class="fleBox">
-            <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
-          </div>
 
-          <!-- 验证码 -->
-            <div class="verify">
+            <!-- 提示错误信息的盒子 -->
+            <div class="anError" v-if="showES">
+              <div class="errImg"></div>
+              <!-- 提示的错误信息 -->
+              <p class="wrongTip">{{errorWeb}}</p>
+            </div>
+
+            <!-- 手机号码 -->
+            <div class="fleBox" style="font-size: 0;">
+              <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" >
+            </div>
+
+            <!-- 验证码 -->
+            <div class="verify" style="font-size: 0;">
               <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
               <div class="verifyI" @click="imgReflash">
                 <img :src="imgUrl">
               </div>
-              <div class="yeahGreen" v-show="showYYan"></div>
-              <div class="erping hidden-xs-only" v-show="eyan">
-                <div class="erImg"></div>
-                <p class="errP">{{Eyan}}</p>
+            </div>
+
+            <!-- 短信验证码 -->
+            <div class="acquire" style="font-size: 0;">
+              <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+              <div class = "spanStyle boxII">
+                <span v-show = "show" @click="getCodeS" class="getblue">获取验证码</span>
+                <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
               </div>
             </div>
 
-        </div>
+            <!-- 三级联动 -->
+            <div class="sanji" style="font-size: 0;">
+              <select name="" id="" @change="proChange" v-model="province">
+                <option value="0">省</option>
+                <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
+              </select>
+              <select name="" id="" @change="cityChange" v-model="city">
+                <option value="0">市</option>
+                <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
+              </select>
+              <select name="" id="" v-model="area" @change="quhao">
+                <option value="">区</option>
+                <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
+              </select>
+            </div>
 
+            <!-- 密码 -->
+            <div class="fleBox" style="font-size: 0;">
+              <!-- 设置密码 -->
+              <div class="eyeBox">
+                <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
+                <img :src="logImg" class="eyes" alt="" @click="showHidden">
+              </div>
+            </div>
+            <button class="immediately" @click="iregisterS">立即注册</button>
+
+          </div>
+
+        
       </div>
 
 
@@ -242,7 +281,11 @@ export default {
       showYMi: false,
       // 小眼睛
       pwType: "password",
-      logImg: eye[0]
+      logImg: eye[0],
+
+      // 手机端
+      showES: false,
+      errorWeb: ""
     };
   },
   methods: {
@@ -384,7 +427,7 @@ export default {
       this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
     },
 
-    //点击获取短信验证码
+    //pc点击获取短信验证码
     getCode: function() {
       // 判断手机号
       if (this.phone) {
@@ -422,6 +465,7 @@ export default {
               this.get = false;
               this.getNew = true;
               this.eyan = false;
+              console.log("隐藏啊");
               const TIME_COUNT = 60;
               if (!this.timer) {
                 this.count = TIME_COUNT;
@@ -442,6 +486,7 @@ export default {
               this.Eyan = data.data.msg;
               this.eyan = true;
               this.showYYan = false;
+              console.log("显示啊");
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
             }
           });
@@ -452,7 +497,78 @@ export default {
       }
     },
 
-    //立即注册按钮
+    //手机点击获取短信验证码
+    getCodeS: function() {
+      // 判断手机号
+      if (this.phone) {
+        //手机号有输入时
+        if (!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)) {
+          //手机号匹配错误
+          this.errorWeb = "请输入正确的手机号码";
+          this.showES = true;
+          return;
+        } else {
+          //手机号匹配正确
+          this.showES = false;
+        }
+      } else {
+        //手机号为空时
+        this.errorWeb = "手机号不能为空";
+        this.showES = true;
+        return;
+      }
+      // 判断验证码
+      if (this.imgCode) {
+        //验证码有输入时
+        //图片验证码匹配
+        this.ajax
+          .post(
+            "/xinda-api/register/sendsms",
+            this.qs.stringify({
+              cellphone: this.phone,
+              smsType: 1,
+              imgCode: this.imgCode
+            })
+          )
+          .then(data => {
+            console.log(data, data.data.status);
+            if (data.data.status == 1) {
+              this.showES = false;
+              //图片验证码输入正确
+              this.get = false;
+              this.getNew = true;
+              this.eyan = false;
+              const TIME_COUNT = 60;
+              if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.show = false;
+                this.timer = setInterval(() => {
+                  if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.count--;
+                  } else {
+                    this.show = true;
+                    clearInterval(this.timer);
+                    this.timer = null;
+                  }
+                }, 1000);
+              }
+            } else {
+              this.errorWeb = data.data.msg;
+              this.showES = true;
+              //图片验证码输入错误
+              console.log(data.data.msg);
+              this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
+            }
+          });
+      } else {
+        //验证码为空时
+        this.errorWeb = "验证码不能为空";
+        this.showES = true;
+        return;
+      }
+    },
+
+    //pc立即注册按钮
     iregister: function() {
       // 判断手机号
       if (this.phone) {
@@ -510,7 +626,7 @@ export default {
         }
       } else {
         this.emi = true;
-        this.Emi = "请您的密码";
+        this.Emi = "请设置您的密码";
       }
       // 当全部正确之后开始注册接口
       if (
@@ -543,6 +659,110 @@ export default {
               this.showE = false;
               // location.href='#/userData/login';//登录界面
               this.centerDialogVisible = true;
+            }
+          });
+      }
+    },
+
+    //手机立即注册按钮
+    iregisterS: function() {
+      // 判断手机号
+      if (this.phone) {
+        if (!/^1[3|4|5|7|8]\d{9}$/.test(this.phone)) {
+          //手机号匹配错误
+          this.errorWeb = "请输入正确的手机号码";
+          this.showES = true;
+          return;
+        } else {
+          //手机号匹配正确
+          this.showES = false;
+        }
+      } else {
+        this.errorWeb = "手机号不能为空";
+        this.showES = true;
+        return;
+      }
+
+      // 图片验证码
+      if (this.imgCode) {
+        if (/^[A-z0-9]{4}$/.test(this.imgCode)) {
+          this.shoeES = false;
+        } else {
+          this.errorWeb = "验证码错误";
+          this.showES = true;
+          return;
+        }
+      } else {
+        this.errorWeb = "请输入验证码";
+        this.showES = true;
+        return;
+      }
+      //短信验证码判断
+      if (this.smsNumber) {
+        if (/^\d{6}$/.test(this.smsNumber)) {
+          this.showES = false;
+        } else {
+          this.errorWeb = "短信验证码错误";
+          this.showES = true;
+          return;
+        }
+      } else {
+        this.errorWeb = "请输入6位数字手机验证码";
+        this.showES = true;
+        return;
+      }
+      // 判断省市区
+      if (this.area) {
+        this.showES = false;
+      } else {
+        this.errorWeb = "请选择您所在的省市区";
+        this.showES = true;
+        return;
+      }
+      // 判断密码
+      if (this.setPass) {
+        if (/^\d{6,20}$/.test(this.setPass)) {
+          this.showES = false;
+        } else {
+          this.errorWeb = "请设置6-20位任意数字/字母";
+          this.showES = true;
+          return;
+        }
+      } else {
+        this.errorWeb = "请设置您的密码";
+        this.showES = true;
+        return;
+      }
+      // 当全部正确之后开始注册接口
+      if (
+        this.ephone == false &&
+        this.eyan == false &&
+        this.eduan == false &&
+        this.esan == false &&
+        this.emi == false
+      ) {
+        this.ajax
+          .post(
+            "/xinda-api/register/register",
+            this.qs.stringify({
+              cellphone: this.phone,
+              smsType: 1,
+              validCode: 111111,
+              password: md5(this.setPass),
+              regionId: this.area
+            })
+          )
+          .then(data => {
+            console.log(data, data.data.status);
+            if (data.data.status == -2) {
+              this.showES = true;
+              this.errorWeb = data.data.msg;
+              this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+            } else if (data.data.status == 1) {
+              //全部正确之后
+              this.showES = false;
+              location.href = "#/userData/login"; //登录界面
+              // this.centerDialogVisible = true;
             }
           });
       }
@@ -729,7 +949,6 @@ input[type="number"] {
   .registersecond {
     width: 37%;
     height: 350px;
-    // border: 1px solid red;
     margin: 50px auto 0;
     span {
       display: block;
@@ -794,7 +1013,7 @@ input[type="number"] {
 }
 @media all and (max-width: 767px) {
   .graTop {
-    height: 0.72rem;
+    height: 0.78rem;
     background: #e5e5e5;
     width: 100%;
     display: flex;
@@ -808,7 +1027,7 @@ input[type="number"] {
       border-top: 2px solid #838383;
       transform: rotate(-45deg);
     }
-    div {
+    p {
       width: 88%;
       text-align: center;
       line-height: 0.72rem;
@@ -819,7 +1038,7 @@ input[type="number"] {
     width: 5.27rem;
     height: 0.73rem;
     border: 1px solid #cbcbcb;
-    margin-top: 0.72rem;
+    margin-top: 0.32rem;
     border-radius: 0.03rem;
     padding: 0 0 0 0.2rem;
     font-size: 0.29rem;
@@ -828,26 +1047,113 @@ input[type="number"] {
     width: 2.72rem;
     height: 0.73rem;
     border: 1px solid #cbcbcb;
-    margin-top: 0.72rem;
+    margin-top: 0.32rem;
     border-radius: 0.03rem;
     padding: 0 0 0 0.2rem;
     font-size: 0.29rem;
   }
+  .boxII {
+    margin-top: 0.32rem;
+  }
   .verify {
     display: flex;
+    justify-content: space-between;
     .verifyI {
       cursor: pointer;
       img {
-        width: 2.41rem;
-        height: 0.72rem;
-        // margin-left: 18px;
+        margin-top: 0.32rem;
+        width: 2.34rem;
+        height: 0.73rem;
       }
     }
   }
   .centent {
     width: 5.47rem;
     margin: 0 auto;
-    border: 1px solid blue;
+  }
+  .acquire {
+    display: flex;
+    font-size: 0.28rem;
+    justify-content: space-between;
+    .getblue {
+      display: block;
+      text-align: center;
+      line-height: 0.82rem;
+      width: 2.3rem;
+      height: 0.73rem;
+      border: 1px solid #2693d4;
+      border-radius: 3px;
+      background-color: #2693d4;
+      color: #fff;
+      font-size: 0.28rem;
+    }
+    .getgray {
+      font-size: 0.28rem;
+      display: block;
+      text-align: center;
+      line-height: 0.82rem;
+      width: 2.3rem;
+      height: 0.73rem;
+      border: 1px solid #aaa;
+      border-radius: 0.03rem;
+      background-color: #aaa;
+      color: #fff;
+    }
+  }
+  .sanji {
+    margin-top: 0.32rem;
+    width: 5.47rem;
+    display: flex;
+    justify-content: space-between;
+    select {
+      width: 1.62rem;
+      height: 0.73rem;
+      font-size: 0.28rem;
+      border: 1px solid #cbcbcb;
+      border-radius: 0.03rem;
+    }
+  }
+  .eyeBox {
+    position: relative;
+    img {
+      position: absolute;
+      width: 0.42rem;
+      height: 0.35rem;
+      right: 0.2rem;
+      top: 0.5rem;
+    }
+  }
+  .immediately {
+    width: 5.47rem;
+    height: 0.75rem;
+    background: #2693d4;
+    color: #fff;
+    font-size: 0.3rem;
+    margin-top: 1rem;
+    border: 1px solid #2693d4;
+    border-radius: 0.03rem;
+  }
+  .anError {
+    margin-top: 0.32rem;
+    width: 5.47rem;
+    height: 0.4rem;
+    border: 0.01rem solid #fcaeae;
+    background: #fffef5;
+    display: flex;
+    .errImg {
+      width: 15px;
+      height: 15px;
+      background-image: url("../merchandise/pc_images/tishi.png");
+      background-position: -5px -7px;
+      margin: 0.05rem 0 0 0.2rem;
+    }
+    .wrongTip {
+      color: #ea2b2b;
+      padding: 0 0.2rem;
+      font-size: 0.25rem;
+      margin-top: 0.03rem;
+      line-height: 0.4rem;
+    }
   }
 }
 </style>

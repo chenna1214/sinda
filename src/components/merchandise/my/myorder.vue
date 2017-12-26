@@ -7,6 +7,7 @@
       <span></span>
       <div class="we-order">我的订单</div>
     </div>
+    
   </div>
 </template>
 
@@ -26,6 +27,7 @@ export default {
 
 <style scoped lang='less'>
   @media all and (max-width: 767px){
+    // 头部
     .weorder {
       height: 0.72rem;
       background: #e5e5e5;
