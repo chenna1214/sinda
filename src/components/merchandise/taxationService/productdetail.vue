@@ -282,11 +282,11 @@
             <div class="weu-satiseva">
               <div class="weu-satis">
                 <div>满意度</div>
-                <div class="weu-hstar"></div>
-                <div class="weu-hstar"></div>
-                <div class="weu-hstar"></div>
-                <div class="weu-hstar"></div>
-                <div class="weu-bstar"></div>
+                <div class="weu-hstar"><img src="../pc_images/wehstar.png" alt=""></div>
+                <div class="weu-hstar"><img src="../pc_images/wehstar.png" alt=""></div>
+                <div class="weu-hstar"><img src="../pc_images/wehstar.png" alt=""></div>
+                <div class="weu-hstar"><img src="../pc_images/wehstar.png" alt=""></div>
+                <div class="weu-bstar"><img src="../pc_images/webstar.png" alt=""></div>
               </div>
               <div class="weu-eva">评价：很好！</div>
             </div>
@@ -1217,7 +1217,7 @@
       border-top: 5px solid #2693d4;
       border-bottom: 4px solid transparent;
       transform: rotate(180deg);
-      margin-top: -0.1rem;
+      // margin-top: -0.08rem;
       margin-left: 0.8rem;
       position: absolute;
     }
@@ -1239,7 +1239,7 @@
         width: 100%;
         height: 1.2rem;
         color: #fff;
-        margin-top: 1.6rem;
+        margin-top: 3.6rem;
         background-color: rgba(128,120,108,.5);
         position: absolute;
         >div{
@@ -1317,7 +1317,7 @@
           margin-left: 0.44rem;
           margin-top: 0.35rem;
           >div{
-            margin-top: 0.1rem;
+            margin-top: 0.2rem;
           }
           .wes-credit{
             display: flex;
@@ -1331,9 +1331,9 @@
             }
           }
           .wes-enter{
-            width: 1.02rem;
+            width: 102px;
             text-align: center;
-            line-height: 0.33rem;
+            line-height: 33px;
             border-radius: 4px;
             color: #fff;
             background-color: #ff591b;
@@ -1342,14 +1342,14 @@
       }
       // 金牌服务商
       .wes-gold{
-        width: 1.4rem;
+        width: 3rem;
         font-size: 0.14rem;
         line-height: 0.4rem;
         margin: 0.1rem 0rem 0.17rem 0.36rem;
         display: flex;
         .wes-goldpic{
-          width: 0.4rem;
-          height: 0.4rem;
+          width: 40px;
+          height: 40px;
           display: block;
           background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -66px -75px;
         }
@@ -1408,6 +1408,7 @@
             img{
               width: 100%;
               height: 100%;
+              display: block;
             }
           }
           .weu-satiseva{
@@ -1424,22 +1425,30 @@
             }
             .weu-satis{
               display: flex;
+              font-size: 0.23rem;
               >div{
                 line-height: 0.4rem;
                 margin-left: 0.1rem;
               }
               .weu-hstar{
-                width: 0.42rem;
-                height: 0.4rem;
-                background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -63px -36px;
+                width: 0.4rem;
+                height: 0.36rem;
+                img{
+                  width: 100%;
+                  height: 100%;
+                }
               }
               .weu-bstar{
-                width: 0.42rem;
-                height: 0.4rem;
-                background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -63px 0;
+                width: 0.4rem;
+                height: 0.36rem;
+                img{
+                  width: 100%;
+                  height: 100%;
+                }
               }
             }
             .weu-eva{
+              font-size: 0.23rem;
               margin-left: 0.1rem;
               line-height: 0.4rem;
             }
@@ -1499,4 +1508,25 @@
       }
     }
   } 
+  // span
+  @media all and (max-width: 767px) and (min-width: 680px){
+    span{
+      margin-top: -0.08rem;
+    }
+  }
+  @media all and (max-width: 680px) and (min-width: 490px){
+    span{
+      margin-top: -0.1rem;
+    }
+  }
+  @media all and (max-width: 490px) and (min-width: 380px){
+    span{
+      margin-top: -0.14rem;
+    }
+  }
+  @media all and (max-width: 380px){
+    span{
+      margin-top: -0.18rem;
+    }
+  }
 </style>

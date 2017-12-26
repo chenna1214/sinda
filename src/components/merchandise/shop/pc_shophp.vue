@@ -577,7 +577,7 @@ export default {
           border-top: 5px solid #2693d4;
           border-bottom: 4px solid transparent;
           transform: rotate(180deg);
-          margin-top: -0.1rem;
+          // margin-top: -0.1rem;
           margin-left: 0.8rem;
           position: absolute;
         }
@@ -665,6 +665,27 @@ export default {
           }
         }
       }
+    }
+  } 
+  // span
+  @media all and (max-width: 767px) and (min-width: 680px){
+    span{
+      margin-top: -0.08rem;
+    }
+  }
+  @media all and (max-width: 680px) and (min-width: 490px){
+    span{
+      margin-top: -0.1rem;
+    }
+  }
+  @media all and (max-width: 490px) and (min-width: 380px){
+    span{
+      margin-top: -0.14rem;
+    }
+  }
+  @media all and (max-width: 380px){
+    span{
+      margin-top: -0.18rem;
     }
   } 
 </style>

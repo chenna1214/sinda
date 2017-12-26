@@ -52,7 +52,7 @@
                       <p class="pcsp-elcnt">累计服务客户次数： {{product.orderNum}} <span class="pcsp-favor">好评率：100%</span></p>
                       <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
                       <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
-                      <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺{{product.id}}</div>
+                      <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
                       <!-- <router-link tag="button" :to="{path: '/merchandise/productdetail',query: { id: product.id }}" class="pcsp-enter">进入店铺</router-link> -->
                     </div>
                   </div>
@@ -72,7 +72,8 @@
 
     <!-- 店铺列表手机端 -->
       <div class="hidden-sm-and-up">
-        <div class="tel-texhd">
+        
+          <div class="tel-texhd">
           <ul class="tel-txhin clear">
             <li @click="ascendingOrder(1)" :class='{"pxtax-clickst-1":sortindex==1}' class="pccn-ghcora">综合排序</li>
             <li @click="ascendingOrder(3)" :class='{"pxtax-clickst-1":sortindex==3}' class="pccn-ghrise">接单数<span class="pccn-ghico"></span></li>
@@ -102,6 +103,8 @@
             </div>
           </li>
         </ul>
+
+
         <!-- 页码 -->
         <!-- <div class="tel-pagBox">
           <i class="el-icon-arrow-left"  @click="upPage()"></i>
@@ -135,7 +138,7 @@ export default {
     // 向商品详情页面传数据
     toDetail(sid) {
       this.$router.push({
-        path: "/merchandise/productdetail",
+        path: "/merchandise/pc_shophp",
         query: { id: sid }
       });
     },
@@ -474,7 +477,7 @@ export default {
             // 服务客户次数
             .pcsp-elcnt {
               line-height: 37px;
-              .pcsp-favor{
+              .pcsp-favor {
                 margin-left: 2%;
                 display: inline-block;
                 width: 41.66%;
@@ -614,21 +617,32 @@ export default {
           font-size: 0.28rem;
           line-height: 0.5rem;
         }
-        .tel-earea{
-          .tel-earcon{
+        .tel-earea {
+          line-height: 0.54rem;          
+          .tel-earcon {
             line-height: 0.54rem;
+            font-size: 0.16rem;
+            color: #676767;
           }
         }
-        .tel-shcus{
+        .tel-earea {
+          line-height: 0.61rem;
+        }
+        .el-icon-location-outline {
+          font-size: 0.16rem;
+        }
+        .tel-shcus {
+          line-height: 0.49rem;
+          font-size: 0.22rem;
           margin-top: 0.25rem;
-          p{
+          p {
             line-height: 0.49rem;
             display: inline-block;
-            span{
+            span {
               color: #f00;
             }
           }
-          .tel-sfavor{
+          .tel-sfavor {
             padding-left: 3%;
           }
         }
