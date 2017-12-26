@@ -125,7 +125,7 @@
                     <div class="tel-tewor">
                     <p class="tel-tenmac clear"><span class="tel-tenm">{{shTrData.serviceName}}</span> <span @click="centerDialogVisible = true"  class="tel-act">删除订单</span>
                     </p>
-                    <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                    <el-dialog class="tel-pop" title="确定删除该产品吗" :visible.sync="centerDialogVisible" center>
                       <div class="pcsh-pophd">信息</div>
                       <span slot="footer" class="dialog-footer">
                         <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
@@ -788,36 +788,6 @@ li {
 }
 
 @media all and (min-width: 768px) {
-  // 计数器
-  // .pcsh-count {
-  //   margin: 0 auto;
-  //   width: 69px;
-  //   height: 20px;
-  //   .el-input-number__decrease,
-  //   .el-input-number__increase {
-  //     width: 18px;
-  //     height: 20px;
-  //     background: #bcbebd;
-  //     border-radius: 0;
-  //     i {
-  //       color: #202020;
-  //       position: absolute;
-  //       top: 3px;
-  //       left: 2px;
-  //     }
-  //   }
-
-  //   .el-input {
-  //     width: 69px;
-  //     line-height: 20px;
-  //     .el-input__inner {
-  //       padding: 0 18px;
-  //       height: 20px;
-  //       border: 0;
-  //     }
-  //   }
-  // }
-
   // 删除部分
   .pcsh-remv {
     // 弹出框
@@ -856,6 +826,30 @@ li {
 }
 
 @media all and (max-width: 767px) {
-  // 计数器
+  // 删除 弹出框
+  .tel-pop {
+    .el-dialog {
+      width: 5rem;
+      height: 3.5rem;
+      position: relative;
+      .pcsh-pophd{
+        width: 96%;
+        padding-left:4%;
+        position: absolute;
+        top:0;
+        left: 0;
+        height: 0.6rem;
+        color: #000;
+        line-height: 0.6rem;
+        background:#bbb;
+      }
+      .el-dialog__header {
+        height: 1rem;
+      }
+      .el-dialog__body{
+        padding:0;
+      }
+    }
+  }
 }
 </style>
