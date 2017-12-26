@@ -127,6 +127,26 @@ import company from "./company";
 export default {
   name: "taxationService",
   methods: {
+    region(){
+      var that = this;
+      
+      var newdata = [];
+      if (that.distCode) {
+        for (var i in that.products) {
+          if (that.products[i].regionId == that.distCode) {
+            newdata.push(that.products[i]);
+          }
+        }
+        that.products = newdata;
+      }
+      console.log("newdata==", that.products);
+    },
+    selected(code) {
+      this.distCode = code;
+      console.log("code===", code);
+      this.region();
+    },
+
     upPage() {
       //点击向上一页翻页
       if (this.eachContent - 1 >= 0) {
@@ -138,6 +158,7 @@ export default {
         }
         this.textColor = this.eachContent;
       }
+      this.region();
     },
     downPage() {
       //点击向下一页翻页
@@ -150,6 +171,7 @@ export default {
         }
         this.textColor = this.eachContent;
       }
+      this.region();
     },
     pageClick(idxPage) {
       //点击某个页码进行翻页
@@ -168,6 +190,7 @@ export default {
         productTypeCode: code,
         start: this.eachContent * 3,
         sort: proSort
+        // regionId: this.distCode,
       };
       if (window.screen.availWidth >= 768) {
         params.limit = 3;
@@ -189,11 +212,10 @@ export default {
           }
           that.pageNum = pageCount;
           that.page = page;
-          that.totalCount=data.data.totalCount-1;//从服务器请求的信息总条数
+          that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
+          // that.region();
+          console.log("data===", data.data);
         });
-    },
-    selected(code) {
-      this.distCode = code;
     },
     ...mapActions(["gainNum"]),
     toDetail(id) {
@@ -295,7 +317,7 @@ export default {
   watch: {
     $route: function() {
       this.initTypes();
-    },
+    }
     // limit: function() {
     //   this.ajaxProData();
     // }问题：如何监听
@@ -307,6 +329,8 @@ export default {
       .then(function(data) {
         that.types = data.data.data;
         that.initTypes();
+        that.region();
+        
       });
 
     if (this.$route.query.code) {
@@ -341,7 +365,7 @@ export default {
       reallyThird: "",
       types: [], //产品类型原始数据
       proSort: -10, //排序请求参数sort
-      totalCount:''//从服务器获取信息总条数
+      totalCount: "" //从服务器获取信息总条数
     };
   },
   components: { autourban, servicePart, company }
@@ -557,9 +581,8 @@ export default {
 }
 
 @media all and (max-width: 767px) {
-  .lastMessage{
+  .lastMessage {
     margin-bottom: 0.8rem;
-
   }
   .tel-texhd {
     width: 100%;
@@ -617,11 +640,11 @@ export default {
           line-height: 0.41rem;
           font-weight: 400;
         }
-        .tel-earea{
+        .tel-earea {
           line-height: 0.61rem;
         }
-        .el-icon-location-outline{
-          font-size: 0.16rem;          
+        .el-icon-location-outline {
+          font-size: 0.16rem;
         }
         .tel-earcon {
           line-height: 0.61rem;
