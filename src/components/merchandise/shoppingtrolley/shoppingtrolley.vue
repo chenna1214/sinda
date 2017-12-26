@@ -104,59 +104,70 @@
 
         <!-- 手机端 购物车 -->
         <div class="tel-shptro hidden-sm-and-up">
+          <div v-if="goodsnum">
           <!-- 头部 -->
-          <p class="tel-shhd">
-            购物车里有<span class="tel-shdnum">2</span>件商品
-          </p>
+            <p class="tel-shhd">
+              购物车里有<span class="tel-shdnum">{{goodsnum}}</span>件商品
+            </p>
 
-          <div class="tel-shbody">
+            <div class="tel-shbody">
 
-            <!-- 财税服务 手机端商品列表 -->
-            <ul class="tel-texbdy">
-              <!-- 财税服务 手机端商品 -->       
-              <li class="tel-texelm clear" v-for="(popservise,idx) in popservises" :key="popservise.serviceName">
-                <p class="tel-spconm">{{popservise.providerName}}</p>
-                <!-- 左侧图片 -->
-                <div class="tel-teimg">
-                  <!-- <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin"> -->
-                  </div>
-                  <!-- 右侧文字部分 -->
-                  <div class="tel-tewor">
-                    <p class="tel-tenmac clear"><span class="tel-tenm">{{popservise.serviceName}}</span> <span @click="centerDialogVisible = true"  class="tel-act">删除订单</span>
+              <!-- 财税服务 手机端商品列表 -->
+              <ul class="tel-texbdy">
+                <!-- 财税服务 手机端商品 -->       
+                <li class="tel-texelm clear" v-for="(shTrData,idx) in shTrDatas" :key="shTrData.providerName">
+                  <p class="tel-spconm">{{shTrData.providerName}}</p>
+                  <!-- 左侧图片 -->
+                  <div class="tel-teimg">
+                    <img :src="'http://115.182.107.203:8088/xinda/pic'+ shTrData.providerImg" alt="" class="tel-imgin">
+                    </div>
+                    <!-- 右侧文字部分 -->
+                    <div class="tel-tewor">
+                    <p class="tel-tenmac clear"><span class="tel-tenm">{{shTrData.serviceName}}</span> <span @click="centerDialogVisible = true"  class="tel-act">删除订单</span>
                     </p>
-                    <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                    <el-dialog class="tel-pop" title="确定删除该产品吗" :visible.sync="centerDialogVisible" center>
                       <div class="pcsh-pophd">信息</div>
                       <span slot="footer" class="dialog-footer">
                         <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
                         <el-button @click="centerDialogVisible = false">取 消</el-button>
                       </span>
                     </el-dialog>
-                    <p class="tel-spmony"><span class="tel-spmoin">￥{{popservise.price}}&nbsp;</span><span class="tel-spyuan">&nbsp;元</span></p>
-                    <div class="tel-buynum">购买数量：
+                    <p class="tel-spmony clear"><span class="tel-spmoin">￥{{shTrData.unitPrice}}&nbsp;</span><span class="tel-spyuan">&nbsp;元</span></p>
+                    <div class="tel-buynum clear"><span class="tel-bynmw">购买数量：</span>
                       <span>
 
                         <div class="pcsh-count clear">
                           <!-- 减法按钮 -->
                           <span @click="addGoodsbtn(shTrData.serviceId,-1,shTrData.buyNum)" class="pc-subbtn pc-combtn pointer">-</span>
-                          <!-- <input @focus="fcsGoodipt(shTrData.serviceId,shTrData.buyNum)" @blur="blurGoodipt(shTrData.serviceId,shTrData.buyNum)" class="pcsh-ipt" type="number" min="1" step="1" v-model="shTrData.buyNum"> -->
+                          <input @focus="fcsGoodipt(shTrData.serviceId,shTrData.buyNum)" @blur="blurGoodipt(shTrData.serviceId,shTrData.buyNum)" class="pcsh-ipt" type="number" min="1" step="1" v-model="shTrData.buyNum">
                           <!-- 加法按钮 -->
                           <span @click="addGoodsbtn(shTrData.serviceId,1,shTrData.buyNum)" class="pc-addbtn pc-combtn pointer">+</span>
                         </div>
 
-                      </span></div>
+                      </span>
+                    </div>
                     <div class="tel-earea">
-                      <p>北京</p>
-                      <!-- <i class="el-icon-location-outline"></i><span class="tel-earcon">{{product.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span> -->
+                      <!-- <p>北京</p> -->
+                      <!-- <i class="el-icon-location-outline"></i><span class="tel-earcon">{{shTrData.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span> -->
                     </div>
                   </div>
                 </li>
-            </ul>
-          </div>
-          <div class="tel-shft clear">
-            <div class="tel-shprc tel-inline">合计：<span class="telt-prcin">￥{{tlPrice+'.00'}}</span></div>
-            <div class="tel-settle tel-inline">去结算</div>
-          </div>
+              </ul>
+              </div>
+              <div class="tel-shft clear">
+                <div class="tel-shprc tel-inline">合计：<span class="telt-prcin">￥{{tlPrice+'.00'}}</span></div>
+                <div  @click="settleActs" class="tel-settle tel-inline">去结算</div>
+              </div>
         </div>
+
+        <div v-if="!goodsnum" class="tel-blank">
+          <div class="tel-blanki">
+            <img src="../../images/companyIdstry/blank.png" alt="">
+          </div>
+          <p class="tel-blankw">购物车空空如也，去首页逛逛吧！</p>
+          <router-link class="tel-blankb" tag="button" to="/merchandise/allProduct">去首页</router-link>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -166,35 +177,35 @@ export default {
   name: "shoppingtrolley",
   methods: {
     // 数字框获取焦点事件
-    fcsGoodipt(goodId,buyNum){
+    fcsGoodipt(goodId, buyNum) {
       var that = this;
       this.ajax
-          .post(
-            "/xinda-api/cart/add",
-            this.qs.stringify({ id: goodId, num: (0-buyNum) })
-          )
-          .then(function(data) {
-            // buyNum++;
-            that.getGoods();
-          });
+        .post(
+          "/xinda-api/cart/add",
+          this.qs.stringify({ id: goodId, num: 0 - buyNum })
+        )
+        .then(function(data) {
+          // buyNum++;
+          that.getGoods();
+        });
     },
-    // 数字框失去焦点事件    
-    blurGoodipt(goodId,buyNum){
+    // 数字框失去焦点事件
+    blurGoodipt(goodId, buyNum) {
       var that = this;
       this.ajax
-          .post(
-            "/xinda-api/cart/add",
-            this.qs.stringify({ id: goodId, num: buyNum })
-          )
-          .then(function(data) {
-            // buyNum++;
-            that.getGoods();
-          });
+        .post(
+          "/xinda-api/cart/add",
+          this.qs.stringify({ id: goodId, num: buyNum })
+        )
+        .then(function(data) {
+          // buyNum++;
+          that.getGoods();
+        });
     },
     // 添加（减少）购物车商品
     addGoodsbtn(goodId, numb, buyNum) {
       var that = this;
-      if ((numb == 1)&&(buyNum>0)) {
+      if (numb == 1 && buyNum > 0) {
         this.ajax
           .post(
             "/xinda-api/cart/add",
@@ -204,7 +215,7 @@ export default {
             // buyNum++;
             that.getGoods();
           });
-      }else if((numb == -1)&&(buyNum>1)){
+      } else if (numb == -1 && buyNum > 1) {
         this.ajax
           .post(
             "/xinda-api/cart/add",
@@ -215,19 +226,6 @@ export default {
             that.getGoods();
           });
       }
-            // that.getGoods();
-  
-      // } elseif() {
-      //   this.ajax
-      //     .post(
-      //       "/xinda-api/cart/add",
-      //       this.qs.stringify({ id: goodId, num: numb })
-      //     )
-      //     .then(function(data) {
-      //       // buyNum++;
-      //       that.getGoods();
-      //     });
-      // }
     },
 
     ...mapActions(["setNum"]),
@@ -243,7 +241,7 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
-        // console.log("data.data.data==", data.data.data);
+        console.log("购物车==", data.data.data);
         that.tlPrice = 0;
         for (var i = 0; i < that.shTrDatas.length; i++) {
           // 商品数量
@@ -262,14 +260,9 @@ export default {
       this.ajax
         .post("/xinda-api/cart/del", this.qs.stringify({ id: id }))
         .then(function(data) {
-          // that.products = data.data.data;
-          // console.log(data);
           // 重新获取数据
           that.getGoods();
         });
-      // this.ajax.post("/xinda-api/cart/list").then(function(data) {
-      //   that.shTrDatas = data.data.data;
-      // });
     },
     // 结算
     settleActs: function() {
@@ -286,7 +279,6 @@ export default {
       // --------------------------
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        // console.log("data=======", data);
         // console.log("提交结算", data.data.data);
         that.order = data.data.data;
         that.$router.push({
@@ -304,11 +296,12 @@ export default {
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
-      console.log("data.data.data==", data.data.data);
+      // console.log("data.data.data==", data.data.data);
       // that.buynumber = that.shTrDatas[that.idx].buyNum;
       for (var i = 0; i < that.shTrDatas.length; i++) {
         // 商品数量
         console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
+
         // 加减数初始值
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
@@ -343,9 +336,8 @@ export default {
       centerDialogVisible: false,
       numid: "",
       buynumber: 0,
-      idx: 0,
+      idx: 0
       // 获取焦点
-
     };
   },
   components: {}
@@ -571,7 +563,7 @@ export default {
 // 手机端
 @media all and (max-width: 767px) {
   .tel-shptro {
-    height: 62.9rem;
+    height: 12.58rem;
   }
   // 购物车 头部全部商品数目
   .tel-shhd {
@@ -580,9 +572,9 @@ export default {
     padding-left: 3.06%;
     width: 96.94%;
     color: #4b4b4b;
-    font-size: 1.1rem;
+    font-size: 0.22rem;
     font-weight: 400;
-    line-height: 3.85rem;
+    line-height: 0.77rem;
     background: #e5e5e5;
     .tel-shdnum {
       color: #f00;
@@ -590,7 +582,7 @@ export default {
   }
   // 购物车主体
   .tel-shbody {
-    margin-top: 3.85rem;
+    margin-top: 0.77rem;
     .tel-texhd {
       width: 100%;
     }
@@ -600,24 +592,24 @@ export default {
       padding-left: 3.27%;
       .tel-texelm {
         width: 100%;
-        padding-top: 0.02rem;
-        min-height: 12.75rem;
+        padding-top: 0.004rem;
+        min-height: 2.55rem;
         border-bottom: 1px solid #cfcfcf;
         // 元素顶部 公司名
         .tel-spconm {
           width: 100%;
-          line-height: 2.85rem;
-          font-size: 1.4rem;
+          line-height: 0.63rem;
+          font-size: 0.28rem;
           font-weight: 500;
           color: #000;
         }
         // 左侧图片
         .tel-teimg {
-          margin: 0.4rem 1.2rem 0 0;
+          margin: 0.08rem 0.24rem 0 0;
           float: left;
           // width: 22.64%;
-          width: 8.35rem;
-          height: 8.35rem;
+          width: 1.67rem;
+          height: 1.67rem;
           border: 2px solid #e3e3e3;
           .tel-imgin {
             width: 100%;
@@ -630,41 +622,56 @@ export default {
           width: 62%;
           .tel-tenmac {
             .tel-tenm {
+              float: left;
+              display: inline-block;
+              max-width: 76.52%;
               color: #000;
-              font-size: 1.4rem;
+              font-size: 0.28rem;
               font-weight: 300;
-              line-height: 2.5rem;
+              line-height: 0.5rem;
             }
             // 删除订单
             .tel-act {
-              margin-top: 0.3rem;
               float: right;
-              line-height: 2.15rem;
-              font-size: 1.1rem;
+              display: inline-block;
+              margin-top: 0.06rem;
+              max-width: 23.48%;
+              float: right;
+              line-height: 0.43rem;
+              font-size: 0.22rem;
               font-weight: 400;
               color: #f00;
             }
           }
           .tel-buynum {
-            height: 1.65rem;
-            line-height: 1.65rem;
-            font-size: 0.8rem;
+            height: 0.33rem;
+            line-height: 0.33rem;
+            font-size: 0.16rem;
             color: #000;
+            .tel-bynmw {
+              float: left;
+              display: inline-block;
+              line-height: 0.33rem;
+            }
           }
           // 价格
           .tel-spmony {
+            line-height: 0.63rem;
             .tel-spmoin {
-              font-size: 1.3rem;
+              float: left;
+              font-size: 0.26rem;
               font-weight: 700;
               color: #f00;
             }
             .tel-spyuan {
-              font-size: 0.8rem;
+              float: left;
+              font-size: 0.16rem;
             }
           }
           .tel-earea {
+            font-size: 0.16rem;
             .tel-earcon {
-              line-height: 2.25rem;
+              line-height: 0.45rem;
             }
           }
         }
@@ -674,13 +681,13 @@ export default {
   // 底部
   .tel-shft {
     position: fixed;
-    bottom: 4.2rem;
+    bottom: 0.84rem;
     width: 100%;
-    height: 5.5rem;
-    line-height: 5.5rem;
+    height: 1.1rem;
+    line-height: 1.1rem;
     .tel-inline {
       float: left;
-      font-size: 1.4rem;
+      font-size: 0.28rem;
       display: inline-block;
     }
     .tel-shprc {
@@ -700,8 +707,8 @@ export default {
   }
   // 计数器 手机
   .pcsh-count {
+    margin: 0.03rem 0 0 0.02rem;
     display: inline-block;
-    // margin: 30px auto 0;
     overflow: hidden;
     width: 69px;
     height: 20px;
@@ -732,6 +739,41 @@ export default {
     }
   }
 }
+
+// 购物车为空
+
+.tel-blank {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  height: 13rem;
+  background: #f8fff8;
+  .tel-blankw {
+    width: 55%;
+    margin: 0.46rem auto 0;
+    font-size: 0.27rem;
+    color: #2693d4;
+  }
+  .tel-blankb {
+    display: block;
+    margin: 0.975rem auto 0;
+    width: 33.46%;
+    height: 0.85rem;
+    font-size: 0.28rem;
+    color: #fff;
+    background: #2693d4;
+    border: 0;
+    border-radius: 4px;
+  }
+  .tel-blanki {
+    margin: 2.52rem auto 0;
+    width: 3.36rem;
+    height: 3.36rem;
+    img {
+      width: 100%;
+    }
+  }
+}
 </style>
 
 <style lang='less'>
@@ -746,36 +788,6 @@ li {
 }
 
 @media all and (min-width: 768px) {
-  // 计数器
-  // .pcsh-count {
-  //   margin: 0 auto;
-  //   width: 69px;
-  //   height: 20px;
-  //   .el-input-number__decrease,
-  //   .el-input-number__increase {
-  //     width: 18px;
-  //     height: 20px;
-  //     background: #bcbebd;
-  //     border-radius: 0;
-  //     i {
-  //       color: #202020;
-  //       position: absolute;
-  //       top: 3px;
-  //       left: 2px;
-  //     }
-  //   }
-
-  //   .el-input {
-  //     width: 69px;
-  //     line-height: 20px;
-  //     .el-input__inner {
-  //       padding: 0 18px;
-  //       height: 20px;
-  //       border: 0;
-  //     }
-  //   }
-  // }
-
   // 删除部分
   .pcsh-remv {
     // 弹出框
@@ -814,6 +826,30 @@ li {
 }
 
 @media all and (max-width: 767px) {
-  // 计数器
+  // 删除 弹出框
+  .tel-pop {
+    .el-dialog {
+      width: 5rem;
+      height: 3.5rem;
+      position: relative;
+      .pcsh-pophd{
+        width: 96%;
+        padding-left:4%;
+        position: absolute;
+        top:0;
+        left: 0;
+        height: 0.6rem;
+        color: #000;
+        line-height: 0.6rem;
+        background:#bbb;
+      }
+      .el-dialog__header {
+        height: 1rem;
+      }
+      .el-dialog__body{
+        padding:0;
+      }
+    }
+  }
 }
 </style>

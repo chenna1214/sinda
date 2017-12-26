@@ -35,6 +35,8 @@ import pay from '../components/merchandise/order/pay'
 import Alipay from '../components/merchandise/order/Alipay'
 //手机端的全部产品的导航
 import navShow from '../components/merchandise/allProduct/navShow.vue'
+//分页组件
+import pagePublic from '../components/pagePublic'
 
 Vue.use(Router)
 
@@ -114,6 +116,11 @@ export default new Router({
           component: shoppingtrolley
         },
         {
+          path:'navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
+          name:'navShow',
+          component:navShow
+        },
+        {
           path: 'membercenter',//会员中心网页，公共
           redirect: 'membercenter/member',
           name: 'membercenter',
@@ -180,11 +187,12 @@ export default new Router({
       name:'Alipay',
       component:Alipay
     },
+ 
     {
-      path:'/navShow',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
-      name:'navShow',
-      component:navShow
-    },
+      path:'/pagePublic',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
+      name:'pagePublic',
+      component:pagePublic
+    }
     
   ]
 })

@@ -161,7 +161,7 @@
               <div class="wea-infor">{{service.serviceInfo}}</div>
               <div class="wea-area">
                 <div class="wea-baidu">
-                  <div class="wea-icon"></div>
+                  <div class="wea-icon"><img src="../pc_images/we-ditu.png" alt=""></div>
                   <div class="wea-addshi">北京市</div>
                   <div class="wea-addqu">朝阳区</div>
                 </div>
@@ -577,7 +577,7 @@ export default {
           border-top: 5px solid #2693d4;
           border-bottom: 4px solid transparent;
           transform: rotate(180deg);
-          margin-top: -0.1rem;
+          // margin-top: -0.1rem;
           margin-left: 0.8rem;
           position: absolute;
         }
@@ -634,10 +634,15 @@ export default {
               justify-content: space-between;
               .wea-baidu{
                 display: flex;
+                align-items: center;
                 .wea-icon{
                   width: 0.15rem;
                   height: 0.21rem;
-                  background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -75px -116px;
+                  img{
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                  }
                 }
                 .wea-addshi{
                   font-size: 0.14rem;
@@ -665,6 +670,27 @@ export default {
           }
         }
       }
+    }
+  } 
+  // span
+  @media all and (max-width: 767px) and (min-width: 680px){
+    span{
+      margin-top: -0.08rem;
+    }
+  }
+  @media all and (max-width: 680px) and (min-width: 490px){
+    span{
+      margin-top: -0.1rem;
+    }
+  }
+  @media all and (max-width: 490px) and (min-width: 380px){
+    span{
+      margin-top: -0.14rem;
+    }
+  }
+  @media all and (max-width: 380px){
+    span{
+      margin-top: -0.18rem;
     }
   } 
 </style>

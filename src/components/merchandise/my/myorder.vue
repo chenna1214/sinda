@@ -1,14 +1,13 @@
 <template>
   <!-- 我的订单 -->
+  <!-- 微信端 -->
   <div class="hidden-sm-and-up myorder">
-    <!-- 微信端 -->
-    <div class="hidden-sm-and-up">
-      <!-- 头部 -->
-      <div class="weacctop">
-        <span></span>
-        <div class="we-acctop">账户设置</div>
-      </div>
+    <!-- 头部 -->
+    <div class="weorder">
+      <span></span>
+      <div class="we-order">我的订单</div>
     </div>
+    
   </div>
 </template>
 
@@ -28,7 +27,8 @@ export default {
 
 <style scoped lang='less'>
   @media all and (max-width: 767px){
-    .weacctop {
+    // 头部
+    .weorder {
       height: 0.72rem;
       background: #e5e5e5;
       width: 100%;
@@ -43,7 +43,7 @@ export default {
         border-top: 2px solid #838383;
         transform: rotate(-45deg);
       }
-      .we-acctop {
+      .we-order {
         width: 88%;
         text-align: center;
         line-height: 0.72rem;
