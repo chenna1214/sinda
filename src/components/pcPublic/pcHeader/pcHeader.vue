@@ -253,20 +253,15 @@ export default {
       }
       this.getSearch();
       //计算input宽度
-      // var searchInput = document.getElementsByClassName(
-      //   "pcHeaderSearchInput"
-      // )[0];
+      var searchInput = document.getElementsByClassName(
+        "pcHeaderSearchInput"
+      )[0];//输入搜索内容的input
+      var matchBox =document.getElementsByClassName('pcSerBox')[0]//匹配搜索内容框
+      //input框宽度
+      var width = getComputedStyle(searchInput).width
+      var reallyWidth=width.substr(0,width.indexOf('px'));
+      matchBox.style.width=(Number(reallyWidth)+5)+'px';
 
-      // console.log("searchInput==", searchInput);
-      // //input框距离文档的尺寸
-      // var docInput = searchInput.offsetLeft;
-      // console.log("input框距离文档的尺寸", docInput);
-      // function show_coords(event) {
-      //   searchInput = event.clientX;
-       
-      // }
-      // show_coords(event);
-      //  console.log("searchInput实时", searchInput);
     }
   }
 };
