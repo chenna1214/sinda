@@ -38,7 +38,8 @@
           </div>
           <!-- 立即购买，加入购物车 -->
           <div class="parinf-btn">
-            <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link>
+            <!-- <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link> -->
+            <a href='#/merchandise/shoppingtrolley' class="paynow" @click="join">立即购买</a>
             <button @click="join">加入购物车</button>
           </div>
         </div>
@@ -305,7 +306,8 @@
         <!-- 加入购物车 -->
         <div class="wef-join" @click="join">加入购物车</div>
         <!-- 立即购买 -->
-        <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay">立即购买</router-link>
+        <!-- <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay" @click="join">立即购买</router-link> -->
+        <a href='#/merchandise/shoppingtrolley' class="wef-pay" @click="join">立即购买</a>
       </div>
 
       <!-- 出现部分 -->
@@ -901,6 +903,12 @@
             background-color: #fff;
           }
           .paynow{
+            width: 25%;
+            line-height: 38px;
+            border-radius: 6px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
             color: #fff;
             border-color: #2693d4;
             background-color: #2693d4;
@@ -1688,7 +1696,9 @@
         color: #fff;
         text-align: center;
         line-height: 1.15rem;
+        text-decoration: none;
         background-color: #fc4145;
+        display: inline-block;
         cursor: pointer;
       }
     }
