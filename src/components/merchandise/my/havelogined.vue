@@ -8,7 +8,7 @@
     <!-- 我的订单，账户设置 -->
     <div class="weorderset">
       <!-- 我的订单 -->
-      <router-link tag="div" :to="{path: '/merchandise/myorder'}" class="we-myorder">
+      <router-link tag="div" :to="{path: '/myOrderTel'}" class="we-myorder">
         <div>
           <div class="myo-img">
             <img src="../pc_images/we-myorder.png" alt="">
@@ -29,7 +29,7 @@
       </router-link>
     </div>
     <!-- 退出登录 -->
-    <div class="welogout">退出登录</div>
+    <router-link tag="div" :to="{path:'/merchandise/allProduct'}" class="welogout">退出登录</router-link>
   </div>
 </template>
 
@@ -38,11 +38,30 @@ export default {
   name: "havelogined",
   data() {
     return {
-
+      // pcUserName: "" //退出登录后清空用户姓名
     };
   },
-  methods: {
-
+  methods: {  
+    // ...mapActions(["setName", "gainNum"]),  
+    logout() {
+      // sessionStorage.removeItem("userName");
+      // this.setName(this.pcUserName); 
+      // this.$message({
+      //   type: "success",
+      //   message: "您已成功退出登录!"
+      // });
+      // setTimeout(function () {
+      //   this.$router.push({path: '/merchandise/allProduct'});
+      // },5000);
+    }
+  },
+  computed: {
+    // ...mapGetters(["getNum", "getName"])
+  },
+  created() {
+    // if (!this.getNum) {
+    //   this.gainNum();
+    // }
   }
 };
 </script>

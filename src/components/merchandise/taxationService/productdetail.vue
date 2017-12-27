@@ -1318,6 +1318,7 @@
       height: 4.8rem;
       display: flex;
       flex-wrap: wrap;
+      position: relative;
       .wep-img{
         width: 100%;
         height: 100%;
@@ -1469,6 +1470,8 @@
       }
       // 信息
       .wei-mes{
+        font-size: 0.14rem;
+        line-height: 0.4rem;
         margin: 0.16rem 0rem 0.22rem 0.28rem;
       }
     }
@@ -1558,7 +1561,7 @@
       display: flex;
       position: fixed;
       // top: 524px;
-      bottom: 0.73rem;
+      bottom: 0.8rem;
       // 联系商家
       .wef-contact{
         width: 34%;

@@ -441,6 +441,9 @@ export default {
             > div {
               color: #f00;
             }
+            >input{
+              font-size: 0.14rem;
+            }
             .set-error {
               width: 0.14rem;
               height: 0.14rem;
@@ -460,8 +463,10 @@ export default {
             justify-content: space-between;
             select {
               width: 30%;
-              height: 0.32rem;
-              font-size: 0.18rem;
+              height: 0.35rem;
+              option{
+                font-size: 0.14rem;
+              }
             }
           }
           .are-error {
