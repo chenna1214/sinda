@@ -49,18 +49,18 @@ export default {
       this.telIndex = telIdx;
       telIdx = !telIdx;
     }, //手机端头部导航
-    thirdClick(id,u) {
-      // this.$router.push({
-      //   path: "/merchandise/taxationService",
-      //   query: { id: thirdTil.id }
-      // });
-      console.log('id--',id)
-      console.log('secondTil.itemList==',u)
-      console.log('000')
+    // thirdClick(id,u) {
+    //   // this.$router.push({
+    //   //   path: "/merchandise/taxationService",
+    //   //   query: { id: thirdTil.id }
+    //   // });
+    //   console.log('id--',id)
+    //   console.log('secondTil.itemList==',u)
+    //   console.log('000')
       
       
       
-    }
+    // }
   }
 };
 </script>
@@ -69,20 +69,28 @@ export default {
 .telNavToal {
   .telNavBoxOut:nth-child(1) {
     margin-top: -30px;
+    position: absolute;
+    z-index: 10;
   }
   .telNavBoxOut:nth-child(2) {
     margin-top: 64px;
+     position: absolute;
+    z-index: 11;
   }
   .telNavBoxOut:nth-child(3) {
     margin-top: 158px;
+    //  position: absolute;
+    // z-index: 12;
   }
   .telNavBoxOut:nth-child(4) {
     margin-top: 252px;
+     position: absolute;
+    z-index: 13;
   }
 }
 .telNavBoxOut {
-  // position: absolute;
-  // z-index: 9;
+  position: absolute;
+  z-index: 9;
   width: 100%;
 }
 .telNavClickAft {

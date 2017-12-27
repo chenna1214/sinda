@@ -33,7 +33,6 @@
               <div>订单状态</div>
               <div>订单操作</div>
             </div>
-<<<<<<< HEAD
             <!-- 订单 -->
             <div class="indent">
               <!-- 大订单 -->
@@ -68,21 +67,6 @@
                       <div class="ind-quant">{{subitem.buyNum}}</div>
                       <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
                       <div class="ind-status">等待买家付款</div>
-=======
-            <!-- 具体信息 -->
-            <div class="ind-detail">
-              <!-- 左侧 -->
-              <div class="det-left" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
-                <!-- 商品 -->
-                <div>
-                  <div class="comname">
-                    <!-- <div class="indname-img">
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'">
-                    </div> -->
-                    <div class="indname-cha">
-                      <div class="indcha-one">{{subitem.providerName}}</div>
-                      <div class="indcha-two">{{subitem.serviceName}}</div>
->>>>>>> 85ee2ecfd5ba29f1ead435a4dd0b0223b6a21117
                     </div>
                   </div>
                   <!-- 付款、删除订单按钮 -->
@@ -117,7 +101,7 @@
 </template>
 
 <script>
-import {getGoodsAllData} from "./memberPublic.js";
+import {getGoodsAllData} from "./memberPublic";
 import pageSet from "../../pagePublic";
 export default {
   name: "changepwd",
@@ -157,11 +141,7 @@ export default {
     }
   },
   methods: {
-<<<<<<< HEAD
     pageChange(n) {
-=======
-    pageClick(idxPage) {
->>>>>>> 85ee2ecfd5ba29f1ead435a4dd0b0223b6a21117
       //点击某个页码进行翻页
       this.eachContent = n;
       getGoodsAllData(this);
@@ -441,7 +421,7 @@ export default {
           }
           // 右侧付款/删除
           .det-right {
-            margin-top: -72px;
+            margin-top: -100px;
             width: 13%;
             display: flex;
             flex-wrap: wrap;
@@ -477,18 +457,11 @@ export default {
 }
 // 右侧尾部
 .mai-tail {
-  width: 30%;
   margin: 0 auto;
   margin-top: 4%;
   margin-bottom: 4%;
   display: flex;
   justify-content: space-around;
-  > div {
-    width: 19%;
-    border: 1px solid #ccc;
-    padding: 3% 6% 3% 6%;
-    color: #ccc;
-  }
 }
 // 确定删除吗
 .mai-sure {
