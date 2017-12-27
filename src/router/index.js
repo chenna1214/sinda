@@ -1,42 +1,42 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//非登录、注册、忘记密码网页
-import merchandise from '../components/merchandise/merchandise'
-import allProduct from '../components/merchandise/allProduct/allProduct.vue'
-import taxationService from '../components/merchandise/taxationService/taxationService.vue'
-import productdetail from '../components/merchandise/taxationService/productdetail.vue'
-
-import joinUs from '../components/merchandise/joinUs/joinUs.vue'
-import shop from '../components/merchandise/shop/shop.vue'
-import failurePay from '../components/merchandise/order/failurePay.vue'//支付失败
-import paySuccess from '../components/merchandise/order/paySuccess.vue'//支付成功
-import pc_shophp from '../components/merchandise/shop/pc_shophp.vue'
-import goodsOrder from '../components/merchandise/order/goodsOrder.vue'//订单详情
-import shoppingtrolley from '../components/merchandise/shoppingtrolley/shoppingtrolley.vue'//订单详情
-//登录、注册、忘记密码网页
-import userData from '../components/userData/userData.vue'
-import login from '../components/userData/login.vue'
-import register from '../components/userData/register.vue'
-import forgetPassword from '../components/userData/forgetPassword.vue'
-// 会员中心网页
-import membercenter from '../components/merchandise/membercenter/membercenter.vue'
-import member from '../components/merchandise/memberCenter/member.vue'
-import accountpwd from '../components/merchandise/memberCenter/accountpwd.vue'
-import toevaluate from '../components/merchandise/memberCenter/toevaluate.vue'
-import userevalua from '../components/merchandise/memberCenter/userevalua.vue'  
-//  微信端
-import unregistered from '../components/merchandise/my/unregistered.vue'
-import havelogined from '../components/merchandise/my/havelogined.vue'
-import myorder from '../components/merchandise/my/myorder.vue'
-import accountset from '../components/merchandise/my/accountset.vue'
-//银联支付
-import pay from '../components/merchandise/order/pay'
-//支付宝支付
-import Alipay from '../components/merchandise/order/Alipay'
-//手机端的全部产品的导航
-import navShow from '../components/merchandise/allProduct/navShow.vue'
-//分页组件
-import pagePublic from '../components/pagePublic'
+// //非登录、注册、忘记密码网页
+const merchandise = () => import('../components/merchandise/merchandise')
+const allProduct = () => import('../components/merchandise/allProduct/allProduct.vue')
+const taxationService = () => import('../components/merchandise/taxationService/taxationService.vue')
+const productdetail = () => import('../components/merchandise/taxationService/productdetail.vue')
+const joinUs = () => import('../components/merchandise/joinUs/joinUs.vue')
+const shop = () => import('../components/merchandise/shop/shop.vue')
+const failurePay = () => import('../components/merchandise/order/failurePay.vue')
+const paySuccess = () => import('../components/merchandise/order/paySuccess.vue')
+const pc_shophp = () => import('../components/merchandise/shop/pc_shophp.vue')
+const goodsOrder = () => import('../components/merchandise/order/goodsOrder.vue')
+const shoppingtrolley = () => import('../components/merchandise/shoppingtrolley/shoppingtrolley.vue')
+// //登录、注册、忘记密码网页
+const userData = () => import('../components/userData/userData.vue')
+const login = () => import('../components/userData/login.vue')
+const register = () => import('../components/userData/register.vue')
+const forgetPassword = () => import('../components/userData/forgetPassword.vue')
+// // 会员中心网页
+const membercenter = () => import('../components/merchandise/membercenter/membercenter.vue')
+const member = () => import('../components/merchandise/membercenter/member.vue')
+const accountpwd = () => import('../components/merchandise/membercenter/accountpwd.vue')
+const toevaluate = () => import('../components/merchandise/membercenter/toevaluate.vue')
+const userevalua = () => import('../components/merchandise/membercenter/userevalua.vue') 
+// //  微信端
+const unregistered = () => import('../components/merchandise/my/unregistered.vue')
+const havelogined = () => import('../components/merchandise/my/havelogined.vue')
+const accountset = () => import('../components/merchandise/my/accountset.vue')
+// //银联支付
+const pay = () => import('../components/merchandise/order/pay')
+// //支付宝支付
+const Alipay = () => import('../components/merchandise/order/Alipay')
+// //手机端的全部产品的导航
+const navShow = () => import('../components/merchandise/allProduct/navShow.vue')
+// //分页组件
+const pagePublic = () => import('../components/pagePublic')
+//手机端我的订单
+const myOrderTel = () => import('../components/merchandise/membercenter/myOrderTel.vue')
 
 Vue.use(Router)
 
@@ -77,6 +77,11 @@ export default new Router({
         {
           path: 'taxationService',//财税服务
           name: 'taxationService',
+          component: taxationService
+        },
+        {
+          path: 'taxationServer',//公司工商
+          name: 'taxationServer',
           component: taxationService
         },
         {
@@ -166,11 +171,6 @@ export default new Router({
           component: havelogined
         },
         {
-          path: 'myorder',//微信-我的订单
-          name: 'myorder',
-          component: myorder
-        },
-        {
           path: 'accountset',//微信-账户设置
           name: 'accountset',
           component: accountset
@@ -187,12 +187,16 @@ export default new Router({
       name:'Alipay',
       component:Alipay
     },
- 
     {
       path:'/pagePublic',//手机端点击全部服务跳转到此页，此页内容是展示导航栏的链接
       name:'pagePublic',
       component:pagePublic
-    }
+    },
+    {
+      path:'/myOrderTel',//手机端我的订单
+      name:'myOrderTel',
+      component:myOrderTel
+    },
     
   ]
 })

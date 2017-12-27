@@ -1,31 +1,31 @@
 <template>
   <div>
    <!-- pc端三级联动 -->
-      <el-row class="pcauto-wrap hidden-xs-only">
-        <el-col :span="3"><div class="pcau-serv-area">服务区域</div></el-col>
-        <!-- <el-col :span="21"><sanji class="pcv-dist-selec"></sanji></el-col> -->
-        <el-col :span="21">
-            <div  class="pcv-dist-selec">
-       <select name="" id="" @change="proChange" v-model="province">
+    <el-row class="pcauto-wrap hidden-xs-only">
+      <el-col :span="3">
+        <div class="pcau-serv-area">服务区域</div>
+      </el-col>
+      <el-col :span="21">
+        <div  class="pcv-dist-selec">
+          <select name="" id="" @change="proChange" v-model="province">
             <option value="0">省</option>
             <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-        </select>
-        <select name="" id="" @change="cityChange" v-model="city">
+          </select>
+          <select name="" id="" @change="cityChange" v-model="city">
             <option value="0">市</option>
             <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-        </select>
-        <select name="" id="" v-model="area" @change="areaChange">
+          </select>
+          <select name="" id="" v-model="area" @change="areaChange">
             <option value="">区</option>
             <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>            
-        </select>
-    </div>
-        </el-col>
-      </el-row>
-    </div>
+          </select>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 <script>
-// import sanji from "./sanjiliandong";
-import dist from '../../../districts/districts'
+import dist from "../../../districts/districts";
 
 export default {
   name: "autourban",
@@ -73,7 +73,6 @@ li {
   content: "";
 }
 .pcauto-wrap {
-  //   background: #f7f7f7;
   .pcau-serv-area {
     background: #f7f7f7;
     text-align: center;
@@ -106,6 +105,4 @@ li {
     }
   }
 }
-
-
 </style>

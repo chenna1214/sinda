@@ -51,7 +51,9 @@ export function getTitles(rDataObjs) {//获取产品导航标题
             for (var Key in rData) {
                 rDataObj[rData[Key].code] = rData[Key];
             }
-            rDataObjs.titles = rDataObj;
+            rDataObjs.titles = rDataObj; 
+            console.log('rDataObjs.titles',rDataObjs.titles)
+            
         });
 }
 

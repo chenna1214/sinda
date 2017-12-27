@@ -66,11 +66,15 @@
             </div>
           </div>
           <!-- 页码 -->
-          <div class="pageBox">
-            <button @click="upPage()">上一页</button>
-            <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
-            <button @click="downPage()">下一页</button>
+          <div>
+            <div class="pageBox clear">
+              <button class="pc-probtn" @click="upPage()">上一页</button>
+              <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
+              <button @click="downPage()">下一页</button>
+            </div>
           </div>
+            
+          
         </el-col>
         <el-col :span="5" class="hidden-xs-only">
            <!-- 财税服务右侧栏 -->
@@ -79,7 +83,6 @@
             <company v-show="CompanyRightSide==this.$route.query.code"></company>
         </el-col>
       </el-row>
-     
     </div>
    
 
@@ -139,11 +142,10 @@ export default {
         }
         that.products = newdata;
       }
-      console.log("newdata==", that.products);
+      // console.log("newdata==", that.products);
     },
     selected(code) {
       this.distCode = code;
-      console.log("code===", code);
       this.region();
     },
 
@@ -214,7 +216,6 @@ export default {
           that.page = page;
           that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
           // that.region();
-          console.log("data===", data.data);
         });
     },
     ...mapActions(["gainNum"]),
@@ -318,9 +319,6 @@ export default {
     $route: function() {
       this.initTypes();
     }
-    // limit: function() {
-    //   this.ajaxProData();
-    // }问题：如何监听
   },
   created() {
     var that = this;
@@ -330,7 +328,6 @@ export default {
         that.types = data.data.data;
         that.initTypes();
         that.region();
-        
       });
 
     if (this.$route.query.code) {
@@ -437,27 +434,46 @@ export default {
     color: #2693d4;
   }
   .pcPage {
-    font-size: 28px;
+    font-size: 14px;
     width: 36px;
     display: inline-block;
     text-align: center;
+    margin-right: 6px;
+    width: 37px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    border: 1px solid #ccc;
+    
   }
   .pageColor {
     //页码被选中后的样式
-    color: #2693d4;
-    font-size: 28px;
+    font-size: 14px;
+    color: #2592d5;
+    border: 1px solid #2592d5;
   }
   .pageBox {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    display: flex!important;
+    justify-content: center!important;
+    display: inline-block;
+    padding: 30px 0 20px 0;
     text-align: center;
+    button{
+    width: 68px;
+    height: 36px;
+    color: #ccc;
+    background: #fff;
+    border: 1px solid #ccc;
+    }
+    .pc-probtn{
+      margin-right: 7px;
+    }
   }
   .active {
     background: blue;
   }
 
   // 商品列表
-
   .pccny-gds {
     margin-top: 25px;
     border: 1px solid #ccc;
