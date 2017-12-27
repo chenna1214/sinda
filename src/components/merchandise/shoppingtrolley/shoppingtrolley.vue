@@ -76,7 +76,6 @@
               <p class="pctl-price">金额总计<span class="pctl-prcin">￥{{tlPrice}}</span></p>
               <div class="pctl-prbtn">
                 <router-link tag="div" class="pctl-prbnst1 pcgo-shop pointer" to="/merchandise/allProduct">继续购物</router-link>
-                <!-- <router-link tag="div" @click="settleActs" class="pctl-prbnst1 pcsettle" to="/merchandise/goodsOrder">去结算</router-link> -->
                 <div @click="settleActs" class="pctl-prbnst1 pcsettle pointer">去结算</div>
               </div>
             </div>
@@ -125,7 +124,7 @@
                     <div class="tel-tewor">
                     <p class="tel-tenmac clear"><span class="tel-tenm">{{shTrData.serviceName}}</span> <span @click="centerDialogVisible = true"  class="tel-act">删除订单</span>
                     </p>
-                    <el-dialog title="确定删除该产品吗" :visible.sync="centerDialogVisible" width="30%" center>
+                    <el-dialog class="tel-pop" title="确定删除该产品吗" :visible.sync="centerDialogVisible" center>
                       <div class="pcsh-pophd">信息</div>
                       <span slot="footer" class="dialog-footer">
                         <el-button @click="removeGoods(shTrData.serviceId)" type="primary" >确 定</el-button>
@@ -147,8 +146,6 @@
                       </span>
                     </div>
                     <div class="tel-earea">
-                      <!-- <p>北京</p> -->
-                      <!-- <i class="el-icon-location-outline"></i><span class="tel-earcon">{{shTrData.regionName.replace(/-/g,'  ').replace(/\S*/,'')}}</span> -->
                     </div>
                   </div>
                 </li>
@@ -185,7 +182,6 @@ export default {
           this.qs.stringify({ id: goodId, num: 0 - buyNum })
         )
         .then(function(data) {
-          // buyNum++;
           that.getGoods();
         });
     },
@@ -198,7 +194,6 @@ export default {
           this.qs.stringify({ id: goodId, num: buyNum })
         )
         .then(function(data) {
-          // buyNum++;
           that.getGoods();
         });
     },
@@ -212,7 +207,6 @@ export default {
             this.qs.stringify({ id: goodId, num: 1 })
           )
           .then(function(data) {
-            // buyNum++;
             that.getGoods();
           });
       } else if (numb == -1 && buyNum > 1) {
@@ -222,7 +216,6 @@ export default {
             this.qs.stringify({ id: goodId, num: -1 })
           )
           .then(function(data) {
-            // buyNum++;
             that.getGoods();
           });
       }
@@ -241,7 +234,9 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
-        console.log("购物车==", data.data.data);
+        if(that.shTrDatas.length==0){
+          that.goodsnum = 0;
+        }
         that.tlPrice = 0;
         for (var i = 0; i < that.shTrDatas.length; i++) {
           // 商品数量
@@ -279,7 +274,6 @@ export default {
       // --------------------------
       var that = this;
       this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-        // console.log("提交结算", data.data.data);
         that.order = data.data.data;
         that.$router.push({
           path: "/merchandise/goodsOrder",
@@ -288,20 +282,17 @@ export default {
       });
     }
   },
-  watch: {
-    // buynumber
-  },
+  // watch: {
+  //   goodsnum: function(goodsnumnew,goodsnumold){
+      
+  //   }
+  // },
   created() {
     var that = this;
     // 获取购物城商品数目
     this.ajax.post("/xinda-api/cart/list").then(function(data) {
       that.shTrDatas = data.data.data;
-      // console.log("data.data.data==", data.data.data);
-      // that.buynumber = that.shTrDatas[that.idx].buyNum;
       for (var i = 0; i < that.shTrDatas.length; i++) {
-        // 商品数量
-        console.log("that.shTrDatas[i]==", that.shTrDatas[i]);
-
         // 加减数初始值
         that.goodsnum += that.shTrDatas[i].buyNum;
         // 总价
@@ -313,13 +304,7 @@ export default {
     // 推荐相关接口  热门服务 2.4.2
     this.ajax.post("/xinda-api/recommend/list").then(function(data) {
       that.popservises = data.data.data.product;
-      // console.log('that.popservises===',that.popservises)
     });
-    // this.ajax.post("/xinda-api/cart/submit").then(function(data) {
-    //     console.log('data=======',data)
-    //     console.log("提交结算",data.data.data)
-    //     that.order = data.data.data
-    //   });
   },
   data() {
     return {
@@ -332,7 +317,6 @@ export default {
       popservises: [],
       order: "",
       oldvalue: 1,
-      // value: ''
       centerDialogVisible: false,
       numid: "",
       buynumber: 0,
@@ -377,9 +361,6 @@ export default {
       // 公司名
       .pcsh-conm {
         padding-left: 65px;
-      }
-      // 服务商品
-      .pcsh-sergd {
       }
       //单价
       .pcsh-unipr {
@@ -607,7 +588,6 @@ export default {
         .tel-teimg {
           margin: 0.08rem 0.24rem 0 0;
           float: left;
-          // width: 22.64%;
           width: 1.67rem;
           height: 1.67rem;
           border: 2px solid #e3e3e3;
@@ -788,36 +768,6 @@ li {
 }
 
 @media all and (min-width: 768px) {
-  // 计数器
-  // .pcsh-count {
-  //   margin: 0 auto;
-  //   width: 69px;
-  //   height: 20px;
-  //   .el-input-number__decrease,
-  //   .el-input-number__increase {
-  //     width: 18px;
-  //     height: 20px;
-  //     background: #bcbebd;
-  //     border-radius: 0;
-  //     i {
-  //       color: #202020;
-  //       position: absolute;
-  //       top: 3px;
-  //       left: 2px;
-  //     }
-  //   }
-
-  //   .el-input {
-  //     width: 69px;
-  //     line-height: 20px;
-  //     .el-input__inner {
-  //       padding: 0 18px;
-  //       height: 20px;
-  //       border: 0;
-  //     }
-  //   }
-  // }
-
   // 删除部分
   .pcsh-remv {
     // 弹出框
@@ -856,6 +806,30 @@ li {
 }
 
 @media all and (max-width: 767px) {
-  // 计数器
+  // 删除 弹出框
+  .tel-pop {
+    .el-dialog {
+      width: 5rem;
+      height: 3.5rem;
+      position: relative;
+      .pcsh-pophd{
+        width: 96%;
+        padding-left:4%;
+        position: absolute;
+        top:0;
+        left: 0;
+        height: 0.6rem;
+        color: #000;
+        line-height: 0.6rem;
+        background:#bbb;
+      }
+      .el-dialog__header {
+        height: 1rem;
+      }
+      .el-dialog__body{
+        padding:0;
+      }
+    }
+  }
 }
 </style>

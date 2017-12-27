@@ -33,6 +33,7 @@
               <div>订单状态</div>
               <div>订单操作</div>
             </div>
+<<<<<<< HEAD
             <!-- 订单 -->
             <div class="indent">
               <!-- 大订单 -->
@@ -67,6 +68,21 @@
                       <div class="ind-quant">{{subitem.buyNum}}</div>
                       <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
                       <div class="ind-status">等待买家付款</div>
+=======
+            <!-- 具体信息 -->
+            <div class="ind-detail">
+              <!-- 左侧 -->
+              <div class="det-left" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
+                <!-- 商品 -->
+                <div>
+                  <div class="comname">
+                    <!-- <div class="indname-img">
+                      <img :src="'http://115.182.107.203:8088/xinda/pic'">
+                    </div> -->
+                    <div class="indname-cha">
+                      <div class="indcha-one">{{subitem.providerName}}</div>
+                      <div class="indcha-two">{{subitem.serviceName}}</div>
+>>>>>>> 85ee2ecfd5ba29f1ead435a4dd0b0223b6a21117
                     </div>
                   </div>
                   <!-- 付款、删除订单按钮 -->
@@ -141,7 +157,11 @@ export default {
     }
   },
   methods: {
+<<<<<<< HEAD
     pageChange(n) {
+=======
+    pageClick(idxPage) {
+>>>>>>> 85ee2ecfd5ba29f1ead435a4dd0b0223b6a21117
       //点击某个页码进行翻页
       this.eachContent = n;
       getGoodsAllData(this);
@@ -421,7 +441,7 @@ export default {
           }
           // 右侧付款/删除
           .det-right {
-            margin-top: -100px;
+            margin-top: -72px;
             width: 13%;
             display: flex;
             flex-wrap: wrap;

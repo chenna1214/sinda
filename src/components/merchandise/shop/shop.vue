@@ -8,13 +8,8 @@
         <autourban @selected="selected" class="pcshop-auto" style="width:100% ;background: #f7f7f7;"></autourban>
         <el-row class="pcauto-wrap hidden-xs-only">
           <el-col :span="2"><div class="pcau-serv-classify">产品类型</div></el-col>
-          <el-col :span="22"><ul class="pctax-servisenav clear">
-            <!-- <li @click="goodFiltrate('')" class="pctax-svsnav-elem" :class='{"pxtax-clickst-1":(thePrTyCode=='')}' ><a href="javascript:void(0)">所有</a></li> -->
-
-            <!-- <li @click="goodFiltrate(idx)" v-for="(producTy,idx) in producType" :key="producTy.name" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy.name}}</a></li> -->
-
+          <el-col :span="22" class="pctax-servisenavw"><ul class="pctax-servisenav clear">
             <li @click="goodFiltrate(idx,producTy)" v-for="(producTy,idx) in producTypeobj" :key="idx" :class='{"pxtax-clickst-1":thePrTyCode==(idx)}' class="pctax-svsnav-elem"><a class="pxtax-clickst-1a" href="javascript:void(0)">{{producTy}}</a></li>
-
           </ul></el-col>
         </el-row>
       </div>
@@ -53,7 +48,6 @@
                       <p v-if="showHideCode" class="pcsp-servs"><span class="pcsp-serv">{{ producTyname }}</span></p>
                       <div v-if="!showHideCode"  class="pcsp-servs"><span class="pcsp-serv" v-for="(productTyp ,idex) in turnTobj(product.productTypes)" :key="productTyp">{{ productTyp}}</span></div>
                       <div class="pcsp-enter" @click="toDetail(product.id)">进入店铺</div>
-                      <!-- <router-link tag="button" :to="{path: '/merchandise/productdetail',query: { id: product.id }}" class="pcsp-enter">进入店铺</router-link> -->
                     </div>
                   </div>
                 </el-col>
@@ -87,9 +81,6 @@
             <router-link tag="button" :to="{path: '/merchandise/pc_shophp',query: { id: product.id }}" class="tel-teimg">
               <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">            
             </router-link>
-            <!-- <div class="tel-teimg" @click="toDetail(product.id)" >
-              <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
-            </div> -->
             <!-- 右侧文字部分 -->
             <div class="tel-tewor">
               <p class="tel-tenm">{{product.providerName}}</p>
@@ -105,12 +96,6 @@
         </ul>
 
 
-        <!-- 页码 -->
-        <!-- <div class="tel-pagBox">
-          <i class="el-icon-arrow-left"  @click="upPage()"></i>
-          <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
-          <i class="el-icon-arrow-right" @click="downPage()"></i>
-        </div> -->
       </div>
    </div>
 </template>
@@ -132,7 +117,6 @@ export default {
       for (var i in arr) {
         newObj[i] = arr[i];
       }
-      // console.log('newObj==',newObj)
       return newObj;
     },
     // 向商品详情页面传数据
@@ -153,17 +137,14 @@ export default {
         this.showHideCode = 1;
       }
       this.getShops();
-      // console.log(" this.thePrTyCode==", this.thePrTyCode);
     },
     // 商品排序方式
     ascendingOrder: function(sortindex) {
       this.sortindex = sortindex;
       this.getShops();
-      // console.log("this.sortindex", this.sortindex);
     },
     // 获取商品
     getShops() {
-      // console.log(' this.thePrTyCode==', this.thePrTyCode);
       var that = this;
       // 获取店铺列表信息
       this.ajax
@@ -178,7 +159,6 @@ export default {
           })
         )
         .then(function(data) {
-          // console.log('data.data.data=======',data.data.data);
           that.products = data.data.data;
         });
       this.products = that.products;
@@ -202,20 +182,7 @@ export default {
       this.code = pageIndex;
     }
   },
-  // watch:{
-  //   producTyname: function(){
-  //   this.producTyname = producTyName;
-  //     // // 商品
-  //     this.thePrTyCode = thePrTyCo;
-  //     if(this.thePrTyCode==0){
-  //       this.showHideCode = 0;
-  //     }else{
-  //       this.showHideCode = 1;
-  //     }
-  //   }
-  // },
   created() {
-    // console.log(' this.thePrTyCode==', this.thePrTyCode);
     var that = this;
     // 获取 店铺列表信息
     this.ajax
@@ -230,12 +197,9 @@ export default {
         })
       )
       .then(function(data) {
-        console.log("data===", data);
         that.products = data.data.data;
-        console.log("that.products= ===", that.products);
         // 总页数
         that.page = Math.ceil(data.data.totalCount / 2);
-        console.log("data.data.totalCount==", data.data.totalCount);
         var pageObj = {};
         for (var i = 1; i <= that.page; i++) {
           pageObj[i] = i;
@@ -253,7 +217,6 @@ export default {
         }
       }
       that.producType.unshift({ name: "所有", code: 0 });
-      console.log("that.producType==", that.producType);
       var arr = [];
       for (var k = 0; k < that.producType.length; k++) {
         arr[that.producType[k].code] = that.producType[k].name;
@@ -261,13 +224,11 @@ export default {
       for (var a = 0; a < arr.length; a++) {
         that.producTypeobj[a] = arr[a];
       }
-      console.log("that.producTypeobj === ", that.producTypeobj);
     });
   },
   data() {
     return {
       producTyname: [],
-      // producTyname: '',
       // 商品类型列表信息
       producType: [],
       producTypeobj: {},
@@ -279,11 +240,8 @@ export default {
       showHideCode: 0,
       startIdx: 0,
       pageNum: {}, //页数
-      // eachContent: 0, //每页内容
       page: 1, //每类数据分的总页数
-      // textColor: 0, //控制页码被选中后的动态样式的初始值
       code: 0
-      // thirdBoxShow: ""
     };
   },
   components: { autourban }
@@ -315,9 +273,14 @@ export default {
       color: #696969;
       line-height: 27px;
     }
+    .pctax-servisenavw{
+      border-left: 1px solid #ccc;
+        
+    }
     // 服务分类内容
     .pctax-servisenav {
       height: 44px;
+      
       li {
         margin: 9px 0 0 15px;
         float: left;
@@ -331,21 +294,19 @@ export default {
     // 公司工商单行
     .pcauto-wrap {
       background: #f7f7f7;
+      min-height: 44px;
+      border: 1px solid #ccc;
+      border-top: 0;
       // 行名称
       .pcau-serv-classify {
         text-align: center;
-        height: 44px;
+        min-height: 44px;
         line-height: 44px;
-        border: 1px solid #ccc;
-        border-top: 0;
       }
       // 行内容
       .pctax-servisenav {
-        height: 44px;
+        min-height: 44px;
         font-size: 13px;
-        border: 1px solid #ccc;
-        border-top: 0;
-        border-left: 0;
         li {
           width: 80;
           height: 25px;
@@ -368,8 +329,6 @@ export default {
   }
 
   .pccny-gds {
-    // max-width: 1200px;
-    // margin: 0 auto;
     margin-top: 25px;
     border: 1px solid #ccc;
   }
@@ -517,12 +476,8 @@ export default {
   }
 
   .pcsh-pgnm {
-    // display: flex;
-    // overflow: hidden;
     margin: 62px auto;
     max-width: 190px;
-    // height: 36px;
-    // justify-content: space-between;
     color: #ccc;
     font-size: 14px;
     input {
@@ -599,7 +554,6 @@ export default {
         background: #fff;
         margin: 0.08rem 0.24rem 0 0;
         float: left;
-        // width: 22.64%;
         width: 1.67rem;
         height: 1.67rem;
         border: 2px solid #e3e3e3;
@@ -618,15 +572,12 @@ export default {
           line-height: 0.5rem;
         }
         .tel-earea {
-          line-height: 0.54rem;          
+          line-height: 0.3rem;          
           .tel-earcon {
-            line-height: 0.54rem;
+            line-height: 0.3rem;
             font-size: 0.16rem;
             color: #676767;
           }
-        }
-        .tel-earea {
-          line-height: 0.61rem;
         }
         .el-icon-location-outline {
           font-size: 0.16rem;
@@ -634,7 +585,7 @@ export default {
         .tel-shcus {
           line-height: 0.49rem;
           font-size: 0.22rem;
-          margin-top: 0.25rem;
+          margin-top: 0.2rem;
           p {
             line-height: 0.49rem;
             display: inline-block;
@@ -650,16 +601,6 @@ export default {
     }
   }
 }
-// // 翻页
-// .tel-pagBox {
-//   width: 20%;
-//   height: 1.6rem;
-//   line-height: 1.6rem;
-//   margin: 0 auto;
-//   i {
-//     font-size: 0.4rem;
-//   }
-// }
 </style>
 
 
@@ -667,10 +608,10 @@ export default {
 .pcshop-auto {
   background: #f7f7f7;
   .el-col-3 {
-    width: 8.31%;
+    width: 8.5%;
   }
   .el-col-21 {
-    width: 91.69%;
+    width: 91.5%;
   }
 }
 </style>
