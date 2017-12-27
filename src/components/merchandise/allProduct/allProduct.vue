@@ -309,9 +309,9 @@ export default {
       pcAllProTilName: [], //轮播图左边的所有二级标题
       carouselList: [
         //轮播图片
-        { id: require(" /1.png") },
         { id: require("../../images/allProduct/1.png") },
-        { id: require("../../images/allProduct/1.png") }
+        { id: require("../../images/allProduct/2.jpg") },
+        { id: require("../../images/allProduct/3.png") }
       ],
 
       starList: [
