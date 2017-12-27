@@ -6,7 +6,9 @@
       <!-- 手机端样式 -->
       <div class="hidden-sm-and-up">
         <div class="graTop ">
-          <span></span>
+          <div @click="back">
+            <span></span>
+          </div>
           <p>登录</p>
         </div>
 
@@ -46,7 +48,6 @@
         </div>
 
       </div>
-
 
     <!-- pc端样式 -->
       <div class="hidden-xs-only">
@@ -201,6 +202,12 @@ export default {
         this.logImg = eye[1];
       }
     },
+
+    // 手机端返回小三角
+    back: function() {
+      location.href = "#/merchandise/allProduct"; //我的已登录界面
+    },
+
     //获得焦点事件............................................
     //手机号码
     Zphone: function() {
@@ -602,13 +609,21 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    > span {
-      display: inline-block;
-      width: 0.16rem;
-      height: 0.16rem;
-      border-left: 2px solid #838383;
-      border-top: 2px solid #838383;
-      transform: rotate(-45deg);
+    > div {
+      position: relative;
+      width: 0.7rem;
+      height: 0.75rem;
+      > span {
+        position: absolute;
+        display: inline-block;
+        width: 0.16rem;
+        height: 0.16rem;
+        border-left: 2px solid #838383;
+        border-top: 2px solid #838383;
+        transform: rotate(-45deg);
+        top: 0.28rem;
+        left: 0.3rem;
+      }
     }
     p {
       width: 88%;

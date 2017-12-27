@@ -51,7 +51,7 @@
                 <!-- 具体信息 -->
                 <div class="ind-detail">
                   <!-- 左侧 -->
-                  <div class="det-left" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
+                  <div class="det-left" v-for="subitem in (product.subItem)" :key="subitem.id" :class="orderstyle">
                     <!-- 商品 -->
                     <div>
                       <div class="comname">

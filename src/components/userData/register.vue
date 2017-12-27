@@ -7,7 +7,9 @@
       <!-- 顶部 -->
       <div class="hidden-sm-and-up">
         <div class="graTop ">
-          <span></span>
+          <div @click="back">
+            <span></span>
+          </div>
           <p>注册</p>
         </div>
 
@@ -27,7 +29,7 @@
 
             <!-- 验证码 -->
             <div class="verify" style="font-size: 0;">
-              <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+              <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode">
               <div class="verifyI" @click="imgReflash">
                 <img :src="imgUrl">
               </div>
@@ -35,34 +37,23 @@
 
             <!-- 短信验证码 -->
             <div class="acquire" style="font-size: 0;">
-              <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+              <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber">
               <div class = "spanStyle boxII">
-                <span v-show = "show" @click="getCodeS" class="getblue">获取验证码</span>
-                <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
+                <span v-show = "showCCC" @click="getCodeS" class="getblue">获取验证码</span>
+                <span v-show = "!showCCC" class="getgray">重新获取{{count}}s</span>
               </div>
             </div>
 
             <!-- 三级联动 -->
             <div class="sanji" style="font-size: 0;">
-              <select name="" id="" @change="proChange" v-model="province">
-                <option value="0">省</option>
-                <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-              </select>
-              <select name="" id="" @change="cityChange" v-model="city">
-                <option value="0">市</option>
-                <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-              </select>
-              <select name="" id="" v-model="area" @change="quhao">
-                <option value="">区</option>
-                <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
-              </select>
+              <dist class="sjlinkage" @selected="selected"></dist>
             </div>
 
             <!-- 密码 -->
             <div class="fleBox" style="font-size: 0;">
               <!-- 设置密码 -->
               <div class="eyeBox">
-                <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
+                <input :type="pwType" class="box" placeholder="请设置密码（6-20位）" v-model="setPass">
                 <img :src="logImg" class="eyes" alt="" @click="showHidden">
               </div>
             </div>
@@ -70,7 +61,6 @@
 
           </div>
 
-        
       </div>
 
 
@@ -141,18 +131,7 @@
 
             <!-- 三级联动 -->
             <div class="fleBox">
-              <select name="" id="" @change="proChange" v-model="province">
-                <option value="0">省</option>
-                <option :value="code" v-for="(province,code) in provinces" :key="province.code">{{province}}</option>
-              </select>
-              <select name="" id="" @change="cityChange" v-model="city">
-                <option value="0">市</option>
-                <option :value="code" v-for="(city,code) in citys" :key="city.code">{{city}}</option>
-              </select>
-              <select name="" id="" v-model="area" @change="quhao">
-                <option value="">区</option>
-                <option :value="code" v-for="(area,code) in areas" :key="area.code">{{area}}</option>
-              </select>
+              <dist class="linkage" @selected="selected"></dist>
               <!-- 三级联动错误提示 -->
               <div class="erping hidden-xs-only" v-show="esan">
                 <div class="erImg"></div>
@@ -222,8 +201,8 @@
 </template>
 
 <script>
+import dist from "./distoicker";
 import { mapActions } from "vuex";
-import dist from "../../districts/districts";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -243,13 +222,6 @@ export default {
       error: "",
       imgUrl: "/xinda-api/ajaxAuthcode",
       imgCode: "",
-      //三级联动
-      provinces: dist[100000],
-      citys: [],
-      areas: [],
-      province: "0",
-      city: "0",
-      area: "",
 
       //点击获取
       count: "",
@@ -285,7 +257,8 @@ export default {
 
       // 手机端
       showES: false,
-      errorWeb: ""
+      errorWeb: "",
+      showCCC: true
     };
   },
   methods: {
@@ -298,14 +271,13 @@ export default {
     ...mapActions(["setTitle"]),
 
     //三级联动
-    proChange() {
-      this.citys = dist[this.province];
+    selected(code) {
+      this.distCode = code;
     },
-    cityChange() {
-      this.areas = dist[this.city];
-    },
-    selected(data) {
-      this.distCode = data.area.code;
+
+     // 手机端返回小三角
+    back: function(){
+      location.href='#/userData/login';//登录界面
     },
 
     // 密码小眼睛点击事件
@@ -537,26 +509,25 @@ export default {
               //图片验证码输入正确
               this.get = false;
               this.getNew = true;
-              this.eyan = false;
               const TIME_COUNT = 60;
               if (!this.timer) {
                 this.count = TIME_COUNT;
-                this.show = false;
+                this.showCCC = false;
                 this.timer = setInterval(() => {
                   if (this.count > 0 && this.count <= TIME_COUNT) {
                     this.count--;
                   } else {
-                    this.show = true;
+                    this.showCCC = true;
                     clearInterval(this.timer);
                     this.timer = null;
                   }
                 }, 1000);
               }
             } else {
+              console.log(data.data.msg);
               this.errorWeb = data.data.msg;
               this.showES = true;
               //图片验证码输入错误
-              console.log(data.data.msg);
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
             }
           });
@@ -767,7 +738,8 @@ export default {
           });
       }
     }
-  }
+  },
+  components: { dist }
 };
 </script>
 
@@ -1007,9 +979,6 @@ input[type="number"] {
       padding: 10px 8px;
     }
   }
-  // .graTop {
-  //   display: none;
-  // }
 }
 @media all and (max-width: 767px) {
   .graTop {
@@ -1019,13 +988,21 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    > span {
-      display: inline-block;
-      width: 0.16rem;
-      height: 0.16rem;
-      border-left: 2px solid #838383;
-      border-top: 2px solid #838383;
-      transform: rotate(-45deg);
+    > div {
+      position: relative;
+      width: 0.7rem;
+      height: 0.75rem;
+      > span {
+        position: absolute;
+        display: inline-block;
+        width: 0.16rem;
+        height: 0.16rem;
+        border-left: 2px solid #838383;
+        border-top: 2px solid #838383;
+        transform: rotate(-45deg);
+        top: 0.28rem;
+        left: 0.3rem;
+      }
     }
     p {
       width: 88%;
@@ -1154,6 +1131,29 @@ input[type="number"] {
       margin-top: 0.03rem;
       line-height: 0.4rem;
     }
+  }
+}
+</style>
+<style lang='less'>
+.centent .sanji .sjlinkage {
+  width: 5.5rem;
+  height: 0.77rem;
+  font-size: 0.1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.32rem;
+  select {
+    option {
+      font-size: 0.1rem;
+    }
+  }
+  .province,
+  .city,
+  .area {
+    font-size: 0.25rem;
+    height: 0.75rem;
+    width: 1.69rem;
+    margin-bottom: 26px;
   }
 }
 </style>
