@@ -3,7 +3,7 @@
   <div class="hidden-sm-and-up accountset">
     <!-- 头部 -->
     <div class="weacctop">
-      <span></span>
+      <div @click="comeback"><span></span></div>
       <div class="we-acctop">账户设置</div>
     </div>
     <!-- 账户设置 -->
@@ -85,7 +85,7 @@
         <div class="set-save" @click="save">保存</div>
       </div>
       <!-- 点击保存出现 -->
-      <div class="sucess" :key="sData.id" v-show="keep">{{sData.msg}}</div>
+      <div class="sucess" v-show="keep">操作成功</div>
     </div>
     <!-- 修改密码 -->
     <div class="weset">
@@ -213,6 +213,10 @@ export default {
   },
   
   methods: {
+    // 点击箭头回到上一页
+    comeback: function (){
+      window.history.back(-1);
+    },
     // ---------------账户设置-----------------------------
     //三级联动
     proChange(){
@@ -300,6 +304,7 @@ export default {
             }else {//选择地区
               this.areer = false;
               // -----所有都正确后：
+              var that = this;
               this.ajax.post('/xinda-api/member/update-info',
               this.qs.stringify({
                 name: this.$refs.test.value,
@@ -309,10 +314,10 @@ export default {
               })).then(function (data) {
                 var sData = data.data;
                 if(sData.status == 1){
-                  this.keep = true;
+                  that.keep = true;
                   setInterval((function () {
-                    this.keep = false;
-                  }),1000);
+                    that.keep = false;
+                  }),3000);
                 }
                 console.log(data.data)
               });
@@ -337,6 +342,7 @@ export default {
         }else {//两次密码输入一致
           this.agaerr = false;
           // 修改密码
+          var that = this;
           this.ajax.post('/xinda-api/sso/change-pwd',
           this.qs.stringify({
             oldPwd: md5(this.oldpwd),
@@ -349,6 +355,10 @@ export default {
               this.olderr = true;
             }else if (data.data.status == 1) {
               this.olderr = false;
+              that.keep = true;
+              setInterval((function () {
+                that.keep = false;
+              }),3000);
             }
           })
         }
@@ -383,13 +393,21 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      span {
-        display: inline-block;
-        width: 0.16rem;
-        height: 0.16rem;
-        border-left: 2px solid #838383;
-        border-top: 2px solid #838383;
-        transform: rotate(-45deg);
+      >div{
+        span {
+          display: block;
+          width: 0.16rem;
+          height: 0.16rem;
+          border-left: 2px solid #838383;
+          border-top: 2px solid #838383;
+          transform: rotate(-45deg);
+          margin: 0 auto;
+          margin-top: 0.3rem;
+        }
+        &:nth-child(1){
+          width: 0.72rem;
+          height: 0.72rem;
+        }
       }
       .we-acctop {
         width: 88%;
@@ -559,7 +577,7 @@ export default {
         }
       }
       .sucess{
-        width: 1.15rem;
+        width: 2rem;
         height: 0.73rem;
         font-size: 0.3rem;
         color: #fff;
