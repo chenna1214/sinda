@@ -49,7 +49,7 @@
     <!-- 明星产品推荐标题 -->
     <el-row class="hidden-xs-only">
       <el-col>
-        <p class="pcAllProColumn">明星产品推荐</p>
+        <p class="pcAllProColumn">明星产品推荐</p> 
         <div class="pcAllProLine"></div>
       </el-col>
     </el-row>

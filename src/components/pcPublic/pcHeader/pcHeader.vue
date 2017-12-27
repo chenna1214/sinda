@@ -212,6 +212,8 @@ export default {
       }, 1000);
     },
     pcDetail: function(searchMatchId) {
+      console.log('this.serchMatch[0].serviceName==',111111)
+      
       //用户点击匹配的搜索内容，查看详情
       if (this.serchMatch[0].serviceName != "没有相关搜索内容") {
         if (this.bgBlue == true) {
