@@ -581,7 +581,7 @@ export default {
         this.Eduan = "请输入6位数字手机验证码";
       }
       // 判断省市区
-      if (this.area) {
+      if (this.distCode) {
         this.esan = false;
       } else {
         this.esan = true;
@@ -683,7 +683,7 @@ export default {
         return;
       }
       // 判断省市区
-      if (this.area) {
+      if (this.distCode) {
         this.showES = false;
       } else {
         this.errorWeb = "请选择您所在的省市区";
