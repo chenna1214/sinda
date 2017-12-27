@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { logOff } from "../../exitPublic.js";
 
 export default {
   name: "pcTop",
@@ -40,13 +41,8 @@ export default {
   },
   methods: {
     ...mapActions(["setName", "gainNum"]),
-    logOff() {
-      sessionStorage.removeItem("userName");
-      this.setName(this.pcUserName); 
-        this.$message({
-          type: "success",
-          message: "您已成功退出登录!"
-        })
+    logOff() {//退出登录按钮
+      logOff(this);
     }
   },
   computed: {
