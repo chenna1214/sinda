@@ -1488,6 +1488,7 @@
         width: 100%;
         display: flex;
         .wes-logo{
+          // background: 
           width: 1.24rem;
           height: 0.56rem;
           margin-left: 0.78rem;

@@ -137,15 +137,6 @@ export default {
       x: ""
     };
   },
-  // mounted() {
-  //   var searchInput = document.getElementsByClassName("pcHeaderSearchInput")[0];
-  //   function show_coords(event) {
-  //     this.x = event.clientX;
-  //     console.log("this.x", this.x);
-  //   }
-  //   show_coords(event);
-  //   console.log("searchInput--offsetLeft", searchInput.offsetLeft);
-  // },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc); //城市选择
     this.getSearch = this.debounce(this.getSearchList, 600);
@@ -239,7 +230,7 @@ export default {
     },
     choseType(param) {
       //选择搜索种类（产品/服务商）
-      if (param) {
+      if (param) {//点击产品时
         this.bgBlue = true;
       } else {
         this.bgBlue = false;
@@ -261,6 +252,21 @@ export default {
         searchVal = this.serVal; //全局定义的空字符串不等于input框内的value时，就将当前输入的input框的value值赋值给全局字符串
       }
       this.getSearch();
+      //计算input宽度
+      // var searchInput = document.getElementsByClassName(
+      //   "pcHeaderSearchInput"
+      // )[0];
+
+      // console.log("searchInput==", searchInput);
+      // //input框距离文档的尺寸
+      // var docInput = searchInput.offsetLeft;
+      // console.log("input框距离文档的尺寸", docInput);
+      // function show_coords(event) {
+      //   searchInput = event.clientX;
+       
+      // }
+      // show_coords(event);
+      //  console.log("searchInput实时", searchInput);
     }
   }
 };
@@ -392,7 +398,7 @@ export default {
   display: inline-block;
   font-size: 12px;
   text-decoration: none;
-  color: #2794d5;
+  color: black;
 }
 .pcChangeColor {
   color: #2794d5;
