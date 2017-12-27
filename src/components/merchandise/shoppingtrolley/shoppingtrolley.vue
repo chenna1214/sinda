@@ -661,7 +661,7 @@ export default {
   // 底部
   .tel-shft {
     position: fixed;
-    bottom: 0.84rem;
+    bottom: 0.8rem;
     width: 100%;
     height: 1.1rem;
     line-height: 1.1rem;
