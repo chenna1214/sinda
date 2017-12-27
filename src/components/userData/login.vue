@@ -43,8 +43,17 @@
             </div>
           </div>
 
+        <div style="font-size: 0;" class="forgetPass">
+          <a href="#/userData/forgetPassword">忘记密码？</a>
+        </div>
+
           <!-- 立即登录跳转 -->
           <button class="logining" @click="nowS">立即登录</button>
+        </div>
+
+        <div class="SloginB" >
+          <div class="slo-why">还没有信达账号么？</div>
+          <router-link tag="div" :to="{path: '/userData/register'}" class="slo-btn">立即注册</router-link>
         </div>
 
       </div>
@@ -111,7 +120,7 @@
               </div>
 
               <!-- 忘记密码 -->
-              <a href="#/userData/forgetPassword">忘记密码?</a><br>
+              <a href="#/userData/forgetPassword" id="forgetPass" st>忘记密码?</a><br>
 
               <!-- 立即登录跳转 -->
               <button class="logining" @click="now">立即登录</button>
@@ -712,6 +721,38 @@ input[type="number"] {
     margin-top: 1rem;
     border: 1px solid #2693d4;
     border-radius: 0.03rem;
+  }
+  .forgetPass {
+    margin: 0.4rem 0 0 0;
+    overflow: hidden;
+    > a {
+      font-size: 0.3rem;
+      color: #2693d4;
+      text-decoration: none;
+      float: right;
+    }
+  }
+  .SloginB {
+    width: 100%;
+    height: 0.6rem;
+    font-size: 0.24rem;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    .slo-why {
+      line-height: 0.6rem;
+    }
+    .slo-btn {
+      width: 1.5rem;
+      height: 0.4rem;
+      line-height: 0.4rem;
+      text-align: center;
+      background-color: #2693d4;
+    }
   }
 }
 </style>

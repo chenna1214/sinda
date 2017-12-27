@@ -465,7 +465,7 @@ export default {
                         margin-bottom: 3%;
                         >a{
                           text-decoration: none;
-                          font-size: 18px;
+                          font-size: 14px;
                           line-height: 30px;
                           color: #2693d4;
                           margin-left: 5%;
