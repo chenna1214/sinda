@@ -58,7 +58,7 @@
         <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
           <div class="pcAllProStarOut">
             <div class="pcAllProStarIn starBox">
-              <img :src="'src/components/images/allProduct/'+star.img" class="starImg">
+              <img :src="require('../../images/allProduct/'+star.img)" class="starImg">
               <p class="pcCreateServieceNameP">{{star.til}}</p>
               <p class="starInfo" >{{star.info}}</p>
               <span class="pcCreatemarketPrice">{{star.money}}</span>
@@ -253,43 +253,43 @@ export default {
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
       telNavs: [
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage1.png", //手机端--头部导航图片
+          telNavImg: require("../../images/telIndex/m_homepage1.png"), //手机端--头部导航图片
           telNavInfo: "财税服务", //手机端--头部导航文字
           code: 1,
           url: gourl //点击后向/merchandise/taxationService发送code，请求相关数据
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage2.png",
+          telNavImg: require("../../images/telIndex/m_homepage2.png"),
           telNavInfo: "开公司",
           code: 4,
           url: gourl
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage3.png",
+          telNavImg: require("../../images/telIndex/m_homepage3.png"),
           telNavInfo: "公司变更",
           code: 5,
           url: gourl
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage4.png",
+          telNavImg: require("../../images/telIndex/m_homepage4.png"),
           telNavInfo: "个人社保",
           code: 7,
           url: gourl
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage5.png",
+          telNavImg: require("../../images/telIndex/m_homepage5.png"),
           telNavInfo: "公司社保",
           code: 6,
           url: gourl
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage6.png",
+          telNavImg: require("../../images/telIndex/m_homepage6.png"),
           telNavInfo: "知识产权",
           code: 3,
           url: gourl
         },
         {
-          telNavImg: "./src/components/images/telIndex/m_homepage7.png",
+          telNavImg: require("../../images/telIndex/m_homepage7.png"),
           telNavInfo: "全部服务",
           code: -1,
           url: "/merchandise/navShow"
@@ -309,9 +309,9 @@ export default {
       pcAllProTilName: [], //轮播图左边的所有二级标题
       carouselList: [
         //轮播图片
-        { id: "src/components/images/allProduct/1.png" },
-        { id: "src/components/images/allProduct/2.jpg" },
-        { id: "src/components/images/allProduct/3.png" }
+        { id: require(" /1.png") },
+        { id: require("../../images/allProduct/1.png") },
+        { id: require("../../images/allProduct/1.png") }
       ],
 
       starList: [
