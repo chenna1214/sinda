@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import {getGoodsAllData} from "./memberPublic.js";
+import {getGoodsAllData} from "./memberPublic";
 import pageSet from "../../pagePublic";
 export default {
   name: "changepwd",
@@ -421,7 +421,7 @@ export default {
           }
           // 右侧付款/删除
           .det-right {
-            margin-top: -72px;
+            margin-top: -100px;
             width: 13%;
             display: flex;
             flex-wrap: wrap;
@@ -457,18 +457,11 @@ export default {
 }
 // 右侧尾部
 .mai-tail {
-  width: 30%;
   margin: 0 auto;
   margin-top: 4%;
   margin-bottom: 4%;
   display: flex;
   justify-content: space-around;
-  > div {
-    width: 19%;
-    border: 1px solid #ccc;
-    padding: 3% 6% 3% 6%;
-    color: #ccc;
-  }
 }
 // 确定删除吗
 .mai-sure {
