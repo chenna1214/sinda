@@ -29,11 +29,7 @@
           </div> 
         </el-col>
       </el-row>
-      
     </div>
-
-
-
     <div class="pcGetBox pcJob"><!-- 哪些职业可以加盟 -->
       <div class="pcGetTilBox">
         <img src="../../images/joinUs/job.png" class="pcGetTilImg">

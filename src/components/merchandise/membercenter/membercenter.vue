@@ -1,13 +1,13 @@
 <template>
   <div>
    <!-- 会员中心头部 -->
-    <div class="membercenter hidden-xs-only">
+    <div class="membercenter">
       <!-- 首页 / 个人主页 -->
-      <div class="member-top">首页 / 个人主页</div>
+      <div class="member-top hidden-xs-only">首页 / 个人主页</div>
       <!-- 主体 -->
       <div class="member-main">
         <!-- 左 -->
-        <div class="main-left">
+        <div class="main-left hidden-xs-only">
           <!-- 头像 -->
           <div class="mai-avatar" :key="phones.id">
             <div class="ava-img"></div>

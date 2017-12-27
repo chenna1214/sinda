@@ -37,189 +37,174 @@
           </div>
         </el-row>
       </div>
+        <!-- 全部产品--xs以上--轮播图片 -->
+        <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
+            <el-carousel trigger="click" height="400px">
+            <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
+              <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+              </el-carousel-item>
+            </el-carousel>
+          </el-col>
 
-
-
-
-
-
-
-<!-- 全部产品--xs以上--轮播图片 -->
-  <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
-      <el-carousel trigger="click" height="400px">
-      <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
-        <img v-bind:src="carouselImg.id" class="pcCarouselImg">
-        </el-carousel-item>
-      </el-carousel>
-    </el-col>
-
-<!-- 明星产品推荐标题 -->
-  <el-row class="hidden-xs-only">
-    <el-col>
-      <p class="pcAllProColumn">明星产品推荐</p>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-<!-- 明星产品推荐文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
-    <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn starBox">
-          <img :src="'src/components/images/allProduct/'+star.img" class="starImg">
-          <p class="pcCreateServieceNameP">{{star.til}}</p>
-          <p class="starInfo" >{{star.info}}</p>
-          <span class="pcCreatemarketPrice">{{star.money}}</span>
-          <span class="pcCreateunit" >{{star.unit}}</span>
-        </div>
-      </div>
-    </el-col>
-  </el-row>
-<!-- 初创企业必备标题--xs以上 -->
-  <el-row class="hidden-xs-only">
-    <el-col>
-      <p class="pcAllProColumn">初创企业必备</p>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-<!-- 初创企业必备文章列表--xs以上 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
-    <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-          <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
-          <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
-          <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
-          <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
-          <span class="pcCreateunit" >{{product.unit}}</span>
-          <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
-        </div>
-      </div>
-    </el-col>
-  </el-row>
-  <!-- 知识产权标题 -->
-  <el-row>
-    <el-col>
-      <p class="pcAllProColumn hidden-xs-only">知识产权</p>
-      <p class="telColumn hidden-sm-and-up">知识产权</p>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-  <!-- pc端：知识产权图片列表 -->
-  <div class="hidden-xs-only">
-    <el-row>
-      <el-col :sm="8" :md="8" :lg="8">
-        <img src="../../images/allProduct/k1.png" class="pcKnoImg hidden-xs-only">
-      </el-col>
-      <el-col :sm="16" :md="16" :lg="16">
-        <div class="pcKnoLeftBox">
-          <img src="../../images/allProduct/k2.png" alt="">
-          <img src="../../images/allProduct/k3.png" alt="">
-          <img src="../../images/allProduct/k4.png" alt="">
-        </div>
+    <!-- 明星产品推荐标题 -->
+    <el-row class="hidden-xs-only">
+      <el-col>
+        <p class="pcAllProColumn">明星产品推荐</p>
+        <div class="pcAllProLine"></div>
       </el-col>
     </el-row>
-  </div>
-  <!-- 手机端：知识产权图片列表 -->
-  <el-row class="hidden-sm-and-up">
-   <el-col :xs='{span:24}'>
-     <div class="telKnow">
-       <img src="../../images/telIndex/knowledge.png">
-     </div>
-   </el-col>
-  </el-row>
-
-  <!-- 初创企业必备标题--xs以上 -->
-  <el-row class="hidden-sm-and-up">
-    <el-col>
-      <p class="pcAllProColumn hidden-xs-only">初创企业必备</p>
-      <p class="telColumn hidden-sm-and-up">初创企业必备</p>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-    <!-- 初创企业必备文章列表--xs以下--手机端 -->
-  <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
-      <el-col :xs="5"><img :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
-      <el-col :xs="{span:17,offset:2}">
-        <div>
-          <p class="telCreatText" @click="productDetail(product.id)">{{product.serviceName}}</p>
-          <p class="telCreatInfo" >{{product.serviceInfo}}</p>
-          <span class="telCreatemarketPrice">￥{{product.marketPrice}}</span>
-          <span class="telCreateunit" >{{product.unit}}</span>
+    <!-- 明星产品推荐文章列表 -->
+    <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
+        <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
+          <div class="pcAllProStarOut">
+            <div class="pcAllProStarIn starBox">
+              <img :src="'src/components/images/allProduct/'+star.img" class="starImg">
+              <p class="pcCreateServieceNameP">{{star.til}}</p>
+              <p class="starInfo" >{{star.info}}</p>
+              <span class="pcCreatemarketPrice">{{star.money}}</span>
+              <span class="pcCreateunit" >{{star.unit}}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    <!-- 初创企业必备标题--xs以上 -->
+      <el-row class="hidden-xs-only">
+        <el-col>
+          <p class="pcAllProColumn">初创企业必备</p>
+          <div class="pcAllProLine"></div>
+        </el-col>
+      </el-row>
+      <!-- 初创企业必备文章列表--xs以上 -->
+      <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
+          <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
+            <div class="pcAllProStarOut">
+              <div class="pcAllProStarIn">
+                <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+                <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
+                <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
+                <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
+                <span class="pcCreateunit" >{{product.unit}}</span>
+                <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <!-- 知识产权标题 -->
+        <el-row>
+          <el-col>
+            <p class="pcAllProColumn hidden-xs-only">知识产权</p>
+            <p class="telColumn hidden-sm-and-up">知识产权</p>
+            <div class="pcAllProLine"></div>
+          </el-col>
+        </el-row>
+      <!-- pc端：知识产权图片列表 -->
+      <div class="hidden-xs-only">
+        <el-row>
+          <el-col :sm="8" :md="8" :lg="8">
+            <img src="../../images/allProduct/k1.png" class="pcKnoImg hidden-xs-only">
+          </el-col>
+          <el-col :sm="16" :md="16" :lg="16">
+            <div class="pcKnoLeftBox">
+              <img src="../../images/allProduct/k2.png" alt="">
+              <img src="../../images/allProduct/k3.png" alt="">
+              <img src="../../images/allProduct/k4.png" alt="">
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- 手机端：知识产权图片列表 -->
+      <el-row class="hidden-sm-and-up">
+      <el-col :xs='{span:24}'>
+        <div class="telKnow">
+          <img src="../../images/telIndex/knowledge.png">
         </div>
       </el-col>
-  </el-row>
-  <!-- 手机端--首页底部logo -->
-  <div class="hidden-sm-and-up">
-    <div class="telCompanyIconBox telFootImg">
-      <img src="../../images/icon/sindaTextIcon.png">
-    </div>
-    <p class="telFooterP">一站式企业交易中心</p>
-  </div>
-
-  <!-- 通栏图片 -->
-  <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
-
-<!-- 推荐服务商标题 -->
-  <el-row>
-    <el-col class="pcRecTilBox hidden-xs-only">
-       <span class="pcAllProColumn" :class="{pcRecCliAft:pcSerSty==index}" v-for='(pcSerCli,index) in pcSerCliList' :key='pcSerCli' @click='pcSerClick(index)'>{{pcSerCli}}</span>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-<!-- 推荐服务商文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer==index'>
-    <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.providerName">
-      <div class="pcAllProStarOut">
-        <!-- <div class="pcAllProStarIn"> -->
-        <div class="pcSerBox">
-          <div class="pcSerIcon pcSerLoc">
-            <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
+      </el-row>
+      <!-- 初创企业必备标题--xs以上 -->
+      <el-row class="hidden-sm-and-up">
+        <el-col>
+          <p class="pcAllProColumn hidden-xs-only">初创企业必备</p>
+          <p class="telColumn hidden-sm-and-up">初创企业必备</p>
+          <div class="pcAllProLine"></div>
+        </el-col>
+      </el-row>
+      <!-- 初创企业必备文章列表--xs以下--手机端 -->
+      <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
+          <el-col :xs="5"><img :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
+          <el-col :xs="{span:17,offset:2}">
+            <div>
+              <p class="telCreatText" @click="productDetail(product.id)">{{product.serviceName}}</p>
+              <p class="telCreatInfo" >{{product.serviceInfo}}</p>
+              <span class="telCreatemarketPrice">￥{{product.marketPrice}}</span>
+              <span class="telCreateunit" >{{product.unit}}</span>
+            </div>
+          </el-col>
+      </el-row>
+        <!-- 手机端--首页底部logo -->
+        <div class="hidden-sm-and-up">
+          <div class="telCompanyIconBox telFootImg">
+            <img src="../../images/icon/sindaTextIcon.png">
           </div>
-          <p class="pcCreateServieceNameP pcSerLoc">{{pcRecommend.providerName}}</p>
-          <p class="pcoCreateServiceInfoP pcSerLoc">服务指数：8.9分</p>
-          <p class="pcoCreateServiceInfoP pcSerLoc">提供的服务</p>
-          <div class="pcRecoBox pcSerLoc"><button v-for="(serNam,serIdx) in pcRecommend.serviceName" :key="serNam" class="pcRecoBtn pcShowAll" @click="productDetail(pcRecommend.id[serIdx])">{{serNam}}</button></div>
+          <p class="telFooterP">一站式企业交易中心</p>
         </div>
-      </div>
-    </el-col>
-  </el-row>
 
-<!-- 推荐服务文章列表 -->
- <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer!==index'>
-    <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
-      <div class="pcAllProStarOut">
-        <div class="pcAllProStarIn">
-          <img class="pcCreateImg pcSerLoc" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
-          <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
-          <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
-            <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
-            <span class="pcCreateunit" >{{product.unit}}</span>
-            <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
-        </div>
-      </div>
-    </el-col>
-  </el-row>
+        <!-- 通栏图片 -->
+        <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
 
-
-  <!-- 合作伙伴必备标题 -->
-  <el-row class="hidden-xs-only">
-    <el-col>
-      <p class="pcAllProColumn">合作伙伴</p>
-      <div class="pcAllProLine"></div>
-    </el-col>
-  </el-row>
-  <img src="../../images/allProduct/u246.png" class="pcFri hidden-xs-only">
-
-
+      <!-- 推荐服务商标题 -->
+        <el-row>
+          <el-col class="pcRecTilBox hidden-xs-only">
+            <span class="pcAllProColumn" :class="{pcRecCliAft:pcSerSty==index}" v-for='(pcSerCli,index) in pcSerCliList' :key='pcSerCli' @click='pcSerClick(index)'>{{pcSerCli}}</span>
+            <div class="pcAllProLine"></div>
+          </el-col>
+        </el-row>
+      <!-- 推荐服务商文章列表 -->
+      <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer==index'>
+          <el-col :sm="5" :md="5" :lg="5" v-for="pcRecommend in pcRecommends" :key="pcRecommend.providerName">
+            <div class="pcAllProStarOut">
+              <!-- <div class="pcAllProStarIn"> -->
+              <div class="pcSerBox">
+                <div class="pcSerIcon pcSerLoc">
+                  <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
+                </div>
+                <p class="pcCreateServieceNameP pcSerLoc">{{pcRecommend.providerName}}</p>
+                <p class="pcoCreateServiceInfoP pcSerLoc">服务指数：8.9分</p>
+                <p class="pcoCreateServiceInfoP pcSerLoc">提供的服务</p>
+                <div class="pcRecoBox pcSerLoc"><button v-for="(serNam,serIdx) in pcRecommend.serviceName" :key="serNam" class="pcRecoBtn pcShowAll" @click="productDetail(pcRecommend.id[serIdx])">{{serNam}}</button></div>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      <!-- 推荐服务文章列表 -->
+      <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only"  v-show='pcSer!==index'>
+          <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
+            <div class="pcAllProStarOut">
+              <div class="pcAllProStarIn">
+                <img class="pcCreateImg pcSerLoc" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+                <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
+                <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
+                  <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
+                  <span class="pcCreateunit" >{{product.unit}}</span>
+                  <button class="pcCreateDetail" @click="productDetail(product.id)">查看详情</button>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <!-- 合作伙伴必备标题 -->
+        <el-row class="hidden-xs-only">
+          <el-col>
+            <p class="pcAllProColumn">合作伙伴</p>
+            <div class="pcAllProLine"></div>
+          </el-col>
+        </el-row>
+        <img src="../../images/allProduct/u246.png" class="pcFri hidden-xs-only">
     </div>
   </div>
-  
 </template>
 
 <script>
 import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
 import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
-
 const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
 export default {
   name: "allProduct",
@@ -398,8 +383,6 @@ export default {
       handleCon(this.dialogVisible, this.pcChoosedNum, this);
     },
     telNavControlShow(navIdx) {
-      console.log("this.$route.path==", this.$route.path);
-
       if (navIdx == 6) {
         //点击全部服务
         this.telNavShow = !this.telNavShow;
@@ -415,7 +398,6 @@ export default {
 
 <style scoped lang='less'>
 //pc端
-
 //栏目标题下面的蓝色横线
 .pcAllProLine {
   height: 2px;
@@ -453,15 +435,10 @@ export default {
     margin-left: -44px;
   }
 }
-@media all and (min-width: 768px) {
   .pcAllProduct {
     max-width: 1200px;
     margin: 0 auto;
   }
-
-  // .pcNavCompanyH {
-  //   height: 47px;
-  // }
   // 全部产品栏目及栏目文章列表公共样式
   .pcAllProStarBox {
     margin-top: 48px;
@@ -605,9 +582,8 @@ export default {
       text-align: center;
     }
   }
-}
+
 //手机端
-@media all and (max-width: 767px) {
   //初创企业必备文章列表--xs以下--手机端
   .telCreatBox {
     padding-top: 27px;
@@ -706,7 +682,7 @@ export default {
     text-align: center;
     color: #8e8e8e;
     font-size: 0.22rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
   //手机底部
   .telFootImg {
@@ -733,5 +709,5 @@ export default {
       height: 3.94rem;
     }
   }
-}
+
 </style>

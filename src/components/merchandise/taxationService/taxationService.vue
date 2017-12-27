@@ -214,7 +214,7 @@ export default {
           that.page = page;
           that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
           // that.region();
-          console.log("data===", data.data);
+          console.log("data===", that.thirdBoxShow);
         });
     },
     ...mapActions(["gainNum"]),

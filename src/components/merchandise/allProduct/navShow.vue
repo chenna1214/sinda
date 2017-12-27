@@ -1,6 +1,6 @@
 <template>
     <div>
-                <!-- 手机端--全部产品--轮播左边的导航 -->
+       <!-- 手机端--全部产品--轮播左边的导航 -->
         <div class="telNavToal" >
           <el-row v-for="(rDataObj,telIdx) in rDataObjs.titles" :key="rDataObj.id" class="telNavBoxOut">
             <el-col :xs="5">
@@ -17,37 +17,50 @@
                         <p  class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
                         </p>
                       </router-link>
+                      <!-- <router-link tag='a' :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id"> -->
+                        <!-- <p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id" class="telNavThrid" @click="thirdClick(thirdTil.id,secondTil.itemList)">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
+                        </p> -->
+                      <!-- </router-link> -->
                     </div>
                   </div>
                 </router-link>
             </el-col>
           </el-row>
         </div>
-
     </div>
 </template>
 
 <script>
-import {getTitles} from '../../pcPublic/pcHeader/public'//获取产品导航标题
+import { getTitles } from "../../pcPublic/pcHeader/public"; //获取产品导航标题
 export default {
   name: "navShow",
   data() {
     return {
       telIndex: 1, //点击财税服务后弹出框默认出现的初始值
-      rDataObjs: {titles:{}},
-    }
+      rDataObjs: { titles: {} }
+    };
   },
   created() {
-   getTitles(this.rDataObjs);//获取产品导航标题
+    getTitles(this.rDataObjs); //获取产品导航标题
     var that = this; //this是指main.js中的new Vue
-    console.log('nav')
-    
   },
   methods: {
     telNavClick(telIdx) {
       this.telIndex = telIdx;
       telIdx = !telIdx;
-    } //手机端头部导航
+    }, //手机端头部导航
+    thirdClick(id,u) {
+      // this.$router.push({
+      //   path: "/merchandise/taxationService",
+      //   query: { id: thirdTil.id }
+      // });
+      console.log('id--',id)
+      console.log('secondTil.itemList==',u)
+      console.log('000')
+      
+      
+      
+    }
   }
 };
 </script>
@@ -68,8 +81,8 @@ export default {
   }
 }
 .telNavBoxOut {
-  position: absolute;
-  z-index: 9;
+  // position: absolute;
+  // z-index: 9;
   width: 100%;
 }
 .telNavClickAft {

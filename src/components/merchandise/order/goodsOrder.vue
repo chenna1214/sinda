@@ -25,8 +25,6 @@
                                 </div>
                             </el-col>
                     </el-row>
-
-
                     <el-row class="pcOrdListBox" v-for="(goodsList,index) in order.serviceOrderList" :key="index" v-show="isShow"><!-- 订单表的详情 -->
                         <el-col :sm="6" :md="6" :lg="6">
                             <span class="pcOrdListTil pcOrdListLoc">服务名称：</span>
@@ -76,19 +74,11 @@
                     </div>
                     <p class="pcTip">注：转账时请将订单编号备注在付款信息里：转账完成后，请通知客服。</p>
                  </el-radio-group>
-
-
-
                 <div class="pcAllPayBox">
                     <span class="pcAllPay" v-for="(order,index) in orderList" :key="index">￥{{order.businessOrder.totalPrice}}</span>
                     <span class="pcMoney">金额总计</span><br>
                     <button class="pcAllPayBtn" @click='payWay()'>去结算</button>
                 </div>
-
-          
-
-
-
                   <!-- 微信支付弹出框 -->
                   <el-dialog
                       title="微信支付"
@@ -145,10 +135,8 @@ export default {
       .then(data => {
         //订单数据
         that.orderList.push(data.data.data);
-        console.log('order==',data.data.data)
         // 订单号传到我的订单
-        console.log('a==',this.$route.query.data)
-        localStorage.setItem('id',this.$route.query.data);
+        localStorage.setItem("id", this.$route.query.data);
       });
   },
   data() {
@@ -178,8 +166,6 @@ export default {
           .then(data => {
             sessionStorage.setItem("Unionpay", data.data);
             window.open("/#/pay");
-   
-            
           });
       }
       if (this.radio == 2) {

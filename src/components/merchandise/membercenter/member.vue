@@ -1,113 +1,112 @@
 <template>
   <div>
-   <!-- 我的订单 -->
-   <!-- 右侧头部 -->
-    <div class="mai-head">
-      <div>我的订单</div>
-    </div>
-    <!-- 右侧身体 -->
-    <div class="mai-body">
-      <!-- 订单号 -->
-      <div class="ordernum">
-        <div class="transcode">订单号 ：</div>
-        <div class="seekcode">
-          <input type="text" placeholder="请输入订单号搜索" v-model="searchVal">
+    <!-- pc端 -->
+    <div class="hidden-xs-only">
+      <!-- 我的订单 -->
+        <div class="mai-head">
+          <div>我的订单</div>
         </div>
-        <div class="searchBtn" @click="searchClick()">搜索</div>
-      </div>
-      <!-- 创建时间 -->
-      <div class="creatime">
-        <div class="createdate">创建时间 ：</div>
-        <div class="schedule">
-          <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
-        </div>
-      </div>
-      <!-- 商品名称 -->
-      <div class="goodsname">
-        <!-- 头 -->
-        <div class="gname-top">
-          <div class="gna-pro">商品名称</div>
-          <div>单价</div>
-          <div>数量</div>
-          <div>总金额</div>
-          <div>订单状态</div>
-          <div>订单操作</div>
-        </div>
-        <!-- 订单 -->
-        <div class="indent">
-          <!-- 大订单 -->
-          <!-- v-show="product.businessNo==product.businessNo+orderNum" -->
-          <div v-for="(product,proIdx) in products" :key="product.id" >
-            <!-- 订单号(头部) -->
-            <div class="indent-top">
-              <div>
-                <div>订单号:</div>
-                <div>{{product.businessNo}}</div>
-              </div>
-              <div>
-                <div>下单时间:</div>
-                <div>{{product.gdate}}</div>
-              </div>
+        <div class="mai-body">
+          <!-- 订单号 -->
+          <div class="ordernum">
+            <div class="transcode">订单号 ：</div>
+            <div class="seekcode">
+              <input type="text" placeholder="请输入订单号搜索" v-model="searchVal">
             </div>
-            <!-- 具体信息 -->
-            <div class="ind-detail">
-              <!-- 左侧 -->
-              <div class="det-left" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
-                <!-- 商品 -->
-                <div>
-                  <div class="comname">
-                    <!-- <div class="indname-img">
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'">
-                    </div> -->
-                    <div class="indname-cha">
-                      <div class="indcha-one">{{subitem.providerName}}</div>
-                      <div class="indcha-two">{{subitem.serviceName}}</div>
+            <div class="searchBtn" @click="searchClick()">搜索</div>
+          </div>
+          <!-- 创建时间 -->
+          <div class="creatime">
+            <div class="createdate">创建时间 ：</div>
+            <div class="schedule">
+              <input type="date" v-model="stime" @blur="start"> 至 <input type="date" v-model="etime" @blur="end">
+            </div>
+          </div>
+          <!-- 商品名称 -->
+          <div class="goodsname">
+            <!-- 头 -->
+            <div class="gname-top">
+              <div class="gna-pro">商品名称</div>
+              <div>单价</div>
+              <div>数量</div>
+              <div>总金额</div>
+              <div>订单状态</div>
+              <div>订单操作</div>
+            </div>
+            <!-- 订单 -->
+            <div class="indent">
+              <!-- 大订单 -->
+              <div v-for="(product,proIdx) in products" :key="product.id" >
+                <!-- 订单号(头部) -->
+                <div class="indent-top">
+                  <div>
+                    <div>订单号:</div>
+                    <div>{{product.businessNo}}</div>
+                  </div>
+                  <div>
+                    <div>下单时间:</div>
+                    <div>{{product.gdate}}</div>
+                  </div>
+                </div>
+                <!-- 具体信息 -->
+                <div class="ind-detail">
+                  <!-- 左侧 -->
+                  <div class="det-left" v-for="(subitem,orderIdx) in (product.subItem)" :key="subitem.id" :class="orderstyle">
+                    <!-- 商品 -->
+                    <div>
+                      <div class="comname">
+                        <!-- <div class="indname-img">
+                          <img :src="'http://115.182.107.203:8088/xinda/pic'">
+                        </div> -->
+                        <div class="indname-cha">
+                          <div class="indcha-one">{{subitem.providerName}}</div>
+                          <div class="indcha-two">{{subitem.serviceName}}</div>
+                        </div>
+                      </div>
+                      <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
+                      <div class="ind-quant">{{subitem.buyNum}}</div>
+                      <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
+                      <div class="ind-status">等待买家付款</div>
                     </div>
                   </div>
-                  <div class="ind-unit">￥{{subitem.unitPrice}}.00</div>
-                  <div class="ind-quant">{{subitem.buyNum}}</div>
-                  <div class="ind-total">￥{{subitem.totalPrice}}.00</div>
-                  <div class="ind-status">等待买家付款</div>
+                  <!-- 付款、删除订单按钮 -->
+                  <div class="det-right">
+                    <router-link :to="{path:'/merchandise/goodsOrder',query:{data:product.businessNo}}" class="ind-pay" tag='span'>付款</router-link>
+                    <span class="ind-delete" @click="cancel(product.businessNo,proIdx)">删除订单</span>
+                  </div>
                 </div>
-              </div>
-              <!-- 付款、删除订单按钮 -->
-              <div class="det-right">
-                <router-link :to="{path:'/merchandise/goodsOrder',query:{data:product.businessNo}}" class="ind-pay" tag='span'>付款</router-link>
-                <span class="ind-delete" @click="cancel(product.businessNo,proIdx)">删除订单</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-          <!-- 页码 -->
-          <div class="mai-tail">
-            <button @click="upPage()" class="pageBtn">上一页</button>
-            <span v-for="(eachPage,idxPage) in pageNum" :key="idxPage" @click="pageClick(idxPage)" class="pcPage" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
-            <button @click="downPage()" class="pageBtn">下一页</button>
+        <!-- 页码 -->
+         <pageSet class="mai-tail" :total="total" :pageNum="pagen" :currentPage="eachContent" @numc="pageChange" @upPage='upPage' @downPage='downPage'></pageSet>
+        <!-- 确定删除吗 -->
+        <div class="mai-sure" v-show="sure" :class="xstyle">
+          <div class="mai-mess">
+            <div>信息</div>
+            <div class="maimess-x" @click="mesx">×</div>
           </div>
-    <!-- 确定删除吗 -->
-    <div class="mai-sure" v-show="sure" :class="xstyle">
-      <div class="mai-mess">
-        <div>信息</div>
-        <div class="maimess-x" @click="mesx">×</div>
-      </div>
-      <div class="maimes-no">
-        <div>确定要删除该订单吗</div>
-        <div>                       
-          <div class="mai-confirm" @click="maisure">确定</div>
-          <div class="mai-undo" @click="mesx">取消</div>
+          <div class="maimes-no">
+            <div>确定要删除该订单吗</div>
+            <div>                       
+              <div class="mai-confirm" @click="maisure">确定</div>
+              <div class="mai-undo" @click="mesx">取消</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+     
    </div>
 </template>
 
 <script>
+import {getGoodsAllData} from "./memberPublic.js";
+import pageSet from "../../pagePublic";
 export default {
   name: "changepwd",
   created() {
-    this.getGoodsData(0);
+    getGoodsAllData(this);
   },
   data() {
     return {
@@ -126,40 +125,39 @@ export default {
       searchVal: "", //搜索框的value值
       orderNum: "", //搜索后让匹配搜索内容的订单出现或消失
       pageNum: {}, //页数
-      eachContent: 0, //每页内容
+      eachContent: 1, //每页内容
       page: "", //每类数据分的总页数
-      textColor: 0 //控制页码被选中后的动态样式的初始值
+      textColor: 0, //控制页码被选中后的动态样式的初始值
+      total: 0,
+      pagen: 5
     };
   },
   watch: {
     searchVal: function() {
       if (!this.searchVal) {
         this.orderNum = "";
-        this.getGoodsData();
+        getGoodsAllData(this);
       }
     }
   },
   methods: {
-       pageClick(idxPage) {
+    pageChange(n) {
       //点击某个页码进行翻页
-      this.eachContent = idxPage;
-      this.textColor = idxPage;
-      this.getGoodsData(this.eachContent);
-
+      this.eachContent = n;
+      getGoodsAllData(this);
     },
-     upPage() {
+    upPage() {
       //点击向上一页翻页
-      if (this.eachContent - 1 >= 0) {
-        this.getGoodsData(this.eachContent);
-        this.textColor = this.eachContent;
+      if (Number(this.eachContent) - 2 >= 0) {
+        this.eachContent = Number(this.eachContent) - 1;
+        getGoodsAllData(this);
       }
     },
     downPage() {
       //点击向下一页翻页
-      if (Number(this.eachContent) + 1 < this.page) {
+      if (Number(this.eachContent) < Math.ceil(this.total / this.pagen)) {
         this.eachContent = Number(this.eachContent) + 1;
-         this.getGoodsData(this.eachContent);
-        this.textColor = this.eachContent;
+        getGoodsAllData(this);
       }
     },
     searchClick() {
@@ -167,72 +165,13 @@ export default {
       for (var key in this.products) {
         if (key.indexOf(this.searchVal) != -1) {
           this.orderNum = key;
-          this.getGoodsData();
+          getGoodsAllData(this);
         }
       }
       if (!this.searchVal) {
         this.orderNum = "";
-        this.getGoodsData(this.eachContent);
+        getGoodsAllData(this);
       }
-    },
-    //从服务订单接口获取订单数据
-    getGoodsData(eachContent) {
-      var that = this;
-      // 订单号及其之下的信息
-      // var creTime = localStorage.getItem('time');
-      this.ajax
-        .post(
-          "/xinda-api/service-order/grid",
-          this.qs.stringify({
-            businessNo: that.orderNum,
-            limit: 5,
-            start: eachContent * 5
-          })
-        )
-        .then(function(data) {
-          var Data = data.data.data;
-          // that.gDatas = Data;
-          var business = {}; //定义空对象
-          for (var i in Data) {
-            // 不同订单号下的商品
-            var businessNo = Data[i].businessNo; //让gData里的订单号等于businessNo
-            if (!business[businessNo]) {
-              //business里没有businessNo
-              business[businessNo] = Data[i]; //让business[businessNo]等于gData[i]
-              // console.log(business[businessNo])
-              business[businessNo].subItem = []; //给对象business[businessNo]里定义一个新的属性
-            }
-            business[businessNo].subItem.push(Data[i]); //将gData[i]放入新属性里
-            that.products = business;
-            // 时间戳转化为时间函数
-            var gDate = new Date(that.products[businessNo].createTime);
-            var gyear = gDate.getFullYear();
-            var gmonth = gDate.getMonth() + 1;
-            var gdate = gDate.getDate();
-            var ghour = gDate.getHours();
-            var gminute = gDate.getMinutes();
-            var gsecond = gDate.getSeconds();
-            var gNowDate =
-              [gyear, gmonth, gdate].join("-") +
-              " " +
-              ghour +
-              ":" +
-              gminute +
-              ":" +
-              gsecond;
-            that.products[businessNo].gdate = gNowDate;
-          }
-          var page = Math.ceil(data.data.totalCount / 5);
-          var pageCount = {};
-          for (var i = 0; i < page; i++) {
-            pageCount[i] = i + 1;
-          }
-          that.pageNum = pageCount;
-          that.page = page;
-          that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
-          console.log('data.data.totalCount',page)
-          
-        });
     },
     // 删除按钮
     cancel: function(code, proIdx) {
@@ -273,36 +212,34 @@ export default {
 
     // input框的开始结束时间
     start: function() {
-      // console.log('stime==',this.stime)
       localStorage.setItem("st", this.stime);
     },
     end: function() {
-      // console.log('etime==',this.etime)
       localStorage.setItem("et", this.etime);
       // // input框的时间
-      // var sTime = localStorage.getItem('st')
-      // var eTime = localStorage.getItem('et')
-      // console.log(sTime)
     }
+  },
+  components: {
+    pageSet
   }
 };
 </script>
 
 <style scoped lang='less'>
-.pageBtn{
-  width: 100px;  
+.pageBtn {
+  width: 100px;
 }
-  .pcPage {
-    font-size: 16px;
-    width: 36px;
-    display: inline-block;
-    text-align: center;
-  }
-  .pageColor {
-    //页码被选中后的样式
-    color: #2693d4;
-    font-size: 16px;
-  }
+.pcPage {
+  font-size: 16px;
+  width: 36px;
+  display: inline-block;
+  text-align: center;
+}
+.pageColor {
+  //页码被选中后的样式
+  color: #2693d4;
+  font-size: 16px;
+}
 .trans {
   display: none;
 }
