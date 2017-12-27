@@ -38,7 +38,8 @@
           </div>
           <!-- 立即购买，加入购物车 -->
           <div class="parinf-btn">
-            <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link>
+            <!-- <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link> -->
+            <a href='#/merchandise/shoppingtrolley' class="paynow" @click="join">立即购买</a>
             <button @click="join">加入购物车</button>
           </div>
         </div>
@@ -305,7 +306,8 @@
         <!-- 加入购物车 -->
         <div class="wef-join" @click="join">加入购物车</div>
         <!-- 立即购买 -->
-        <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay">立即购买</router-link>
+        <!-- <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay" @click="join">立即购买</router-link> -->
+        <a href='#/merchandise/shoppingtrolley' class="wef-pay" @click="join">立即购买</a>
       </div>
 
       <!-- 出现部分 -->
@@ -350,8 +352,8 @@
                   <input type="text" placeholder="请输入验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
                 </div>
                 <div class="bodinp-getcode">
-                  <button v-show = "show" @click="getCode">获取验证码</button>
-                  <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
+                  <button v-show = "show" @click="getCode">验证码</button>
+                  <div v-show = "!show" class="getgray">重新获取{{count}}s</div>
                 </div>
                 <div class="cha-nonull" :class="chanons">× 验证码不能为空</div>
                 <div class="cha-wrong" :class="chawros">× 验证码错误</div>
@@ -438,11 +440,6 @@
         this.wrefer = false;
         this.before = false;
         this.forword = false;
-      },
-      transfers:function () {
-        this.wrefer = true;
-        this.before = false;
-        this.forword = true;
       },
 
       upData(){
@@ -543,6 +540,95 @@
         if(parinfNum <= 0){//变为0太慢了
           console.log(parinfNum=0)
           document.querySelector('.parinf-num input').value = 1;
+        }
+      },
+      // 点击开始免费咨询
+      transfers:function () {
+        // 判断手机号
+        if (this.telvalue) {
+          //手机号有输入时
+          if (!/^1[3|4|5|7|8]\d{9}$/.test(this.telvalue)) {
+            //手机号匹配错误
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chashow';
+          } else {
+            //手机号匹配正确
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chahide';
+            // 文字验证码
+            var smsNumberStyle = /^[0-9]{6}$/;
+            if (this.smsNumber) {//输入框有输入
+              this.chanons = 'chahide';
+              if (!smsNumberStyle.test(this.smsNumber)) {//不符合正则
+                this.chanons = 'chahide';
+                this.chawros = 'chashow';
+              } else {//符合正则
+                this.chanons = 'chahide';
+                this.chawros = 'chahide';
+                this.wrefer = true;
+                this.before = false;
+                this.forword = true; 
+              }
+            } else {//无输入
+              this.chanons = 'chashow';
+              this.chawros = 'chahide';
+            }
+            // 判断验证码
+            if (this.imgCode) {
+              //验证码有输入时
+              //图片验证码匹配
+              this.ajax
+                .post(
+                  "/xinda-api/register/sendsms",
+                  this.qs.stringify({
+                    cellphone: this.telvalue,
+                    smsType: 1,
+                    imgCode: this.imgCode
+                  })
+                )
+                .then(data => {
+                  console.log(data, data.data.status);
+                  if (data.data.status == 1) {
+                    //图片验证码输入正确
+                    this.get = false;
+                    this.getNew = true;
+                    this.eyan = false;
+                    this.yyan = false;
+                    const TIME_COUNT = 60;
+                    if (!this.timer) {
+                      this.count = TIME_COUNT;
+                      this.show = false;
+                      this.timer = setInterval(() => {
+                        if (this.count > 0 && this.count <= TIME_COUNT) {
+                          this.count--;
+                        } else {
+                          this.show = false;
+                          clearInterval(this.timer);
+                          this.timer = null;
+                        }
+                      }, 1000);
+                    }
+                  } else {
+                    //图片验证码输入错误
+                    console.log(data.data.msg);
+                    this.yyan = false;
+                    this.eyan = true;
+                    this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
+                  }
+                });
+            } else {
+              //验证码为空时
+              this.yyan = true;
+              this.eyan = false;
+            }
+          }
+        } else {
+          //手机号为空时
+          this.nonstyle = 'chashow';
+          this.telstyle = 'chahide';
+          this.wrostyle = 'chahide';
         }
       },
       // 手机号码
@@ -817,6 +903,12 @@
             background-color: #fff;
           }
           .paynow{
+            width: 25%;
+            line-height: 38px;
+            border-radius: 6px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
             color: #fff;
             border-color: #2693d4;
             background-color: #2693d4;
@@ -1396,6 +1488,7 @@
         width: 100%;
         display: flex;
         .wes-logo{
+          // background: 
           width: 1.24rem;
           height: 0.56rem;
           margin-left: 0.78rem;
@@ -1557,11 +1650,9 @@
     .wefixed{
       width: 100%;
       height: 1.15rem;
-      margin-top: 0.75rem;
       display: flex;
       position: fixed;
-      // top: 524px;
-      bottom: 0.8rem;
+      bottom: 60px;
       // 联系商家
       .wef-contact{
         width: 34%;
@@ -1606,7 +1697,9 @@
         color: #fff;
         text-align: center;
         line-height: 1.15rem;
+        text-decoration: none;
         background-color: #fc4145;
+        display: inline-block;
         cursor: pointer;
       }
     }
@@ -1632,7 +1725,7 @@
       box-shadow: 2px 1px 2px 1px #aaa;
       background-color: #fff;
       left: 1%;
-      top: 42%;
+      top: 10%;
       z-index: 25;
       overflow: hidden;
       position: fixed;
@@ -1644,7 +1737,7 @@
         background-color: #eee;
         justify-content: space-between;
         .contop-free{
-          width: 20%;
+          width: 30%;
           height: 100%;
           font-size: 0.14rem;
           line-height: 0.4rem;
@@ -1671,9 +1764,11 @@
             font-size: 0.13rem;
             color: #888;
             text-align: center;
+            margin: 0 auto;
+            margin-top: 2%;
           }
           .bodone-input{
-            width:76%;
+            width:92%;
             margin: 0 auto;
             margin-top: 3%;
             margin-bottom: 5%;
@@ -1699,12 +1794,12 @@
               .tel-wrong{
                 color: #f00;
                 margin-left: 5%;
-                line-height: 0.36rem;
+                // line-height: 0.36rem;
               }
               .tel-nonull{
                 color: #f00;
                 margin-left: 5%;
-                line-height: 0.36rem;
+                // line-height: 0.36rem;
               }
             }
             // 图形验证码
@@ -1736,12 +1831,12 @@
               }
               .code-nonull{
                 color: #f00;
-                line-height: 0.34rem;
+                // line-height: 0.34rem;
                 margin-left: 5%;
               }
               .code-wrong{
                 color: #f00;
-                line-height: 0.34rem;
+                // line-height: 0.34rem;
                 margin-left: 5%;
               }
             }
@@ -1777,12 +1872,12 @@
               }
               .cha-nonull{
                 color: #f00;
-                line-height: 0.34rem;
+                // line-height: 0.34rem;
                 margin-left: 5%;
               }
               .cha-wrong{
                 color: #f00;
-                line-height: 0.34rem;
+                // line-height: 0.34rem;
                 margin-left: 5%;
               }
             }

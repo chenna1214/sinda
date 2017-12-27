@@ -5,8 +5,7 @@
         <p>我的订单</p>
       </div>
     <div class="myOrderBoxIn">
-
-      <a class="back" href="#/merchandise/allProduct"><</a>
+      <a class="back" href="#/merchandise/allProduct"></a>
       <div  v-for="(product,proIdx) in products" :key="product.id">
         <div class="headerBox moneyBox paddingStyle">
           <p class="fontSize">订单号：{{product.businessNo}}</p>
@@ -32,41 +31,36 @@
             </el-col>
           </div>
         </el-row>
-
-
-        
-          <el-row class="moneyBox paddingStyle">
-            <el-col :xs='5'>
-              <div class="totalBox">
-                <p class="totalText">合计:</p>
-                <p class="totalPrice">￥{{product.totalPrice}}</p>
-              </div>
-            </el-col>
-            <el-col :xs='{span:13,offset:6}'>
-              <div class="delBox">
-                <p class="totalPrice"  @click="cancel(product.businessNo,proIdx)">删除订单</p>
-                <router-link :to="{path:'/merchandise/goodsOrder',query:{data:product.businessNo}}" class="payBtn" tag='span'>付款</router-link>
-                <!-- <button class="payBtn">付款</button> -->
-              </div>
-            </el-col>
-          </el-row>
-      
-
-      </div>
-              <!-- 确定删除吗 -->
-        <div class="mai-sure" v-show="sure" :class="xstyle">
-          <div class="mai-mess">
-            <div>信息</div>
-            <div class="maimess-x" @click="mesx">×</div>
-          </div>
-          <div class="maimes-no">
-            <div>确定要删除该订单吗</div>
-            <div>                       
-              <div class="mai-confirm" @click="maisure">确定</div>
-              <div class="mai-undo" @click="mesx">取消</div>
+        <el-row class="moneyBox paddingStyle">
+          <el-col :xs='5'>
+            <div class="totalBox">
+              <p class="totalText">合计:</p>
+              <p class="totalPrice">￥{{product.totalPrice}}</p>
             </div>
+          </el-col>
+          <el-col :xs='{span:13,offset:6}'>
+            <div class="delBox">
+              <p class="totalPrice"  @click="cancel(product.businessNo,proIdx)">删除订单</p>
+              <router-link :to="{path:'/merchandise/goodsOrder',query:{data:product.businessNo}}" class="payBtn" tag='span'>付款</router-link>
+              <!-- <button class="payBtn">付款</button> -->
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- 确定删除吗 -->
+      <div class="mai-sure" v-show="sure" :class="xstyle">
+        <div class="mai-mess">
+          <div>信息</div>
+          <div class="maimess-x" @click="mesx">×</div>
+        </div>
+        <div class="maimes-no">
+          <div>确定要删除该订单吗</div>
+          <div>                       
+            <div class="mai-confirm" @click="maisure">确定</div>
+            <div class="mai-undo" @click="mesx">取消</div>
           </div>
         </div>
+      </div>
     </div>
 
 
@@ -225,6 +219,7 @@ export default {
   font-size: 0.23rem;
   color: white;
   width: 16.2%;
+  text-align: center;
 }
 .delBox {
   display: flex;

@@ -191,7 +191,7 @@ export default {
     var that = this;
     this.getService()
     // 服务产品
-    this.ajax.post('xinda-api/recommend/list',
+    this.ajax.post('/xinda-api/recommend/list',
     this.qs.stringify({
       // start: 0,
       // limit: 8,

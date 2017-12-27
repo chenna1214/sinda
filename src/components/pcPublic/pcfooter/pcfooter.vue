@@ -36,18 +36,11 @@ export default {
         { name: "首页", href: "#/merchandise/allProduct" },
         { name: "店铺", href: "#/merchandise/shop" },
         { name: "购物车", href: "#/merchandise/shoppingtrolley" },
-        { name: "我的", href: "#/merchandise/havelogined" }
+        { name: "我的", href: "javascript:void(0);" }
       ],
       textCol: -1, //点击改变手机端首页底部导航标签颜色的初始值
+      changeHref:''
     };
-  },
-  created(){ 
-    this.ajax.post('/xinda-api/sso/login-info').then(data=>{
-      console.log('登录',data.data.status)
-      if(data.data.status==1){
-        this.telFootTil[3].href="#/merchandise/havelogined"
-      }
-    })
   },
   methods: {
     telColorChange(index) {
@@ -71,6 +64,19 @@ export default {
       }
       if (index == 3) {
         telImg[3].style.backgroundPosition = "-60px -37px";
+        this.ajax.post("/xinda-api/sso/login-info").then(data => {
+          console.log("登录", data.data.status);
+          if (data.data.status == 1) {
+            this.$router.push('/merchandise/havelogined'); 
+          } else {
+            this.$router.push('/merchandise/unregistered');
+          }
+          this.changeHref=this.telFootTil[3].href
+          console.log('this.changeHref==',this.changeHref)
+
+        
+      });
+        
       } else {
         telImg[3].style.backgroundPosition = "-60px -0";
       }

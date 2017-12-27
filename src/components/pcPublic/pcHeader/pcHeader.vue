@@ -91,6 +91,7 @@
         </div>
       </el-col>
     </el-row>
+
    </div>
 </template>
 
@@ -127,25 +128,16 @@ export default {
       rDataObjs: { titles: {} },
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcNavImg: [
-        "src/components/images/allProduct/icon1.png",
-        "src/components/images/allProduct/icon2.png",
-        "src/components/images/allProduct/icon3.png",
-        "src/components/images/allProduct/icon4.png"
+        require("../../images/allProduct/icon1.png"),
+        require("../../images/allProduct/icon2.png"),
+        require("../../images/allProduct/icon3.png"),
+        require("../../images/allProduct/icon4.png")
       ],
       navDis: false, //控制全部产品的下拉框是否出现或消失
       navGone: function() {}, //控制全部产品的下拉框是否出现或消失
       x: ""
     };
   },
-  // mounted() {
-  //   var searchInput = document.getElementsByClassName("pcHeaderSearchInput")[0];
-  //   function show_coords(event) {
-  //     this.x = event.clientX;
-  //     console.log("this.x", this.x);
-  //   }
-  //   show_coords(event);
-  //   console.log("searchInput--offsetLeft", searchInput.offsetLeft);
-  // },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc); //城市选择
     this.getSearch = this.debounce(this.getSearchList, 600);
@@ -240,6 +232,7 @@ export default {
     choseType(param) {
       //选择搜索种类（产品/服务商）
       if (param) {
+        //点击产品时
         this.bgBlue = true;
       } else {
         this.bgBlue = false;
@@ -261,6 +254,15 @@ export default {
         searchVal = this.serVal; //全局定义的空字符串不等于input框内的value时，就将当前输入的input框的value值赋值给全局字符串
       }
       this.getSearch();
+      //计算input宽度
+      var searchInput = document.getElementsByClassName(
+        "pcHeaderSearchInput"
+      )[0]; //输入搜索内容的input
+      var matchBox = document.getElementsByClassName("pcSerBox")[0]; //匹配搜索内容框
+      //input框宽度
+      var width = getComputedStyle(searchInput).width;
+      var reallyWidth = width.substr(0, width.indexOf("px"));
+      matchBox.style.width = Number(reallyWidth) + 5 + "px";
     }
   }
 };
@@ -392,7 +394,7 @@ export default {
   display: inline-block;
   font-size: 12px;
   text-decoration: none;
-  color: #2794d5;
+  color: black;
 }
 .pcChangeColor {
   color: #2794d5;
