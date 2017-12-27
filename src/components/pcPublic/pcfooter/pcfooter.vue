@@ -39,7 +39,7 @@ export default {
         { name: "首页", href: "#/merchandise/allProduct" },
         { name: "店铺", href: "#/merchandise/shop" },
         { name: "购物车", href: "#/merchandise/shoppingtrolley" },
-        { name: "我的", href: "#/merchandise/membercenter" }
+        { name: "我的", href: "#/merchandise/havelogined" }
       ],
       textCol: -1 //点击改变手机端首页底部导航标签颜色的初始值
     };

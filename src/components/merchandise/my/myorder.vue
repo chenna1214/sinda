@@ -7,7 +7,7 @@
       <span></span>
       <div class="we-order">我的订单</div>
     </div>
-    
+
   </div>
 </template>
 
@@ -50,5 +50,6 @@ export default {
         font-size: 0.3rem;
       }
     }
+    // 
   } 
 </style>
