@@ -5,8 +5,12 @@
       <div class="pcTop hidden-xs-only"><!-- 最顶部 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div>
+<<<<<<< HEAD
             
             <p class="pcTopBlackText pcWelcomeText">欢迎<a href="#/merchandise/membercenter" class="pcUserName">{{getName}}</a>来到信达！</p>
+=======
+            <p class="pcTopBlackText pcWelcomeText">欢迎<a href="#/merchandise/membercenter"class="pcUserName">{{getName}}</a>来到信达！</p>
+>>>>>>> 05194395db87ccf07e93b6324e3b2bf93cbf101e
             <a href="#/userData/login"  class="pcTopBlueText" v-show="!getName">登录</a>
             <span class="pcTopBlueText" v-show="getName" @click="logOff()">退出登录</span>
             <a href="#/userData/register"  class="pcTopBlueText pcTopRegisterText">快速注册</a>
@@ -25,9 +29,6 @@
       </div>
     </el-col>
    </el-row>
-
-
-   
   </div>
 </template>
 
@@ -62,7 +63,6 @@ export default {
   }
 };
 </script>
-
 <style scoped lang='less'>
 .pcTopRegisterText {
   margin-left: 24px;

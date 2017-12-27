@@ -1,108 +1,80 @@
 <template>
+<!-- 分页功能 -->
     <div>
         <div class="pageBox">
-            <button @click="upPage()">上一页</button>
-            <span v-for="(eachPage,idxPage) in pageNums" :key="idxPage" class="pcPage" @click="pageClick(idxPage)" :class="{pageColor:textColor==idxPage}">{{eachPage}}</span>
-            <button @click="downPage()">下一页</button>
+            <button @click="upPage()" class="pageBtn">上一页</button>
+            <span v-for="num in pages" :key="num" @click="numc(num)" :class="'page-num '+(currentp==num?'active':'')">{{num}}</span>
+            <button @click="downPage()" class="pageBtn">下一页</button>
         </div>
     </div>
 </template>  
-
 <script>
 export default {
   name: "pagePublic",
   data() {
     return {
-        pageNums:[],
-      pageNum: 0, //zong页数
+      pages: 0,
       eachContent: 0, //每页内容
-      page: "", //每类数据分的总页数
-      textColor: 0 //控制页码被选中后的动态样式的初始值
+      textColor: 0, //控制页码被选中后的动态样式的初始值
+      currentp: 1
     };
   },
-  created(){
-     console.log(this.page,this.limitPage);
-        for (var i = 0; i < pageNum; i++) {
-            pageNums[i] = i + 1;
-          }
+  created() {
+    this.pages = Math.ceil(this.total / this.pageNum);
   },
-  watch:{
-      page(newVal,oldVal){
-          this.pageNum=Math.ceil(newVal/this.limitPage);
-          for (var i = 0; i < pageNum; i++) {
-            pageNums[i] = i + 1;
-          }
-      }
+  watch: {
+    total(newVal, oldVal) {
+      this.pages = Math.ceil(this.total / this.pageNum);
+    },
+    currentPage() {
+      this.currentp = this.currentPage;
+    }
   },
-  props:{
-      page:String,
-      limitPage:Number,
+  props: {
+    total: Number, //总条目
+    pageNum: Number, //每页多少条
+    currentPage: {
+      type: Number,
+      default: 1
+    } //当前是第几页
   },
   methods: {
+    numc(num) {
+      //点击某个页码进行翻页
+      this.currentp = num; //点击后改变样式
+      this.$emit("numc", num); //将num参数、numc事件向父组件传递
+    },
     upPage() {
       //点击向上一页翻页
-
-      if (this.eachContent - 1 >= 0) {
-        this.eachContent = this.eachContent - 1;
-        // if (!this.code) {
-        //   this.paging(eachContent,limitPage);
-        // } else {
-        //   this.paging(eachContent,limitPage)
-        // }
-        // this.textColor = this.eachContent;
-      }
+      this.$emit("upPage");
     },
     downPage() {
       //点击向下一页翻页
-      if (Number(this.eachContent) + 1 < this.page) {
-        this.eachContent = Number(this.eachContent) + 1;
-        if (!this.code) {
-         this.paging(eachContent,limitPage)
-        } else {
-          this.paging(eachContent,limitPage)
-        }
-        this.textColor = this.eachContent;
-      }
-    },
-    pageClick(code) {
-      //点击某个页码进行翻页
-      if(this.eachContent!=code){
-          this.eachContent=code;
-          this.$emit('native',this.eachContent);
-      }
-      this.eachContent = idxPage;
-      if (!this.code) {
-        this.paging(eachContent,limitPage)
-      } else {
-        this.paging(eachContent,limitPage)
-      }
-      this.textColor = idxPage;
-    },
-    paging(eachContent,limitPage,page) {
-      //产品列表
-      var that = this;
-      var params = {
-        start: this.eachContent * 3,
-        limit:limitPage
-      };
-      if (window.screen.availWidth >= 768) {
-        params.limit = 3;
-      } else {
-        delete params.limit;
-      }
-          var pageCount = {};
-          for (var i = 0; i < page; i++) {
-            pageCount[i] = i + 1;
-          }
-          that.pageNum = pageCount;
-          that.page = page;
-          that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
+      this.$emit("downPage");
     }
   }
 };
 </script>
-
 <style scoped lang="less">
-
+.page-num {
+  display: inline-block;
+  border: 1px solid #2693d4;
+  padding: 5px;
+  color: #000;
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.pageBtn {
+  border: 1px solid #2693d4;
+  background: white;
+  height: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.active {
+  background: #2693d4;
+  color: #fff;
+}
 </style>
 
