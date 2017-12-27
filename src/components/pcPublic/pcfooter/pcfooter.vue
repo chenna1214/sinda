@@ -38,8 +38,16 @@ export default {
         { name: "购物车", href: "#/merchandise/shoppingtrolley" },
         { name: "我的", href: "#/merchandise/unregistered" }
       ],
-      textCol: -1 //点击改变手机端首页底部导航标签颜色的初始值
+      textCol: -1, //点击改变手机端首页底部导航标签颜色的初始值
     };
+  },
+  created(){ 
+    this.ajax.post('/xinda-api/sso/login-info').then(data=>{
+      console.log('登录',data.data.status)
+      if(data.data.status==1){
+        this.telFootTil[3].href="#/merchandise/havelogined"
+      }
+    })
   },
   methods: {
     telColorChange(index) {
@@ -106,7 +114,6 @@ export default {
     display: flex;
     justify-content: space-around;
     padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
     text-align: center;
   }
   .telFootNavHref {
@@ -118,6 +125,8 @@ export default {
     width: 100%;
     background: white;
     z-index: 6000;
+    height: 0.8rem;
+    min-height: 65px;
   }
   //手机端--底部--灰色--导航logo
   .telHome {

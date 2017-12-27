@@ -6,8 +6,10 @@
       <!-- 手机端样式 -->
       <div class="hidden-sm-and-up">
         <div class="graTop ">
-          <span></span>
-          <p>忘记密码</p>
+          <div @click="back">
+            <span></span>
+          </div>
+          <p>注册</p>
         </div>
 
         <div class="centent">
@@ -20,12 +22,12 @@
 
           <!-- 手机号码 -->
           <div class="fleBox" style="font-size: 0;">
-            <input class="box" type="number" placeholder="请输入手机号码" v-model="phone" @focus="Zphone" @blur="Cphone">
+            <input class="box" type="number" placeholder="请输入手机号码" v-model="phone">
           </div>
 
           <!-- 验证码 -->
           <div class="verify" style="font-size: 0;">
-            <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode" @focus="Zyan" @blur="Cyan">
+            <input class="boxI" type="text" placeholder="请输入验证码" v-model="imgCode">
             <!-- 验证码获取接口 -->
             <div class="verifyI" @click="imgReflash">
               <img :src="imgUrl">
@@ -34,7 +36,7 @@
 
           <!-- 短信验证码 -->
           <div class="acquire" style="font-size: 0;">
-            <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber" @focus="Zduan" @blur="Cduan">
+            <input class="boxI" type="text" placeholder="请输入短信验证码" v-model="smsNumber">
             <div class = "spanStyle boxII">
               <span v-show = "show" @click="getCodeS" class="getblue">获取验证码</span>
               <span v-show = "!show" class="getgray">重新获取{{count}}s</span>
@@ -45,7 +47,7 @@
           <div class="fleBox" style="font-size: 0;">
             <!-- 设置密码 -->
             <div class="eyeBox">
-              <input class="box" :type="pwType" placeholder="请设置密码（6-20位）" v-model="setPass" @focus="Zmi" @blur="Cmi">
+              <input class="box" :type="pwType" placeholder="请设置密码（6-20位）" v-model="setPass">
               <!-- 小眼睛 -->
               <img :src="logImg" class="eyes" alt="" @click="showHidden">
             </div>
@@ -267,7 +269,7 @@ export default {
       logImgT: eyes[0],
 
       showES: false,
-      errorWeb:'',
+      errorWeb: ""
     };
   },
   created() {
@@ -303,6 +305,12 @@ export default {
         this.logImgT = eye[1];
       }
     },
+
+    // 手机端返回小三角
+    back: function() {
+      location.href = "#/userData/login"; //登录界面
+    },
+
     // 获得焦点事件.......................................
     //手机号码
     Zphone: function() {
@@ -765,7 +773,7 @@ export default {
             } else {
               //全部正确之后
               this.showES = false;
-              location.href='#/userData/login';//登录界面
+              location.href = "#/userData/login"; //登录界面
               // this.centerDialogVisible = true;
             }
           });
