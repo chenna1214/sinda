@@ -216,10 +216,6 @@ export default {
           that.page = page;
           that.totalCount = data.data.totalCount - 1; //从服务器请求的信息总条数
           // that.region();
-<<<<<<< HEAD
-          console.log("data===", that.thirdBoxShow);
-=======
->>>>>>> 85ee2ecfd5ba29f1ead435a4dd0b0223b6a21117
         });
     },
     ...mapActions(["gainNum"]),

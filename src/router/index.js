@@ -26,7 +26,6 @@ const userevalua = () => import('../components/merchandise/membercenter/usereval
 // //  微信端
 const unregistered = () => import('../components/merchandise/my/unregistered.vue')
 const havelogined = () => import('../components/merchandise/my/havelogined.vue')
-const myorder = () => import('../components/merchandise/my/myorder.vue')
 const accountset = () => import('../components/merchandise/my/accountset.vue')
 // //银联支付
 const pay = () => import('../components/merchandise/order/pay')
@@ -172,11 +171,6 @@ export default new Router({
           component: havelogined
         },
         {
-          path: 'myorder',//微信-我的订单
-          name: 'myorder',
-          component: myorder
-        },
-        {
           path: 'accountset',//微信-账户设置
           name: 'accountset',
           component: accountset
@@ -202,7 +196,7 @@ export default new Router({
       path:'/myOrderTel',//手机端我的订单
       name:'myOrderTel',
       component:myOrderTel
-    }
+    },
     
   ]
 })

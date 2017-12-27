@@ -8,7 +8,7 @@
     <!-- 我的订单，账户设置 -->
     <div class="weorderset">
       <!-- 我的订单 -->
-      <router-link tag="div" :to="{path: '/merchandise/myorder'}" class="we-myorder">
+      <router-link tag="div" :to="{path: '/myOrderTel'}" class="we-myorder">
         <div>
           <div class="myo-img">
             <img src="../pc_images/we-myorder.png" alt="">
