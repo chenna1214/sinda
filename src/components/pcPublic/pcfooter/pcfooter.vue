@@ -27,8 +27,13 @@
 </template>
 
 <script>
+import {Row,Col} from 'element-ui';
 export default {
   name: "pcfooter",
+   components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   data() {
     return {
       telFootTil: [

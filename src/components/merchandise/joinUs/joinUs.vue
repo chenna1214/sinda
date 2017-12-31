@@ -58,8 +58,13 @@
 </template>
 
 <script>
+import {Row,Col} from 'element-ui';
 export default {
   name: "joinUs",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   data() {
     return {
       index:'',

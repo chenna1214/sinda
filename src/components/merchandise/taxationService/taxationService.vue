@@ -126,13 +126,13 @@ import autourban from "./autourban";
 import { mapActions } from "vuex"; //改变数据
 import servicePart from "./servicePart.vue"; //引用财税服务右侧栏组件
 import company from "./company";
+import {Row,Col} from 'element-ui';
 
 export default {
   name: "taxationService",
   methods: {
     region(){
       var that = this;
-      
       var newdata = [];
       if (that.distCode) {
         for (var i in that.products) {
@@ -365,7 +365,8 @@ export default {
       totalCount: "" //从服务器获取信息总条数
     };
   },
-  components: { autourban, servicePart, company }
+  components: { autourban, servicePart, company,[Row.name]:Row,
+    [Col.name]:Col }
 };
 </script>
 

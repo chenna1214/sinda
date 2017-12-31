@@ -14,9 +14,9 @@
         <!-- 全部产品--xs以下--轮播图片 -->
         <el-row class="hidden-sm-and-up">
           <el-col :xs="{span:24}" >
-            <el-carousel trigger="click" height="280px">
+            <el-carousel trigger="click" height="2.8rem">
             <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
-              <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+              <img v-bind:src="carouselImg.id" class="telCarouselImg">
               </el-carousel-item>
             </el-carousel>
           </el-col>
@@ -206,8 +206,15 @@
 import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
 import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
 const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
+import { Row, Col,Carousel,CarouselItem,Message } from "element-ui";
 export default {
   name: "allProduct",
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Carousel.name]:Carousel,
+    [CarouselItem.name]:CarouselItem
+  },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     var that = this;
@@ -309,9 +316,9 @@ export default {
       pcAllProTilName: [], //轮播图左边的所有二级标题
       carouselList: [
         //轮播图片
-        { id: require("../../images/allProduct/1.png") },
-        { id: require("../../images/allProduct/2.jpg") },
-        { id: require("../../images/allProduct/3.png") }
+        { id: require("../../images/allProduct/sinda1.png") },
+        { id: require("../../images/allProduct/sinda2.png") },
+        { id: require("../../images/allProduct/sinda3.png") }
       ],
 
       starList: [
@@ -408,7 +415,11 @@ export default {
   width: 100%;
   height: 400px;
 }
-  //知识产权图片列表
+.telCarouselImg{
+  height: 2.8rem;
+  width: 100%;
+}
+//知识产权图片列表
 .pcKnoImg {
   width: 81.75%;
   height: 120.5%;
@@ -435,279 +446,278 @@ export default {
     margin-left: -44px;
   }
 }
-  .pcAllProduct {
-    max-width: 1200px;
-    margin: 0 auto;
+.pcAllProduct {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+// 全部产品栏目及栏目文章列表公共样式
+.pcAllProStarBox {
+  margin-top: 48px;
+}
+.pcRecCliPre {
+  color: black;
+}
+.pcRecCliAft {
+  color: #2693d4;
+}
+.pcAllProColumn {
+  font-size: 15px;
+  margin-top: 53px;
+  margin-right: 10px;
+  display: inline-block;
+}
+.pcAllProStarOut {
+  height: 382px;
+  border: 1px solid #e8e8e8;
+  padding: 8px;
+}
+.pcAllProStarIn {
+  height: 382px;
+  background: #fafafa;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pcSerBox {
+  height: 382px;
+  background: #fafafa;
+  text-align: center;
+}
+.pcSerIcon {
+  display: flex;
+  justify-content: center;
+}
+//初创企业必备
+.pcCreateServieceNameP {
+  //服务名
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+.pcoCreateServiceInfoP {
+  //服务介绍
+  // margin:0 auto;
+  font-size: 11px;
+  padding-left: 16px;
+  padding-right: 16px;
+  // margin-top:16px;
+}
+.pcCreatemarketPrice {
+  //服务市场价格
+  font-size: 23px;
+  color: #2693d4;
+  text-align: center;
+}
+.pcCreateunit {
+  font-size: 14px;
+  margin-top: 8px;
+  margin-left: 20px;
+}
+.pcCreateDetail {
+  max-width: 157px;
+  max-height: 44px;
+  width: 56%;
+  height: 16%;
+  border: 2px solid #2693d4;
+  border-radius: 6px;
+  background: white;
+  color: #2693d4;
+}
+.pcCreateImg {
+  width: 131px;
+  height: 53px;
+  margin-top: 30px;
+}
+//推荐服务
+.pcRecoBtn {
+  font-size: 13px;
+  width: 29.6%;
+  height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  background: #ffecb7;
+  border: 1px solid #ffecb7;
+}
+.pcSerLoc {
+  margin-bottom: 30px;
+}
+.pcShowAll:hover {
+  text-overflow: inherit;
+  overflow: visible;
+  white-space: normal;
+  width: 80px;
+  height: 60px;
+  background: #fcf3da;
+  font-size: 6px;
+}
+.pcRecoBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 16%;
+  height: 24%;
+  position: absolute;
+}
+//中间通栏图片
+.pcAd {
+  width: 100.2%;
+  height: 12.75%;
+}
+//合作伙伴必备标题
+.pcFri {
+  width: 100%;
+  height: 12.25%;
+  margin-top: 42px;
+  margin-bottom: 100px;
+}
+//明星产品推荐文章列表
+.starImg {
+  width: 48.33%;
+  height: 32.33%;
+}
+.starInfo {
+  font-size: 14px;
+  color: #656565;
+}
+.starBox {
+  p {
+    width: 90%;
+    padding-left: 8%;
+    padding-right: 8%;
   }
-  // 全部产品栏目及栏目文章列表公共样式
-  .pcAllProStarBox {
-    margin-top: 48px;
-  }
-  .pcRecCliPre {
-    color: black;
-  }
-  .pcRecCliAft {
-    color: #2693d4;
-  }
-  .pcAllProColumn {
-    font-size: 15px;
-    margin-top: 53px;
-    margin-right: 10px;
-    display: inline-block;
-  }
-  .pcAllProStarOut {
-    height: 382px;
-    border: 1px solid #e8e8e8;
-    padding: 8px;
-  }
-  .pcAllProStarIn {
-    height: 382px;
-    background: #fafafa;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .pcSerBox {
-    height: 382px;
-    background: #fafafa;
+  span {
     text-align: center;
   }
-  .pcSerIcon {
-    display: flex;
-    justify-content: center;
-  }
-  //初创企业必备
-  .pcCreateServieceNameP {
-    //服务名
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .pcoCreateServiceInfoP {
-    //服务介绍
-    // margin:0 auto;
-    font-size: 11px;
-    padding-left: 16px;
-    padding-right: 16px;
-    // margin-top:16px;
-  }
-  .pcCreatemarketPrice {
-    //服务市场价格
-    font-size: 23px;
-    color: #2693d4;
-    text-align: center;
-  }
-  .pcCreateunit {
-    font-size: 14px;
-    margin-top: 8px;
-    margin-left: 20px;
-  }
-  .pcCreateDetail {
-    max-width: 157px;
-    max-height: 44px;
-    width: 56%;
-    height: 16%;
-    border: 2px solid #2693d4;
-    border-radius: 6px;
-    background: white;
-    color: #2693d4;
-  }
-  .pcCreateImg {
-    width: 131px;
-    height: 53px;
-    margin-top: 30px;
-  }
-  //推荐服务
-  .pcRecoBtn {
-    font-size: 13px;
-    width: 29.6%;
-    height: 29px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    text-align: center;
-    margin-left: 5%;
-    margin-bottom: 5%;
-    background: #ffecb7;
-    border: 1px solid #ffecb7;
-  }
-  .pcSerLoc {
-    margin-bottom: 30px;
-  }
-  .pcShowAll:hover {
-    text-overflow: inherit;
-    overflow: visible;
-    white-space: normal;
-    width: 80px;
-    height: 60px;
-    background: #fcf3da;
-    font-size: 6px;
-  }
-  .pcRecoBox {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 16%;
-    height: 24%;
-    position: absolute;
-  }
-  //中间通栏图片
-  .pcAd {
-    width: 100.2%;
-    height: 12.75%;
-  }
-  //合作伙伴必备标题
-  .pcFri {
-    width: 100%;
-    height: 12.25%;
-    margin-top: 42px;
-    margin-bottom: 100px;
-  }
-  //明星产品推荐文章列表
-  .starImg {
-    width: 48.33%;
-    height: 32.33%;
-  }
-  .starInfo {
-    font-size: 14px;
-    color: #656565;
-  }
-  .starBox {
-    p {
-      width: 90%;
-      padding-left: 8%;
-      padding-right: 8%;
-    }
-    span {
-      text-align: center;
-    }
-  }
+}
 
 //手机端
-  //初创企业必备文章列表--xs以下--手机端
-  .telCreatBox {
-    padding-top: 27px;
-    padding-bottom: 20px;
-    padding-left: 17px;
-    padding-right: 40px;
-    border-bottom: 1px solid #cfcfcf;
+//初创企业必备文章列表--xs以下--手机端
+.telCreatBox {
+  padding-top: 27px;
+  padding-bottom: 20px;
+  padding-left: 17px;
+  padding-right: 40px;
+  border-bottom: 1px solid #cfcfcf;
+}
+.telCreatText {
+  font-size: 0.28rem;
+  font-weight: bold;
+  margin-bottom: 19px;
+}
+.telCreatInfo {
+  font-size: 0.23rem;
+  // margin-bottom: 19px;
+}
+.telCreatImg {
+  height: 1.15rem;
+  width: 116%;
+}
+.telCreateunit {
+  font-size: 0.14rem;
+}
+.telCreatemarketPrice {
+  color: red;
+  font-size: 0.24rem;
+  margin-top: -0.6rem;
+  display: inline-block;
+}
+//手机端--头部
+.telCompanyIconBox {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  img {
+    width: 20%;
+    height: 0.6rem;
   }
-  .telCreatText {
-    font-size: 0.28rem;
-    font-weight: bold;
-    margin-bottom: 19px;
-  }
-  .telCreatInfo {
-    font-size: 0.23rem;
-    // margin-bottom: 19px;
-  }
-  .telCreatImg {
-    height: 1.15rem;
-    width: 116%;
-  }
-  .telCreateunit {
-    font-size: 0.14rem;
-  }
-  .telCreatemarketPrice {
-    color: red;
-    font-size: 0.24rem;
-    margin-top: -0.6rem;
-    display: inline-block;
-  }
-  //手机端--头部
-  .telCompanyIconBox {
-    display: flex;
-    justify-content: center;
-    margin-top: 7px;
-    margin-bottom: 7px;
-    img {
-      width: 20%;
-      height: 0.6rem;
-    }
-  }
-  .telChoosedCity {
-    font-size: 0.23rem;
-    // text-align: center;
-  }
-  .telArrow {
-    transform: rotate(90deg);
-    display: inline-block;
-    font-size:0.28rem;
-  }
-  .telHeaderBox {
-    // display: flex;
-    // justify-content: center;
-    position: absolute;
-    z-index: 600;
-    top: -0.58rem;
-    left: 2%;
-  }
-  .telMenuBox {
-    background: rgba(255, 255, 255, 0.8);
-    width: 15%;
-    padding-top: 0.08rem;
-    border: 1px solid;
-    border-top: none;
-    padding-bottom: 0.08rem;
-    position: absolute;
-    z-index: 600;
-    top: 0.5rem;
-    left: 2%;
-    p {
-      text-align: center;
-      font-size: 0.16rem;
-    }
-  }
-  .telTranDeg {
-    transform: rotate(-90deg);
-    display: inline-block;
-  }
-  //手机端---头部导航
-  .telNavBox {
+}
+.telChoosedCity {
+  font-size: 0.23rem;
+  // text-align: center;
+}
+.telArrow {
+  transform: rotate(90deg);
+  display: inline-block;
+  font-size: 0.28rem;
+}
+.telHeaderBox {
+  // display: flex;
+  // justify-content: center;
+  position: absolute;
+  z-index: 600;
+  top: -0.58rem;
+  left: 2%;
+}
+.telMenuBox {
+  background: rgba(255, 255, 255, 0.8);
+  width: 15%;
+  padding-top: 0.08rem;
+  border: 1px solid;
+  border-top: none;
+  padding-bottom: 0.08rem;
+  position: absolute;
+  z-index: 600;
+  top: 0.5rem;
+  left: 2%;
+  p {
     text-align: center;
-    padding-left: 4%;
-    padding-right: 4%;
-    margin-top: 36px;
+    font-size: 0.16rem;
   }
-  .telNavBoxIn {
-    margin-bottom: 27px;
+}
+.telTranDeg {
+  transform: rotate(-90deg);
+  display: inline-block;
+}
+//手机端---头部导航
+.telNavBox {
+  text-align: center;
+  padding-left: 4%;
+  padding-right: 4%;
+  margin-top: 36px;
+}
+.telNavBoxIn {
+  margin-bottom: 27px;
+}
+.telNavImg {
+  width: 58.67%;
+}
+.telNavText {
+  font-size: 0.21rem;
+}
+.telFooterP {
+  text-align: center;
+  color: #8e8e8e;
+  font-size: 0.22rem;
+  margin-bottom: 1.5rem;
+}
+//手机底部
+.telFootImg {
+  margin-bottom: 0.2rem;
+  img {
+    width: 20%;
+    height: 0.6rem;
   }
-  .telNavImg {
-    width: 58.67%;
+}
+//手机端栏目标题
+.telColumn {
+  font-size: 0.29rem;
+  margin-bottom: 0.1rem;
+  margin-left: 3%;
+}
+//手机端：知识产权图片列表
+.telKnow {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  img {
+    width: 93%;
+    height: 3.94rem;
   }
-  .telNavText {
-    font-size: 0.21rem;
-  }
-  .telFooterP {
-    text-align: center;
-    color: #8e8e8e;
-    font-size: 0.22rem;
-    margin-bottom: 1.5rem;
-  }
-  //手机底部
-  .telFootImg {
-    margin-bottom: 0.2rem;
-    img {
-      width: 20%;
-      height: 0.6rem;
-    }
-  }
-  //手机端栏目标题
-  .telColumn {
-    font-size: 0.29rem;
-    margin-bottom: 0.1rem;
-    margin-left: 3%;
-  }
-  //手机端：知识产权图片列表
-  .telKnow {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
-    img {
-      width: 93%;
-      height: 3.94rem;
-    }
-  }
-
+}
 </style>

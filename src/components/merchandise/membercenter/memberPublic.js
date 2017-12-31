@@ -46,6 +46,7 @@ export  function getGoodsAllData(vm) {
                 ":" +
                 gsecond;
             vm.products[businessNo].gdate = gNowDate;
+            
         }
         console.log('products==',vm.products)
         vm.total = data.data.totalCount; //从服务器请求的信息总条数
