@@ -1,87 +1,44 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// //非登录、注册、忘记密码网页
-// const merchandise = () => import('../components/merchandise/merchandise')
+//非登录、注册、忘记密码网页
 const merchandise = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/merchandise')
-// const allProduct = () => import('../components/merchandise/allProduct/allProduct.vue')
 const allProduct = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/allProduct/allProduct.vue')
-// const taxationService = () => import('../components/merchandise/taxationService/taxationService.vue')
 const taxationService = () => import(/* webpackChunkName: "taxationService" */ '../components/merchandise/taxationService/taxationService.vue')
-// const productdetail = () => import('../components/merchandise/taxationService/productdetail.vue')
 const productdetail = () => import(/* webpackChunkName: "productdetail" */ '../components/merchandise/taxationService/productdetail.vue')
-// const joinUs = () => import('../components/merchandise/joinUs/joinUs.vue')
 const joinUs = () => import(/* webpackChunkName: "joinUs" */ '../components/merchandise/joinUs/joinUs.vue')
-// const shop = () => import('../components/merchandise/shop/shop.vue')
 const shop = () => import(/* webpackChunkName: "shop" */ '../components/merchandise/shop/shop.vue')
-// const failurePay = () => import('../components/merchandise/order/failurePay.vue')
 const failurePay = () => import(/* webpackChunkName: "failurePay" */ '../components/merchandise/order/failurePay.vue')
-// const paySuccess = () => import('../components/merchandise/order/paySuccess.vue')
 const paySuccess = () => import(/* webpackChunkName: "paySuccess" */ '../components/merchandise/order/paySuccess.vue')
-// const pc_shophp = () => import('../components/merchandise/shop/pc_shophp.vue')
 const pc_shophp = () => import(/* webpackChunkName: "pc_shophp" */ '../components/merchandise/shop/pc_shophp.vue')
-// const goodsOrder = () => import('../components/merchandise/order/goodsOrder.vue')
 const goodsOrder = () => import(/* webpackChunkName: "goodsOrder" */ '../components/merchandise/order/goodsOrder.vue')
-// const shoppingtrolley = () => import('../components/merchandise/shoppingtrolley/shoppingtrolley.vue')
 const shoppingtrolley = () => import(/* webpackChunkName: "shoppingtrolley" */ '../components/merchandise/shoppingtrolley/shoppingtrolley.vue')
-// // //登录、注册、忘记密码网页
-// const userData = () => import('../components/userData/userData.vue')
+//登录、注册、忘记密码网页
 const userData = () => import(/* webpackChunkName: "userData" */ '../components/userData/userData.vue')
-// const login = () => import('../components/userData/login.vue')
 const login = () => import(/* webpackChunkName: "login" */ '../components/userData/login.vue')
-// const register = () => import('../components/userData/register.vue')
 const register = () => import(/* webpackChunkName: "register" */ '../components/userData/register.vue')
-// const forgetPassword = () => import('../components/userData/forgetPassword.vue')
 const forgetPassword = () => import(/* webpackChunkName: "forgetPassword" */ '../components/userData/forgetPassword.vue')
-// // // 会员中心网页
-// const membercenter = () => import('../components/merchandise/membercenter/membercenter.vue')
+// 会员中心网页
 const membercenter = () => import(/* webpackChunkName: "membercenter" */ '../components/merchandise/membercenter/membercenter.vue')
-// const member = () => import('../components/merchandise/membercenter/member.vue')
 const member = () => import(/* webpackChunkName: "member" */ '../components/merchandise/membercenter/member.vue')
-// const accountpwd = () => import('../components/merchandise/membercenter/accountpwd.vue')
 const accountpwd = () => import(/* webpackChunkName: "accountpwd" */ '../components/merchandise/membercenter/accountpwd.vue')
-// const toevaluate = () => import('../components/merchandise/membercenter/toevaluate.vue')
 const toevaluate = () => import(/* webpackChunkName: "toevaluate" */ '../components/merchandise/membercenter/toevaluate.vue')
-// const userevalua = () => import('../components/merchandise/membercenter/userevalua.vue') 
 const userevalua = () => import(/* webpackChunkName: "userevalua" */ '../components/merchandise/membercenter/userevalua.vue')
-// // //  微信端
-// const unregistered = () => import('../components/merchandise/my/unregistered.vue')
+//微信端
 const unregistered = () => import(/* webpackChunkName: "unregistered" */ '../components/merchandise/my/unregistered.vue')
-// const havelogined = () => import('../components/merchandise/my/havelogined.vue')
 const havelogined = () => import(/* webpackChunkName: "havelogined" */ '../components/merchandise/my/havelogined.vue')
-// const accountset = () => import('../components/merchandise/my/accountset.vue')
 const accountset = () => import(/* webpackChunkName: "accountset" */ '../components/merchandise/my/accountset.vue')
-// // //银联支付
-// const pay = () => import('../components/merchandise/order/pay')
+//银联支付
 const pay = () => import(/* webpackChunkName: "pay" */ '../components/merchandise/order/pay')
-// // //支付宝支付
-// const Alipay = () => import('../components/merchandise/order/Alipay')
+//支付宝支付
 const Alipay = () => import(/* webpackChunkName: "Alipay" */ '../components/merchandise/order/Alipay')
-// // //手机端的全部产品的导航
-// const navShow = () => import('../components/merchandise/allProduct/navShow.vue')
+//手机端的全部产品的导航
 const navShow = () => import(/* webpackChunkName: "navShow" */ '../components/merchandise/allProduct/navShow.vue')
-// // //分页组件
-// const pagePublic = () => import('../components/pagePublic')
+//分页组件
 const lopagePublicgin = () => import(/* webpackChunkName: "pagePublic" */ '../components/pagePublic')
-// //手机端我的订单
-// const myOrderTel = () => import('../components/merchandise/membercenter/myOrderTel.vue')
+//手机端我的订单
 const myOrderTel = () => import(/* webpackChunkName: "myOrderTel" */ '../components/merchandise/membercenter/myOrderTel.vue')
 const pagePublic = () => import(/* webpackChunkName: "pagePublic" */ '../components/pagePublic.vue')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {
