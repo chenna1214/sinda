@@ -197,6 +197,7 @@
 <script>
 import dist from "./distoicker";
 import { mapActions } from "vuex";
+import { Row, Col, Dialog,Button} from "element-ui";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -269,9 +270,9 @@ export default {
       this.distCode = code;
     },
 
-     // 手机端返回小三角
-    back: function(){
-      location.href='#/userData/login';//登录界面
+    // 手机端返回小三角
+    back: function() {
+      location.href = "#/userData/login"; //登录界面
     },
 
     // 密码小眼睛点击事件
@@ -737,7 +738,13 @@ export default {
       }
     }
   },
-  components: { dist }
+  components: {
+    dist,
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Dialog.name]: Dialog,
+    [Button.name]: Button,
+  }
 };
 </script>
 

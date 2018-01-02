@@ -14,7 +14,7 @@
             <div v-for="(eachTil,index) in telFootTil" :key="index" @click="telColorChange(index)">
               <a :href='eachTil.href' class="telFootNavHref">
                 <div class="telFootImgBox">
-                  <div class="telImg" :class="{telHome:index==0,telShop:index==1,telShoppingCar:index==2,telUser:index==3}"></div>
+                  <div class="telImg homeClickBefor" :class="{telHome:index==0,telShop:index==1,telShoppingCar:index==2,telUser:index==3}"></div>
                 </div>
                 <p class="telTil" :class="{telChangeText:textCol==index}">{{eachTil.name}}</p>
               </a>
@@ -27,8 +27,13 @@
 </template>
 
 <script>
+import {Row,Col} from 'element-ui';
 export default {
   name: "pcfooter",
+   components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   data() {
     return {
       telFootTil: [
@@ -39,9 +44,11 @@ export default {
         { name: "我的", href: "javascript:void(0);" }
       ],
       textCol: -1, //点击改变手机端首页底部导航标签颜色的初始值
-      changeHref:''
+      changeHref: "",
+
     };
   },
+  mounted() {},
   methods: {
     telColorChange(index) {
       //点击改变手机端底部导航按钮颜色
@@ -67,16 +74,13 @@ export default {
         this.ajax.post("/xinda-api/sso/login-info").then(data => {
           console.log("登录", data.data.status);
           if (data.data.status == 1) {
-            this.$router.push('/merchandise/havelogined'); 
+            this.$router.push("/merchandise/havelogined");
           } else {
-            this.$router.push('/merchandise/unregistered');
+            this.$router.push("/merchandise/unregistered");
           }
-          this.changeHref=this.telFootTil[3].href
-          console.log('this.changeHref==',this.changeHref)
-
-        
-      });
-        
+          this.changeHref = this.telFootTil[3].href;
+          console.log("this.changeHref==", this.changeHref);
+        });
       } else {
         telImg[3].style.backgroundPosition = "-60px -0";
       }
@@ -103,6 +107,7 @@ export default {
 }
 //手机端--底部导航
 @media all and (max-width: 767px) {
+
   .telImg {
     background: url("../../images/telIndex/telFooter.png") no-repeat;
     width: 35px;
@@ -130,7 +135,7 @@ export default {
     bottom: 0;
     width: 100%;
     background: white;
-    z-index: 6000;
+    z-index: 26000;
     height: 0.8rem;
     min-height: 65px;
   }
@@ -151,4 +156,5 @@ export default {
     color: #2693d4;
   }
 }
+
 </style>

@@ -102,7 +102,7 @@
 
 <script>
 import autourban from "../taxationService/autourban";
-
+import {Row,Col} from 'element-ui';
 export default {
   name: "shop",
   methods: {
@@ -244,7 +244,8 @@ export default {
       code: 0
     };
   },
-  components: { autourban }
+  components: { autourban, [Row.name]:Row,
+    [Col.name]:Col }
 };
 </script>
 

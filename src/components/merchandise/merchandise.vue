@@ -8,14 +8,10 @@
 <script>
 import pcHeader from '../pcPublic/pcHeader/pcHeader'
 import pcfooter from '../pcPublic/pcfooter/pcfooter'
-
-
 export default {
   name: 'sinda',
   components:{pcHeader,pcfooter}
 }
-
 </script>
-
 <style>
 </style>

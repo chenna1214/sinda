@@ -91,20 +91,24 @@
         </div>
       </el-col>
     </el-row>
-
    </div>
 </template>
-
 <script>
 import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
 import { getTitles } from "./public"; //获取产品导航标题
-
+import { Message, Col, Row, Button, Dialog } from "element-ui";
 let searchVal = "";
 export default {
   name: "pcHeader",
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Button.name]: Button,
+    [Dialog.name]: Dialog
+  },
   data() {
     return {
       //选择城市
@@ -151,7 +155,7 @@ export default {
     },
     handleCan() {
       this.dialogVisible = false;
-      this.$message({
+      Message({
         type: "info",
         message: "已取消选择城市"
       });
@@ -212,6 +216,8 @@ export default {
       }, 1000);
     },
     pcDetail: function(searchMatchId) {
+      console.log("this.serchMatch[0].serviceName==", 111111);
+
       //用户点击匹配的搜索内容，查看详情
       if (this.serchMatch[0].serviceName != "没有相关搜索内容") {
         if (this.bgBlue == true) {

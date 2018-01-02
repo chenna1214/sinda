@@ -151,6 +151,7 @@
 
 <script>
 import { mapActions } from "vuex"; //改变数据
+import {Row,Col} from 'element-ui';
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -158,6 +159,10 @@ const eye = [
 ];
 export default {
   name: "login",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   created() {
     this.setTitle("欢迎登录");
   },
