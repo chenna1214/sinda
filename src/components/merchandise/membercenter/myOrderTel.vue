@@ -73,8 +73,14 @@
 
 <script>
 import {getGoodsAllData} from "./memberPublic";
+import {Row,Col} from 'element-ui';
 export default {
   name: "myOrderTel",
+  components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
+
   data() {
     return {
       products: [], //订单
@@ -222,6 +228,7 @@ export default {
   font-size: 0.23rem;
   color: white;
   width: 16.2%;
+  text-align: center;
 }
 .delBox {
   display: flex;
