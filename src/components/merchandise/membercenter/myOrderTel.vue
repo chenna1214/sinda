@@ -6,7 +6,7 @@
       </div>
     <div class="myOrderBoxIn">
 
-      <a class="back" href="#/merchandise/allProduct"><</a>
+      <a class="back" href="#/merchandise/allProduct"></a>
       <div  v-for="(product,proIdx) in products" :key="product.id">
         <div class="headerBox moneyBox paddingStyle">
           <p class="fontSize">订单号：{{product.businessNo}}</p>
