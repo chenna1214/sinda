@@ -517,6 +517,7 @@ export default {
             input {
               width: 98%;
               height: 90%;
+              margin-top: 0;
             }
           }
           .nam-error {
@@ -548,6 +549,7 @@ export default {
             input {
               width: 98%;
               height: 90%;
+              margin-top: 0;
             }
           }
           .ema-error {

@@ -207,6 +207,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { Row, Col, Dialog,Button} from "element-ui";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -218,6 +219,12 @@ const eyes = [
 ];
 export default {
   name: "forgetPassword",
+    components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Dialog.name]: Dialog,
+    [Button.name]: Button,
+  },
   data() {
     return {
       // 计时器

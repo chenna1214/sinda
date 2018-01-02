@@ -197,17 +197,15 @@ export default {
     // 确定按钮
     maisure: function() {
       var that = this;
-      that.ajax
-        .post(
-          "/xinda-api/business-order/del",
-          that.qs.stringify({
-            id: that.business
-          })
-        )
-        .then(function(data) {
-          delete that.products[that.proIdx];
-          that.xstyle = "trans";
-        });
+      this.ajax.post(
+        "/xinda-api/business-order/del",
+        that.qs.stringify({
+          id: that.business
+        })
+      ).then(function(data) {
+        delete that.products[that.proIdx];
+        that.xstyle = "trans";
+      });
     },
 
     // input框的开始结束时间
