@@ -91,9 +91,9 @@
                   <img :src="logImg" class="eyes" alt="" @click="showHidden">
                 </div>
                 <div class="yeahing" v-show="ymi">
-                  <p id = "miJian">• 长度为6-20个字符</p>
-                  <p id = "miJian">• 支持数字，大小写字母</p>
-                  <p id = "miJian">• 不允许有空格</p>
+                  <p id = "miJian">? 长度为6-20个字符</p>
+                  <p id = "miJian">? 支持数字，大小写字母</p>
+                  <p id = "miJian">? 不允许有空格</p>
                 </div>
                 <!-- 设置密码错误提示信息 -->
                 <div class="erping" v-show="emi">
@@ -354,12 +354,13 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
+              console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showE = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              this.showYMi = false;
+              console.log("不等于  1");
               this.error = data.data.msg;
               this.showE = true;
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
