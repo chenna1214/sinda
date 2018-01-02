@@ -40,7 +40,7 @@
                 <p v-for="(eachSer,searchIdx) in serchMatch" :key="searchIdx"  @click='pcDetail(eachSer.id)'>{{eachSer.serviceName||eachSer.providerName}}</p>
               </div>
 
-              <p class="pcHeaderMiddleHotServiceText">热门服务：<span class="pointer" @click="pcDetail('d0711135245247d486b3a6fb274546da')">社保开户</span>  <span class="pointer" @click="pcDetail('c3dbb4e69d6247ba9ef6785f573518a1')">公司注册</span></p>
+              <p class="pcHeaderMiddleHotServiceText">热门服务：<span class="pointer" @click="hotSearch('d0711135245247d486b3a6fb274546da')">社保开户</span>  <span class="pointer" @click="hotSearch('c3dbb4e69d6247ba9ef6785f573518a1')">公司注册</span></p>
                 </div>
                 </el-col>
                 <el-col :md="5" :lg="6" class="pcHeaderRightBox hidden-sm-and-down"><!-- 上半部分内容--右边 -->
@@ -216,8 +216,6 @@ export default {
       }, 1000);
     },
     pcDetail: function(searchMatchId) {
-      console.log("this.serchMatch[0].serviceName==", 111111);
-
       //用户点击匹配的搜索内容，查看详情
       if (this.serchMatch[0].serviceName != "没有相关搜索内容") {
         if (this.bgBlue == true) {
@@ -232,8 +230,14 @@ export default {
             query: { id: searchMatchId }
           });
         }
-      } else {
       }
+    },
+    hotSearch(searchMatchId) {
+      //热门搜索
+      this.$router.push({
+        path: "/merchandise/productdetail",
+        query: { id: searchMatchId }
+      });
     },
     choseType(param) {
       //选择搜索种类（产品/服务商）

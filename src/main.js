@@ -13,11 +13,10 @@ Vue.use(RadioGroup)
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
 Vue.config.productionTip = false;
-// Vue.use(ElementUI);
 Vue.prototype.qs = qs;
 /**
  * 持续调用只执行一次工具方法
- *  @param fn {Function}   实际要执行的函数
+ * @param fn {Function}   实际要执行的函数
  * @param delay {Number}  延迟时间，也就是阈值，单位是毫秒（ms）
  *
  * @return {Function}     返回一个“去弹跳”了的函数
@@ -45,7 +44,7 @@ Vue.prototype.debounce = function debounce(fn, delay) {
 }
 function setRem() {
   var _w = document.documentElement.clientWidth;
-  if (_w < 768) {
+  if (_w <= 768) {
     //屏幕可视区域宽高w3c下全兼容
     var _fontsize = (_w / 750) * 100;
     var html = document.getElementsByTagName('html')[0];
@@ -87,11 +86,16 @@ if (!sessionStorage.getItem("onlyOneTime")) {
 function loadingChange() {
   if (sessionStorage.getItem("onlyOneTime") == 0) {
     if (document.readyState == "complete") { //当页面加载状态为完全结束时进入
-      setTimeout(function () {
-        body[0].style.background='#FFF';
+      // setTimeout(function () {
+      //   body[0].style.background='#FFF';
+      //   loadBox.style.display = 'none';
+      //   ContentBox.style.display = 'block';
+      // }, 500);
+      body[0].style.background='#FFF';
         loadBox.style.display = 'none';
         ContentBox.style.display = 'block';
-      }, 1200);
     }
   } 
 } 
+
+

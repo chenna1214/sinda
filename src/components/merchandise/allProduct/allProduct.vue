@@ -79,7 +79,7 @@
           <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
             <div class="pcAllProStarOut">
               <div class="pcAllProStarIn">
-                <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+                <img class="pcCreateImg" :src="imgCreatedUrl+product.providerImg">
                 <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
                 <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
                 <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
@@ -130,7 +130,7 @@
       </el-row>
       <!-- 初创企业必备文章列表--xs以下--手机端 -->
       <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
-          <el-col :xs="5"><img :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
+          <el-col :xs="5"><img :src="'http://123.58.241.146:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
           <el-col :xs="{span:17,offset:2}">
             <div>
               <p class="telCreatText" @click="productDetail(product.id)">{{product.serviceName}}</p>
@@ -165,7 +165,7 @@
               <!-- <div class="pcAllProStarIn"> -->
               <div class="pcSerBox">
                 <div class="pcSerIcon pcSerLoc">
-                  <img class="pcCreateImg" :src="'http://115.182.107.203:8088/xinda/pic'+pcRecommend.providerImg">
+                  <img class="pcCreateImg" :src="imgCreatedUrl+pcRecommend.providerImg">
                 </div>
                 <p class="pcCreateServieceNameP pcSerLoc">{{pcRecommend.providerName}}</p>
                 <p class="pcoCreateServiceInfoP pcSerLoc">服务指数：8.9分</p>
@@ -180,7 +180,7 @@
           <el-col :sm="6" :md="6" :lg="6"  v-for="product in products" :key="product.serviceName">
             <div class="pcAllProStarOut">
               <div class="pcAllProStarIn">
-                <img class="pcCreateImg pcSerLoc" :src="'http://115.182.107.203:8088/xinda/pic'+product.providerImg">
+                <img class="pcCreateImg pcSerLoc" :src="imgCreatedUrl+product.providerImg">
                 <p class="pcCreateServieceNameP">{{product.serviceName}}</p>
                 <p class="pcoCreateServiceInfoP" >{{product.serviceInfo}}</p>
                   <span class="pcCreatemarketPrice">￥{{product.marketPrice}}</span>
@@ -206,6 +206,7 @@
 import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
 import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
 const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
+
 import { Row, Col,Carousel,CarouselItem,Message } from "element-ui";
 export default {
   name: "allProduct",
@@ -258,6 +259,7 @@ export default {
       pcChoosedCity: { name: "" }, //当前已选城市
       pcCityNameSuc: { city: "" }, //已开通城市名称
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
+      imgCreatedUrl,
       telNavs: [
         {
           telNavImg: require("../../images/telIndex/m_homepage1.png"), //手机端--头部导航图片
