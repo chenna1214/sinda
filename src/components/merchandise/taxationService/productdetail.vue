@@ -1028,7 +1028,7 @@
           }
         }
         .parcon-div{
-          width: 40%;
+          width: 54%;
           line-height: 40px;
           text-align: center;
           background-color: #2693d4;
