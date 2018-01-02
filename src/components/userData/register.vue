@@ -2,10 +2,10 @@
   <div>
     <!-- 注册 -->
     <div class="register">
-
       <!-- 手机端样式 -->
       <!-- 顶部 -->
       <div class="hidden-sm-and-up">
+
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -62,12 +62,6 @@
           </div>
 
       </div>
-
-
-
-
-
-
 
     <div class="hidden-xs-only">
 
@@ -621,6 +615,10 @@ export default {
           .then(data => {
             console.log(data, data.data.status);
             if (data.data.status == -2) {
+              this.showYphone = false;
+              this.showYYan = false;
+              this.showYDuan = false;
+              this.showYMi = false;
               this.showE = true;
               this.error = data.data.msg;
               this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
