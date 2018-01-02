@@ -40,7 +40,7 @@
                 <p v-for="(eachSer,searchIdx) in serchMatch" :key="searchIdx"  @click='pcDetail(eachSer.id)'>{{eachSer.serviceName||eachSer.providerName}}</p>
               </div>
 
-              <p class="pcHeaderMiddleHotServiceText">热门服务：<span class="pointer" @click="pcDetail('d0711135245247d486b3a6fb274546da')">社保开户</span>  <span class="pointer" @click="pcDetail('c3dbb4e69d6247ba9ef6785f573518a1')">公司注册</span></p>
+              <p class="pcHeaderMiddleHotServiceText">热门服务：<span class="pointer" @click="hotSearch('d0711135245247d486b3a6fb274546da')">社保开户</span>  <span class="pointer" @click="hotSearch('c3dbb4e69d6247ba9ef6785f573518a1')">公司注册</span></p>
                 </div>
                 </el-col>
                 <el-col :md="5" :lg="6" class="pcHeaderRightBox hidden-sm-and-down"><!-- 上半部分内容--右边 -->
@@ -93,17 +93,22 @@
     </el-row>
    </div>
 </template>
-
 <script>
 import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
 import { getTitles } from "./public"; //获取产品导航标题
-
+import { Message, Col, Row, Button, Dialog } from "element-ui";
 let searchVal = "";
 export default {
   name: "pcHeader",
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Button.name]: Button,
+    [Dialog.name]: Dialog
+  },
   data() {
     return {
       //选择城市
@@ -127,10 +132,10 @@ export default {
       rDataObjs: { titles: {} },
       index: -1, //轮播图左边导航mouseover\mouseleave事件的变量
       pcNavImg: [
-        "src/components/images/allProduct/icon1.png",
-        "src/components/images/allProduct/icon2.png",
-        "src/components/images/allProduct/icon3.png",
-        "src/components/images/allProduct/icon4.png"
+        require("../../images/allProduct/icon1.png"),
+        require("../../images/allProduct/icon2.png"),
+        require("../../images/allProduct/icon3.png"),
+        require("../../images/allProduct/icon4.png")
       ],
       navDis: false, //控制全部产品的下拉框是否出现或消失
       navGone: function() {}, //控制全部产品的下拉框是否出现或消失
@@ -150,7 +155,7 @@ export default {
     },
     handleCan() {
       this.dialogVisible = false;
-      this.$message({
+      Message({
         type: "info",
         message: "已取消选择城市"
       });
@@ -225,12 +230,19 @@ export default {
             query: { id: searchMatchId }
           });
         }
-      } else {
       }
+    },
+    hotSearch(searchMatchId) {
+      //热门搜索
+      this.$router.push({
+        path: "/merchandise/productdetail",
+        query: { id: searchMatchId }
+      });
     },
     choseType(param) {
       //选择搜索种类（产品/服务商）
-      if (param) {//点击产品时
+      if (param) {
+        //点击产品时
         this.bgBlue = true;
       } else {
         this.bgBlue = false;
@@ -253,20 +265,14 @@ export default {
       }
       this.getSearch();
       //计算input宽度
-      // var searchInput = document.getElementsByClassName(
-      //   "pcHeaderSearchInput"
-      // )[0];
-
-      // console.log("searchInput==", searchInput);
-      // //input框距离文档的尺寸
-      // var docInput = searchInput.offsetLeft;
-      // console.log("input框距离文档的尺寸", docInput);
-      // function show_coords(event) {
-      //   searchInput = event.clientX;
-       
-      // }
-      // show_coords(event);
-      //  console.log("searchInput实时", searchInput);
+      var searchInput = document.getElementsByClassName(
+        "pcHeaderSearchInput"
+      )[0]; //输入搜索内容的input
+      var matchBox = document.getElementsByClassName("pcSerBox")[0]; //匹配搜索内容框
+      //input框宽度
+      var width = getComputedStyle(searchInput).width;
+      var reallyWidth = width.substr(0, width.indexOf("px"));
+      matchBox.style.width = Number(reallyWidth) + 5 + "px";
     }
   }
 };

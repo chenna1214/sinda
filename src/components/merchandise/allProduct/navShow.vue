@@ -4,7 +4,7 @@
         <div class="telNavToal" >
           <el-row v-for="(rDataObj,telIdx) in rDataObjs.titles" :key="rDataObj.id" class="telNavBoxOut">
             <!-- 题目 -->
-            <el-col :xs="5" class="telNavTextBoxw">
+            <el-col :xs="4" class="telNavTextBoxw">
               <div @click="telNavClick(telIdx)" :class="{telNavClickAft:telIdx==telIndex}" class="telNavTextBox">
                   <p class="telNavText">{{rDataObj.name}}</p>
               </div>
@@ -17,10 +17,6 @@
                       <p  class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
                       </p>
                     </router-link>
-                      <!-- <router-link tag='a' :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id"> -->
-                        <!-- <p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id" class="telNavThrid" @click="thirdClick(thirdTil.id,secondTil.itemList)">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
-                        </p> -->
-                      <!-- </router-link> -->
                     </div>
                   </div>
                 </router-link>
@@ -34,8 +30,13 @@
 
 <script>
 import { getTitles } from "../../pcPublic/pcHeader/public"; //获取产品导航标题
+import {Row,Col} from 'element-ui';
 export default {
   name: "navShow",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   data() {
     return {
       telIndex: 1, //点击财税服务后弹出框默认出现的初始值
@@ -51,11 +52,6 @@ export default {
       this.telIndex = telIdx;
       telIdx = !telIdx;
     }, //手机端头部导航
-    thirdClick(id, u) {
-      console.log("id--", id);
-      console.log("secondTil.itemList==", u);
-      console.log("000");
-    }
   }
 };
 </script>
@@ -63,26 +59,32 @@ export default {
 <style scoped lang='less'>
 .telNavToal {
   background: #f3f4f6;
+
+
 }
 
 .telNavBoxOut:nth-child(1){
   .telNavClickOut{
     top: 94px;
+    margin-bottom: 1rem;
   }
 }
 .telNavBoxOut:nth-child(2){
   .telNavClickOut{
     top: 0px;
+    margin-bottom: 1rem;
   }
 }
 .telNavBoxOut:nth-child(3){
   .telNavClickOut{
     top: -94px;
+    margin-bottom: 1rem;
   }
 }
 .telNavBoxOut:nth-child(4){
   .telNavClickOut{
     top: -188px;
+    margin-bottom: 1rem;
   }
 }
 .telNavBoxOut {
@@ -123,10 +125,10 @@ export default {
   width: 500%;
 }
 .telTilBox {
-  padding-top: 10px;
-  padding-bottom: 6px;
-  min-height: 84px;
-  height: auto;
+  // padding-top: 10px;
+  // padding-bottom: 6px;
+  // min-height: 84px;
+  // height: auto;
   background: #f3f4f6;
   margin-top: -26px;
 }

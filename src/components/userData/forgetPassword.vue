@@ -9,7 +9,7 @@
           <div @click="back">
             <span></span>
           </div>
-          <p>注册</p>
+          <p>忘记密码</p>
         </div>
 
         <div class="centent">
@@ -207,6 +207,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { Row, Col, Dialog,Button} from "element-ui";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -218,6 +219,12 @@ const eyes = [
 ];
 export default {
   name: "forgetPassword",
+    components: {
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Dialog.name]: Dialog,
+    [Button.name]: Button,
+  },
   data() {
     return {
       // 计时器
@@ -1020,13 +1027,21 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    > span {
-      display: inline-block;
-      width: 0.16rem;
-      height: 0.16rem;
-      border-left: 2px solid #838383;
-      border-top: 2px solid #838383;
-      transform: rotate(-45deg);
+    > div {
+      position: relative;
+      width: 0.7rem;
+      height: 0.75rem;
+      > span {
+        position: absolute;
+        display: inline-block;
+        width: 0.16rem;
+        height: 0.16rem;
+        border-left: 2px solid #838383;
+        border-top: 2px solid #838383;
+        transform: rotate(-45deg);
+        top: 0.28rem;
+        left: 0.3rem;
+      }
     }
     p {
       width: 88%;

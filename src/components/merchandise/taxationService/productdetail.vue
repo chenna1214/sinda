@@ -10,7 +10,7 @@
       <div class="pro-parciaular" :key="goods.id">
         <!-- 左边 -->
         <div class="par-img">
-          <img :src="'http://115.182.107.203:8088/xinda/pic'+goods.img" alt="">
+          <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.img" alt="">
         </div>
         <!-- 中间 -->
         <div class="par-infor">
@@ -38,7 +38,8 @@
           </div>
           <!-- 立即购买，加入购物车 -->
           <div class="parinf-btn">
-            <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link>
+            <!-- <router-link tag="button" :to="{path: '/merchandise/shoppingtrolley'}" class="paynow">立即购买</router-link> -->
+            <a href='#/merchandise/shoppingtrolley' class="paynow" @click="join">立即购买</a>
             <button @click="join">加入购物车</button>
           </div>
         </div>
@@ -209,7 +210,7 @@
       <!-- 顶部图片及文字 -->
       <div class="wepic">
         <div class="wep-img">
-          <img :src="'http://115.182.107.203:8088/xinda/pic'+goods.img" alt="">
+          <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.img" alt="">
         </div>
         <div class="wep-cha">
           <div class="wep-name">{{goods.servicename}}</div>
@@ -234,7 +235,7 @@
         <!-- 具体信息 -->
         <div class="wes-shop">
           <div class="wes-logo">
-            <img :src="'http://115.182.107.203:8088/xinda/pic'+goods.providerimg" alt="">
+            <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.providerimg" alt="">
           </div>
           <div class="wes-mes">
             <div class="wes-name">{{goods.name}}</div>
@@ -305,7 +306,8 @@
         <!-- 加入购物车 -->
         <div class="wef-join" @click="join">加入购物车</div>
         <!-- 立即购买 -->
-        <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay">立即购买</router-link>
+        <!-- <router-link tag="div" :to="{path: '/merchandise/shoppingtrolley'}" class="wef-pay" @click="join">立即购买</router-link> -->
+        <a href='#/merchandise/shoppingtrolley' class="wef-pay" @click="join">立即购买</a>
       </div>
 
       <!-- 出现部分 -->
@@ -529,9 +531,93 @@
         document.querySelector('.conbod-one').style.display = 'block';
         document.querySelector('.conbod-two').style.display = 'none';
       },
+      // PC端--开始免费咨询
       transfer: function () {
-        document.querySelector('.conbod-one').style.display = 'none';
-        document.querySelector('.conbod-two').style.display = 'block';
+        // 判断手机号
+        if (this.telvalue) {
+          //手机号有输入时
+          if (!/^1[3|4|5|7|8]\d{9}$/.test(this.telvalue)) {
+            //手机号匹配错误
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chashow';
+          } else {
+            //手机号匹配正确
+            this.telstyle = 'chahide';
+            this.nonstyle = 'chahide';
+            this.wrostyle = 'chahide';
+            // 文字验证码
+            var smsNumberStyle = /^[0-9]{6}$/;
+            if (this.smsNumber) {//输入框有输入
+              this.chanons = 'chahide';
+              if (!smsNumberStyle.test(this.smsNumber)) {//不符合正则
+                this.chanons = 'chahide';
+                this.chawros = 'chashow';
+              } else {//符合正则
+                this.chanons = 'chahide';
+                this.chawros = 'chahide';
+                document.querySelector('.conbod-one').style.display = 'none';
+                document.querySelector('.conbod-two').style.display = 'block';
+              }
+            } else {//无输入
+              this.chanons = 'chashow';
+              this.chawros = 'chahide';
+            }
+            // 判断验证码
+            if (this.imgCode) {
+              //验证码有输入时
+              //图片验证码匹配
+              this.ajax
+                .post(
+                  "/xinda-api/register/sendsms",
+                  this.qs.stringify({
+                    cellphone: this.telvalue,
+                    smsType: 1,
+                    imgCode: this.imgCode
+                  })
+                )
+                .then(data => {
+                  console.log(data, data.data.status);
+                  if (data.data.status == 1) {
+                    //图片验证码输入正确
+                    this.get = false;
+                    this.getNew = true;
+                    this.eyan = false;
+                    this.yyan = false;
+                    const TIME_COUNT = 60;
+                    if (!this.timer) {
+                      this.count = TIME_COUNT;
+                      this.show = false;
+                      this.timer = setInterval(() => {
+                        if (this.count > 0 && this.count <= TIME_COUNT) {
+                          this.count--;
+                        } else {
+                          this.show = false;
+                          clearInterval(this.timer);
+                          this.timer = null;
+                        }
+                      }, 1000);
+                    }
+                  } else {
+                    //图片验证码输入错误
+                    console.log(data.data.msg);
+                    this.yyan = false;
+                    this.eyan = true;
+                    this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
+                  }
+                });
+            } else {
+              //验证码为空时
+              this.yyan = true;
+              this.eyan = false;
+            }
+          }
+        } else {
+          //手机号为空时
+          this.nonstyle = 'chashow';
+          this.telstyle = 'chahide';
+          this.wrostyle = 'chahide';
+        }
       },
       addsubtract: function () {
         var parinfNum = document.querySelector('.parinf-num input').value;
@@ -540,7 +626,7 @@
           document.querySelector('.parinf-num input').value = 1;
         }
       },
-      // 点击开始免费咨询
+      // 微信--点击开始免费咨询
       transfers:function () {
         // 判断手机号
         if (this.telvalue) {
@@ -901,6 +987,12 @@
             background-color: #fff;
           }
           .paynow{
+            width: 25%;
+            line-height: 38px;
+            border-radius: 6px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
             color: #fff;
             border-color: #2693d4;
             background-color: #2693d4;
@@ -936,7 +1028,7 @@
           }
         }
         .parcon-div{
-          width: 40%;
+          width: 54%;
           line-height: 40px;
           text-align: center;
           background-color: #2693d4;
@@ -1250,7 +1342,7 @@
               .tel-please{
                 color: #777;
                 margin-left: 5%;
-                line-height: 36px;
+                // line-height: 36px;
               }
               .tel-wrong{
                 color: #f00;
@@ -1531,7 +1623,7 @@
           width: 40px;
           height: 40px;
           display: block;
-          background: url(/src/components/images/companyIdstry/m_xbt.png) no-repeat -66px -75px;
+          background: url("../../../../static/images/m_xbt.png") no-repeat -66px -75px;
         }
         .wes-goldcha{
           margin-left: 0.12rem;
@@ -1689,7 +1781,9 @@
         color: #fff;
         text-align: center;
         line-height: 1.15rem;
+        text-decoration: none;
         background-color: #fc4145;
+        display: inline-block;
         cursor: pointer;
       }
     }

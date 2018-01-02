@@ -43,13 +43,22 @@
             </div>
           </div>
 
+        <div style="font-size: 0;" class="forgetPass">
+          <a href="#/userData/forgetPassword">忘记密码？</a>
+        </div>
+
           <!-- 立即登录跳转 -->
           <button class="logining" @click="nowS">立即登录</button>
         </div>
 
+        <div class="SloginB" >
+          <div class="slo-why">还没有信达账号么？</div>
+          <router-link tag="div" :to="{path: '/userData/register'}" class="slo-btn">立即注册</router-link>
+        </div>
+
       </div>
 
-    <!-- pc端样式 -->
+      <!-- pc端样式 -->
       <div class="hidden-xs-only">
         <el-row type="flex" class="login-centent" justify="center" :gutter="20" style="margin: 52px auto 0">
           <el-col class="hidden-xs-only" :sm="13" :md="13" :lg="13">
@@ -82,9 +91,9 @@
                   <img :src="logImg" class="eyes" alt="" @click="showHidden">
                 </div>
                 <div class="yeahing" v-show="ymi">
-                  <p id = "miJian">• 长度为6-20个字符</p>
-                  <p id = "miJian">• 支持数字，大小写字母</p>
-                  <p id = "miJian">• 不允许有空格</p>
+                  <p id = "miJian">? 长度为6-20个字符</p>
+                  <p id = "miJian">? 支持数字，大小写字母</p>
+                  <p id = "miJian">? 不允许有空格</p>
                 </div>
                 <!-- 设置密码错误提示信息 -->
                 <div class="erping" v-show="emi">
@@ -111,7 +120,7 @@
               </div>
 
               <!-- 忘记密码 -->
-              <a href="#/userData/forgetPassword">忘记密码?</a><br>
+              <a href="#/userData/forgetPassword" id="forgetPass" st>忘记密码?</a><br>
 
               <!-- 立即登录跳转 -->
               <button class="logining" @click="now">立即登录</button>
@@ -142,6 +151,7 @@
 
 <script>
 import { mapActions } from "vuex"; //改变数据
+import {Row,Col} from 'element-ui';
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -149,6 +159,10 @@ const eye = [
 ];
 export default {
   name: "login",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   created() {
     this.setTitle("欢迎登录");
   },
@@ -416,13 +430,13 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
-              console.log("等于  1");
+              // console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showES = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              console.log("不等于  1");
+              // console.log("不等于  1");
               this.errorWeb = data.data.msg;
               this.showES = true;
               return;
@@ -712,6 +726,38 @@ input[type="number"] {
     margin-top: 1rem;
     border: 1px solid #2693d4;
     border-radius: 0.03rem;
+  }
+  .forgetPass {
+    margin: 0.4rem 0 0 0;
+    overflow: hidden;
+    > a {
+      font-size: 0.3rem;
+      color: #2693d4;
+      text-decoration: none;
+      float: right;
+    }
+  }
+  .SloginB {
+    width: 100%;
+    height: 0.6rem;
+    font-size: 0.24rem;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    .slo-why {
+      line-height: 0.6rem;
+    }
+    .slo-btn {
+      width: 1.5rem;
+      height: 0.4rem;
+      line-height: 0.4rem;
+      text-align: center;
+      background-color: #2693d4;
+    }
   }
 }
 </style>

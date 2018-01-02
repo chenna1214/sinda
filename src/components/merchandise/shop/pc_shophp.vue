@@ -6,7 +6,7 @@
       <div class="com-logo">
         <!-- 图 -->
         <div class="comlogo-image">
-          <img :src="'http://115.182.107.203:8088/xinda/pic'+products.providerImg" alt="">
+          <img :src="'http://123.58.241.146:8088/xinda/pic'+products.providerImg" alt="">
         </div>
         <!-- 字 -->
         <div class="comlogo-character">
@@ -139,7 +139,7 @@
       <!-- 公司具体信息 -->
       <div class="wecompany">
         <div class="wec-logo">
-          <img :src="'http://115.182.107.203:8088/xinda/pic'+products.providerImg" alt="">
+          <img :src="'http://123.58.241.146:8088/xinda/pic'+products.providerImg" alt="">
         </div>
         <div class="wec-name">{{products.name}}</div>
         <div class="wec-mes">{{products.providerInfo}}</div>
@@ -154,7 +154,7 @@
         <div class="wea-detail">
           <div class="wea-box" v-for="service in services" :key="service.id">
             <div class="wea-img" @click="proDetail(service.id)">
-              <img :src="'http://115.182.107.203:8088/xinda/pic'+service.providerImg" alt="">
+              <img :src="'http://123.58.241.146:8088/xinda/pic'+service.providerImg" alt="">
             </div>
             <div class="wea-mes">
               <div class="wea-name">{{service.serviceName}}</div>
@@ -191,7 +191,7 @@ export default {
     var that = this;
     this.getService()
     // 服务产品
-    this.ajax.post('xinda-api/recommend/list',
+    this.ajax.post('/xinda-api/recommend/list',
     this.qs.stringify({
       // start: 0,
       // limit: 8,
@@ -465,7 +465,7 @@ export default {
                         margin-bottom: 3%;
                         >a{
                           text-decoration: none;
-                          font-size: 18px;
+                          font-size: 14px;
                           line-height: 30px;
                           color: #2693d4;
                           margin-left: 5%;

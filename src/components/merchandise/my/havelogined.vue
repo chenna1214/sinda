@@ -60,19 +60,9 @@ export default {
     logout() {
       //退出登录
       logOff(this);
-      // if(this.exit=="成功退出登录"){
-        this.$router.push({path:'/merchandise/unregistered'})
-      // }
+        this.$router.push({path:'/merchandise/unregistered'});
     }
   },
-  computed: {
-    // ...mapGetters(["getNum", "getName"])
-  },
-  created() {
-    // if (!this.getNum) {
-    //   this.gainNum();
-    // }
-  }
 };
 </script>
 

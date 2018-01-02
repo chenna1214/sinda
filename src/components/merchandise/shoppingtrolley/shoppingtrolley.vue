@@ -170,6 +170,7 @@
 
 <script>
 import { mapActions } from "vuex"; //显示数据
+import { Row, Col, Loading, Button } from "element-ui";
 export default {
   name: "shoppingtrolley",
   methods: {
@@ -234,7 +235,7 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
-        if(that.shTrDatas.length==0){
+        if (that.shTrDatas.length == 0) {
           that.goodsnum = 0;
         }
         that.tlPrice = 0;
@@ -262,7 +263,7 @@ export default {
     // 结算
     settleActs: function() {
       //等待数据加载成功---------------
-      const loading = this.$loading({
+      const loading = Loading.service({
         lock: true,
         text: " （￣▽￣）马上就好（￣▽￣） ",
         spinner: "el-icon-loading",
@@ -282,11 +283,6 @@ export default {
       });
     }
   },
-  // watch: {
-  //   goodsnum: function(goodsnumnew,goodsnumold){
-      
-  //   }
-  // },
   created() {
     var that = this;
     // 获取购物城商品数目
@@ -324,7 +320,11 @@ export default {
       // 获取焦点
     };
   },
-  components: {}
+  components: {
+    [Row.name]: Row,
+    [Button.name]: Button,
+    [Col.name]: Col 
+  }
 };
 </script>
 
@@ -333,7 +333,6 @@ export default {
   .pointer {
     cursor: pointer;
   }
-
   .pctaxservices-body {
     max-width: 1200px;
     margin: 0 auto;
@@ -812,22 +811,22 @@ li {
       width: 5rem;
       height: 3.5rem;
       position: relative;
-      .pcsh-pophd{
+      .pcsh-pophd {
         width: 96%;
-        padding-left:4%;
+        padding-left: 4%;
         position: absolute;
-        top:0;
+        top: 0;
         left: 0;
         height: 0.6rem;
         color: #000;
         line-height: 0.6rem;
-        background:#bbb;
+        background: #bbb;
       }
       .el-dialog__header {
         height: 1rem;
       }
-      .el-dialog__body{
-        padding:0;
+      .el-dialog__body {
+        padding: 0;
       }
     }
   }

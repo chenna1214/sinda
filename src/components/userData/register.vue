@@ -2,10 +2,10 @@
   <div>
     <!-- 注册 -->
     <div class="register">
-
       <!-- 手机端样式 -->
       <!-- 顶部 -->
       <div class="hidden-sm-and-up">
+
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -62,12 +62,6 @@
           </div>
 
       </div>
-
-
-
-
-
-
 
     <div class="hidden-xs-only">
 
@@ -202,6 +196,7 @@
 
 <script>
 import dist from "./distoicker";
+import { Row, Col, Dialog,Button} from "element-ui";
 import { mapActions } from "vuex";
 var md5 = require("md5");
 const eye = [
@@ -210,6 +205,13 @@ const eye = [
 ];
 export default {
   name: "register",
+   components: {
+     dist,
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Dialog.name]: Dialog,
+    [Button.name]: Button,
+  },
   created() {
     this.setTitle("欢迎注册");
   },
@@ -581,7 +583,7 @@ export default {
         this.Eduan = "请输入6位数字手机验证码";
       }
       // 判断省市区
-      if (this.area) {
+      if (this.distCode) {
         this.esan = false;
       } else {
         this.esan = true;
@@ -621,6 +623,10 @@ export default {
           .then(data => {
             console.log(data, data.data.status);
             if (data.data.status == -2) {
+              this.showYphone = false;
+              this.showYYan = false;
+              this.showYDuan = false;
+              this.showYMi = false;
               this.showE = true;
               this.error = data.data.msg;
               this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
@@ -683,7 +689,7 @@ export default {
         return;
       }
       // 判断省市区
-      if (this.area) {
+      if (this.distCode) {
         this.showES = false;
       } else {
         this.errorWeb = "请选择您所在的省市区";
@@ -739,7 +745,7 @@ export default {
       }
     }
   },
-  components: { dist }
+  // components: { dist }
 };
 </script>
 
@@ -878,6 +884,7 @@ input[type="number"] {
 
   .verify {
     display: flex;
+    // align-items: center;
     .verifyI {
       cursor: pointer;
       img {
@@ -943,6 +950,7 @@ input[type="number"] {
     border-radius: 3px;
     padding: 0 0 0 20px;
     font-size: 15px;
+    margin-top: 0;
   }
   .boxI {
     width: 154px;

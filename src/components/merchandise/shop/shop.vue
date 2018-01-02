@@ -28,7 +28,7 @@
                   <div class="pcsp-shelm clear">
                     <div class="pcsp-shell">
                       <div class="pcsp-imgwp">
-                        <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg"  alt="">
+                        <img :src="imgCreatedUrl+ product.providerImg"  alt="">
                       </div>
                       <p class="pcsp-gdser"><span class="pcsp-gsico"></span><span class="pcsp-gswd">金牌服务商</span></p>
                     </div>
@@ -79,7 +79,7 @@
           <li   v-for="product in products" :key="product.providerName" class="tel-texelm clear">
             <!-- 左侧图片 -->
             <router-link tag="button" :to="{path: '/merchandise/pc_shophp',query: { id: product.id }}" class="tel-teimg">
-              <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">            
+              <img :src="imgCreatedUrl+ product.providerImg" alt="" class="tel-imgin">            
             </router-link>
             <!-- 右侧文字部分 -->
             <div class="tel-tewor">
@@ -102,7 +102,7 @@
 
 <script>
 import autourban from "../taxationService/autourban";
-
+import {Row,Col} from 'element-ui';
 export default {
   name: "shop",
   methods: {
@@ -241,10 +241,12 @@ export default {
       startIdx: 0,
       pageNum: {}, //页数
       page: 1, //每类数据分的总页数
-      code: 0
+      code: 0,
+      imgCreatedUrl,
     };
   },
-  components: { autourban }
+  components: { autourban, [Row.name]:Row,
+    [Col.name]:Col }
 };
 </script>
 

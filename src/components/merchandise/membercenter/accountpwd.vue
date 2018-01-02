@@ -421,8 +421,8 @@ export default {
           width: 100%;
           align-items: center;
           .cur-image {
-            width: 11%;
-            height: 100px;
+            width: 97px;
+            height: 97px;
             background: url(../pc_images/login_logo.png) no-repeat 0 -113px;
           }
         }
@@ -436,6 +436,7 @@ export default {
             input {
               width: 98%;
               height: 90%;
+              margin-top: 0;
             }
           }
           .nam-error {
@@ -466,6 +467,7 @@ export default {
             input {
               width: 98%;
               height: 90%;
+              margin-top: 0;
             }
           }
           .ema-error {
@@ -514,13 +516,16 @@ export default {
         // 旧密码
         .oldpwd {
           margin-left: 7%;
+          line-height: 39px;
         }
         // 新密码
         .newpwd {
           margin-left: 7%;
+          line-height: 39px;
         }
         // 再次输入新密码
         .pwdagain {
+          line-height: 39px;
         }
         // 保存
         .cha-save {

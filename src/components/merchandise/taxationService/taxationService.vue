@@ -44,7 +44,7 @@
                   <!-- 元素左侧 -->
                   <div class="pccn-tbell">
                     <div class="pccn-teimg" @click="toDetail(product.id)" >
-                      <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="">
+                      <img :src="imgCreatedUrl+ product.providerImg">
                     </div>
                     <div class="pccn-tewor">
                       <p @click="toDetail(product.id)" class="pccn-tenm">
@@ -100,7 +100,7 @@
        <li  v-for="(product,idx) in products" :key="product.serviceInfo" class="tel-texelm clear" :class="{lastMessage:idx==totalCount}">
          <!-- 左侧图片 -->
          <div class="tel-teimg" @click="toDetail(product.id)" >
-           <img :src="'http://115.182.107.203:8088/xinda/pic'+ product.providerImg" alt="" class="tel-imgin">
+           <img :src="imgCreatedUrl+ product.providerImg" alt="" class="tel-imgin">
           </div>
           <!-- 右侧文字部分 -->
           <div class="tel-tewor">
@@ -126,13 +126,13 @@ import autourban from "./autourban";
 import { mapActions } from "vuex"; //改变数据
 import servicePart from "./servicePart.vue"; //引用财税服务右侧栏组件
 import company from "./company";
+import {Row,Col} from 'element-ui';
 
 export default {
   name: "taxationService",
   methods: {
     region(){
       var that = this;
-      
       var newdata = [];
       if (that.distCode) {
         for (var i in that.products) {
@@ -362,10 +362,12 @@ export default {
       reallyThird: "",
       types: [], //产品类型原始数据
       proSort: -10, //排序请求参数sort
-      totalCount: "" //从服务器获取信息总条数
+      totalCount: "", //从服务器获取信息总条数
+      imgCreatedUrl,//图片服务器路径
     };
   },
-  components: { autourban, servicePart, company }
+  components: { autourban, servicePart, company,[Row.name]:Row,
+    [Col.name]:Col }
 };
 </script>
 

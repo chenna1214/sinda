@@ -5,7 +5,6 @@
       <div class="pcTop hidden-xs-only"><!-- 最顶部 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="{span:12}">
           <div>
-            
             <p class="pcTopBlackText pcWelcomeText">欢迎<a href="#/merchandise/membercenter" class="pcUserName">{{getName}}</a>来到信达！</p>
             <a href="#/userData/login"  class="pcTopBlueText" v-show="!getName">登录</a>
             <span class="pcTopBlueText" v-show="getName" @click="logOff()">退出登录</span>
@@ -31,6 +30,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { logOff } from "../../exitPublic.js";
+import {Row,Col} from 'element-ui';
 
 export default {
   name: "pcTop",
@@ -52,6 +52,10 @@ export default {
     if (!this.getNum) {
       this.gainNum();
     }
+  },
+  components:{
+    [Row.name]:Row,
+    [Col.name]:Col
   }
 };
 </script>
