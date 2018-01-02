@@ -421,7 +421,7 @@ export default {
           width: 100%;
           align-items: center;
           .cur-image {
-            width: 11%;
+            width: 12%;
             height: 100px;
             background: url(../pc_images/login_logo.png) no-repeat 0 -113px;
           }
