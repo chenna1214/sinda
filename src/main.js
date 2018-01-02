@@ -2,7 +2,7 @@ import Vue from 'vue'
 import sinda from './sinda'
 import router from './router'
 import store from './store'
-import axios from 'axios'
+// import axios from 'axios'
 import qs from 'qs'
 import Distpicker from 'v-distpicker'
 import 'element-ui/lib/theme-chalk/display.css';
@@ -13,11 +13,10 @@ Vue.use(RadioGroup)
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
 Vue.config.productionTip = false;
-// Vue.use(ElementUI);
 Vue.prototype.qs = qs;
 /**
  * 持续调用只执行一次工具方法
- *  @param fn {Function}   实际要执行的函数
+ * @param fn {Function}   实际要执行的函数
  * @param delay {Number}  延迟时间，也就是阈值，单位是毫秒（ms）
  *
  * @return {Function}     返回一个“去弹跳”了的函数
@@ -87,11 +86,16 @@ if (!sessionStorage.getItem("onlyOneTime")) {
 function loadingChange() {
   if (sessionStorage.getItem("onlyOneTime") == 0) {
     if (document.readyState == "complete") { //当页面加载状态为完全结束时进入
-      setTimeout(function () {
-        body[0].style.background='#FFF';
+      // setTimeout(function () {
+      //   body[0].style.background='#FFF';
+      //   loadBox.style.display = 'none';
+      //   ContentBox.style.display = 'block';
+      // }, 500);
+      body[0].style.background='#FFF';
         loadBox.style.display = 'none';
         ContentBox.style.display = 'block';
-      }, 1200);
     }
   } 
 } 
+
+
