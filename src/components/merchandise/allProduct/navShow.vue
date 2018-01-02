@@ -17,10 +17,6 @@
                       <p  class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
                       </p>
                     </router-link>
-                      <!-- <router-link tag='a' :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id"> -->
-                        <!-- <p v-for="thirdTil in secondTil.itemList" :key="thirdTil.id" class="telNavThrid" @click="thirdClick(thirdTil.id,secondTil.itemList)">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
-                        </p> -->
-                      <!-- </router-link> -->
                     </div>
                   </div>
                 </router-link>
@@ -51,11 +47,6 @@ export default {
       this.telIndex = telIdx;
       telIdx = !telIdx;
     }, //手机端头部导航
-    thirdClick(id, u) {
-      console.log("id--", id);
-      console.log("secondTil.itemList==", u);
-      console.log("000");
-    }
   }
 };
 </script>
@@ -63,6 +54,8 @@ export default {
 <style scoped lang='less'>
 .telNavToal {
   background: #f3f4f6;
+
+
 }
 
 .telNavBoxOut:nth-child(1){

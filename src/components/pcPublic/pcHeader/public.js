@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import axios from 'axios';
-import ElementUI from 'element-ui';
 import Router from 'vue-router'
-
+import { Message,Dialog } from "element-ui";
+Vue.prototype.$message = Message;
+Vue.use(Dialog);
 export default function getCitys(pcChoosedCity, pcCityNameSuc) {
     axios.post("/xinda-api/common/select-region").then(data => {
         //当前已选城市
@@ -20,8 +21,6 @@ export default function getCitys(pcChoosedCity, pcCityNameSuc) {
         pcCityNameSuc.city = pcCityArr;
     });
 }
-
-
 export function handleCon(dialogVisible, pcChoosedNum, vm) {//判断选择城市的状态出现不同的提示
     dialogVisible = false;
     if (pcChoosedNum == 0) {
@@ -42,7 +41,6 @@ export function handleCon(dialogVisible, pcChoosedNum, vm) {//判断选择城市
         });
     }
 }
-
 export function getTitles(rDataObjs) {//获取产品导航标题
     axios.post("/xinda-api/product/style/list")
         .then(data=>{
@@ -52,8 +50,6 @@ export function getTitles(rDataObjs) {//获取产品导航标题
                 rDataObj[rData[Key].code] = rData[Key];
             }
             rDataObjs.titles = rDataObj; 
-            console.log('rDataObjs.titles',rDataObjs.titles)
-            
         });
 }
 

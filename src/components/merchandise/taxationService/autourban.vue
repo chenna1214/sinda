@@ -26,6 +26,7 @@
 </template>
 <script>
 import dist from "../../../districts/districts";
+import {Row,Col} from 'element-ui';
 
 export default {
   name: "autourban",
@@ -55,7 +56,8 @@ export default {
       this.$emit("selected", this.area);
     }
   },
-  components: {}
+  components: { [Row.name]:Row,
+    [Col.name]:Col}
 };
 </script>
 

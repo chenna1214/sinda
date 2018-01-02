@@ -1,0 +1,16 @@
+body {
+	background: #000;
+}
+canvas {
+	display: block;	
+}
+.box{
+	display: flex;
+	justify-content: center;
+	margin-top: 2rem;
+}
+.text{
+	color: white;
+	font-size: 36px;
+	margin: 0 auto;
+}

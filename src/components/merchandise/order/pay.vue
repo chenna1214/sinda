@@ -2,16 +2,12 @@
     <div>
       <!-- 银联支付 -->
       <div class="UnionHtml" v-loading.fullscreen.lock="fullscreenLoading"></div>
-
-        
     </div>
-
 </template>
 
 <script>
-
+import { Loading } from 'element-ui';
 export default {
-
   name: "Unionpay",
   data() {
     return {
@@ -30,7 +26,7 @@ export default {
     formId.submit();
   },
   created(){
-       const loading = this.$loading({
+       const loading = Loading.service({
           lock: true,
           text: 'Loading',
           spinner: 'el-icon-loading',

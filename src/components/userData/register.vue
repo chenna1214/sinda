@@ -2,10 +2,10 @@
   <div>
     <!-- 注册 -->
     <div class="register">
-
       <!-- 手机端样式 -->
       <!-- 顶部 -->
       <div class="hidden-sm-and-up">
+
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -62,12 +62,6 @@
           </div>
 
       </div>
-
-
-
-
-
-
 
     <div class="hidden-xs-only">
 
@@ -203,6 +197,7 @@
 <script>
 import dist from "./distoicker";
 import { mapActions } from "vuex";
+import { Row, Col, Dialog,Button} from "element-ui";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -275,9 +270,9 @@ export default {
       this.distCode = code;
     },
 
-     // 手机端返回小三角
-    back: function(){
-      location.href='#/userData/login';//登录界面
+    // 手机端返回小三角
+    back: function() {
+      location.href = "#/userData/login"; //登录界面
     },
 
     // 密码小眼睛点击事件
@@ -621,6 +616,10 @@ export default {
           .then(data => {
             console.log(data, data.data.status);
             if (data.data.status == -2) {
+              this.showYphone = false;
+              this.showYYan = false;
+              this.showYDuan = false;
+              this.showYMi = false;
               this.showE = true;
               this.error = data.data.msg;
               this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
@@ -739,7 +738,13 @@ export default {
       }
     }
   },
-  components: { dist }
+  components: {
+    dist,
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Dialog.name]: Dialog,
+    [Button.name]: Button,
+  }
 };
 </script>
 

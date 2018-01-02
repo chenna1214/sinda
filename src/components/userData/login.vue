@@ -151,6 +151,7 @@
 
 <script>
 import { mapActions } from "vuex"; //改变数据
+import {Row,Col} from 'element-ui';
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -158,6 +159,10 @@ const eye = [
 ];
 export default {
   name: "login",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col
+  },
   created() {
     this.setTitle("欢迎登录");
   },
@@ -349,13 +354,12 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
-              console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showE = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              console.log("不等于  1");
+              this.showYMi = false;
               this.error = data.data.msg;
               this.showE = true;
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();

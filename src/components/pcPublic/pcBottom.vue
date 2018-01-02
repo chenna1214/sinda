@@ -3,7 +3,6 @@
 ©Copyright 2016 北京信达科技有限公司 京ICP备 16011621号
    </div>
 </template>
-
 <script>
 export default {
   name: "pcBottom",
@@ -12,7 +11,6 @@ export default {
   }
 };
 </script>
-
 <style scoped lang='less'>
 .pcBottom {
   background:#ccc;

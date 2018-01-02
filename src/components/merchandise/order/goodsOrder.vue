@@ -118,8 +118,14 @@
 </template>
 
 <script>
+import {Row,Col} from 'element-ui';
 export default {
   name: "goodsOrder",
+    components:{
+    [Row.name]:Row,
+    [Col.name]:Col,
+    // [RadioGroup.name]:RadioGroup,
+  },
   created() {
     if (this.$route.query.data == undefined) {
       this.orderTip = true;
@@ -165,7 +171,8 @@ export default {
           )
           .then(data => {
             sessionStorage.setItem("Unionpay", data.data);
-            window.open("/#/pay");
+            // window.open("/#/pay");
+            this.$router.push({path:'/pay'});
           });
       }
       if (this.radio == 2) {
@@ -194,7 +201,8 @@ export default {
           )
           .then(data => {
             sessionStorage.setItem("Alipay", data.data);
-            window.open("/#/Alipay");
+            // window.open("/#/Alipay");
+            this.$router.push({path:'/Alipay'});
           });
       }
       if (this.radio == 4) {
