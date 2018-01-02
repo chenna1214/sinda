@@ -58,7 +58,7 @@
 
       </div>
 
-    <!-- pc端样式 -->
+      <!-- pc端样式 -->
       <div class="hidden-xs-only">
         <el-row type="flex" class="login-centent" justify="center" :gutter="20" style="margin: 52px auto 0">
           <el-col class="hidden-xs-only" :sm="13" :md="13" :lg="13">
@@ -430,13 +430,13 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
-              console.log("等于  1");
+              // console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showES = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              console.log("不等于  1");
+              // console.log("不等于  1");
               this.errorWeb = data.data.msg;
               this.showES = true;
               return;

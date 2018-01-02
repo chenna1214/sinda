@@ -2,7 +2,7 @@ import Vue from 'vue'
 import sinda from './sinda'
 import router from './router'
 import store from './store'
-import axios from 'axios'
+// import axios from 'axios'
 import qs from 'qs'
 import Distpicker from 'v-distpicker'
 import 'element-ui/lib/theme-chalk/display.css';
