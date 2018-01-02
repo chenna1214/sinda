@@ -36,11 +36,7 @@ export default {
         { name: "首页", href: "#/merchandise/allProduct" },
         { name: "店铺", href: "#/merchandise/shop" },
         { name: "购物车", href: "#/merchandise/shoppingtrolley" },
-<<<<<<< HEAD
         { name: "我的", href: "javascript:void(0);" }
-=======
-        { name: "我的", href: "#/merchandise/unregistered" }
->>>>>>> 71954bab02460724ad3b7149699f989b59505803
       ],
       textCol: -1, //点击改变手机端首页底部导航标签颜色的初始值
       changeHref:''

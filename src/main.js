@@ -53,7 +53,7 @@ Vue.prototype.debounce = function debounce(fn, delay) {
 // Vue.prototype.autoHtml();
 function setRem() {
   var _w = document.documentElement.clientWidth;
-  if (_w < 768) {
+  if (_w <= 768) {
     //屏幕可视区域宽高w3c下全兼容
     var _fontsize = (_w / 750) * 100;
     var html = document.getElementsByTagName('html')[0];
