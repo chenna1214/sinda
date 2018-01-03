@@ -91,9 +91,9 @@
                   <img :src="logImg" class="eyes" alt="" @click="showHidden">
                 </div>
                 <div class="yeahing" v-show="ymi">
-                  <p id = "miJian">? 长度为6-20个字符</p>
-                  <p id = "miJian">? 支持数字，大小写字母</p>
-                  <p id = "miJian">? 不允许有空格</p>
+                  <p id = "miJian">• 长度为6-20个字符</p>
+                  <p id = "miJian">• 支持数字，大小写字母</p>
+                  <p id = "miJian">• 不允许有空格</p>
                 </div>
                 <!-- 设置密码错误提示信息 -->
                 <div class="erping" v-show="emi">
@@ -151,7 +151,7 @@
 
 <script>
 import { mapActions } from "vuex"; //改变数据
-import {Row,Col} from 'element-ui';
+import { Row, Col } from "element-ui";
 var md5 = require("md5");
 const eye = [
   require("../merchandise/pc_images/mpp.png"),
@@ -159,9 +159,9 @@ const eye = [
 ];
 export default {
   name: "login",
-    components:{
-    [Row.name]:Row,
-    [Col.name]:Col
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col
   },
   created() {
     this.setTitle("欢迎登录");
@@ -266,8 +266,7 @@ export default {
     Cmi: function() {
       this.ymi = false;
       if (this.setPass) {
-        if (!/^[0-9A-Za-z]{6,20}$/.test(this.setPass)) {
-          console.log("输入错误");
+        if (!/^\w{6,20}$/.test(this.setPass)) {
           this.ymi = false;
           this.emi = true;
           this.Emi = "请输入8-20位数字或大小写字母";
@@ -322,12 +321,18 @@ export default {
 
       //检验密码是否正确
       if (this.setPass) {
-        this.emi = false;
+        if (!/^\w{6,20}$/.test(this.setPass)) {
+          this.emi = true;
+          this.Emi = "请输入8-20位数字或大小写字母";
+        } else {
+          this.emi = false;
+        }
       } else {
-        //密码为空时
+        // 密码为空时
         this.Emi = "请输入您的账号密码";
         this.emi = true;
       }
+
       //验证码本地检验
       if (this.imgCode) {
         if (!/^[0-9A-Za-z]{4}$/.test(this.imgCode)) {
@@ -354,13 +359,11 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
-              console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showE = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              console.log("不等于  1");
               this.error = data.data.msg;
               this.showE = true;
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
@@ -430,13 +433,11 @@ export default {
           .then(data => {
             console.log("验证码接口返回", data, data.data.status, data.data.msg);
             if (data.data.status == "1") {
-              // console.log("等于  1");
               location.href = "#/merchandise/allProduct";
               this.showES = false;
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
-              // console.log("不等于  1");
               this.errorWeb = data.data.msg;
               this.showES = true;
               return;

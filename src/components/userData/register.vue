@@ -380,7 +380,7 @@ export default {
     // 密码
     Cmi: function() {
       this.ymi = false;
-      var setPassStyle = /^[0-9A-Za-z]{6,20}$/;
+      var setPassStyle = /^\w{6,20}$/;
       if (this.setPass) {
         if (!setPassStyle.test(this.setPass)) {
           this.ymi = false;
@@ -439,7 +439,6 @@ export default {
               this.get = false;
               this.getNew = true;
               this.eyan = false;
-              console.log("隐藏啊");
               const TIME_COUNT = 60;
               if (!this.timer) {
                 this.count = TIME_COUNT;
@@ -460,7 +459,6 @@ export default {
               this.Eyan = data.data.msg;
               this.eyan = true;
               this.showYYan = false;
-              console.log("显示啊");
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
             }
           });
@@ -591,7 +589,7 @@ export default {
       }
       // 判断密码
       if (this.setPass) {
-        if (/^\d{6,20}$/.test(this.setPass)) {
+        if (/^\w{6,20}$/.test(this.setPass)) {
           this.emi = false;
         } else {
           this.emi = true;
@@ -698,7 +696,7 @@ export default {
       }
       // 判断密码
       if (this.setPass) {
-        if (/^\d{6,20}$/.test(this.setPass)) {
+        if (/^\w{6,20}$/.test(this.setPass)) {
           this.showES = false;
         } else {
           this.errorWeb = "请设置6-20位任意数字/字母";
