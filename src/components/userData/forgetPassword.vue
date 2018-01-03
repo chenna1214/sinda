@@ -403,7 +403,7 @@ export default {
     // 密码
     Cmi: function() {
       this.ymi = false;
-      var setPassStyle = /^[0-9A-Za-z]{6,20}$/;
+      var setPassStyle = /^\w{6,20}$/;
       if (this.setPass) {
         if (!setPassStyle.test(this.setPass)) {
           this.ymi = false;
@@ -617,7 +617,7 @@ export default {
       }
       // 判断密码
       if (this.setPass) {
-        if (/^\d{6,20}$/.test(this.setPass)) {
+        if (/^\w{6,20}$/.test(this.setPass)) {
           this.emi = false;
         } else {
           this.emi = true;
@@ -726,7 +726,7 @@ export default {
       }
       // 判断密码
       if (this.setPass) {
-        if (/^\d{6,20}$/.test(this.setPass)) {
+        if (/^\w{6,20}$/.test(this.setPass)) {
           this.showES = false;
         } else {
           this.errorWeb = "请设置6-20位任意数字/字母";
@@ -953,6 +953,7 @@ input[type="number"] {
     border-radius: 3px;
     padding: 0 0 0 20px;
     font-size: 15px;
+    margin-top: 0;
   }
   .affirm {
     cursor: pointer;
