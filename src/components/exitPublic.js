@@ -1,5 +1,5 @@
 // import axios from 'axios';
-import Vue from 'vue'
+// import Vue from 'vue'
 import { Message} from "element-ui";
 Vue.prototype.$message = Message;
 export function logOff(vm) {//点击退出登录

@@ -94,7 +94,7 @@
    </div>
 </template>
 <script>
-import Vue from "vue";
+// import Vue from "vue";
 import { mapActions } from "vuex";
 import getCitys from "./public"; //向服务器请求城市数据
 import { handleCon } from "./public"; //判断选择城市的状态出现不同的提示
@@ -144,6 +144,7 @@ export default {
   },
   created() {
     getCitys(this.pcChoosedCity, this.pcCityNameSuc); //城市选择
+    // this.getSearch = this.debounce(this.getSearchList, 600);
     this.getSearch = this.debounce(this.getSearchList, 600);
     getTitles(this.rDataObjs);
   },
