@@ -235,6 +235,7 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
+        that.goodsnum = 0;
         if (that.shTrDatas.length == 0) {
           that.goodsnum = 0;
         }
