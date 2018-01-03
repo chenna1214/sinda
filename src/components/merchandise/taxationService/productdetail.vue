@@ -10,7 +10,7 @@
       <div class="pro-parciaular" :key="goods.id">
         <!-- 左边 -->
         <div class="par-img">
-          <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.img" alt="">
+          <img :src="imgCreatedUrl+goods.img" alt="">
         </div>
         <!-- 中间 -->
         <div class="par-infor">
@@ -210,7 +210,7 @@
       <!-- 顶部图片及文字 -->
       <div class="wepic">
         <div class="wep-img">
-          <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.img" alt="">
+          <img :src="imgCreatedUrl+goods.img" alt="">
         </div>
         <div class="wep-cha">
           <div class="wep-name">{{goods.servicename}}</div>
@@ -235,7 +235,7 @@
         <!-- 具体信息 -->
         <div class="wes-shop">
           <div class="wes-logo">
-            <img :src="'http://123.58.241.146:8088/xinda/pic'+goods.providerimg" alt="">
+            <img :src="imgCreatedUrl+goods.providerimg" alt="">
           </div>
           <div class="wes-mes">
             <div class="wes-name">{{goods.name}}</div>
@@ -393,6 +393,7 @@
 
     data() {
       return {
+        imgCreatedUrl,// 图片地址
         lgwindow: true,
         proevas: [],
         evaluates: [],

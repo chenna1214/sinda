@@ -1,19 +1,19 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import sinda from './sinda'
 import router from './router'
 import store from './store'
-// import axios from 'axios'
-import qs from 'qs'
+// import qs from 'qs'
 import Distpicker from 'v-distpicker'
 import 'element-ui/lib/theme-chalk/display.css';
-import { RadioGroup, Radio } from 'element-ui';
-Vue.use(Radio)
-Vue.use(RadioGroup)
+// import { RadioGroup, Radio } from 'element-ui';
+
+// Vue.use(Radio)
+// Vue.use(RadioGroup)
 // 三级联动
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;
 Vue.config.productionTip = false;
-Vue.prototype.qs = qs;
+Vue.prototype.qs = Qs;
 /**
  * 持续调用只执行一次工具方法
  * @param fn {Function}   实际要执行的函数
@@ -74,28 +74,23 @@ new Vue({
 })
 var loadBox = document.getElementById('loadBox');//首页未加载完成前显示的动画
 var ContentBox = document.getElementById('ContentBox');//vue实例化对象
-var body=document.getElementsByTagName('body')
+var body = document.getElementsByTagName('body')
 document.onreadystatechange = loadingChange;//当页面加载状态改变的时候执行这个方法
 if (!sessionStorage.getItem("onlyOneTime")) {
   sessionStorage.setItem('onlyOneTime', 0)
-}else{
+} else {
   loadBox.style.display = 'none';
   ContentBox.style.display = 'block';
-  body[0].style.background='#FFF';
+  body[0].style.background = '#FFF';
 }
 function loadingChange() {
   if (sessionStorage.getItem("onlyOneTime") == 0) {
     if (document.readyState == "complete") { //当页面加载状态为完全结束时进入
-      // setTimeout(function () {
-      //   body[0].style.background='#FFF';
-      //   loadBox.style.display = 'none';
-      //   ContentBox.style.display = 'block';
-      // }, 500);
       body[0].style.background='#FFF';
         loadBox.style.display = 'none';
         ContentBox.style.display = 'block';
     }
-  } 
-} 
+  }
+}
 
 

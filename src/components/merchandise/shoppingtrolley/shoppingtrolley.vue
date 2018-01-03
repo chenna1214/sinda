@@ -304,6 +304,7 @@ export default {
   },
   data() {
     return {
+      imgCreatedUrl,// 图片地址
       // 加载
       imgCreatedUrl,
       fullscreenLoading: false,

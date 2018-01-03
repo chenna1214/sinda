@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+// import Vue from 'vue'
+// import Router from 'vue-router'
 //非登录、注册、忘记密码网页
 const merchandise = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/merchandise')
 const allProduct = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/allProduct/allProduct.vue')
@@ -38,8 +38,8 @@ const lopagePublicgin = () => import(/* webpackChunkName: "pagePublic" */ '../co
 //手机端我的订单
 const myOrderTel = () => import(/* webpackChunkName: "myOrderTel" */ '../components/merchandise/membercenter/myOrderTel.vue')
 const pagePublic = () => import(/* webpackChunkName: "pagePublic" */ '../components/pagePublic.vue')
-Vue.use(Router)
-export default new Router({
+Vue.use(VueRouter)
+export default new VueRouter({
   routes: [
     {
       path: '/userData',//登录、注册、忘记密码网页

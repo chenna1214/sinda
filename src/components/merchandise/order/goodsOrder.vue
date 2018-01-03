@@ -118,19 +118,22 @@
 </template>
 
 <script>
-import {Row,Col} from 'element-ui';
+import {Row,Col,RadioGroup, Radio} from 'element-ui';
+
 export default {
   name: "goodsOrder",
     components:{
     [Row.name]:Row,
     [Col.name]:Col,
-    // [RadioGroup.name]:RadioGroup,
+    [RadioGroup.name]:RadioGroup,
+    [Radio.name]:Radio
   },
   created() {
     if (this.$route.query.data == undefined) {
       this.orderTip = true;
     }
     var that = this; //this是指main.js中的new Vue
+    console.log('this.$route.query.data',this.$route.query.data);
     this.ajax
       .post(
         "/xinda-api/business-order/detail",
@@ -139,6 +142,7 @@ export default {
         })
       )
       .then(data => {
+        console.log('data.data.data',data.data.data);
         //订单数据
         that.orderList.push(data.data.data);
         // 订单号传到我的订单
