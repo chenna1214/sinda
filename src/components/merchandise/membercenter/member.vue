@@ -56,7 +56,7 @@
                     <div>
                       <div class="comname">
                         <!-- <div class="indname-img">
-                          <img :src="'http://115.182.107.203:8088/xinda/pic'">
+                          <img :src="imgCreatedUrl">
                         </div> -->
                         <div class="indname-cha">
                           <div class="indcha-one">{{subitem.providerName}}</div>
@@ -110,6 +110,7 @@ export default {
   },
   data() {
     return {
+      imgCreatedUrl,// 图片地址
       xstyle: "trans",
       orderstyle: "transf",
       sure: true,

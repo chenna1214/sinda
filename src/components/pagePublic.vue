@@ -17,7 +17,7 @@ export default {
       eachContent: 0, //每页内容
       textColor: 0, //控制页码被选中后的动态样式的初始值
       currentp: 1
-    };
+    }; 
   },
   created() {
     this.pages = Math.ceil(this.total / this.pageNum);
