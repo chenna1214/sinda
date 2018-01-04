@@ -37,6 +37,7 @@ Vue.prototype.debounce = function debounce(fn, delay) {
     }, delay)
   }
 }
+var telApear;
 function setRem() {
   var _w = document.documentElement.clientWidth;
   if (_w <= 768) {
@@ -44,10 +45,15 @@ function setRem() {
     var _fontsize = (_w / 750) * 100;
     var html = document.getElementsByTagName('html')[0];
     html.style.fontSize = _fontsize + 'px';
+    Vue.telApear=1;
   } else {
     var html = document.getElementsByTagName('html')[0];
     html.style.fontSize = 16 + 'px';
+    Vue.telApear=0;
+    
+    
   }
+
 }
 window.onresize = setRem;
 setRem();

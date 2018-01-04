@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/display.css';
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/display.css';
+// import 'element-ui/lib/theme-chalk/index.css'
 import { mapGetters, mapActions } from "vuex";
 import { logOff } from "./components/exitPublic.js";
 import { Row, Col } from "element-ui";

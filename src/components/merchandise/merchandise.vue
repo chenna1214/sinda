@@ -11,15 +11,31 @@
                   <a href="#/merchandise/allProduct">
                     <img src="../images/icon/sindaTextIcon.png" class="pcHeaderLeftsindaTextIcon">
                   </a>
-                  <div class="pcHeaderCityBox">
-                    <p class="pcHeaderCityText">{{pcChoosedCity.name}}</p><!-- 当前已选城市 -->
-                    <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button><!-- 切换城市按钮 -->
+                  <!-- 当前已选城市 -->
+                  <!-- <div class="pcHeaderCityBox">
+                    <p class="pcHeaderCityText">{{pcChoosedCity.name}}</p>
+                    <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button>
                     <el-dialog
                       title="选择城市"
                       :visible.sync="dialogVisible"
                       width="30%"
                     >
                       <span v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</span>
+                        <span slot="footer" class="dialog-footer">
+                          <el-button @click="handleCan()">取 消</el-button>
+                          <el-button @click="handleConfirm()">确 定</el-button>
+                      </span>
+                    </el-dialog>
+                    </div> -->
+                    <div class="pcHeaderCityBox">
+                    <p class="pcHeaderCityText">北京市</p>
+                    <el-button type="text" @click="dialogVisible = true" class="pcHeaderChangeCityText">[切换城市]</el-button>
+                    <el-dialog
+                      title="选择城市"
+                      :visible.sync="dialogVisible"
+                      width="30%"
+                    >
+                      <span @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">北京市</span>
                         <span slot="footer" class="dialog-footer">
                           <el-button @click="handleCan()">取 消</el-button>
                           <el-button @click="handleConfirm()">确 定</el-button>
@@ -51,14 +67,14 @@
               </div>
             </el-row>
             <el-row class="pcHeaderBottom" type="flex" justify="center"><!-- 头部下半部分 -->
-                <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><router-link :to="{path:'/merchandise/allProduct'}" class="pcHeaderBottomLink" active-class="active" @mouseover.native="navDis=true" @mouseleave.native="navDisLeave()">全部产品</router-link></el-col>
+                <el-col :sm="4" :md="4" :lg="{span:4,offset:1}"><router-link :to="{path:'/merchandise/allProduct'}" class="pcHeaderBottomLink" active-class="active" @mouseover.native="navOver()" @mouseleave.native="navDisLeave()">全部产品</router-link></el-col>
                 <el-col :sm="4" :md="4" :lg="4"><router-link :to="{path:'/merchandise/taxationService?code=3'}"  active-class="active" class="pcHeaderBottomLink">财税服务</router-link></el-col>
                 <el-col :sm="4" :md="4" :lg="4"><router-link :to="{path:'/merchandise/taxationServer?code=5'}"  active-class="active" class="pcHeaderBottomLink">公司工商</router-link></el-col>
                 <el-col :sm="4" :md="4" :lg="4"><router-link :to="{path:'/merchandise/joinUs'}"  active-class="active" class="pcHeaderBottomLink">加盟我们</router-link></el-col>
                 <el-col :sm="7" :md="7" :lg="7"><router-link :to="{path:'/merchandise/shop'}"  active-class="active" class="pcHeaderBottomLink">店铺</router-link></el-col>
             </el-row>
             <!-- 全部产品--pc端--轮播左边的导航 -->
-            <div class="pcNavBoxOut" v-show="navDis">
+            <div class="pcNavBoxOut" v-show="navDis" >
               <el-row v-for="(rDataObj,idx) in rDataObjs.titles" :key="rDataObj.id">
                 <el-col :sm="23" :md="23" :lg="23" >
                     <div @mouseover="navDisOver()" @mouseleave="navDis=false">
@@ -109,7 +125,7 @@
       <!-- 手机端--底部导航 -->
       <el-row class="hidden-sm-and-up">
         <el-col :xs="{span:24}" >
-          <div class="telFooterFix">
+          <div class="telFooterFix" v-if="telDis==this.telIf">
             <div class="telFootBox hidden-sm-and-up">
               <div v-for="(eachTil,index) in telFootTil" :key="index" @click="telColorChange(index)">
                 <a :href='eachTil.href' class="telFootNavHref">
@@ -129,8 +145,8 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/display.css';
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/display.css';
+// import 'element-ui/lib/theme-chalk/index.css'
 import { mapActions } from "vuex";
 import getCitys from "./public.js"; //向服务器请求城市数据
 import { handleCon } from "./public.js"; //判断选择城市的状态出现不同的提示
@@ -190,12 +206,16 @@ export default {
     };
   },
   created() {
-    getCitys(this.pcChoosedCity, this.pcCityNameSuc); //城市选择
+    // getCitys(this.pcChoosedCity, this.pcCityNameSuc); //城市选择
     // this.getSearch = this.debounce(this.getSearchList, 600);
-    this.getSearch = this.debounce(this.getSearchList, 600);
-    getTitles(this.rDataObjs);
+    // getTitles(this.rDataObjs);
   },
   methods: {
+    //获得全部产品标题数据
+    navOver(){
+      this.navDis=true;
+      getTitles(this.rDataObjs);
+    },
     //首页次顶部
     //城市选择
     pcChoosed() {
@@ -312,6 +332,8 @@ export default {
       } else {
         searchVal = this.serVal; //全局定义的空字符串不等于input框内的value时，就将当前输入的input框的value值赋值给全局字符串
       }
+      
+      this.getSearch = this.debounce(this.getSearchList, 600);
       this.getSearch();
       //计算input宽度
       var searchInput = document.getElementsByClassName(

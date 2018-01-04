@@ -102,7 +102,7 @@
 
 
         <!-- 手机端 购物车 -->
-        <div class="tel-shptro hidden-sm-and-up">
+        <div class="tel-shptro hidden-sm-and-up" v-if="telDis==telIf">
           <div v-if="goodsnum">
           <!-- 头部 -->
             <p class="tel-shhd">
@@ -307,6 +307,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       imgCreatedUrl,// 图片地址
       // 加载
       imgCreatedUrl,

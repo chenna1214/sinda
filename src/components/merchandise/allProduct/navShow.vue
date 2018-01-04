@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="telDis==telIf">
        <!-- 手机端--全部产品--轮播左边的导航 -->
         <div class="telNavToal" >
           <el-row v-for="(rDataObj,telIdx) in rDataObjs.titles" :key="rDataObj.id" class="telNavBoxOut">
@@ -16,7 +16,7 @@
                     <router-link tag='div' :to="{path:'/merchandise/taxationService',query:{thirdId:thirdTil.id}}" v-for="thirdTil in secondTil.itemList" :key="thirdTil.id">
                       <p  class="telNavThrid">{{thirdTil.name}}<span class="telCarsoulArrow">></span>
                       </p>
-                    </router-link>
+                    </router-link> 
                     </div>
                   </div>
                 </router-link>
@@ -39,6 +39,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       telIndex: 1, //点击财税服务后弹出框默认出现的初始值
       rDataObjs: { titles: {} }
     };

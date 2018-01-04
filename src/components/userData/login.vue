@@ -4,7 +4,7 @@
     <div class="login">
 
       <!-- 手机端样式 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -170,6 +170,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       error: "",
       show: true,
       showES: false,
@@ -369,6 +372,7 @@ export default {
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
+              this.showYMi = false;
               this.error = data.data.msg;
               this.showE = true;
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
@@ -686,7 +690,7 @@ input[type="number"] {
       width: 0.42rem;
       height: 0.35rem;
       right: 0.2rem;
-      top: 0.5rem;
+      top: 0.25rem;
     }
   }
 

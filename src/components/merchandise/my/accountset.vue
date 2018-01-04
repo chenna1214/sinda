@@ -1,6 +1,6 @@
 <template>
   <!-- 账户设置 -->
-  <div class="hidden-sm-and-up accountset">
+  <div class="hidden-sm-and-up accountset" v-if="telDis==telIf">
     <!-- 头部 -->
     <div class="weacctop">
       <div @click="comeback"><span></span></div>
@@ -123,6 +123,9 @@ export default {
   name: 'memaccount',
   data () {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       settings: [],
       accstyle: 'set',
       chastyle: 'sets',

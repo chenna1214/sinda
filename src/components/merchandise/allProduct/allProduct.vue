@@ -2,15 +2,20 @@
   <div>
     <div class="pcAllProduct">
       <!-- 手机端--选择城市 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         <div class="telCompanyIconBox">
           <img src="../../images/icon/sindaTextIcon.png">
         </div>
-        <div class="telHeaderBox" @click="telMenu()"><!-- 选择城市下拉框 -->
+        <div class="telHeaderBox" @click="telMenu()">
+          <!-- 选择城市下拉框 -->
           <span class="telArrow" :class="{telTranDeg:isShow==true}">></span>
-          <span class="telChoosedCity">{{pcChoosedCity.name}}</span><!-- 已经选择的城市 -->
+          <!-- 已经选择的城市 -->
+          <!-- <span class="telChoosedCity">{{pcChoosedCity.name}}</span> -->
+          <span class="telChoosedCity">北京市</span>
         </div>
-        <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
+        <!-- 已经开通的城市 -->
+        <!-- <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div> -->
+        <div class="telMenuBox" v-show="isShow"><p @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">北京市</p></div>
         <!-- 全部产品--xs以下--轮播图片 -->
         <el-row class="hidden-sm-and-up">
           <el-col :xs="{span:24}" >
@@ -104,7 +109,7 @@
         </el-row>
       </div>
         <!-- 全部产品--xs以上--轮播图片 -->
-          <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
+          <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only" v-if="pcDis==telIf">
             <el-carousel trigger="click" height="400px">
               <el-carousel-item>
                 <img src="../../../../static/images/sinda1.png" class="pcCarouselImg">
@@ -219,9 +224,9 @@
         </el-row>
       </div>
       <!-- 手机端：知识产权图片列表 -->
-      <el-row class="hidden-sm-and-up">
+      <el-row class="hidden-sm-and-up"  >
       <el-col :xs='{span:24}'>
-        <div class="telKnow">
+        <div class="telKnow" v-if="telDis==telIf">
           <img src="../../images/telIndex/knowledge.png">
         </div>
       </el-col>
@@ -238,7 +243,7 @@
       <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
           <el-col :xs="5"><img :src="'http://123.58.241.146:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
           <el-col :xs="{span:17,offset:2}">
-            <div>
+            <div v-if="telDis==telIf">
               <p class="telCreatText" @click="productDetail(product.id)">{{product.serviceName}}</p>
               <p class="telCreatInfo" >{{product.serviceInfo}}</p>
               <span class="telCreatemarketPrice">￥{{product.marketPrice}}</span>
@@ -247,7 +252,7 @@
           </el-col>
       </el-row>
         <!-- 手机端--首页底部logo -->
-        <div class="hidden-sm-and-up">
+        <div class="hidden-sm-and-up" v-if="telDis==telIf">
           <div class="telCompanyIconBox telFootImg">
             <img src="../../images/icon/sindaTextIcon.png">
           </div>
@@ -307,12 +312,13 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/display.css';
-import 'element-ui/lib/theme-chalk/index.css'
+
 import getCitys from "../public"; //向服务器请求城市数据
 import { handleCon } from "../public"; //判断选择城市的状态出现不同的提示
-const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
+import 'element-ui/lib/theme-chalk/display.css';
+// import 'element-ui/lib/theme-chalk/index.css'
 import { Row, Col,Carousel,CarouselItem,Message } from "element-ui";
+const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
 export default {
   name: "allProduct",
   components: {
@@ -322,13 +328,15 @@ export default {
     [CarouselItem.name]:CarouselItem
   },
   created() {
-    getCitys(this.pcChoosedCity, this.pcCityNameSuc);
+    // getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     var that = this;
     this.ajax //初创企业必备
       .post("/xinda-api/recommend/list")
       .then(function(data) {
         var pcCreateData = data.data.data;
         that.products = pcCreateData.product;
+        console.log('初创企业必备',that.products)
+        
       });
 
     this.ajax //推荐服务商
@@ -357,6 +365,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       //手机端
       isShow: false, //控制选择城市下拉框的出现与消失的初始值
       telNavShow: false, //点击财税服务后控制弹出框出现或消失的初始值

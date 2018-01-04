@@ -1,6 +1,6 @@
 <template>
   <!-- 已登录 -->
-  <div class="hidden-sm-and-up havelogin">
+  <div class="hidden-sm-and-up havelogin" v-if="telDis==telIf">
     <!-- 头像 -->
     <div class="weavatar">
       <img src="../pc_images/we-people.png" alt="">
@@ -42,6 +42,9 @@ export default {
   name: "havelogined",
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       exit:''//成功退出登录状态
     };
   },

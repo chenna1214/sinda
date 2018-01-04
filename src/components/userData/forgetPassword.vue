@@ -4,7 +4,7 @@
     <div class="forget">
 
       <!-- 手机端样式 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -92,7 +92,7 @@
                   <div class="erImg"></div>
                   <p class="errP">{{Ephone}}</p>
                 </div>
-              </div>
+              </div>                                               
 
               <!-- 验证码 -->
               <div class="verify">
@@ -101,7 +101,7 @@
                 <div class="verifyI" @click="imgReflash">
                   <img :src="imgUrl">
                 </div>
-                <div class="yeahGreen" v-show="showYYan"></div>            
+                <div class="yeahGreen" v-show="showYYan"></div>
                 <div class="yeahing" v-show="yyan">
                   <p>请输入四位图片验证码</p>
                 </div>
@@ -229,6 +229,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       // 计时器
       centerDialogVisible: false,
 
@@ -668,6 +671,11 @@ export default {
               this.showE = true;
               this.error = data.data.msg;
               this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+              this.showYphone = false;
+              this.showYYan = false;
+              this.showYDuan = false;
+              this.showYMi = false;
+              this.showYQue = false;
               return;
             } else {
               //全部正确之后
@@ -1119,7 +1127,7 @@ input[type="number"] {
       width: 0.42rem;
       height: 0.35rem;
       right: 0.2rem;
-      top: 0.5rem;
+      top: 0.25rem;
     }
   }
   .affirm {

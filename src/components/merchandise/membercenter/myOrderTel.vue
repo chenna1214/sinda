@@ -1,6 +1,6 @@
 <template>
 <!-- 手机端--我的订单 -->
-  <div class="myOrderBox">
+  <div class="myOrderBox" v-if="telDis==telIf">
       <div class="telMyOrder">
         <p>我的订单</p>
       </div>
@@ -83,6 +83,12 @@ export default {
 
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       products: [], //订单
       proIdx: "",
       xstyle: "trans",
@@ -90,7 +96,7 @@ export default {
     };
   },
   created() {
-    getGoodsAllData(this);
+      getGoodsAllData(this);
   },
   methods: {
     // 删除按钮
