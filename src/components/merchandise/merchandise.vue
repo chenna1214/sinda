@@ -109,7 +109,7 @@
       <!-- 手机端--底部导航 -->
       <el-row class="hidden-sm-and-up">
         <el-col :xs="{span:24}" >
-          <div class="telFooterFix">
+          <div class="telFooterFix" v-if="telDis==this.telIf">
             <div class="telFootBox hidden-sm-and-up">
               <div v-for="(eachTil,index) in telFootTil" :key="index" @click="telColorChange(index)">
                 <a :href='eachTil.href' class="telFootNavHref">

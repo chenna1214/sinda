@@ -2,7 +2,7 @@
   <div>
     <div class="pcAllProduct">
       <!-- 手机端--选择城市 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         <div class="telCompanyIconBox">
           <img src="../../images/icon/sindaTextIcon.png">
         </div>
@@ -104,7 +104,7 @@
         </el-row>
       </div>
         <!-- 全部产品--xs以上--轮播图片 -->
-          <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
+          <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only" v-if="pcDis==telIf">
             <el-carousel trigger="click" height="400px">
               <el-carousel-item>
                 <img src="../../../../static/images/sinda1.png" class="pcCarouselImg">
@@ -219,9 +219,9 @@
         </el-row>
       </div>
       <!-- 手机端：知识产权图片列表 -->
-      <el-row class="hidden-sm-and-up">
+      <el-row class="hidden-sm-and-up"  >
       <el-col :xs='{span:24}'>
-        <div class="telKnow">
+        <div class="telKnow" v-if="telDis==telIf">
           <img src="../../images/telIndex/knowledge.png">
         </div>
       </el-col>
@@ -238,7 +238,7 @@
       <el-row class="telCreatBox hidden-sm-and-up" v-for="product in products" :key="product.serviceName">
           <el-col :xs="5"><img :src="'http://123.58.241.146:8088/xinda/pic'+product.providerImg" class="telCreatImg"></el-col>
           <el-col :xs="{span:17,offset:2}">
-            <div>
+            <div v-if="telDis==telIf">
               <p class="telCreatText" @click="productDetail(product.id)">{{product.serviceName}}</p>
               <p class="telCreatInfo" >{{product.serviceInfo}}</p>
               <span class="telCreatemarketPrice">￥{{product.marketPrice}}</span>
@@ -247,7 +247,7 @@
           </el-col>
       </el-row>
         <!-- 手机端--首页底部logo -->
-        <div class="hidden-sm-and-up">
+        <div class="hidden-sm-and-up" v-if="telDis==telIf">
           <div class="telCompanyIconBox telFootImg">
             <img src="../../images/icon/sindaTextIcon.png">
           </div>
@@ -322,6 +322,7 @@ export default {
     [CarouselItem.name]:CarouselItem
   },
   created() {
+      console.log('telApear',this.telIf)
     getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     var that = this;
     this.ajax //初创企业必备
@@ -329,6 +330,8 @@ export default {
       .then(function(data) {
         var pcCreateData = data.data.data;
         that.products = pcCreateData.product;
+        console.log('初创企业必备',that.products)
+        
       });
 
     this.ajax //推荐服务商
@@ -357,6 +360,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       //手机端
       isShow: false, //控制选择城市下拉框的出现与消失的初始值
       telNavShow: false, //点击财税服务后控制弹出框出现或消失的初始值
