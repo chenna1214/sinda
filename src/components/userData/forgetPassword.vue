@@ -4,7 +4,7 @@
     <div class="forget">
 
       <!-- 手机端样式 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         <div class="graTop ">
           <div @click="back">
             <span></span>
@@ -229,6 +229,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       // 计时器
       centerDialogVisible: false,
 

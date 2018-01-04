@@ -65,7 +65,7 @@
     </div>
 
     <!-- 店铺列表手机端 -->
-      <div class="hidden-sm-and-up">
+      <div class="hidden-sm-and-up" v-if="telDis==telIf">
         
           <div class="tel-texhd">
           <ul class="tel-txhin clear">
@@ -230,6 +230,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       producTyname: [],
       // 商品类型列表信息
       producType: [],

@@ -87,7 +87,7 @@
    
 
    <!-- 财税服务 手机端-->
-   <div class="hidden-sm-and-up">
+   <div class="hidden-sm-and-up" v-if="telDis==telIf">
      <div class="tel-texhd">
         <ul class="tel-txhin clear">
           <li @click="synthetical()" :class='{"pxtax-clickst-1":proSort==-10}' class="pccn-ghcora">综合排序</li>
@@ -340,6 +340,9 @@ export default {
   },
   data() {
     return {
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
       taxRightSide: 3, //财税服务右侧栏
       CompanyRightSide: 5, //公司工商右侧栏
       products: [],

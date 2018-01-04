@@ -6,11 +6,16 @@
         <div class="telCompanyIconBox">
           <img src="../../images/icon/sindaTextIcon.png">
         </div>
-        <div class="telHeaderBox" @click="telMenu()"><!-- 选择城市下拉框 -->
+        <div class="telHeaderBox" @click="telMenu()">
+          <!-- 选择城市下拉框 -->
           <span class="telArrow" :class="{telTranDeg:isShow==true}">></span>
-          <span class="telChoosedCity">{{pcChoosedCity.name}}</span><!-- 已经选择的城市 -->
+          <!-- 已经选择的城市 -->
+          <!-- <span class="telChoosedCity">{{pcChoosedCity.name}}</span> -->
+          <span class="telChoosedCity">北京市</span>
         </div>
-        <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div><!-- 已经开通的城市 -->
+        <!-- 已经开通的城市 -->
+        <!-- <div class="telMenuBox" v-show="isShow"><p v-for="eachCity in pcCityNameSuc.city" :key="eachCity" @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">{{eachCity}}</p></div> -->
+        <div class="telMenuBox" v-show="isShow"><p @click="pcChoosed()" :class="{pcChoosedCity:1==pcChoosedNum}">北京市</p></div>
         <!-- 全部产品--xs以下--轮播图片 -->
         <el-row class="hidden-sm-and-up">
           <el-col :xs="{span:24}" >
@@ -307,12 +312,13 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/display.css';
-import 'element-ui/lib/theme-chalk/index.css'
+
 import getCitys from "../public"; //向服务器请求城市数据
 import { handleCon } from "../public"; //判断选择城市的状态出现不同的提示
-const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
+import 'element-ui/lib/theme-chalk/display.css';
+// import 'element-ui/lib/theme-chalk/index.css'
 import { Row, Col,Carousel,CarouselItem,Message } from "element-ui";
+const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
 export default {
   name: "allProduct",
   components: {
@@ -322,8 +328,7 @@ export default {
     [CarouselItem.name]:CarouselItem
   },
   created() {
-      console.log('telApear',this.telIf)
-    getCitys(this.pcChoosedCity, this.pcCityNameSuc);
+    // getCitys(this.pcChoosedCity, this.pcCityNameSuc);
     var that = this;
     this.ajax //初创企业必备
       .post("/xinda-api/recommend/list")

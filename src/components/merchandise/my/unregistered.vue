@@ -1,6 +1,6 @@
 <template>
   <!-- 未注册 -->
-  <div class="hidden-sm-and-up unregis">
+  <div class="hidden-sm-and-up unregis" v-if="telDis==telIf">
     <!-- 头像 -->
     <div class="weavatar">
       <img src="../pc_images/we-people.png" alt="">
@@ -43,7 +43,9 @@ export default {
   name: "unregistered",
   data() {
     return {
-
+      pcDis:0,//电脑端显示
+      telDis:1,//手机端显示
+      telIf:Vue.telApear,//根据分辨率获取不同值
     };
   },
   methods: {
