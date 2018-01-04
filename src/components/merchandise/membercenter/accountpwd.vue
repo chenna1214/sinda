@@ -10,7 +10,7 @@
       <!-- 主体 -->
       <div class="set-body">
         <!-- 账户设置 -->
-        <div class="set-account" v-show="setone" :key="settings.id">
+        <div class="set-account" v-show="setone">
           <!-- 当前头像 -->
           <div class="set-current">
             <div>当前头像：</div>
@@ -32,8 +32,8 @@
           <div class="set-sex">
             <div>性别：</div>
             <div class="sex-input">
-              <el-radio v-model="radio" label="1" class="male" checked>男</el-radio>
-              <el-radio v-model="radio" label="2" class="female">女</el-radio>
+              <el-radio v-model="radio" label="1" id="male" checked>男</el-radio>
+              <el-radio v-model="radio" label="2" id="female">女</el-radio>
             </div>
           </div>
           <!-- 邮箱 -->
@@ -106,12 +106,16 @@
 import 'element-ui/lib/theme-chalk/display.css';
 import 'element-ui/lib/theme-chalk/index.css'
 import dist from '../../../districts/districts';
+import {Radio} from 'element-ui'
 var md5 = require('md5');
 export default {
   name: 'memaccount',
+  components: {
+    [Radio.name]:Radio
+  },
   data () {
     return {
-      settings: [],
+      // settings: [],
       accstyle: 'set',
       chastyle: 'sets',
       setone: true,
@@ -153,7 +157,7 @@ export default {
       newpwda: '',
       agaerr: false,
     }
-    components: {}
+    
   },
 
   watch:{
@@ -454,9 +458,18 @@ export default {
           .sex-input {
             width: 10%;
             display: flex;
-            > div {
+            el-radio{
               width: 40%;
             }
+            // #male{
+            //   width: 40%;
+            // }
+            // #female{
+            //   width: 40%;
+            // }
+            // > div {
+            //   width: 40%;
+            // }
           }
         }
         // 邮箱

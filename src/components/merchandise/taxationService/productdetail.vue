@@ -7,7 +7,7 @@
         <p>首页 / 财税服务</p>
       </div>
       <!-- 商品详情 -->
-      <div class="pro-parciaular" :key="goods.id">
+      <div class="pro-parciaular">
         <!-- 左边 -->
         <div class="par-img">
           <img :src="imgCreatedUrl+goods.img" alt="">
@@ -89,7 +89,7 @@
               </div>            
             </div>
             <!-- 中 -->
-            <div class="app-fourapp" :key="proevas.id">
+            <div class="app-fourapp">
               <div style="background-color: #2693d4;color: #fff;">全部评价（{{proevas.goodNum+proevas.midNum+proevas.badNum}}）</div>
               <div class="app-good">好评（{{proevas.goodNum}}）</div>
               <div class="app-middle">中评（{{proevas.midNum}}）</div>
@@ -102,7 +102,7 @@
                 <div>满意度</div>
                 <div>用户</div>
               </div>
-              <div class="und-down" :key="evaluates.id">
+              <div class="und-down">
                 <!-- 评价 -->
                 <div class="dow-estimate">
                   <div class="dowest-pay">
@@ -206,7 +206,7 @@
     </div>
 
     <!-- 微信端 -->
-    <div class="hidden-sm-and-up" :key="goods.id">
+    <div class="hidden-sm-and-up">
       <!-- 顶部图片及文字 -->
       <div class="wepic">
         <div class="wep-img">

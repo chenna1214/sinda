@@ -13,7 +13,7 @@
         <span></span>
       </div>
       <!-- 具体内容 -->
-      <div class="set-account" :key="settings.id">
+      <div class="set-account">
         <!-- 当前头像 -->
         <div class="set-current">
           <div>当前头像：</div>

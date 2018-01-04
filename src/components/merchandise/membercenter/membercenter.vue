@@ -9,7 +9,7 @@
         <!-- 左 -->
         <div class="main-left hidden-xs-only">
           <!-- 头像 -->
-          <div class="mai-avatar" :key="phones.id">
+          <div class="mai-avatar">
             <div class="ava-img"></div>
             <div class="ava-phone">{{phones.loginId}}</div>
           </div>

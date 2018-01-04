@@ -1,7 +1,7 @@
 <template>
   <div>
    <!-- 店铺 -->
-    <div class="company hidden-xs-only" :key="products.id">
+    <div class="company hidden-xs-only">
        <!-- 企业logo -->
       <div class="com-logo">
         <!-- 图 -->
@@ -135,7 +135,7 @@
     </div>
 
     <!-- 微信端店铺首页 -->
-    <div class="hidden-sm-and-up" :key="products.id">
+    <div class="hidden-sm-and-up">
       <!-- 公司具体信息 -->
       <div class="wecompany">
         <div class="wec-logo">
