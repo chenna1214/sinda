@@ -179,6 +179,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 export default {
   name: 'pc_shophp',
   watch:{//监听服务商的id，根据服务商的id获取最新的服务商数据

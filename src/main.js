@@ -1,14 +1,9 @@
-// import Vue from 'vue'
 import sinda from './sinda'
 import router from './router'
 import store from './store'
-// import qs from 'qs'
 import Distpicker from 'v-distpicker'
-import 'element-ui/lib/theme-chalk/display.css';
-// import { RadioGroup, Radio } from 'element-ui';
-
-// Vue.use(Radio)
-// Vue.use(RadioGroup)
+// import 'element-ui/lib/theme-chalk/display.css';
+// import 'element-ui/lib/theme-chalk/index.css'
 // 三级联动
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.ajax = axios;

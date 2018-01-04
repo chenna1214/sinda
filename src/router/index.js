@@ -1,5 +1,4 @@
-// import Vue from 'vue'
-// import Router from 'vue-router'
+
 //非登录、注册、忘记密码网页
 const merchandise = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/merchandise')
 const allProduct = () => import(/* webpackChunkName: "merchandise" */ '../components/merchandise/allProduct/allProduct.vue')

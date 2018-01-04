@@ -150,6 +150,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import { mapActions } from "vuex"; //改变数据
 import { Row, Col } from "element-ui";
 var md5 = require("md5");
@@ -347,6 +349,8 @@ export default {
       }
       if (this.ephone == false && this.eyan == false && this.emi == false) {
         //验证码接口检验
+ 
+        
         this.ajax
           .post(
             "/xinda-api/sso/login",
@@ -357,7 +361,8 @@ export default {
             })
           )
           .then(data => {
-            console.log("验证码接口返回", data, data.data.status, data.data.msg);
+            console.log('md5(this.setPass)',md5(this.setPass))
+
             if (data.data.status == "1") {
               location.href = "#/merchandise/allProduct";
               this.showE = false;

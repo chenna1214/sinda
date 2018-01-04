@@ -169,6 +169,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import { mapActions } from "vuex"; //显示数据
 import { Row, Col, Loading, Button } from "element-ui";
 export default {
