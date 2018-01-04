@@ -1127,7 +1127,7 @@ input[type="number"] {
       width: 0.42rem;
       height: 0.35rem;
       right: 0.2rem;
-      top: 0.5rem;
+      top: 0.25rem;
     }
   }
   .affirm {
