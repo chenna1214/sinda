@@ -92,7 +92,7 @@
                   <div class="erImg"></div>
                   <p class="errP">{{Ephone}}</p>
                 </div>
-              </div>
+              </div>                                               
 
               <!-- 验证码 -->
               <div class="verify">
@@ -101,7 +101,7 @@
                 <div class="verifyI" @click="imgReflash">
                   <img :src="imgUrl">
                 </div>
-                <div class="yeahGreen" v-show="showYYan"></div>            
+                <div class="yeahGreen" v-show="showYYan"></div>
                 <div class="yeahing" v-show="yyan">
                   <p>请输入四位图片验证码</p>
                 </div>
@@ -666,6 +666,11 @@ export default {
               this.showE = true;
               this.error = data.data.msg;
               this.imgUrl = this.imgUrl + "?t=" + new Date().getTime();
+              this.showYphone = false;
+              this.showYYan = false;
+              this.showYDuan = false;
+              this.showYMi = false;
+              this.showYQue = false;
               return;
             } else {
               //全部正确之后

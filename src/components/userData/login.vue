@@ -364,6 +364,7 @@ export default {
               this.setName(this.phone); //获得用户名
               sessionStorage.setItem("userName", this.phone);
             } else {
+              this.showYMi = false;
               this.error = data.data.msg;
               this.showE = true;
               this.imgUrl = this.imgUrl + "?t" + new Date().getTime();
