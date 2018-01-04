@@ -34,7 +34,7 @@
                   <el-row class="pcsh-ginfo">
                     <el-col :span="4">
                       <div class="pcsh-gimg" @click="toDetail(shTrData.serviceId)">
-                        <img  :src="'http://115.182.107.203:8088/xinda/pic'+ shTrData.providerImg"  alt="">
+                        <img  :src="imgCreatedUrl+ shTrData.providerImg"  alt="">
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -118,7 +118,7 @@
                   <p class="tel-spconm">{{shTrData.providerName}}</p>
                   <!-- 左侧图片 -->
                   <div class="tel-teimg">
-                    <img :src="'http://115.182.107.203:8088/xinda/pic'+ shTrData.providerImg" alt="" class="tel-imgin">
+                    <img :src="imgCreatedUrl + shTrData.providerImg" alt="" class="tel-imgin">
                     </div>
                     <!-- 右侧文字部分 -->
                     <div class="tel-tewor">
@@ -237,6 +237,7 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
+        that.goodsnum = 0;
         if (that.shTrDatas.length == 0) {
           that.goodsnum = 0;
         }
@@ -306,7 +307,9 @@ export default {
   },
   data() {
     return {
+      imgCreatedUrl,// 图片地址
       // 加载
+      imgCreatedUrl,
       fullscreenLoading: false,
       goodsnum: 0,
       num1: 1,
