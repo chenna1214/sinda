@@ -378,7 +378,8 @@
 
 <script>
   import { mapActions} from "vuex"; //显示数据
-
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
   export default {
     name: "productdetail",
     watch:{
@@ -1624,7 +1625,7 @@
           width: 40px;
           height: 40px;
           display: block;
-          background: url("../../../../static/images/m_xbt.png") no-repeat -66px -75px;
+          background: url("/src/components/images/companyIdstry/m_xbt.png") no-repeat -66px -75px;
         }
         .wes-goldcha{
           margin-left: 0.12rem;

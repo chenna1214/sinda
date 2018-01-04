@@ -101,6 +101,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import autourban from "../taxationService/autourban";
 import {Row,Col} from 'element-ui';
 export default {

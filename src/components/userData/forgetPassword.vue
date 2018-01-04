@@ -206,6 +206,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import { mapActions } from "vuex";
 import { Row, Col, Dialog,Button} from "element-ui";
 var md5 = require("md5");

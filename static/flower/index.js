@@ -11,11 +11,9 @@ var c,
 function rand( min, max ) {
 	return Math.random() * ( max - min ) + min;
 }
-
 function randInt( min, max ) {
 	return Math.floor( min + Math.random() * ( max - min + 1 ) );
 };
-
 function Branch( hue, x, y, angle, vel ) {
 	var move = 15;
 	this.x = x + rand( -move, move );
@@ -35,7 +33,6 @@ function Branch( hue, x, y, angle, vel ) {
 		y: this.y
 	});
 }
-
 Branch.prototype.step = function( i ) {
 	this.life -= this.decay;
 	if( this.life <= 0 ) {
@@ -57,7 +54,6 @@ Branch.prototype.step = function( i ) {
 		branches.splice( i, 1 );
 	}
 };
-
 Branch.prototype.draw = function() {
 	if( !this.points.length || this.dead ) {
 		return false;
@@ -79,7 +75,6 @@ Branch.prototype.draw = function() {
 		ctx.stroke();
 	}
 }
-
 function init() {
 	c = document.getElementById( 'c' );
 	ctx = c.getContext( '2d' );
@@ -97,19 +92,15 @@ function reset() {
 	c.width = w;
 	c.height = h;
 	tick = 0;
-	
-	
 	for( var i = 0; i < 500; i++ ) {		
 		branches.push( new Branch( startHue, cx, cy) );
 	}
 }
-
 function step() {
 	var i = branches.length;
 	while( i-- ) { branches[ i ].step( i ) }
 	tick++;
 }
-
 function draw() {
 	var i = branches.length;
 	if( tick < 450 ) {
@@ -127,7 +118,6 @@ function draw() {
 	ctx.globalCompositeOperation = 'lighter';
 		while( i-- ) { branches[ i ].draw() }
 }
-
 function loop() {
 	requestAnimationFrame( loop );
 	step();
@@ -135,19 +125,6 @@ function loop() {
 	step();
 	draw();
 }
-
-window.addEventListener( 'resize', reset );
-window.addEventListener( 'click', function() {
-	startHue += 60;
-	reset();
-});
-
 init(); 
-// var canvas = document.getElementById("c");
-// var context = canvas.getContext("2d");
-// context.font = "50px serif";
-// context.fillStyle = "#FFF";
-// context.fillText("信达为你而生",650,300);
-// context.textAlign='center';
-// context.textBaseline='middle';
+
 

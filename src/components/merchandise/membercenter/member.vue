@@ -101,6 +101,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import {getGoodsAllData} from "./memberPublic";
 import pageSet from "../../pagePublic";
 export default {
@@ -339,7 +341,7 @@ export default {
         border: 1px solid #e8e8e8;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        // align-items: center;
         // 订单号(头部)
         .indent-top {
           width: 100%;
@@ -420,11 +422,12 @@ export default {
           }
           // 右侧付款/删除
           .det-right {
-            margin-top: -100px;
+            height: 73px;
             width: 13%;
+            margin-top: 0;
             display: flex;
             flex-wrap: wrap;
-            margin-left: 87%;
+            align-items: center;
             .ind-pay {
               width: 67%;
               height: 27px;

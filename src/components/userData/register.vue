@@ -195,6 +195,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import dist from "./distoicker";
 import { Row, Col, Dialog,Button} from "element-ui";
 import { mapActions } from "vuex";

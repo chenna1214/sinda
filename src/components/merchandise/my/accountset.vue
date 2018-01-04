@@ -116,6 +116,8 @@
 
 <script>
 import dist from '../../../districts/districts';
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 var md5 = require('md5');
 export default {
   name: 'memaccount',

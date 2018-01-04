@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import { mapGetters } from "vuex";
 var md5 = require("md5");
 

@@ -122,6 +122,8 @@
 
 <script>
 // 三级联动模块
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import autourban from "./autourban";
 import { mapActions } from "vuex"; //改变数据
 import servicePart from "./servicePart.vue"; //引用财税服务右侧栏组件
