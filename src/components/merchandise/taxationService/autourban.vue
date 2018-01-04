@@ -27,7 +27,8 @@
 <script>
 import dist from "../../../districts/districts";
 import {Row,Col} from 'element-ui';
-
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 export default {
   name: "autourban",
   data() {

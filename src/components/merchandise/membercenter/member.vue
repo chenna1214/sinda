@@ -101,6 +101,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import {getGoodsAllData} from "./memberPublic";
 import pageSet from "../../pagePublic";
 export default {

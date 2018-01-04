@@ -15,8 +15,14 @@
         <el-row class="hidden-sm-and-up">
           <el-col :xs="{span:24}" >
             <el-carousel trigger="click" height="2.8rem">
-            <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
-              <img v-bind:src="carouselImg.id" class="telCarouselImg">
+             <el-carousel-item>
+                <img src="../../../../static/images/sinda1.png" class="telCarouselImg">
+              </el-carousel-item>
+              <el-carousel-item>
+                <img src="../../../../static/images/sinda2.png" class="telCarouselImg">
+              </el-carousel-item>
+                <el-carousel-item>
+                <img src="../../../../static/images/sinda3.png" class="telCarouselImg">
               </el-carousel-item>
             </el-carousel>
           </el-col>
@@ -24,13 +30,73 @@
         <!-- 手机端--头部导航栏 -->
         <el-row>
           <div class="telNavBox">
-            <el-col :xs="6" v-for="(telNav,navIdx) in telNavs" :key="telNav.telNavImg">
-              <router-link :to="{ path: telNav.url, query: {code:telNav.code}}" tag="div">       
+            <el-col :xs="6">
+              <router-link :to="{ path: '/merchandise/taxationService', query: { code: 1 }}" tag="div">       
                 <div  class="telNavBoxIn">
                   <div>
-                    <img :src="telNav.telNavImg" class="telNavImg">
+                    <img src="../../../../static/images/m_homepage1.png" class="telNavImg">
                   </div>
-                  <p class="telNavText">{{telNav.telNavInfo}}</p>
+                  <p class="telNavText">财税服务</p>
+                </div>
+              </router-link>
+            </el-col>
+            <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { code: 4 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage2.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">开公司</p>
+                </div>
+              </router-link>
+            </el-col>
+              <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { code: 5 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage3.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">公司变更</p>
+                </div>
+              </router-link>
+            </el-col>
+            <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { code: 7 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage4.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">个人社保</p>
+                </div>
+              </router-link>
+            </el-col>
+                   <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { code: 6 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage5.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">公司社保</p>
+                </div>
+              </router-link>
+            </el-col>
+                   <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/taxationService', query: { code: 3 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage6.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">知识产权</p>
+                </div>
+              </router-link>
+            </el-col>
+              <el-col :xs="6">
+               <router-link :to="{ path: '/merchandise/navShow', query: { code: -1 }}" tag="div">     
+                <div  class="telNavBoxIn">
+                  <div>
+                    <img src="../../../../static/images/m_homepage7.png" class="telNavImg">
+                  </div>
+                  <p class="telNavText">全部服务</p>
                 </div>
               </router-link>
             </el-col>
@@ -38,10 +104,16 @@
         </el-row>
       </div>
         <!-- 全部产品--xs以上--轮播图片 -->
-        <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
+          <el-col  :sm="{span:24}" :md="{span:24}" :lg="{span:24}" class="hidden-xs-only">
             <el-carousel trigger="click" height="400px">
-            <el-carousel-item v-for="carouselImg in carouselList" :key="carouselImg.id">
-              <img v-bind:src="carouselImg.id" class="pcCarouselImg">
+              <el-carousel-item>
+                <img src="../../../../static/images/sinda1.png" class="pcCarouselImg">
+              </el-carousel-item>
+              <el-carousel-item>
+                <img src="../../../../static/images/sinda2.png" class="pcCarouselImg">
+              </el-carousel-item>
+                <el-carousel-item>
+                <img src="../../../../static/images/sinda3.png" class="pcCarouselImg">
               </el-carousel-item>
             </el-carousel>
           </el-col>
@@ -54,15 +126,49 @@
       </el-col>
     </el-row>
     <!-- 明星产品推荐文章列表 -->
-    <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
-        <el-col :sm="6" :md="6" :lg="6" v-for="star in starList" :key="star.id">
+      </el-row> 
+       <el-row type="flex" justify="space-between" :gutter="30" class="pcAllProStarBox hidden-xs-only">
+        <el-col :sm="6" :md="6" :lg="6">
           <div class="pcAllProStarOut">
             <div class="pcAllProStarIn starBox">
-              <img :src="require('../../images/allProduct/'+star.img)" class="starImg">
-              <p class="pcCreateServieceNameP">{{star.til}}</p>
-              <p class="starInfo" >{{star.info}}</p>
-              <span class="pcCreatemarketPrice">{{star.money}}</span>
-              <span class="pcCreateunit" >{{star.unit}}</span>
+              <img src="../../../../static/images/star1.png" class="starImg">
+              <p class="pcCreateServieceNameP">标准五险一金</p>
+              <p class="starInfo" >定制化社保代理，定制化代缴服务</p>
+              <span class="pcCreatemarketPrice">20</span>
+              <span class="pcCreateunit" >元/人/月</span>
+            </div>
+          </div>
+        </el-col>
+                <el-col :sm="6" :md="6" :lg="6">
+          <div class="pcAllProStarOut">
+            <div class="pcAllProStarIn starBox">
+              <img src="../../../../static/images/star2.png" class="starImg">
+              <p class="pcCreateServieceNameP">内资有限公司注册</p>
+              <p class="starInfo" >一键完成注册，快速开办公司</p>
+              <span class="pcCreatemarketPrice">600</span>
+              <span class="pcCreateunit" >元/次</span>
+            </div>
+          </div>
+        </el-col>
+                <el-col :sm="6" :md="6" :lg="6">
+          <div class="pcAllProStarOut">
+            <div class="pcAllProStarIn starBox">
+              <img src="../../../../static/images/star3.png" class="starImg">
+              <p class="pcCreateServieceNameP">小规模代理记账/年</p>
+              <p class="starInfo" >专业会计报税，高效、便捷、贴心</p>
+              <span class="pcCreatemarketPrice">3000</span>
+              <span class="pcCreateunit" >元/年</span>
+            </div>
+          </div>
+        </el-col>
+                <el-col :sm="6" :md="6" :lg="6">
+          <div class="pcAllProStarOut">
+            <div class="pcAllProStarIn starBox">
+              <img src="../../../../static/images/star3.png" class="starImg">
+              <p class="pcCreateServieceNameP">国内普通商标注册</p>
+              <p class="starInfo" >次日提交商标申请，最快保护品牌价值</p>
+              <span class="pcCreatemarketPrice">1000</span>
+              <span class="pcCreateunit" >元/次</span>
             </div>
           </div>
         </el-col>
@@ -105,9 +211,9 @@
           </el-col>
           <el-col :sm="16" :md="16" :lg="16">
             <div class="pcKnoLeftBox">
-              <img src="../../images/allProduct/k2.png" alt="">
-              <img src="../../images/allProduct/k3.png" alt="">
-              <img src="../../images/allProduct/k4.png" alt="">
+              <img src="../../images/allProduct/k2.png">
+              <img src="../../images/allProduct/k3.png">
+              <img src="../../images/allProduct/k4.png">
             </div>
           </el-col>
         </el-row>
@@ -147,10 +253,8 @@
           </div>
           <p class="telFooterP">一站式企业交易中心</p>
         </div>
-
         <!-- 通栏图片 -->
         <img src="../../images/allProduct/u100.png" alt="" class="pcAd hidden-xs-only">
-
       <!-- 推荐服务商标题 -->
         <el-row>
           <el-col class="pcRecTilBox hidden-xs-only">
@@ -203,10 +307,11 @@
 </template>
 
 <script>
-import getCitys from "../../pcPublic/pcHeader/public"; //向服务器请求城市数据
-import { handleCon } from "../../pcPublic/pcHeader/public"; //判断选择城市的状态出现不同的提示
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
+import getCitys from "../public"; //向服务器请求城市数据
+import { handleCon } from "../public"; //判断选择城市的状态出现不同的提示
 const gourl = "/merchandise/taxationService"; //点击手机端端头部导航图片、文字，跳转到指定路径
-
 import { Row, Col,Carousel,CarouselItem,Message } from "element-ui";
 export default {
   name: "allProduct",
@@ -260,50 +365,6 @@ export default {
       pcCityNameSuc: { city: "" }, //已开通城市名称
       dialogVisible: false, //控制“切换城市”弹出框的出现、消失
       imgCreatedUrl,
-      telNavs: [
-        {
-          telNavImg: require("../../images/telIndex/m_homepage1.png"), //手机端--头部导航图片
-          telNavInfo: "财税服务", //手机端--头部导航文字
-          code: 1,
-          url: gourl //点击后向/merchandise/taxationService发送code，请求相关数据
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage2.png"),
-          telNavInfo: "开公司",
-          code: 4,
-          url: gourl
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage3.png"),
-          telNavInfo: "公司变更",
-          code: 5,
-          url: gourl
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage4.png"),
-          telNavInfo: "个人社保",
-          code: 7,
-          url: gourl
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage5.png"),
-          telNavInfo: "公司社保",
-          code: 6,
-          url: gourl
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage6.png"),
-          telNavInfo: "知识产权",
-          code: 3,
-          url: gourl
-        },
-        {
-          telNavImg: require("../../images/telIndex/m_homepage7.png"),
-          telNavInfo: "全部服务",
-          code: -1,
-          url: "/merchandise/navShow"
-        }
-      ],
       telIndex: 1, //点击财税服务后弹出框默认出现的初始值
 
       //pc端
@@ -316,13 +377,6 @@ export default {
       pcRecommends: [], //推荐服务商
       pcCompanyRegisterList: [], //公司工商三级标题
       pcAllProTilName: [], //轮播图左边的所有二级标题
-      carouselList: [
-        //轮播图片
-        { id: require("../../images/allProduct/sinda1.png") },
-        { id: require("../../images/allProduct/sinda2.png") },
-        { id: require("../../images/allProduct/sinda3.png") }
-      ],
-
       starList: [
         //明星产品推荐文章列表
         {
@@ -413,7 +467,7 @@ export default {
   background: #2693d4;
 }
 .pcCarouselImg {
-  padding-bottom: 40%;
+
   width: 100%;
   height: 400px;
 }

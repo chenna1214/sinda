@@ -34,7 +34,7 @@
                   <el-row class="pcsh-ginfo">
                     <el-col :span="4">
                       <div class="pcsh-gimg" @click="toDetail(shTrData.serviceId)">
-                        <img  :src="imgCreatedUrl+shTrData.providerImg"  alt="">
+                        <img  :src="imgCreatedUrl+ shTrData.providerImg"  alt="">
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -118,7 +118,7 @@
                   <p class="tel-spconm">{{shTrData.providerName}}</p>
                   <!-- 左侧图片 -->
                   <div class="tel-teimg">
-                    <img :src="imgCreatedUrl+shTrData.providerImg" alt="" class="tel-imgin">
+                    <img :src="imgCreatedUrl + shTrData.providerImg" alt="" class="tel-imgin">
                     </div>
                     <!-- 右侧文字部分 -->
                     <div class="tel-tewor">
@@ -169,6 +169,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import { mapActions } from "vuex"; //显示数据
 import { Row, Col, Loading, Button } from "element-ui";
 export default {
@@ -235,6 +237,7 @@ export default {
       // 获取购物城商品数目
       this.ajax.post("/xinda-api/cart/list").then(function(data) {
         that.shTrDatas = data.data.data;
+        that.goodsnum = 0;
         if (that.shTrDatas.length == 0) {
           that.goodsnum = 0;
         }
@@ -306,6 +309,7 @@ export default {
     return {
       imgCreatedUrl,// 图片地址
       // 加载
+      imgCreatedUrl,
       fullscreenLoading: false,
       goodsnum: 0,
       num1: 1,

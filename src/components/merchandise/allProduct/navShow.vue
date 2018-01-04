@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getTitles } from "../../pcPublic/pcHeader/public"; //获取产品导航标题
+import { getTitles } from "../public.js"; //获取产品导航标题
 import {Row,Col} from 'element-ui';
 export default {
   name: "navShow",

@@ -103,6 +103,8 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import dist from '../../../districts/districts';
 var md5 = require('md5');
 export default {
