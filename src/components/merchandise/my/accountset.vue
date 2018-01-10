@@ -25,12 +25,12 @@
         <div class="set-name">
           <div>姓名：</div>
           <div class="name-input">
-            <input type="text" placeholder="请输入姓名" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
+            <input type="text" placeholder="请输入姓名(1-6位中文)" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
           </div>
           <!-- 出错时出现 -->
           <div class="nam-error" v-show="namer" >
             <div class="set-error">×</div>
-            <div>请输入您的姓名</div>
+            <div>{{xingm}}</div>
           </div>
         </div>
         <!-- 性别 -->
@@ -118,9 +118,13 @@
 import dist from '../../../districts/districts';
 import 'element-ui/lib/theme-chalk/display.css';
 import 'element-ui/lib/theme-chalk/index.css'
+import {Radio} from 'element-ui'
 var md5 = require('md5');
 export default {
   name: 'memaccount',
+  components: {
+    [Radio.name]:Radio
+  },
   data () {
     return {
       pcDis:0,//电脑端显示
@@ -141,6 +145,7 @@ export default {
         test: '',
       },
       namer: false,
+      xingm: '请输入您的姓名',
       // 性别
       radio: '1',
       // 邮箱
@@ -169,7 +174,7 @@ export default {
       sData: [],
       keep: false,
     }
-    components: {}
+
   },
 
   watch:{
@@ -254,8 +259,14 @@ export default {
         this.namer = true;
         this.boxstyle = 'boxs';
       }else {
-        this.namer = false;
-        this.boxstyle = 'box';
+        if((/^[\u4e00-\u9fa5]{1,6}$/).test(this.$refs.test.value)) {//符合正则
+          this.namer = false;
+          this.boxstyle = 'box';
+        }else{//不符合正则
+          this.namer = true;
+          this.boxstyle = 'boxs';
+          this.xingm = '姓名不符合要求';
+        }
       }
     },
       // 邮箱
@@ -288,46 +299,53 @@ export default {
         this.namer = true;
         this.boxstyle = 'boxs';
       }else {//填入姓名
-        this.namer = false;
-        this.boxstyle = 'box';
-        if (!this.$refs.email.value) {//未填入邮箱
-          this.emaer = true;
-          this.emaert = false;
-          this.tboxstyle = 'boxs';
-        }else {//邮箱地址填入
-          var ema = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-          if(!ema.test(this.$refs.email.value)){//不符合
-            this.emaert = true;
-            this.emaer = false;
-            this.tboxstyle = 'boxs';
-          }else {//符合(正确的邮箱地址)
-            this.emaer = false;
+        if((/^[\u4e00-\u9fa5]{1,6}$/).test(this.$refs.test.value)){
+          this.namer = false;
+          this.boxstyle = 'box';
+          if (!this.$refs.email.value) {//未填入邮箱
+            this.emaer = true;
             this.emaert = false;
-            this.tboxstyle = 'box';
-            if (!this.area) {//未选择地区
-              this.areer = true;
-            }else {//选择地区
-              this.areer = false;
-              // -----所有都正确后：
-              var that = this;
-              this.ajax.post('/xinda-api/member/update-info',
-              this.qs.stringify({
-                name: this.$refs.test.value,
-                gender: this.radio,
-                email: this.$refs.email.value,
-                regionId: this.area,
-              })).then(function (data) {
-                var sData = data.data;
-                if(sData.status == 1){
-                  that.keep = true;
-                  setInterval((function () {
-                    that.keep = false;
-                  }),3000);
-                }
-                console.log(data.data)
-              });
+            this.tboxstyle = 'boxs';
+          }else {//邮箱地址填入
+            var ema = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+            if(!ema.test(this.$refs.email.value)){//不符合
+              this.emaert = true;
+              this.emaer = false;
+              this.tboxstyle = 'boxs';
+            }else {//符合(正确的邮箱地址)
+              this.emaer = false;
+              this.emaert = false;
+              this.tboxstyle = 'box';
+              if (!this.area) {//未选择地区
+                this.areer = true;
+              }else {//选择地区
+                this.areer = false;
+                // -----所有都正确后：
+                var that = this;
+                this.ajax.post('/xinda-api/member/update-info',
+                this.qs.stringify({
+                  name: this.$refs.test.value,
+                  gender: this.radio,
+                  email: this.$refs.email.value,
+                  regionId: this.area,
+                })).then(function (data) {
+                  var sData = data.data;
+                  if(sData.status == 1){
+                    that.keep = true;
+                    setInterval((function () {
+                      that.keep = false;
+                    }),3000);
+                    setTimeout((location.href = '#/merchandise/allProduct'),3000);
+                  }
+                  console.log(data.data)
+                });
+              }
             }
           }
+        }else{
+          this.namer = true;
+          this.boxstyle = 'boxs';
+          this.xingm = '姓名不符合要求';
         }
       }
     },
@@ -364,6 +382,7 @@ export default {
               setInterval((function () {
                 that.keep = false;
               }),3000);
+              setTimeout((location.href = '#/merchandise/allProduct'),3000);
             }
           })
         }
