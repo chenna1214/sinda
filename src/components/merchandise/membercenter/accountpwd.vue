@@ -20,12 +20,12 @@
           <div class="set-name">
             <div>姓名：</div>
             <div class="name-input">
-              <input type="text" placeholder="请输入姓名" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
+              <input type="text" placeholder="请输入姓名(1-6位汉字)" v-model="items.test" ref="test" v-on:blur="namblur" :class="boxstyle">
             </div>
             <!-- 出错时出现 -->
             <div class="nam-error" v-show="namer" >
               <div class="set-error">×</div>
-              <div>请输入您的姓名</div>
+              <div>{{xingming}}</div>
             </div>
           </div>
           <!-- 性别 -->
@@ -132,6 +132,7 @@ export default {
         test: '',
       },
       namer: false,
+      xingming: '请输入您的姓名',
       // 性别
       radio: '1',
       // 邮箱
@@ -238,8 +239,14 @@ export default {
         this.namer = true;
         this.boxstyle = 'boxs';
       }else {
-        this.namer = false;
-        this.boxstyle = 'box';
+        if((/^[\u4e00-\u9fa5]{1,6}$/).test(this.$refs.test.value)) {//符合正则
+          this.namer = false;
+          this.boxstyle = 'box';
+        }else{//不符合正则
+          this.namer = true;
+          this.boxstyle = 'boxs';
+          this.xingming = '姓名不符合要求';
+        }
       }
     },
       // 邮箱
@@ -272,38 +279,46 @@ export default {
         this.namer = true;
         this.boxstyle = 'boxs';
       }else {//填入姓名
-        this.namer = false;
-        this.boxstyle = 'box';
-        if (!this.$refs.email.value) {//未填入邮箱
-          this.emaer = true;
-          this.emaert = false;
-          this.tboxstyle = 'boxs';
-        }else {//邮箱地址填入
-          var ema = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-          if(!ema.test(this.$refs.email.value)){//不符合
-            this.emaert = true;
-            this.emaer = false;
-            this.tboxstyle = 'boxs';
-          }else {//符合(正确的邮箱地址)
-            this.emaer = false;
+        if((/^[\u4e00-\u9fa5]{1,6}$/).test(this.$refs.test.value)) {//符合正则
+          this.namer = false;
+          this.boxstyle = 'box';
+          if (!this.$refs.email.value) {//未填入邮箱
+            this.emaer = true;
             this.emaert = false;
-            this.tboxstyle = 'box';
-            if (!this.area) {//未选择地区
-              this.areer = true;
-            }else {//选择地区
-              this.areer = false;
-              // -----所有都正确后：
-              this.ajax.post('/xinda-api/member/update-info',
-              this.qs.stringify({
-                name: this.$refs.test.value,
-                gender: this.radio,
-                email: this.$refs.email.value,
-                regionId: this.area,
-              })).then(function (data) {
-                console.log(data.data)
-              });
+            this.tboxstyle = 'boxs';
+          }else {//邮箱地址填入
+            var ema = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+            if(!ema.test(this.$refs.email.value)){//不符合
+              this.emaert = true;
+              this.emaer = false;
+              this.tboxstyle = 'boxs';
+            }else {//符合(正确的邮箱地址)
+              this.emaer = false;
+              this.emaert = false;
+              this.tboxstyle = 'box';
+              if (!this.area) {//未选择地区
+                this.areer = true;
+              }else {//选择地区
+                this.areer = false;
+                // -----所有都正确后：
+                this.ajax.post('/xinda-api/member/update-info',
+                this.qs.stringify({
+                  name: this.$refs.test.value,
+                  gender: this.radio,
+                  email: this.$refs.email.value,
+                  regionId: this.area,
+                })).then(function (data) {
+                  console.log(data.data)
+                  // this.$router.push({path:'/src/components/merchandise/allProduct'});
+                  location.href = '#/merchandise/allProduct';
+                });
+              }
             }
           }
+        }else{//不符合正则
+          this.namer = true;
+          this.boxstyle = 'boxs';
+          this.xingming = '姓名不符合要求';
         }
       }
     },
@@ -335,6 +350,7 @@ export default {
               this.olderr = true;
             }else if (data.data.status == 1) {
               this.olderr = false;
+              location.href = '#/merchandise/allProduct';
             }
           })
         }

@@ -465,6 +465,12 @@ export default {
           that.goods.servicename = that.goods.providerProduct.serviceName; //名字
           that.goods.info = that.goods.providerProduct.serviceInfo; //介绍
           that.goods.content = that.goods.providerProduct.serviceContent; //服务内容
+          console.log(that.goods.content);
+          if(that.goods.content){
+            that.goods.content = that.goods.providerProduct.serviceContent; //服务内容
+          }else{
+            that.goods.content = '对不起，该产品暂时没有服务内容';
+          }
           that.goods.name = that.goods.provider.name; //微信端服务商家
           that.goods.providerimg = that.goods.provider.providerImg; //微信端服务商家图片
           console.log("good ==", good);
